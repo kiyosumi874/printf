@@ -1,8 +1,4 @@
-#include "Fps.h"
-#include "Common.h"
-#include "Dxlib.h"
-#include <mmsystem.h>
-#pragma comment(lib,"winmm.lib")
+#include "pch.h"
 Fps* Fps::m_this = nullptr;
 
 Fps::Fps()

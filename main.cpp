@@ -1,5 +1,4 @@
-﻿#include <Windows.h>
-#include "App.h"
+﻿#include "pch.h"
 // WinMain関数
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,LPSTR lpCmdLine, int nCmdShow)
 {

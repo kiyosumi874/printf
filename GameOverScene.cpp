@@ -1,6 +1,4 @@
-#include "GameOverScene.h"
-#include "DxLib.h"
-#include "Input.h"
+#include "pch.h"
 
 GameOverScene::GameOverScene(const MODE& mode)
 	: Scene(mode)

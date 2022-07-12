@@ -1,6 +1,4 @@
-#include "GameClearScene.h"
-#include "DxLib.h"
-#include "Input.h"
+#include "pch.h"
 
 GameClearScene::GameClearScene(const MODE& mode)
 	: Scene(mode)

@@ -1,7 +1,4 @@
-#include "Input.h"
-#include <Windows.h>
-#include <vector>
-#include <DxLib.h>
+#include "pch.h"
 
 Input* Input::m_input = nullptr;
 
