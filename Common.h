@@ -1,5 +1,5 @@
 #pragma once
-#include <DxLib.h>
+#include "pch.h"
 const float MIN_FRAME_TIME = 1.0f / 60.0f;
 
 const int SCREEN_WIDTH = 1280;

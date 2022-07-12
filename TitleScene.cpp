@@ -1,6 +1,4 @@
-#include "TitleScene.h"
-#include "DxLib.h"
-#include "Input.h"
+#include "pch.h"
 
 TitleScene::TitleScene(const MODE& mode)
 	: Scene(mode)

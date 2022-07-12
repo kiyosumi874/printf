@@ -1,6 +1,4 @@
-#include "PlayScene.h"
-#include "DxLib.h"
-#include "Input.h"
+#include "pch.h"
 
 PlayScene::PlayScene(const MODE& mode)
 	: Scene(mode)

@@ -1,7 +1,4 @@
-#include "App.h"
-#include <DxLib.h>
-#include "Common.h"
-#include "SceneManager.h"
+#include "pch.h"
 
 App::App()
 {

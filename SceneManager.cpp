@@ -1,12 +1,4 @@
-#include "SceneManager.h"
-#include "TitleScene.h"
-#include "PlayScene.h"
-#include "GameClearScene.h"
-#include "GameOverScene.h"
-#include "DxLib.h"
-#include "Input.h"
-#include "Fps.h"
-
+#include "pch.h"
 
 SceneManager::SceneManager()
 	: m_nowScene(nullptr)
