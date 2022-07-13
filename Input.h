@@ -48,6 +48,8 @@ private:
         int pressCount[3]; // 状態
     };
     KeyInformation m_keys[BUTTON_ID_MAX];
+    int m_analogStickX[2];
+    int m_analogStickY[2];
 
     int m_joyPadNum;
     Input();
@@ -76,6 +78,80 @@ public:
             m_input = nullptr;
         }
 
+    }
+
+    /// <summary>
+    /// スティックの無効範囲を設定する
+    /// </summary>
+    /// <param name="deadZone">0.0～1.0(デフォルトは0.35)</param>
+    static void SetStickDeadZone(const double deadZone)
+    {
+        SetJoypadDeadZone(DX_INPUT_PAD1, deadZone);
+        SetJoypadDeadZone(DX_INPUT_PAD2, deadZone);
+    }
+
+    /// <summary>
+    /// 1Pコントローラーを振動させる
+    /// </summary>
+    /// <param name="power">振動の強さ(0～1000)</param>
+    /// <param name="time">振動する時間(-1でStopVibration1Pが呼ばれるまで振動する)</param>
+    /// <param name="effectIndex">振動させるモーター番号(気にせんでもええ)</param>
+    static void StartVibration1P(const int power, const int time, int effectIndex = -1)
+    {
+        StartJoypadVibration(DX_INPUT_PAD1, power, time, effectIndex);
+    }
+
+    /// <summary>
+    /// 2Pコントローラーを振動させる
+    /// </summary>
+    /// <param name="power">振動の強さ(0～1000)</param>
+    /// <param name="time">振動する時間(-1でStopVibration2Pが呼ばれるまで振動する)</param>
+    /// <param name="effectIndex">振動させるモーター番号(気にせんでもええ)</param>
+    static void StartVibration2P(const int power, const int time, int effectIndex = -1)
+    {
+        StartJoypadVibration(DX_INPUT_PAD2, power, time, effectIndex);
+    }
+
+    /// <summary>
+    /// 1Pコントローラーの振動を止める
+    /// </summary>
+    /// <param name="effectIndex">振動を止めるモーター番号(StartVibration1Pで指定した値を入れる)</param>
+    static void StopVibration1P(int effectIndex = -1)
+    {
+        StopJoypadVibration(DX_INPUT_PAD1, effectIndex);
+    }
+
+    /// <summary>
+    /// 2Pコントローラーの振動を止める
+    /// </summary>
+    /// <param name="effectIndex">振動を止めるモーター番号(StartVibration2Pで指定した値を入れる)</param>
+    static void StopVibration2P(int effectIndex = -1)
+    {
+        StopJoypadVibration(DX_INPUT_PAD2, effectIndex);
+    }
+
+    /// <summary>
+    /// 1Pコントローラーのスティックの状態を取得
+    /// </summary>
+    /// <param name="x">引数を参照してxを取得します(1000～-1000)</param>
+    /// <param name="y">引数を参照してyを取得します(1000～-1000)</param>
+    /// 自分で正規化してけろ(VNorm(VGet(x,y,1))てするとうまくいく気がするぞ)
+    static void GetAnalogStick1P(int& x, int& y)
+    {
+        x = m_input->m_analogStickX[0];
+        y = m_input->m_analogStickY[0];
+    }
+
+    /// <summary>
+    /// 2Pコントローラーのスティックの状態を取得
+    /// </summary>
+    /// <param name="x">引数を参照してxを取得します(1000～-1000)</param>
+    /// <param name="y">引数を参照してyを取得します(1000～-1000)</param>
+    /// 自分で正規化してけろ(VNorm(VGet(x,y,1))てするとうまくいく気がするぞ)
+    static void GetAnalogStick2P(int& x, int& y)
+    {
+        x = m_input->m_analogStickX[1];
+        y = m_input->m_analogStickY[1];
     }
 
     static void Update();

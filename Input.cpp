@@ -19,6 +19,13 @@ Input::Input()
 	initKeyCode[KEYBOARD].push_back(VK_ESCAPE);
 	initKeyCode[KEYBOARD].push_back(VK_RETURN);
 
+
+	for (int i = 0; i < 2; i++)
+	{
+		m_analogStickX[i] = 0;
+		m_analogStickY[i] = 0;
+	}
+
 	if (m_joyPadNum > 0)
 	{
 		initKeyCode[CONTROLLER_1P].push_back(PAD_ID_DOWN);
@@ -68,21 +75,27 @@ Input::~Input()
 
 void Input::Update()
 {
-
-	for (int i = 0; i < BUTTON_ID_MAX; i++)
+	// コントローラーがつながっているか？
+	if (m_input->m_joyPadNum > 0)
 	{
-		// GetAsyncKeyStateは押しているとき最上位ビットが立つ
-		if (GetAsyncKeyState(m_input->m_keys[i].keyCode[KEYBOARD]) & 0x8000) // 0x8000はshortの最上位ビットが立っていることを表す
-		{
-			m_input->m_keys[i].pressCount[KEYBOARD] = max(++m_input->m_keys[i].pressCount[KEYBOARD], 1);
-		}
-		else
-		{
-			m_input->m_keys[i].pressCount[KEYBOARD] = min(--m_input->m_keys[i].pressCount[KEYBOARD], 0);
-		}
+		// アナログスティックのアップデート
+		GetJoypadAnalogInput(&m_input->m_analogStickX[0], &m_input->m_analogStickY[0], DX_INPUT_PAD1);
+		GetJoypadAnalogInput(&m_input->m_analogStickX[1], &m_input->m_analogStickY[1], DX_INPUT_PAD2);
 
-		if (m_input->m_joyPadNum > 0)
+		for (int i = 0; i < BUTTON_ID_MAX; i++)
 		{
+			// キーボードのアップデート
+			// GetAsyncKeyStateは押しているとき最上位ビットが立つ
+			if (GetAsyncKeyState(m_input->m_keys[i].keyCode[KEYBOARD]) & 0x8000) // 0x8000はshortの最上位ビットが立っていることを表す
+			{
+				m_input->m_keys[i].pressCount[KEYBOARD] = max(++m_input->m_keys[i].pressCount[KEYBOARD], 1);
+			}
+			else
+			{
+				m_input->m_keys[i].pressCount[KEYBOARD] = min(--m_input->m_keys[i].pressCount[KEYBOARD], 0);
+			}
+
+			// コントローラー1Pのアップデート
 			if (GetJoypadInputState(DX_INPUT_PAD1) & m_input->m_keys[i].keyCode[CONTROLLER_1P])
 			{
 				m_input->m_keys[i].pressCount[CONTROLLER_1P] = max(++m_input->m_keys[i].pressCount[CONTROLLER_1P], 1);
@@ -92,6 +105,7 @@ void Input::Update()
 				m_input->m_keys[i].pressCount[CONTROLLER_1P] = min(--m_input->m_keys[i].pressCount[CONTROLLER_1P], 0);
 			}
 
+			// コントローラー2Pのアップデート
 			if (GetJoypadInputState(DX_INPUT_PAD2) & m_input->m_keys[i].keyCode[CONTROLLER_2P])
 			{
 				m_input->m_keys[i].pressCount[CONTROLLER_2P] = max(++m_input->m_keys[i].pressCount[CONTROLLER_2P], 1);
@@ -100,7 +114,26 @@ void Input::Update()
 			{
 				m_input->m_keys[i].pressCount[CONTROLLER_2P] = min(--m_input->m_keys[i].pressCount[CONTROLLER_2P], 0);
 			}
-		}
 
+		}
 	}
+	else
+	{
+		for (int i = 0; i < BUTTON_ID_MAX; i++)
+		{
+			// GetAsyncKeyStateは押しているとき最上位ビットが立つ
+			if (GetAsyncKeyState(m_input->m_keys[i].keyCode[KEYBOARD]) & 0x8000) // 0x8000はshortの最上位ビットが立っていることを表す
+			{
+				m_input->m_keys[i].pressCount[KEYBOARD] = max(++m_input->m_keys[i].pressCount[KEYBOARD], 1);
+			}
+			else
+			{
+				m_input->m_keys[i].pressCount[KEYBOARD] = min(--m_input->m_keys[i].pressCount[KEYBOARD], 0);
+			}
+
+		}
+	}
+
+
+	
 }
