@@ -19,38 +19,54 @@ Input::Input()
 	initKeyCode[KEYBOARD].push_back(VK_ESCAPE);
 	initKeyCode[KEYBOARD].push_back(VK_RETURN);
 
+
+	for (int i = 0; i < 2; i++)
+	{
+		m_analogStickX[i] = 0;
+		m_analogStickY[i] = 0;
+	}
+
 	if (m_joyPadNum > 0)
 	{
-		initKeyCode[CONTROLLER].push_back(PAD_ID_DOWN);
-		initKeyCode[CONTROLLER].push_back(PAD_ID_LEFT);
-		initKeyCode[CONTROLLER].push_back(PAD_ID_RIGHT);
-		initKeyCode[CONTROLLER].push_back(PAD_ID_UP);
-		initKeyCode[CONTROLLER].push_back(PAD_ID_A);
-		initKeyCode[CONTROLLER].push_back(PAD_ID_B);
-		initKeyCode[CONTROLLER].push_back(PAD_ID_X);
-		initKeyCode[CONTROLLER].push_back(PAD_ID_Y);
-		initKeyCode[CONTROLLER].push_back(PAD_ID_L);
-		initKeyCode[CONTROLLER].push_back(PAD_ID_R);
-		initKeyCode[CONTROLLER].push_back(PAD_ID_BACK);
-		initKeyCode[CONTROLLER].push_back(PAD_ID_START);
+		initKeyCode[CONTROLLER_1P].push_back(PAD_ID_DOWN);
+		initKeyCode[CONTROLLER_1P].push_back(PAD_ID_LEFT);
+		initKeyCode[CONTROLLER_1P].push_back(PAD_ID_RIGHT);
+		initKeyCode[CONTROLLER_1P].push_back(PAD_ID_UP);
+		initKeyCode[CONTROLLER_1P].push_back(PAD_ID_A);
+		initKeyCode[CONTROLLER_1P].push_back(PAD_ID_B);
+		initKeyCode[CONTROLLER_1P].push_back(PAD_ID_X);
+		initKeyCode[CONTROLLER_1P].push_back(PAD_ID_Y);
+		initKeyCode[CONTROLLER_1P].push_back(PAD_ID_L);
+		initKeyCode[CONTROLLER_1P].push_back(PAD_ID_R);
+		initKeyCode[CONTROLLER_1P].push_back(PAD_ID_BACK);
+		initKeyCode[CONTROLLER_1P].push_back(PAD_ID_START);
 	}
-	
-	
-	for (int i = 0; i < BUTTON_ID_MAX; i++)
+
+	if (m_joyPadNum > 0)
 	{
-		m_keys[i].keyCode[KEYBOARD] = initKeyCode[KEYBOARD][i];
-		m_keys[i].pressCount[KEYBOARD] = -1;
-		if (m_joyPadNum > 0)
+		for (int i = 0; i < BUTTON_ID_MAX; i++)
 		{
-			m_keys[i].keyCode[CONTROLLER] = initKeyCode[CONTROLLER][i];
-			m_keys[i].pressCount[CONTROLLER] = -1;
-		}
-		else
-		{
-			m_keys[i].keyCode[CONTROLLER] = '\0';
-			m_keys[i].pressCount[CONTROLLER] = -1;
+			m_keys[i].keyCode[KEYBOARD] = initKeyCode[KEYBOARD][i];
+			m_keys[i].pressCount[KEYBOARD] = -1;
+			m_keys[i].keyCode[CONTROLLER_1P] = initKeyCode[CONTROLLER_1P][i];
+			m_keys[i].pressCount[CONTROLLER_1P] = -1;
+			m_keys[i].keyCode[CONTROLLER_2P] = initKeyCode[CONTROLLER_1P][i];
+			m_keys[i].pressCount[CONTROLLER_2P] = -1;
 		}
 	}
+	else
+	{
+		for (int i = 0; i < BUTTON_ID_MAX; i++)
+		{
+			m_keys[i].keyCode[KEYBOARD] = initKeyCode[KEYBOARD][i];
+			m_keys[i].pressCount[KEYBOARD] = -1;
+			m_keys[i].keyCode[CONTROLLER_1P] = '\0';
+			m_keys[i].pressCount[CONTROLLER_1P] = -1;
+			m_keys[i].keyCode[CONTROLLER_2P] = '\0';
+			m_keys[i].pressCount[CONTROLLER_2P] = -1;
+		}
+	}
+	_RPTF1(_CRT_WARN, "connectGamePad:%d\n", m_joyPadNum);
 }
 
 Input::~Input()
@@ -59,30 +75,65 @@ Input::~Input()
 
 void Input::Update()
 {
-
-	for (int i = 0; i < BUTTON_ID_MAX; i++)
+	// コントローラーがつながっているか？
+	if (m_input->m_joyPadNum > 0)
 	{
-		// GetAsyncKeyStateは押しているとき最上位ビットが立つ
-		if (GetAsyncKeyState(m_input->m_keys[i].keyCode[KEYBOARD]) & 0x8000) // 0x8000はshortの最上位ビットが立っていることを表す
-		{
-			m_input->m_keys[i].pressCount[KEYBOARD] = max(++m_input->m_keys[i].pressCount[KEYBOARD], 1);
-		}
-		else
-		{
-			m_input->m_keys[i].pressCount[KEYBOARD] = min(--m_input->m_keys[i].pressCount[KEYBOARD], 0);
-		}
+		// アナログスティックのアップデート
+		GetJoypadAnalogInput(&m_input->m_analogStickX[0], &m_input->m_analogStickY[0], DX_INPUT_PAD1);
+		GetJoypadAnalogInput(&m_input->m_analogStickX[1], &m_input->m_analogStickY[1], DX_INPUT_PAD2);
 
-		if (m_input->m_joyPadNum > 0)
+		for (int i = 0; i < BUTTON_ID_MAX; i++)
 		{
-			if (GetJoypadInputState(DX_INPUT_PAD1) & m_input->m_keys[i].keyCode[CONTROLLER])
+			// キーボードのアップデート
+			// GetAsyncKeyStateは押しているとき最上位ビットが立つ
+			if (GetAsyncKeyState(m_input->m_keys[i].keyCode[KEYBOARD]) & 0x8000) // 0x8000はshortの最上位ビットが立っていることを表す
 			{
-				m_input->m_keys[i].pressCount[CONTROLLER] = max(++m_input->m_keys[i].pressCount[CONTROLLER], 1);
+				m_input->m_keys[i].pressCount[KEYBOARD] = max(++m_input->m_keys[i].pressCount[KEYBOARD], 1);
 			}
 			else
 			{
-				m_input->m_keys[i].pressCount[CONTROLLER] = min(--m_input->m_keys[i].pressCount[CONTROLLER], 0);
+				m_input->m_keys[i].pressCount[KEYBOARD] = min(--m_input->m_keys[i].pressCount[KEYBOARD], 0);
 			}
+
+			// コントローラー1Pのアップデート
+			if (GetJoypadInputState(DX_INPUT_PAD1) & m_input->m_keys[i].keyCode[CONTROLLER_1P])
+			{
+				m_input->m_keys[i].pressCount[CONTROLLER_1P] = max(++m_input->m_keys[i].pressCount[CONTROLLER_1P], 1);
+			}
+			else
+			{
+				m_input->m_keys[i].pressCount[CONTROLLER_1P] = min(--m_input->m_keys[i].pressCount[CONTROLLER_1P], 0);
+			}
+
+			// コントローラー2Pのアップデート
+			if (GetJoypadInputState(DX_INPUT_PAD2) & m_input->m_keys[i].keyCode[CONTROLLER_2P])
+			{
+				m_input->m_keys[i].pressCount[CONTROLLER_2P] = max(++m_input->m_keys[i].pressCount[CONTROLLER_2P], 1);
+			}
+			else
+			{
+				m_input->m_keys[i].pressCount[CONTROLLER_2P] = min(--m_input->m_keys[i].pressCount[CONTROLLER_2P], 0);
+			}
+
 		}
-		
 	}
+	else
+	{
+		for (int i = 0; i < BUTTON_ID_MAX; i++)
+		{
+			// GetAsyncKeyStateは押しているとき最上位ビットが立つ
+			if (GetAsyncKeyState(m_input->m_keys[i].keyCode[KEYBOARD]) & 0x8000) // 0x8000はshortの最上位ビットが立っていることを表す
+			{
+				m_input->m_keys[i].pressCount[KEYBOARD] = max(++m_input->m_keys[i].pressCount[KEYBOARD], 1);
+			}
+			else
+			{
+				m_input->m_keys[i].pressCount[KEYBOARD] = min(--m_input->m_keys[i].pressCount[KEYBOARD], 0);
+			}
+
+		}
+	}
+
+
+	
 }

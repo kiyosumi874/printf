@@ -11,12 +11,12 @@ TitleScene::~TitleScene()
 
 TAG_SCENE TitleScene::Update()
 {
-	if (Input::IsDown(BUTTON_ID_START))
+	if (Input::IsDown1P(BUTTON_ID_START))
 	{
 		return TAG_SCENE::TAG_PLAY;
 	}
 
-	if (Input::IsDown(BUTTON_ID_BACK))
+	if (Input::IsDown1P(BUTTON_ID_BACK))
 	{
 		return TAG_SCENE::TAG_END;
 	}
