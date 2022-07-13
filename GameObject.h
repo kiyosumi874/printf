@@ -10,6 +10,7 @@ public:
 	GameObject(ObjectTag tag, VECTOR position);
 	virtual ~GameObject();
 
+	virtual void Update() = 0;
 	virtual void Draw() = 0;
 
 	// セッター

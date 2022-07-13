@@ -64,6 +64,12 @@
     <ClCompile Include="Player.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugDraw.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -107,6 +113,12 @@
     </ClInclude>
     <ClInclude Include="ObjectTag.h">
       <Filter>ソース ファイル\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugDraw.h">
+      <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

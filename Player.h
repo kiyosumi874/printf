@@ -7,7 +7,7 @@ public:
 	Player(ObjectTag tag, VECTOR position);				// コンストラクタ
 	~Player();				// デストラクタ
 
-	void Update();			// 更新処理.
+	void Update()override;	// 更新処理.
 	void Draw()override;	// 描画処理.
 
 private:

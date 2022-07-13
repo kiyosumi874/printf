@@ -7,7 +7,7 @@ Player::Player(ObjectTag tag, VECTOR position)
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);
 
 	// 3Dモデルの読み込み
-	m_modelHandle = MV1LoadModel("data/Player/IronMan.mv1");
+	m_modelHandle = MV1LoadModel("data/player/hackadoll.pmx");
 
 	m_dir = VGet(1.0f, 0.0f, 0.0f);
 	m_aimDir = m_dir;
@@ -24,7 +24,7 @@ void Player::Update()
 	Input();
 
 	// 移動処理
-	VAdd(m_position, m_velocity);
+	m_position = VAdd(m_position, m_velocity);
 
 	// 3Dモデルのポジション設定
 	MV1SetPosition(m_modelHandle, m_position);
@@ -49,28 +49,28 @@ void Player::Input()
 	bool L_input = false;	// 入力したか判定用
 
 	// 前に進む
-	if (Input::IsPress(PAD_ID_UP))
+	if (CheckHitKey(KEY_INPUT_UP))
 	{
 		L_inputVec = VAdd(L_front, L_inputVec);
 		L_input = true;
 	}
 
 	// 後ろに進む
-	if (Input::IsPress(PAD_ID_DOWN))
+	if (CheckHitKey(KEY_INPUT_DOWN))
 	{
 		L_inputVec = VAdd(L_rear, L_inputVec);
 		L_input = true;
 	}
 
 	// 右に進む
-	if (Input::IsPress(PAD_ID_RIGHT))
+	if (CheckHitKey(KEY_INPUT_RIGHT))
 	{
 		L_inputVec = VAdd(L_right, L_inputVec);
 		L_input = true;
 	}
 
 	// 左に進む
-	if (Input::IsPress(PAD_ID_LEFT))
+	if (CheckHitKey(KEY_INPUT_LEFT))
 	{
 		L_inputVec = VAdd(L_left, L_inputVec);
 		L_input = true;
@@ -79,7 +79,25 @@ void Player::Input()
 	// 入力有（加速）・入力無（減速）
 	if (L_input)
 	{
+		// 左右・前後同時押しなどで入力ベクトルが0の時は無視
+		if (VSquareSize(L_inputVec) < 0.5f)
+		{
+			return;
+		}
 
+		// 方向を正規化
+		L_inputVec = VNorm(L_inputVec);
+
+		m_velocity = VAdd(m_velocity, L_inputVec);
+		if (m_velocity.x > 2.0f) { m_velocity.x = 2.0f; }
+		if (m_velocity.x < -2.0f) { m_velocity.x = -2.0f; }
+		if (m_velocity.z > 2.0f) { m_velocity.z = 2.0f; }
+		if (m_velocity.z < -2.0f) { m_velocity.z = -2.0f; }
+	}
+	else
+	{
+		m_velocity.x = m_velocity.x * 0.9f;
+		m_velocity.z = m_velocity.z * 0.9f;
 	}
 }
 
