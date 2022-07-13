@@ -7,6 +7,9 @@
 #include <Windows.h>
 #include <vector>
 #include <mmsystem.h>
+#include <document.h>
+#include <fstream>
+#include <sstream>
 
 #pragma comment(lib,"winmm.lib")
 
@@ -19,6 +22,7 @@
 /* System */
 #include "Input.h"
 #include "Fps.h"
+#include "RapidJson.h"
 
 /* Scene */
 #include "Scene.h"
@@ -27,3 +31,9 @@
 #include "GameClearScene.h"
 #include "GameOverScene.h"
 #include "SceneManager.h"
+
+/* Ground */
+#include "Ground.h"
+
+/* Map */
+#include "Map.h"
