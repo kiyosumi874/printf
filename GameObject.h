@@ -1,17 +1,23 @@
 #pragma once
-#include <cstdint>
-#include "Tag.h"
+#include "ObjectTag.h"
 
 // 3Dモデルの基底クラス
 class GameObject
 {
 public:
-
 	GameObject();
-	virtual ~GameObject() = 0;
+	GameObject(ObjectTag tag);
+	GameObject(ObjectTag tag, VECTOR position);
+	virtual ~GameObject();
 
 	virtual void Draw() = 0;
 
+	// セッター
+	void SetPosition(const VECTOR& positon) { m_position = positon; }
+	// ゲッター
+	const VECTOR& GetPosition() const { return m_position; }
 protected:
 	VECTOR m_position;
+	ObjectTag m_tag;
+	int m_modelHandle;
 };
