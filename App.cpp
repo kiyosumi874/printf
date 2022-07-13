@@ -11,7 +11,7 @@ App::App()
 	SetUseDirect3DVersion(DX_DIRECT3D_11);
 	DxLib_Init();
 	SetDrawScreen(DX_SCREEN_BACK);
-
+	SetMouseDispFlag(FALSE);
 	m_sceneManager = new SceneManager();
 	m_sceneManager->SetNowScene(TAG_SCENE::TAG_TITLE);
 }

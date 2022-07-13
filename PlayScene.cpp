@@ -27,12 +27,12 @@ TAG_SCENE PlayScene::Update()
 		m_pGameObjects[i]->Update();
 	}
 
-	if (Input::IsDown(BUTTON_ID_START))
+	if (Input::IsDown1P(BUTTON_ID_START))
 	{
 		return TAG_SCENE::TAG_OVER;
 	}
 
-	if (Input::IsDown(BUTTON_ID_BACK))
+	if (Input::IsDown1P(BUTTON_ID_BACK))
 	{
 		return TAG_SCENE::TAG_END;
 	}
