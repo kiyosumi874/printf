@@ -58,6 +58,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Tomato.cpp">
     <ClCompile Include="GameObject.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClCompile>
@@ -105,6 +106,8 @@
     <ClInclude Include="pch.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
+
+    <ClInclude Include="Tomato.h">
     <ClInclude Include="GameObject.h">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClInclude>

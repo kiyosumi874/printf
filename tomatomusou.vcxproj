@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -177,6 +177,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Tag.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="Tomato.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -193,6 +194,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Tag.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="Tomato.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
