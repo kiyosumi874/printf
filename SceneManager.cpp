@@ -23,7 +23,7 @@ void SceneManager::GameLoop()
 			break;
 		}
 #ifdef _DEBUG
-		if (Input::IsDown(BUTTON_ID_BACK))
+		if (Input::IsDown1P(BUTTON_ID_BACK))
 		{
 			break;
 		}

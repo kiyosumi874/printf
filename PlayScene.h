@@ -1,4 +1,7 @@
 #pragma once
+class GameObject;
+class Player;
+class Camera;
 
 class PlayScene : public Scene
 {
@@ -11,5 +14,8 @@ public:
 	void Draw() override;
 
 private:
+	std::vector<GameObject*>m_pGameObjects;
 
+	Player* m_pPlayer;
+	Camera* m_pCamera;
 };
