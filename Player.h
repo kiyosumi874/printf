@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
+class Tomato;
+
 class Player : public GameObject
 {
 public:
@@ -19,4 +21,6 @@ private:
 	VECTOR m_velocity;		// ‘¬“x
 
 	bool m_rotateNow;		// ‰ñ“]’†‚©”»’è—p
+
+	std::vector<Tomato*> m_tomatos;
 };
