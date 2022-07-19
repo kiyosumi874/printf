@@ -3,6 +3,12 @@
 PlayScene::PlayScene(const MODE& mode)
 	: Scene(mode)
 {
+	// このシーンで使うjsonファイルが読み込めたら
+	if (m_map->OpenFile())
+	{
+		m_map->GroundCreate();  // 床を生成
+		//m_map->PlayerCreate();  // プレイヤーを生成
+	}
 }
 
 PlayScene::~PlayScene()

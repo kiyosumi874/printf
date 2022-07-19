@@ -17,6 +17,8 @@ public:
 
 	// 床を生成する
 	void GroundCreate();
+	// プレイヤーを生成する
+	void PlayerCreate();
 
 	// デバッグ用
 	std::vector<Ground*> mGround;
@@ -41,6 +43,7 @@ private:
 	int FindLayerIndex(rapidjson::GenericArray<false, rapidjson::Value>& _layer, std::string& _layerName);
 
 	std::vector<std::vector<int>> m_groundMapDate; // 床のマップデータ
+	std::vector<std::vector<int>> m_playerMapDate; // 床のマップデータ
 
 	Size m_mapSize;                       // マップデータサイズ(w,h)
 	VECTOR m_objDistance;                 // オブジェクトごとの距離(x,y,z)

@@ -11,5 +11,5 @@ public:
 	void Draw() override;
 
 private:
-
+	class Map* m_map;  // Mapクラスのポインタ
 };

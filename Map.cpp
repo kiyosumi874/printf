@@ -12,16 +12,26 @@ Map::~Map()
 
 bool Map::OpenFile()
 {
-	// データの読み込み
-	if (!ReadTiledJson(m_groundMapDate, "Map/Map.json", "Ground"))
-	{
-		return true;
-	}
+	// jsonファイル名
+	const char* fileName = "Map/Map.json";
 
+	// データの読み込み
+	// Groundレイヤー
+	if (!ReadTiledJson(m_groundMapDate, fileName, "Ground"))
+	{
+		return false;
+	}
+	// マップのサイズ
 	m_mapSize.w = m_groundMapDate[0].size();
 	m_mapSize.h = m_groundMapDate.size();
 
-	return false;
+	//// Playerレイヤー
+	//if (!ReadTiledJson(m_playerMapDate, fileName, "Player"))
+	//{
+	//	return false;
+	//}
+
+	return true;
 }
 
 void Map::GroundCreate()
@@ -44,10 +54,30 @@ void Map::GroundCreate()
 				mGround.emplace_back(new Ground(objPos));
 				//new Ground(objPos); // 床の生成
 			}
-
-			
 		}
+	}
+}
 
+void Map::PlayerCreate()
+{
+	// 奥行
+	for (float iz = 0; iz < m_mapSize.h; ++iz)
+	{
+		// 横幅
+		for (float ix = 0; ix < m_mapSize.w; ++ix)
+		{
+			// 割り当てられている数字
+			const unsigned int name = m_playerMapDate[(int)iz][(int)ix];
+
+			// ポジション
+			const VECTOR objPos = VECTOR(VGet(-m_objDistance.x * ix, 0.0f, m_objDistance.z * iz));
+
+			// 割り当てられている数字が1だったら
+			if (name == 1)
+			{
+				//new Player(objPos); // プレイヤーの生成
+			}
+		}
 	}
 }
 
