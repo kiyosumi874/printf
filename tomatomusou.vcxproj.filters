@@ -1,74 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="ソース ファイル\System">
-      <UniqueIdentifier>{b1c88c4d-3345-4c93-abb4-7edc78312ff1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Scene">
-      <UniqueIdentifier>{49a03bca-a68b-4079-8044-b8eac2f06361}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Scene\Clear">
-      <UniqueIdentifier>{a3bf24b1-4e7c-4b4b-af49-f5bd48f05009}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Scene\Over">
-      <UniqueIdentifier>{e2f3a5b0-0fa8-4b17-af83-05991cbd15e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Scene\Play">
-      <UniqueIdentifier>{ce3bd9c0-8cf9-42d3-820f-0dab30ac6651}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Scene\Title">
-      <UniqueIdentifier>{4ac695e6-1e4d-46c0-a5d8-204ae97a44f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\System\RapidJson">
-      <UniqueIdentifier>{a52a6889-193a-4995-b8a9-b853f7ad8de3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Map">
-      <UniqueIdentifier>{12b70fa4-cda0-40f7-b0c0-bfc49b486e40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Ground">
-      <UniqueIdentifier>{92404fd0-ee47-4702-881b-5d4616d10e0d}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="App.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Fps.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
+      <Filter>System</Filter>
     </ClCompile>
     <ClCompile Include="GameClearScene.cpp">
-      <Filter>ソース ファイル\Scene\Clear</Filter>
+      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="GameOverScene.cpp">
-      <Filter>ソース ファイル\Scene\Over</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayScene.cpp">
-      <Filter>ソース ファイル\Scene\Play</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleScene.cpp">
-      <Filter>ソース ファイル\Scene\Title</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>ソース ファイル</Filter>
-    <ClCompile Include="DebugDraw.cpp" />
-    <ClCompile Include="Camera.cpp">
-      <Filter>GameObject</Filter>
+      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="RapidJson.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>System</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>GameObject</Filter>
@@ -76,66 +45,97 @@
     <ClCompile Include="Tomato.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="RapidJson.cpp">
-      <Filter>ソース ファイル\System\RapidJson</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>ソース ファイル\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="Ground.cpp">
-      <Filter>ソース ファイル\Ground</Filter>
-    </ClCompile>
     <ClCompile Include="Image.cpp">
-      <Filter>ソース ファイル\GameObject</Filter>
+      <Filter>Image</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugDraw.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
-    <ClInclude Include="Common.h" />
-    <ClInclude Include="Fps.h" />
-    <ClInclude Include="GameClearScene.h" />
-    <ClInclude Include="GameOverScene.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="PlayScene.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="TitleScene.h" />
-    <ClInclude Include="DebugDraw.h" />
-    <ClInclude Include="Camera.h">
-      <Filter>GameObject</Filter>
+    <ClInclude Include="Common.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Fps.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClearScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="RapidJson.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Tomato.h">
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="ObjectTag.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-
-    <ClInclude Include="Camera.h">
-      <Filter>ソース ファイル\GameObject</Filter>
-    <ClInclude Include="Tomato.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="RapidJson.h">
-      <Filter>ソース ファイル\System\RapidJson</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>ソース ファイル\Map</Filter>
-    </ClInclude>
     <ClInclude Include="Image.h">
-      <Filter>ソース ファイル\GameObject</Filter>
+      <Filter>Image</Filter>
     </ClInclude>
-    <ClInclude Include="Ground.h">
-      <Filter>ソース ファイル\Ground</Filter>
+    <ClInclude Include="DebugDraw.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameObject">
-      <UniqueIdentifier>{8f3a2e92-80fb-496f-9638-f91c4cd2340f}</UniqueIdentifier>
+      <UniqueIdentifier>{aa03de10-f3ff-4e23-90b6-427ae52aab98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{a84e1b7f-72d6-41f1-9dfd-778b250c4f8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{03288ace-b763-4dcc-9214-d296c95f8a99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ground">
+      <UniqueIdentifier>{59b189c4-8b5c-4727-a2d9-21120f1345b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{a5f22da1-dfc7-4f5b-8c2a-d9a6eff1eb57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Image">
+      <UniqueIdentifier>{7c956688-38cf-419c-98d2-ba57c83f38be}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

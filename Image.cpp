@@ -2,7 +2,7 @@
 #include "Image.h"
 
 // コンストラクタ
-Image::Image(const VECTOR& pos, const VECTOR& extendRate, double angle, const char* fileName, bool transFlag, bool turnFlagX = false, bool turnFlagY = false)
+Image::Image(const VECTOR& pos, const VECTOR& extendRate, double angle, const char* fileName, bool transFlag, bool turnFlagX, bool turnFlagY)
 {
 	m_pos = pos;
 	m_extendRate = extendRate;

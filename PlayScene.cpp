@@ -6,11 +6,13 @@
 PlayScene::PlayScene(const MODE& mode)
 	: Scene(mode)
 {
-	// ï¿½ï¿½ï¿½ÌƒVï¿½[ï¿½ï¿½ï¿½Ågï¿½ï¿½jsonï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Ç‚İï¿½ï¿½ß‚ï¿½ï¿½ï¿½
+	m_map = new Map();
+
+	// ‚±‚ÌƒV[ƒ“‚Åg‚¤jsonƒtƒ@ƒCƒ‹‚ª“Ç‚İ‚ß‚½‚ç
 	if (m_map->OpenFile())
 	{
-		m_map->GroundCreate();  // ï¿½ï¿½ï¿½ğ¶ï¿½
-		//m_map->PlayerCreate();  // ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ğ¶ï¿½
+		m_map->GroundCreate();  // °‚ğ¶¬
+		//m_map->PlayerCreate();  // ƒvƒŒƒCƒ„[‚ğ¶¬
 	}
   
 	m_pPlayer = new Player(ObjectTag::Player1, VGet(0.0f, 0.0f, 0.0f));
@@ -24,6 +26,7 @@ PlayScene::~PlayScene()
 {
 	delete m_pPlayer;
 	delete m_pCamera;
+	delete m_map;
 	m_pGameObjects.clear();
 }
 
