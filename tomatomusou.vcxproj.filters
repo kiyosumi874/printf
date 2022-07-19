@@ -63,6 +63,18 @@
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>ソース ファイル</Filter>
+    <ClCompile Include="DebugDraw.cpp" />
+    <ClCompile Include="Camera.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Tomato.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="RapidJson.cpp">
       <Filter>ソース ファイル\System\RapidJson</Filter>
@@ -75,38 +87,32 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="App.h">
-      <Filter>ソース ファイル</Filter>
+    <ClInclude Include="App.h" />
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="Fps.h" />
+    <ClInclude Include="GameClearScene.h" />
+    <ClInclude Include="GameOverScene.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="DebugDraw.h" />
+    <ClInclude Include="Camera.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Common.h">
-      <Filter>ソース ファイル</Filter>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Fps.h">
-      <Filter>ソース ファイル\System</Filter>
+    <ClInclude Include="ObjectTag.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>ソース ファイル\System</Filter>
+    <ClInclude Include="Player.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="GameClearScene.h">
-      <Filter>ソース ファイル\Scene\Clear</Filter>
-    </ClInclude>
-    <ClInclude Include="GameOverScene.h">
-      <Filter>ソース ファイル\Scene\Over</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayScene.h">
-      <Filter>ソース ファイル\Scene\Play</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleScene.h">
-      <Filter>ソース ファイル\Scene\Title</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>ソース ファイル</Filter>
+    <ClInclude Include="Tomato.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="RapidJson.h">
       <Filter>ソース ファイル\System\RapidJson</Filter>
@@ -117,5 +123,10 @@
     <ClInclude Include="Ground.h">
       <Filter>ソース ファイル\Ground</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{8f3a2e92-80fb-496f-9638-f91c4cd2340f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
