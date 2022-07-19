@@ -14,7 +14,7 @@ public:
 	void Draw() override;
 
 private:
-	std::vector<GameObject*>m_pGameObjects;
+	std::vector<GameObject*> m_pGameObjects;
 
 	Player* m_pPlayer;
 	Camera* m_pCamera;

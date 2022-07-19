@@ -6,6 +6,7 @@ App::App()
 	SetGraphMode(SCREEN_WIDTH, SCREEN_HEIGHT, COLOR_BIT_DEPTH);
 	ChangeWindowMode(TRUE);
 	SetWaitVSyncFlag(FALSE);
+	SetOutApplicationLogValidFlag(FALSE); // Log.txtを書き出さないようにする
 	// DirectX11を使用するようにする。(DirectX9も可、一部機能不可)
 	// Effekseerを使用するには必ず設定する。
 	SetUseDirect3DVersion(DX_DIRECT3D_11);
