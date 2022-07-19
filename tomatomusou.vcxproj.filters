@@ -85,6 +85,9 @@
     <ClCompile Include="Ground.cpp">
       <Filter>ソース ファイル\Ground</Filter>
     </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -111,6 +114,9 @@
     <ClInclude Include="Player.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+
+    <ClInclude Include="Camera.h">
+      <Filter>ソース ファイル\GameObject</Filter>
     <ClInclude Include="Tomato.h">
       <Filter>GameObject</Filter>
     </ClInclude>
@@ -119,6 +125,9 @@
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>ソース ファイル\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>ソース ファイル\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Ground.h">
       <Filter>ソース ファイル\Ground</Filter>
