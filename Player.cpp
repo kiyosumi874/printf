@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Player.h"
+#include "Tomato.h"
 
 Player::Player(ObjectTag tag, VECTOR position)
 	: m_rotateNow(false)
@@ -28,16 +29,51 @@ void Player::Update()
 
 	// 3Dモデルのポジション設定
 	MV1SetPosition(m_modelHandle, m_position);
+
+	// 向きに合わせてモデルを回転
+	MATRIX rotYMat = MGetRotY(180.0f * DX_PI_F / 180.0f);
+	VECTOR negativeVec = VTransform(m_dir, rotYMat);
+
+	// モデルに回転をセットする
+	MV1SetRotationZYAxis(m_modelHandle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
+
+	// トマト処理
+	for (int i = 0; i < m_tomatos.size(); i++)
+	{
+		m_tomatos[i]->Update();
+	}
+	for (int i = 0; i < m_tomatos.size(); i++)
+	{
+		// トマトの生存時間が5.0fを超えると削除
+		if (m_tomatos[i]->GetTime() > 5.0f)
+		{
+			delete(m_tomatos[i]);
+			m_tomatos.erase(std::cbegin(m_tomatos) + i);
+			m_tomatos.shrink_to_fit();
+		}
+	}
 }
 
 void Player::Draw()
 {
 	// 3Dモデルの描画
 	MV1DrawModel(m_modelHandle);
+
+	// トマト描画
+	for(int i = 0; i < m_tomatos.size(); i++)
+	{
+		m_tomatos[i]->Draw();
+	}
 }
 
 void Player::Input()
 {
+	// トマト生成
+	if (Input::IsDown1P(BUTTON_ID_B))
+	{
+		m_tomatos.push_back(new Tomato(m_position, m_dir));
+	}
+
 	// 前後左右
 	VECTOR L_front = { 0.0f,0.0f,1.0f };
 	VECTOR L_rear = { 0.0f,0.0f,-1.0f };
@@ -88,11 +124,18 @@ void Player::Input()
 		// 方向を正規化
 		L_inputVec = VNorm(L_inputVec);
 
-		m_velocity = VAdd(m_velocity, L_inputVec);
-		if (m_velocity.x > 2.0f) { m_velocity.x = 2.0f; }
-		if (m_velocity.x < -2.0f) { m_velocity.x = -2.0f; }
-		if (m_velocity.z > 2.0f) { m_velocity.z = 2.0f; }
-		if (m_velocity.z < -2.0f) { m_velocity.z = -2.0f; }
+		// 入力方向は現在向いている向きと異なるか
+		if (IsNearAngle(L_inputVec, m_dir))
+		{
+			m_dir = L_inputVec;
+		}
+		else
+		{
+			m_rotateNow = true;
+			m_aimDir = L_inputVec;
+		}
+
+		m_velocity = L_inputVec;
 	}
 	else
 	{
@@ -103,4 +146,30 @@ void Player::Input()
 
 void Player::Rotate()
 {
+	// 回転が目標角度に到達すれば回転モード終了
+	if (IsNearAngle(m_aimDir, m_dir))
+	{
+		m_dir = m_aimDir;
+		m_rotateNow = false;
+	}
+	else
+	{
+		// 回転
+		VECTOR interPolateDir;
+		interPolateDir = RotateForAimVecYAxis(m_dir, m_aimDir, 10.0f);
+
+		// 回転が目標角度を超えていないか
+		VECTOR cross1, cross2;
+		cross1 = VCross(m_dir, m_aimDir);
+		cross2 = VCross(interPolateDir, m_aimDir);
+
+		// 目標角度を超えたら終了
+		if (cross1.y * cross2.y < 0.0f)
+		{
+			interPolateDir = m_aimDir;
+			m_rotateNow = false;
+		}
+		// 目標ベクトルに10度だけ近づえた角度
+		m_dir = interPolateDir;
+	}
 }

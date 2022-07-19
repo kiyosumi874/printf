@@ -160,6 +160,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="Fps.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -175,24 +177,25 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="Tag.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Tomato.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="DebugDraw.h" />
     <ClInclude Include="Fps.h" />
     <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="ObjectTag.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="Tag.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Tomato.h" />
   </ItemGroup>
