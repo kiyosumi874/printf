@@ -1,16 +1,68 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="App.cpp" />
-    <ClCompile Include="Fps.cpp" />
-    <ClCompile Include="GameClearScene.cpp" />
-    <ClCompile Include="GameOverScene.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="pch.cpp" />
-    <ClCompile Include="PlayScene.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="TitleScene.cpp" />
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\System">
+      <UniqueIdentifier>{b1c88c4d-3345-4c93-abb4-7edc78312ff1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene">
+      <UniqueIdentifier>{49a03bca-a68b-4079-8044-b8eac2f06361}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene\Clear">
+      <UniqueIdentifier>{a3bf24b1-4e7c-4b4b-af49-f5bd48f05009}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene\Over">
+      <UniqueIdentifier>{e2f3a5b0-0fa8-4b17-af83-05991cbd15e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene\Play">
+      <UniqueIdentifier>{ce3bd9c0-8cf9-42d3-820f-0dab30ac6651}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene\Title">
+      <UniqueIdentifier>{4ac695e6-1e4d-46c0-a5d8-204ae97a44f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System\RapidJson">
+      <UniqueIdentifier>{a52a6889-193a-4995-b8a9-b853f7ad8de3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Map">
+      <UniqueIdentifier>{12b70fa4-cda0-40f7-b0c0-bfc49b486e40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Ground">
+      <UniqueIdentifier>{92404fd0-ee47-4702-881b-5d4616d10e0d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Fps.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClearScene.cpp">
+      <Filter>ソース ファイル\Scene\Clear</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScene.cpp">
+      <Filter>ソース ファイル\Scene\Over</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>ソース ファイル\Scene\Play</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>ソース ファイル\Scene\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>ソース ファイル</Filter>
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="Camera.cpp">
       <Filter>GameObject</Filter>
@@ -23,6 +75,15 @@
     </ClCompile>
     <ClCompile Include="Tomato.cpp">
       <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="RapidJson.cpp">
+      <Filter>ソース ファイル\System\RapidJson</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>ソース ファイル\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>ソース ファイル\Ground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +113,15 @@
     </ClInclude>
     <ClInclude Include="Tomato.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="RapidJson.h">
+      <Filter>ソース ファイル\System\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>ソース ファイル\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>ソース ファイル\Ground</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

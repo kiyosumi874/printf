@@ -14,6 +14,8 @@ public:
 	void Draw() override;
 
 private:
+	class Map* m_map;  // Map�N���X�̃|�C���^
+  
 	std::vector<GameObject*>m_pGameObjects;
 
 	Player* m_pPlayer;
