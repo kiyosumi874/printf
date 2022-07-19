@@ -6,6 +6,13 @@
 PlayScene::PlayScene(const MODE& mode)
 	: Scene(mode)
 {
+	// ���̃V�[���Ŏg��json�t�@�C�����ǂݍ��߂���
+	if (m_map->OpenFile())
+	{
+		m_map->GroundCreate();  // ���𐶐�
+		//m_map->PlayerCreate();  // �v���C���[�𐶐�
+	}
+  
 	m_pPlayer = new Player(ObjectTag::Player1, VGet(0.0f, 0.0f, 0.0f));
 	m_pGameObjects.push_back(m_pPlayer);
 	m_pCamera = new Camera(ObjectTag::Camera, VGet(0.0f, 100.0f, -100.0f));
