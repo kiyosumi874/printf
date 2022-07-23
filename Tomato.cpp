@@ -8,16 +8,34 @@
 Tomato::Tomato(VECTOR& position, VECTOR& dir)
 {
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);  // 速さはまだ0
-	m_startVelocity = VGet(1.0f, 1.0f, 1.0f);
+	m_startVelocity = VGet(5.0f, 1.0f, 5.0f);
 	m_modelHandle = MV1LoadModel("data/Tomato/Tomato.mv1");
 	m_position = position;
 	m_position = VAdd(m_position, VGet(0.0f, 10.0f, 0.0f));
 
 	m_time = 0.0f;
-	m_gravity = 9.80665f;  // 平均重力値で初期化
-	m_deg = 20.0f;
+	m_gravity = 3.80665f;  // 平均重力よりもゲーム用に調整
+	m_deg = 60.0f;
 	m_rad = m_deg * (DX_PI_F / 180.0f);
-	m_dir = dir;
+
+	float tmp[] = { dir.x, dir.y, dir.z };
+	for (int i = 0; i < 3; i++)
+	{
+		if (tmp[i] > 0)
+		{
+			tmp[i] = 1;
+		}
+		else if (tmp[i] < 0)
+		{
+			tmp[i] = -1;
+		}
+		else
+		{
+			tmp[i] = 0;
+		}
+	}
+	
+	m_dir = VGet(tmp[0], tmp[1], tmp[2]);
 
 	// サイズ調整
 	MV1SetScale(m_modelHandle, VGet(0.02f,0.02f,0.02f));
@@ -55,6 +73,7 @@ void Tomato::Move()
 {
 	m_time += 0.01f;
 
-	m_velocity.y = m_startVelocity.y * cos(m_rad) * m_time;
-	m_velocity.z = m_startVelocity.z * sin(m_rad) * m_time - (0.5f * m_gravity * m_time * m_time);
+	m_velocity.x = m_dir.x * (m_startVelocity.x * cos(m_rad) * m_time);
+	m_velocity.y = m_startVelocity.y * sin(m_rad) * m_time - (0.5f * m_gravity * m_time * m_time);
+	m_velocity.z = m_dir.z * (m_startVelocity.z * cos(m_rad) * m_time);
 }

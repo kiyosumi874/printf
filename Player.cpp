@@ -17,6 +17,16 @@ Player::Player(ObjectTag tag, VECTOR position)
 Player::~Player()
 {
 	MV1DeleteModel(m_modelHandle);
+
+	for (int i = 0; i < m_tomatos.size(); i++)
+	{
+		if (!m_tomatos[i])
+		{
+			delete(m_tomatos[i]);
+		}
+		m_tomatos.erase(std::cbegin(m_tomatos) + i);
+		m_tomatos.shrink_to_fit();
+	}
 }
 
 void Player::Update()
@@ -45,7 +55,7 @@ void Player::Update()
 	for (int i = 0; i < m_tomatos.size(); i++)
 	{
 		// トマトの生存時間が5.0fを超えると削除
-		if (m_tomatos[i]->GetTime() > 5.0f)
+		if (m_tomatos[i]->GetTime() > 1.0f)
 		{
 			delete(m_tomatos[i]);
 			m_tomatos.erase(std::cbegin(m_tomatos) + i);
@@ -68,12 +78,6 @@ void Player::Draw()
 
 void Player::Input()
 {
-	// トマト生成
-	if (Input::IsDown1P(BUTTON_ID_B))
-	{
-		m_tomatos.push_back(new Tomato(m_position, m_dir));
-	}
-
 	// 前後左右
 	VECTOR L_front = { 0.0f,0.0f,1.0f };
 	VECTOR L_rear = { 0.0f,0.0f,-1.0f };
@@ -141,6 +145,12 @@ void Player::Input()
 	{
 		m_velocity.x = m_velocity.x * 0.9f;
 		m_velocity.z = m_velocity.z * 0.9f;
+	}
+
+	// トマト生成
+	if (Input::IsDown1P(BUTTON_ID_B))
+	{
+		m_tomatos.push_back(new Tomato(m_position, m_dir));
 	}
 }
 
