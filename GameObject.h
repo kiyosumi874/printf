@@ -17,6 +17,7 @@ public:
 	void SetPosition(const VECTOR& positon) { m_position = positon; }
 	// ゲッター
 	const VECTOR& GetPosition() const { return m_position; }
+	const ObjectTag& GetTag() const { return m_tag; }
 protected:
 	// 二つのベクトルの角度が同じか
 	bool IsNearAngle(const VECTOR& v1, const VECTOR& v2);

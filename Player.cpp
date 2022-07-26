@@ -3,14 +3,15 @@
 #include "Tomato.h"
 
 Player::Player(ObjectTag tag, VECTOR position)
-	: m_rotateNow(false)
+	: m_angle(0.0f)
+	, m_rotateNow(false)
 {
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);
 
 	// 3Dモデルの読み込み
 	m_modelHandle = MV1LoadModel("data/player/hackadoll.pmx");
 
-	m_dir = VGet(1.0f, 0.0f, 0.0f);
+	m_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_aimDir = m_dir;
 }
 
@@ -58,84 +59,113 @@ void Player::Draw()
 {
 	// 3Dモデルの描画
 	MV1DrawModel(m_modelHandle);
-
 	// トマト描画
-	for(int i = 0; i < m_tomatos.size(); i++)
+	for (int i = 0; i < m_tomatos.size(); i++)
 	{
 		m_tomatos[i]->Draw();
 	}
+#ifdef _DEBUG
+	printfDx("angle:%f\n", m_angle);
+	XINPUT_STATE input;
+	// 入力状態を取得
+	GetJoypadXInputState(DX_INPUT_PAD1, &input);
+	printfDx("X = %d\n", input.ThumbRX);
+	printfDx("Y = %d\n", input.ThumbRY);
+#endif // _DEBUG
+
 }
 
 void Player::Input()
 {
 	// トマト生成
-	if (Input::IsDown1P(BUTTON_ID_B))
+	if (Input::IsDown1P(BUTTON_ID_R))
 	{
 		m_tomatos.push_back(new Tomato(m_position, m_dir));
 	}
 
 	// 前後左右
-	VECTOR L_front = { 0.0f,0.0f,1.0f };
-	VECTOR L_rear = { 0.0f,0.0f,-1.0f };
-	VECTOR L_left = { -1.0f,0.0f,0.0f };
-	VECTOR L_right = { 1.0f,0.0f,0.0f };
+	VECTOR front = { 0.0f,0.0f,1.0f };
+	VECTOR rear = { 0.0f,0.0f,-1.0f };
+	VECTOR left = { 1.0f,0.0f,0.0f };
+	VECTOR right = { -1.0f,0.0f,0.0f };
 
-	VECTOR L_inputVec = VGet(0.0f, 0.0f, 0.0f);	// 押した合計座標取得用変数
+	VECTOR inputVec = VGet(0.0f, 0.0f, 0.0f);	// 押した合計座標取得用変数
 
-	bool L_input = false;	// 入力したか判定用
+	float addRad = 1.58f;	// 加算する角度
+	bool input = false;		// 入力したか判定用
+
+	XINPUT_STATE inputState;
+	// 入力状態を取得
+	GetJoypadXInputState(DX_INPUT_PAD1, &inputState);
+	if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
+	{
+		m_angle += 0.02f;
+	}
+	if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
+	{
+		m_angle -= 0.02f;
+	}
 
 	// 前に進む
-	if (CheckHitKey(KEY_INPUT_UP))
+	if (Input::IsPress1P(BUTTON_ID_UP))
 	{
-		L_inputVec = VAdd(L_front, L_inputVec);
-		L_input = true;
+		front.x = sinf(m_angle);
+		front.z = cosf(m_angle);
+		inputVec = VAdd(front, inputVec);
+		input = true;
 	}
 
 	// 後ろに進む
-	if (CheckHitKey(KEY_INPUT_DOWN))
+	if (Input::IsPress1P(BUTTON_ID_DOWN))
 	{
-		L_inputVec = VAdd(L_rear, L_inputVec);
-		L_input = true;
+		rear.x = sinf(m_angle) * -1.0f;
+		rear.z = cosf(m_angle) * -1.0f;
+		inputVec = VAdd(rear, inputVec);
+		input = true;
 	}
 
 	// 右に進む
-	if (CheckHitKey(KEY_INPUT_RIGHT))
+	if (Input::IsPress1P(BUTTON_ID_LEFT))
 	{
-		L_inputVec = VAdd(L_right, L_inputVec);
-		L_input = true;
+		right.x = sinf(m_angle - addRad);
+		right.z = cosf(m_angle - addRad);
+		inputVec = VAdd(right, inputVec);
+		input = true;
 	}
 
 	// 左に進む
-	if (CheckHitKey(KEY_INPUT_LEFT))
+	if (Input::IsPress1P(BUTTON_ID_RIGHT))
 	{
-		L_inputVec = VAdd(L_left, L_inputVec);
-		L_input = true;
+		left.x = sinf(m_angle + addRad);
+		left.z = cosf(m_angle + addRad);
+		inputVec = VAdd(left, inputVec);
+		input = true;
 	}
 
 	// 入力有（加速）・入力無（減速）
-	if (L_input)
+	if (input)
 	{
 		// 左右・前後同時押しなどで入力ベクトルが0の時は無視
-		if (VSquareSize(L_inputVec) < 0.5f)
+		if (VSquareSize(inputVec) < 0.5f)
 		{
 			return;
 		}
 
 		// 方向を正規化
-		L_inputVec = VNorm(L_inputVec);
+		inputVec = VNorm(inputVec);
 
 		// 入力方向は現在向いている向きと異なるか
-		if (IsNearAngle(L_inputVec, m_dir))
+		if (IsNearAngle(inputVec, m_dir))
 		{
-			m_dir = L_inputVec;
+			m_dir = inputVec;
 		}
 		else
 		{
 			m_rotateNow = true;
-			m_aimDir = L_inputVec;
+			m_aimDir = inputVec;
 		}
 
-		m_velocity = L_inputVec;
+		m_velocity = inputVec;
 	}
 	else
 	{
@@ -146,30 +176,33 @@ void Player::Input()
 
 void Player::Rotate()
 {
-	// 回転が目標角度に到達すれば回転モード終了
-	if (IsNearAngle(m_aimDir, m_dir))
+	if (m_rotateNow)
 	{
-		m_dir = m_aimDir;
-		m_rotateNow = false;
-	}
-	else
-	{
-		// 回転
-		VECTOR interPolateDir;
-		interPolateDir = RotateForAimVecYAxis(m_dir, m_aimDir, 10.0f);
-
-		// 回転が目標角度を超えていないか
-		VECTOR cross1, cross2;
-		cross1 = VCross(m_dir, m_aimDir);
-		cross2 = VCross(interPolateDir, m_aimDir);
-
-		// 目標角度を超えたら終了
-		if (cross1.y * cross2.y < 0.0f)
+		// 回転が目標角度に到達すれば回転モード終了
+		if (IsNearAngle(m_aimDir, m_dir))
 		{
-			interPolateDir = m_aimDir;
+			m_dir = m_aimDir;
 			m_rotateNow = false;
 		}
-		// 目標ベクトルに10度だけ近づえた角度
-		m_dir = interPolateDir;
+		else
+		{
+			// 回転
+			VECTOR interPolateDir;
+			interPolateDir = RotateForAimVecYAxis(m_dir, m_aimDir, 10.0f);
+
+			// 回転が目標角度を超えていないか
+			VECTOR cross1, cross2;
+			cross1 = VCross(m_dir, m_aimDir);
+			cross2 = VCross(interPolateDir, m_aimDir);
+
+			// 目標角度を超えたら終了
+			if (cross1.y * cross2.y < 0.0f)
+			{
+				interPolateDir = m_aimDir;
+				m_rotateNow = false;
+			}
+			// 目標ベクトルに10度だけ近づえた角度
+			m_dir = interPolateDir;
+		}
 	}
 }
