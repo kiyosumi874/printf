@@ -28,7 +28,7 @@ PlayScene::PlayScene(const MODE& mode)
 	m_pGameObjects.push_back(m_pPlayer2P);
 	m_pGameObjects.push_back(m_pCamera2P);
 	m_pEnemy = new Enemy(ObjectTag::Enemy, VGet(0.0f, 0.0f, -10.0f));
-	m_pEnemy->SetGameObjectPtr(m_pPlayer);
+	m_pEnemy->SetGameObjectPtr(m_pPlayer1P);
 	m_pGameObjects.push_back(m_pEnemy);
 }
 
