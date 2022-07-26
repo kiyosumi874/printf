@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "Camera.h"
 #include "DebugDraw.h"
 
@@ -20,6 +21,9 @@ PlayScene::PlayScene(const MODE& mode)
 	m_pCamera = new Camera(ObjectTag::Camera, VGet(0.0f, 100.0f, -100.0f));
 	m_pCamera->SetPlayerptr(m_pPlayer);
 	m_pGameObjects.push_back(m_pCamera);
+	m_pEnemy = new Enemy(ObjectTag::Enemy, VGet(0.0f, 0.0f, -10.0f));
+	m_pEnemy->SetGameObjectPtr(m_pPlayer);
+	m_pGameObjects.push_back(m_pEnemy);
 }
 
 PlayScene::~PlayScene()

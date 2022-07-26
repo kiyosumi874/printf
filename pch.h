@@ -10,6 +10,7 @@
 #include <document.h>
 #include <fstream>
 #include <sstream>
+#include <math.h>
 
 #pragma comment(lib,"winmm.lib")
 
