@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "Camera.h"
 #include "DebugDraw.h"
 
@@ -8,13 +9,14 @@ PlayScene::PlayScene(const MODE& mode)
 {
 	m_map = new Map();
 
-	// ���̃V�[���Ŏg��json�t�@�C�����ǂݍ��߂���
+	// このシーンで使うjsonファイルが読み込めたら
 	if (m_map->OpenFile())
 	{
-		m_map->GroundCreate();  // ���𐶐�
-		//m_map->PlayerCreate();  // �v���C���[�𐶐�
+		m_map->GroundCreate();  // 床を生成
+		//m_map->PlayerCreate();  // プレイヤーを生成
 	}
   
+
 	m_pPlayer1P = new Player(ObjectTag::Player1, VGet(0.0f, 0.0f, 0.0f));
 	m_pCamera1P = new Camera(ObjectTag::Camera1, VGet(0.0f, 20.0f, 0.0f));
 	m_pCamera1P->SetPlayerptr(m_pPlayer1P);
@@ -25,6 +27,9 @@ PlayScene::PlayScene(const MODE& mode)
 	m_pCamera2P->SetPlayerptr(m_pPlayer2P);
 	m_pGameObjects.push_back(m_pPlayer2P);
 	m_pGameObjects.push_back(m_pCamera2P);
+	m_pEnemy = new Enemy(ObjectTag::Enemy, VGet(0.0f, 0.0f, -10.0f));
+	m_pEnemy->SetGameObjectPtr(m_pPlayer);
+	m_pGameObjects.push_back(m_pEnemy);
 }
 
 PlayScene::~PlayScene()
@@ -78,6 +83,6 @@ void PlayScene::Draw()
 		m_pGameObjects[i]->Draw();
 	}
 	
-	// �`��\�̈��`��Ώۉ�ʑS�̂ɂ���
+	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();
 }

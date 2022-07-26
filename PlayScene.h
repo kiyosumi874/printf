@@ -1,6 +1,7 @@
 #pragma once
 class GameObject;
 class Player;
+class Enemy;
 class Camera;
 
 class PlayScene : public Scene
@@ -22,4 +23,5 @@ private:
 	Player* m_pPlayer2P;
 	Camera* m_pCamera1P;
 	Camera* m_pCamera2P;
+	Enemy* m_pEnemy;
 };
