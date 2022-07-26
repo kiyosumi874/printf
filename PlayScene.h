@@ -1,6 +1,7 @@
 #pragma once
 class GameObject;
 class Player;
+class Enemy;
 class Camera;
 
 class PlayScene : public Scene
@@ -19,5 +20,6 @@ private:
 	std::vector<GameObject*>m_pGameObjects;
 
 	Player* m_pPlayer;
+	Enemy* m_pEnemy;
 	Camera* m_pCamera;
 };

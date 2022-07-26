@@ -1,5 +1,4 @@
 #include "pch.h"
-#include <math.h>
 #include "Tomato.h"
 
 // @detail コンストラクタ
@@ -17,25 +16,8 @@ Tomato::Tomato(VECTOR& position, VECTOR& dir)
 	m_gravity = 3.80665f;  // 平均重力よりもゲーム用に調整
 	m_deg = 60.0f;
 	m_rad = m_deg * (DX_PI_F / 180.0f);
-
-	float tmp[] = { dir.x, dir.y, dir.z };
-	for (int i = 0; i < 3; i++)
-	{
-		if (tmp[i] > 0)
-		{
-			tmp[i] = 1;
-		}
-		else if (tmp[i] < 0)
-		{
-			tmp[i] = -1;
-		}
-		else
-		{
-			tmp[i] = 0;
-		}
-	}
 	
-	m_dir = VGet(tmp[0], tmp[1], tmp[2]);
+	m_dir = dir;
 
 	// サイズ調整
 	MV1SetScale(m_modelHandle, VGet(0.02f,0.02f,0.02f));
