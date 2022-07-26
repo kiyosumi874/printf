@@ -9,18 +9,24 @@ PlayScene::PlayScene(const MODE& mode)
 {
 	m_map = new Map();
 
-	// ‚±‚ÌƒV[ƒ“‚Åg‚¤jsonƒtƒ@ƒCƒ‹‚ª“Ç‚İ‚ß‚½‚ç
+	// ã“ã®ã‚·ãƒ¼ãƒ³ã§ä½¿ã†jsonãƒ•ã‚¡ã‚¤ãƒ«ãŒèª­ã¿è¾¼ã‚ãŸã‚‰
 	if (m_map->OpenFile())
 	{
-		m_map->GroundCreate();  // °‚ğ¶¬
-		//m_map->PlayerCreate();  // ƒvƒŒƒCƒ„[‚ğ¶¬
+		m_map->GroundCreate();  // åºŠã‚’ç”Ÿæˆ
+		//m_map->PlayerCreate();  // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ç”Ÿæˆ
 	}
   
-	m_pPlayer = new Player(ObjectTag::Player1, VGet(0.0f, 0.0f, 0.0f));
-	m_pGameObjects.push_back(m_pPlayer);
-	m_pCamera = new Camera(ObjectTag::Camera, VGet(0.0f, 100.0f, -100.0f));
-	m_pCamera->SetPlayerptr(m_pPlayer);
-	m_pGameObjects.push_back(m_pCamera);
+
+	m_pPlayer1P = new Player(ObjectTag::Player1, VGet(0.0f, 0.0f, 0.0f));
+	m_pCamera1P = new Camera(ObjectTag::Camera1, VGet(0.0f, 20.0f, 0.0f));
+	m_pCamera1P->SetPlayerptr(m_pPlayer1P);
+	m_pGameObjects.push_back(m_pPlayer1P);
+	m_pGameObjects.push_back(m_pCamera1P);
+	m_pPlayer2P = new Player(ObjectTag::Player2, VGet(50.0f, 0.0f, 50.0f));
+	m_pCamera2P = new Camera(ObjectTag::Camera2, VGet(0.0f, 20.0f, 0.0f));
+	m_pCamera2P->SetPlayerptr(m_pPlayer2P);
+	m_pGameObjects.push_back(m_pPlayer2P);
+	m_pGameObjects.push_back(m_pCamera2P);
 	m_pEnemy = new Enemy(ObjectTag::Enemy, VGet(0.0f, 0.0f, -10.0f));
 	m_pEnemy->SetGameObjectPtr(m_pPlayer);
 	m_pGameObjects.push_back(m_pEnemy);
@@ -28,8 +34,10 @@ PlayScene::PlayScene(const MODE& mode)
 
 PlayScene::~PlayScene()
 {
-	delete m_pPlayer;
-	delete m_pCamera;
+	delete m_pPlayer1P;
+	delete m_pCamera1P;
+	delete m_pPlayer2P;
+	delete m_pCamera2P;
 	delete m_map;
 	m_pGameObjects.clear();
 }
@@ -62,6 +70,19 @@ void PlayScene::Draw()
 #endif // _DEBUG
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
+		if(m_pGameObjects[i]->GetTag() == ObjectTag::Camera1)
+		{
+			SetDrawArea(0, 0, 640, 960);
+			SetCameraScreenCenter(320.0f, 480.0f);
+		}
+		if (m_pGameObjects[i]->GetTag() == ObjectTag::Camera2)
+		{
+			SetDrawArea(640, 0, 1280, 960);
+			SetCameraScreenCenter(960.0f, 480.0f);
+		}
 		m_pGameObjects[i]->Draw();
 	}
+	
+	// æç”»å¯èƒ½é ˜åŸŸã‚’æç”»å¯¾è±¡ç”»é¢å…¨ä½“ã«ã™ã‚‹
+	SetDrawAreaFull();
 }
