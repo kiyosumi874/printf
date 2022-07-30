@@ -54,6 +54,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -117,6 +120,9 @@
     <ClInclude Include="Camera.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameObject">
@@ -136,6 +142,9 @@
     </Filter>
     <Filter Include="Image">
       <UniqueIdentifier>{7c956688-38cf-419c-98d2-ba57c83f38be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{ed8cc39b-c317-45a1-b357-ecefbd64bea5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
