@@ -32,13 +32,20 @@ void SceneManager::GameLoop()
 
 		Input::Update();
 		Fps::Update();
+		UpdateEffekseer3D();
+
 		auto tag = m_nowScene->Update();
 
 		//if (Fps::GetFlag())
 		{
 			ClearDrawScreen();
 			clsDx();
+
 			m_nowScene->Draw();
+
+			Effekseer_Sync3DSetting();
+
+			DrawEffekseer3D();
 #ifdef _DEBUG
 			Fps::Draw();
 #endif // _DEBUG

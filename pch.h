@@ -4,6 +4,7 @@
 
 /* ŠO•”QÆ */
 #include <DxLib.h>
+#include <EffekseerForDXLib.h>
 #include <Windows.h>
 #include <vector>
 #include <mmsystem.h>
@@ -38,3 +39,6 @@
 
 /* Map */
 #include "Map.h"
+
+/* Effect */
+#include "Effect.h"

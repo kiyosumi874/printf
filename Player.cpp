@@ -13,6 +13,9 @@ Player::Player(ObjectTag tag, VECTOR position)
 
 	m_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_aimDir = m_dir;
+
+	// �G�t�F�N�g�̐���
+	m_effect = new Effect("data/effect/hit/ToonHit.efkefc");
 }
 
 Player::~Player()
@@ -89,6 +92,7 @@ void Player::Draw()
 
 void Player::Input()
 {
+
 	// 前後左右
 	VECTOR front = { 0.0f,0.0f,1.0f };
 	VECTOR rear = { 0.0f,0.0f,-1.0f };
@@ -183,6 +187,8 @@ void Player::Input()
 	if (Input::IsDown1P(BUTTON_ID_B) || Input::IsDown1P(BUTTON_ID_R))
 	{
 		m_tomatos.push_back(new Tomato(m_position, m_dir));
+    
+    m_effect->PlayEffect(m_position);
 	}
 }
 

@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 class Tomato;
+class Effct;
 
 class Player : public GameObject
 {
@@ -27,4 +28,5 @@ private:
 	bool m_rotateNow;		// ‰ñ“]’†‚©”»’è—p
 
 	std::vector<Tomato*> m_tomatos;
+	Effect* m_effect;
 };
