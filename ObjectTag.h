@@ -14,7 +14,8 @@ enum class ObjectTag : unsigned char
 	Enemy,
 	EnemyBullet,
 	Ground,
-	Camera,
+	Camera1,
+	Camera2,
 	Effect,
 
 	End				// Tagの終了マーカー（Endより後に定義しないこと）
@@ -30,6 +31,7 @@ constexpr static ObjectTag ObjectTagAll[] =
 	ObjectTag::Enemy,
 	ObjectTag::EnemyBullet,
 	ObjectTag::Ground,
-	ObjectTag::Camera,
+	ObjectTag::Camera1,
+	ObjectTag::Camera2,
 	ObjectTag::Effect
 };

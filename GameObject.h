@@ -1,7 +1,7 @@
 #pragma once
 #include "ObjectTag.h"
 
-// 3Dƒ‚ƒfƒ‹‚ÌŠî’êƒNƒ‰ƒX
+// 3Dãƒ¢ãƒ‡ãƒ«ã®åŸºåº•ã‚¯ãƒ©ã‚¹
 class GameObject
 {
 public:
@@ -13,16 +13,18 @@ public:
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 
-	// ƒZƒbƒ^[
+	// ã‚»ãƒƒã‚¿ãƒ¼
 	void SetPosition(const VECTOR& positon) { m_position = positon; }
-	// ƒQƒbƒ^[
+	// ã‚²ãƒƒã‚¿ãƒ¼
 	const VECTOR& GetPosition() const { return m_position; }
+
+	const ObjectTag& GetTag() const { return m_tag; }
 protected:
-	// “ñ‚Â‚ÌƒxƒNƒgƒ‹‚ÌŠp“x‚ª“¯‚¶‚©
+	// äºŒã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã®è§’åº¦ãŒåŒã˜ã‹
 	bool IsNearAngle(const VECTOR& v1, const VECTOR& v2);
-	// nowVec‚©‚çdirVec‚ÌÅ’Z‚Ì‰ñ“]•ûŒü‚ğ’²‚×‚é(Y²)
+	// nowVecã‹ã‚‰dirVecã®æœ€çŸ­ã®å›è»¢æ–¹å‘ã‚’èª¿ã¹ã‚‹(Yè»¸)
 	float CalcRotationDirectionYAxis(const VECTOR& nowVec, const VECTOR& dirVec);
-	// nowVec‚©‚çaimVec‚ÉŒü‚©‚Á‚ÄdegreeVelocity‚Ì‘¬“x‚ÅY²‰ñ“]‚·‚é
+	// nowVecã‹ã‚‰aimVecã«å‘ã‹ã£ã¦degreeVelocityã®é€Ÿåº¦ã§Yè»¸å›è»¢ã™ã‚‹
 	VECTOR RotateForAimVecYAxis(const VECTOR& nowVec, const VECTOR& aimVec, float degreeVelocity);
 
 	VECTOR m_position;

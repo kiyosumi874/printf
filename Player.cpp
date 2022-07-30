@@ -3,23 +3,34 @@
 #include "Tomato.h"
 
 Player::Player(ObjectTag tag, VECTOR position)
-	: m_rotateNow(false)
+	: m_angle(0.0f)
+	, m_rotateNow(false)
 {
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);
 
-	// 3Dƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
+	// 3Dãƒ¢ãƒ‡ãƒ«ã®èª­ã¿è¾¼ã¿
 	m_modelHandle = MV1LoadModel("data/player/hackadoll.pmx");
 
-	m_dir = VGet(1.0f, 0.0f, 0.0f);
+	m_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_aimDir = m_dir;
 
-	// ƒGƒtƒFƒNƒg‚Ì¶¬
+	// ï¿½Gï¿½tï¿½Fï¿½Nï¿½gï¿½Ìï¿½ï¿½ï¿½
 	m_effect = new Effect("data/effect/hit/ToonHit.efkefc");
 }
 
 Player::~Player()
 {
 	MV1DeleteModel(m_modelHandle);
+
+	for (int i = 0; i < m_tomatos.size(); i++)
+	{
+		if (!m_tomatos[i])
+		{
+			delete(m_tomatos[i]);
+		}
+		m_tomatos.erase(std::cbegin(m_tomatos) + i);
+		m_tomatos.shrink_to_fit();
+	}
 }
 
 void Player::Update()
@@ -27,28 +38,28 @@ void Player::Update()
 	Rotate();
 	Input();
 
-	// ˆÚ“®ˆ—
+	// ç§»å‹•å‡¦ç†
 	m_position = VAdd(m_position, m_velocity);
 
-	// 3Dƒ‚ƒfƒ‹‚Ìƒ|ƒWƒVƒ‡ƒ“İ’è
+	// 3Dãƒ¢ãƒ‡ãƒ«ã®ãƒã‚¸ã‚·ãƒ§ãƒ³è¨­å®š
 	MV1SetPosition(m_modelHandle, m_position);
 
-	// Œü‚«‚É‡‚í‚¹‚Äƒ‚ƒfƒ‹‚ğ‰ñ“]
+	// å‘ãã«åˆã‚ã›ã¦ãƒ¢ãƒ‡ãƒ«ã‚’å›è»¢
 	MATRIX rotYMat = MGetRotY(180.0f * DX_PI_F / 180.0f);
 	VECTOR negativeVec = VTransform(m_dir, rotYMat);
 
-	// ƒ‚ƒfƒ‹‚É‰ñ“]‚ğƒZƒbƒg‚·‚é
+	// ãƒ¢ãƒ‡ãƒ«ã«å›è»¢ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 	MV1SetRotationZYAxis(m_modelHandle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
 
-	// ƒgƒ}ƒgˆ—
+	// ãƒˆãƒãƒˆå‡¦ç†
 	for (int i = 0; i < m_tomatos.size(); i++)
 	{
 		m_tomatos[i]->Update();
 	}
 	for (int i = 0; i < m_tomatos.size(); i++)
 	{
-		// ƒgƒ}ƒg‚Ì¶‘¶ŠÔ‚ª5.0f‚ğ’´‚¦‚é‚Æíœ
-		if (m_tomatos[i]->GetTime() > 5.0f)
+		// ãƒˆãƒãƒˆã®ç”Ÿå­˜æ™‚é–“ãŒ5.0fã‚’è¶…ãˆã‚‹ã¨å‰Šé™¤
+		if (m_tomatos[i]->GetTime() > 1.0f)
 		{
 			delete(m_tomatos[i]);
 			m_tomatos.erase(std::cbegin(m_tomatos) + i);
@@ -59,122 +70,157 @@ void Player::Update()
 
 void Player::Draw()
 {
-	// 3Dƒ‚ƒfƒ‹‚Ì•`‰æ
+	// 3Dãƒ¢ãƒ‡ãƒ«ã®æç”»
 	MV1DrawModel(m_modelHandle);
-
-	// ƒgƒ}ƒg•`‰æ
-	for(int i = 0; i < m_tomatos.size(); i++)
+	SetUseLighting(false);
+	// ãƒˆãƒãƒˆæç”»
+	for (int i = 0; i < m_tomatos.size(); i++)
 	{
 		m_tomatos[i]->Draw();
 	}
+	SetUseLighting(true);
+#ifdef _DEBUG
+	printfDx("angle:%f\n", m_angle);
+	XINPUT_STATE input;
+	// å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—
+	GetJoypadXInputState(DX_INPUT_PAD1, &input);
+	printfDx("X = %d\n", input.ThumbRX);
+	printfDx("Y = %d\n", input.ThumbRY);
+#endif // _DEBUG
+
 }
 
 void Player::Input()
 {
-	// ƒgƒ}ƒg¶¬
-	if (Input::IsDown1P(BUTTON_ID_B))
-	{
-		m_tomatos.push_back(new Tomato(m_position, m_dir));
 
-		m_effect->PlayEffect(m_position);
+	// å‰å¾Œå·¦å³
+	VECTOR front = { 0.0f,0.0f,1.0f };
+	VECTOR rear = { 0.0f,0.0f,-1.0f };
+	VECTOR left = { 1.0f,0.0f,0.0f };
+	VECTOR right = { -1.0f,0.0f,0.0f };
+
+	VECTOR inputVec = VGet(0.0f, 0.0f, 0.0f);	// æŠ¼ã—ãŸåˆè¨ˆåº§æ¨™å–å¾—ç”¨å¤‰æ•°
+
+	float addRad = 1.58f;	// åŠ ç®—ã™ã‚‹è§’åº¦
+	bool input = false;		// å…¥åŠ›ã—ãŸã‹åˆ¤å®šç”¨
+
+	XINPUT_STATE inputState;
+	// å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—
+	GetJoypadXInputState(DX_INPUT_PAD1, &inputState);
+	if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
+	{
+		m_angle += 0.02f;
+	}
+	if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
+	{
+		m_angle -= 0.02f;
 	}
 
-	// ‘OŒã¶‰E
-	VECTOR L_front = { 0.0f,0.0f,1.0f };
-	VECTOR L_rear = { 0.0f,0.0f,-1.0f };
-	VECTOR L_left = { -1.0f,0.0f,0.0f };
-	VECTOR L_right = { 1.0f,0.0f,0.0f };
-
-	VECTOR L_inputVec = VGet(0.0f, 0.0f, 0.0f);	// ‰Ÿ‚µ‚½‡ŒvÀ•Wæ“¾—p•Ï”
-
-	bool L_input = false;	// “ü—Í‚µ‚½‚©”»’è—p
-
-	// ‘O‚Éi‚Ş
-	if (CheckHitKey(KEY_INPUT_UP))
+	// å‰ã«é€²ã‚€
+	if (Input::IsPress1P(BUTTON_ID_UP))
 	{
-		L_inputVec = VAdd(L_front, L_inputVec);
-		L_input = true;
+		front.x = sinf(m_angle);
+		front.z = cosf(m_angle);
+		inputVec = VAdd(front, inputVec);
+		input = true;
 	}
 
-	// Œã‚ë‚Éi‚Ş
-	if (CheckHitKey(KEY_INPUT_DOWN))
+	// å¾Œã‚ã«é€²ã‚€
+	if (Input::IsPress1P(BUTTON_ID_DOWN))
 	{
-		L_inputVec = VAdd(L_rear, L_inputVec);
-		L_input = true;
+		rear.x = sinf(m_angle) * -1.0f;
+		rear.z = cosf(m_angle) * -1.0f;
+		inputVec = VAdd(rear, inputVec);
+		input = true;
 	}
 
-	// ‰E‚Éi‚Ş
-	if (CheckHitKey(KEY_INPUT_RIGHT))
+	// å³ã«é€²ã‚€
+	if (Input::IsPress1P(BUTTON_ID_LEFT))
 	{
-		L_inputVec = VAdd(L_right, L_inputVec);
-		L_input = true;
+		right.x = sinf(m_angle - addRad);
+		right.z = cosf(m_angle - addRad);
+		inputVec = VAdd(right, inputVec);
+		input = true;
 	}
 
-	// ¶‚Éi‚Ş
-	if (CheckHitKey(KEY_INPUT_LEFT))
+	// å·¦ã«é€²ã‚€
+	if (Input::IsPress1P(BUTTON_ID_RIGHT))
 	{
-		L_inputVec = VAdd(L_left, L_inputVec);
-		L_input = true;
+		left.x = sinf(m_angle + addRad);
+		left.z = cosf(m_angle + addRad);
+		inputVec = VAdd(left, inputVec);
+		input = true;
 	}
 
-	// “ü—Í—Li‰Á‘¬jE“ü—Í–³iŒ¸‘¬j
-	if (L_input)
+	// å…¥åŠ›æœ‰ï¼ˆåŠ é€Ÿï¼‰ãƒ»å…¥åŠ›ç„¡ï¼ˆæ¸›é€Ÿï¼‰
+	if (input)
 	{
-		// ¶‰EE‘OŒã“¯‰Ÿ‚µ‚È‚Ç‚Å“ü—ÍƒxƒNƒgƒ‹‚ª0‚Ì‚Í–³‹
-		if (VSquareSize(L_inputVec) < 0.5f)
+		// å·¦å³ãƒ»å‰å¾ŒåŒæ™‚æŠ¼ã—ãªã©ã§å…¥åŠ›ãƒ™ã‚¯ãƒˆãƒ«ãŒ0ã®æ™‚ã¯ç„¡è¦–
+		if (VSquareSize(inputVec) < 0.5f)
 		{
 			return;
 		}
 
-		// •ûŒü‚ğ³‹K‰»
-		L_inputVec = VNorm(L_inputVec);
+		// æ–¹å‘ã‚’æ­£è¦åŒ–
+		inputVec = VNorm(inputVec);
 
-		// “ü—Í•ûŒü‚ÍŒ»İŒü‚¢‚Ä‚¢‚éŒü‚«‚ÆˆÙ‚È‚é‚©
-		if (IsNearAngle(L_inputVec, m_dir))
+		// å…¥åŠ›æ–¹å‘ã¯ç¾åœ¨å‘ã„ã¦ã„ã‚‹å‘ãã¨ç•°ãªã‚‹ã‹
+		if (IsNearAngle(inputVec, m_dir))
 		{
-			m_dir = L_inputVec;
+			m_dir = inputVec;
 		}
 		else
 		{
 			m_rotateNow = true;
-			m_aimDir = L_inputVec;
+			m_aimDir = inputVec;
 		}
 
-		m_velocity = L_inputVec;
+		m_velocity = inputVec;
 	}
 	else
 	{
 		m_velocity.x = m_velocity.x * 0.9f;
 		m_velocity.z = m_velocity.z * 0.9f;
 	}
+
+	// ãƒˆãƒãƒˆç”Ÿæˆ(Playerã®å›è»¢å‡¦ç†ãŒçµ‚ã‚ã£ãŸå¾Œç”Ÿæˆ(ä¸Šã ã¨ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å‘ãã«ãªã‚‰ãšå°‘ã—ãšã‚Œã‚‹))
+	if (Input::IsDown1P(BUTTON_ID_B) || Input::IsDown1P(BUTTON_ID_R))
+	{
+		m_tomatos.push_back(new Tomato(m_position, m_dir));
+    
+    m_effect->PlayEffect(m_position);
+	}
 }
 
 void Player::Rotate()
 {
-	// ‰ñ“]‚ª–Ú•WŠp“x‚É“’B‚·‚ê‚Î‰ñ“]ƒ‚[ƒhI—¹
-	if (IsNearAngle(m_aimDir, m_dir))
+	if (m_rotateNow)
 	{
-		m_dir = m_aimDir;
-		m_rotateNow = false;
-	}
-	else
-	{
-		// ‰ñ“]
-		VECTOR interPolateDir;
-		interPolateDir = RotateForAimVecYAxis(m_dir, m_aimDir, 10.0f);
-
-		// ‰ñ“]‚ª–Ú•WŠp“x‚ğ’´‚¦‚Ä‚¢‚È‚¢‚©
-		VECTOR cross1, cross2;
-		cross1 = VCross(m_dir, m_aimDir);
-		cross2 = VCross(interPolateDir, m_aimDir);
-
-		// –Ú•WŠp“x‚ğ’´‚¦‚½‚çI—¹
-		if (cross1.y * cross2.y < 0.0f)
+		// å›è»¢ãŒç›®æ¨™è§’åº¦ã«åˆ°é”ã™ã‚Œã°å›è»¢ãƒ¢ãƒ¼ãƒ‰çµ‚äº†
+		if (IsNearAngle(m_aimDir, m_dir))
 		{
-			interPolateDir = m_aimDir;
+			m_dir = m_aimDir;
 			m_rotateNow = false;
 		}
-		// –Ú•WƒxƒNƒgƒ‹‚É10“x‚¾‚¯‹ß‚Ã‚¦‚½Šp“x
-		m_dir = interPolateDir;
+		else
+		{
+			// å›è»¢
+			VECTOR interPolateDir;
+			interPolateDir = RotateForAimVecYAxis(m_dir, m_aimDir, 10.0f);
+
+			// å›è»¢ãŒç›®æ¨™è§’åº¦ã‚’è¶…ãˆã¦ã„ãªã„ã‹
+			VECTOR cross1, cross2;
+			cross1 = VCross(m_dir, m_aimDir);
+			cross2 = VCross(interPolateDir, m_aimDir);
+
+			// ç›®æ¨™è§’åº¦ã‚’è¶…ãˆãŸã‚‰çµ‚äº†
+			if (cross1.y * cross2.y < 0.0f)
+			{
+				interPolateDir = m_aimDir;
+				m_rotateNow = false;
+			}
+			// ç›®æ¨™ãƒ™ã‚¯ãƒˆãƒ«ã«10åº¦ã ã‘è¿‘ã¥ãˆãŸè§’åº¦
+			m_dir = interPolateDir;
+		}
 	}
 }

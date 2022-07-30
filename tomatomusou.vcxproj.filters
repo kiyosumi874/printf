@@ -56,6 +56,8 @@
     </ClCompile>
     <ClCompile Include="Effect.cpp">
       <Filter>Effect</Filter>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +124,8 @@
     </ClInclude>
     <ClInclude Include="Effect.h">
       <Filter>Effect</Filter>
+    <ClInclude Include="Enemy.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
