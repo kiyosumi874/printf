@@ -7,16 +7,16 @@
 Tomato::Tomato(VECTOR& position, VECTOR& dir)
 {
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);  // 速さはまだ0
-	m_startVelocity = VGet(5.0f, 1.0f, 5.0f);
+	m_startVelocity = VGet(20.0f, 1.0f, 20.0f);
 	m_modelHandle = MV1LoadModel("data/Tomato/Tomato.mv1");
 	m_position = position;
-	m_position = VAdd(m_position, VGet(0.0f, 10.0f, 0.0f));
+	m_position = VAdd(m_position, VGet(0.0f, 15.0f, 0.0f));
 
 	m_time = 0.0f;
-	m_gravity = 3.80665f;  // 平均重力よりもゲーム用に調整
-	m_deg = 60.0f;
+	m_gravity = 9.80665f;  // 平均重力
+	m_deg = 30.0f;
 	m_rad = m_deg * (DX_PI_F / 180.0f);
-	
+
 	m_dir = dir;
 
 	// サイズ調整

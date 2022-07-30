@@ -69,11 +69,13 @@ void Player::Draw()
 {
 	// 3Dモデルの描画
 	MV1DrawModel(m_modelHandle);
+	SetUseLighting(false);
 	// トマト描画
 	for (int i = 0; i < m_tomatos.size(); i++)
 	{
 		m_tomatos[i]->Draw();
 	}
+	SetUseLighting(true);
 #ifdef _DEBUG
 	printfDx("angle:%f\n", m_angle);
 	XINPUT_STATE input;
@@ -87,12 +89,6 @@ void Player::Draw()
 
 void Player::Input()
 {
-	// トマト生成
-	if (Input::IsDown1P(BUTTON_ID_R))
-	{
-		m_tomatos.push_back(new Tomato(m_position, m_dir));
-	}
-
 	// 前後左右
 	VECTOR front = { 0.0f,0.0f,1.0f };
 	VECTOR rear = { 0.0f,0.0f,-1.0f };
@@ -183,8 +179,8 @@ void Player::Input()
 		m_velocity.z = m_velocity.z * 0.9f;
 	}
 
-	// トマト生成
-	if (Input::IsDown1P(BUTTON_ID_B))
+	// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
+	if (Input::IsDown1P(BUTTON_ID_B) || Input::IsDown1P(BUTTON_ID_R))
 	{
 		m_tomatos.push_back(new Tomato(m_position, m_dir));
 	}
