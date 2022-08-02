@@ -35,54 +35,37 @@ Enemy::~Enemy()
 
 void Enemy::Update()
 {
+	int objectNum = 0;
+	float distance = 0;
+	int tmp = 0;
 	for (int i = 0; i < m_objects.size(); i++)
 	{
-		// オブジェクトに合わせた処理
-		switch (m_objects[i]->GetTag())
-		{
-		case ObjectTag::Player1:
-			Move1(m_objects[i]);
-			if (!m_targetFoundFlag)
-			{
-				Move2(m_objects[i]);
-			}
+		// どのキャラクターが一番近いかを調べる
+		VECTOR gPos = m_objects[i]->GetPosition();
+		tmp = GetDistance(gPos, m_position);
 
-			break;
-		case ObjectTag::Player2:
-			Move1(m_objects[i]);
-			if (!m_targetFoundFlag)
-			{
-				Move2(m_objects[i]);
-			}
-			break;
-		default:
-			break;
+		// tmpが負の値なら正の値に変える
+		if (tmp < 0)
+		{
+			tmp = tmp * -1;
+		}
+
+		// 距離が一番近いオブジェクト番号を保存する
+		if (distance > tmp && distance == 0)
+		{
+			distance = tmp;
+			objectNum = i;
 		}
 	}
-
-	// トマトを投げる
-	m_shotTime++;
-	if (m_shotTime > 100.0f && m_targetFoundFlag)
+	// オブジェクトに合わせて行動する
+	Move1(m_objects[objectNum]);
+	if (!m_targetFoundFlag)
 	{
-		m_tomatos.push_back(new Tomato(m_position, m_tomatoDir));
-		m_shotTime = 0.0f;
+		Move2(m_objects[objectNum]);
 	}
 
-	// トマト処理
-	for (int i = 0; i < m_tomatos.size(); i++)
-	{
-		m_tomatos[i]->Update();
-	}
-	for (int i = 0; i < m_tomatos.size(); i++)
-	{
-		// トマトの生存時間が5.0fを超えると削除
-		if (m_tomatos[i]->GetTime() > 1.0f)
-		{
-			delete(m_tomatos[i]);
-			m_tomatos.erase(std::cbegin(m_tomatos) + i);
-			m_tomatos.shrink_to_fit();
-		}
-	}
+	// トマトの処理
+	ProcessTomato();
 
 	MV1SetRotationXYZ(m_modelHandle, m_dir);
 	// 3Dモデルのポジション設定
@@ -106,6 +89,34 @@ void Enemy::Draw()
 void Enemy::SetGameObjectPtr(GameObject* object)
 {
 	m_objects.push_back(object);
+}
+
+// @detail トマトの処理関連をまとめたもの
+void Enemy::ProcessTomato()
+{
+	// トマトを投げる
+	m_shotTime++;
+	if (m_shotTime > 100.0f && m_targetFoundFlag)
+	{
+		m_tomatos.push_back(new Tomato(m_position, m_tomatoDir));
+		m_shotTime = 0.0f;
+	}
+
+	// トマト処理
+	for (int i = 0; i < m_tomatos.size(); i++)
+	{
+		m_tomatos[i]->Update();
+	}
+	for (int i = 0; i < m_tomatos.size(); i++)
+	{
+		// トマトの生存時間が5.0fを超えると削除
+		if (m_tomatos[i]->GetTime() > 1.0f)
+		{
+			delete(m_tomatos[i]);
+			m_tomatos.erase(std::cbegin(m_tomatos) + i);
+			m_tomatos.shrink_to_fit();
+		}
+	}
 }
 
 // @detail プレイヤーに合わせて動く処理
