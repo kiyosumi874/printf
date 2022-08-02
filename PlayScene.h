@@ -1,5 +1,6 @@
 #pragma once
 class GameObject;
+class TomatoWall;
 class Player;
 class Enemy;
 class Camera;
@@ -19,6 +20,7 @@ private:
   
 	std::vector<GameObject*>m_pGameObjects;
 
+	TomatoWall* m_pTomatoWall;
 	Player* m_pPlayer1P;
 	Player* m_pPlayer2P;
 	Camera* m_pCamera1P;

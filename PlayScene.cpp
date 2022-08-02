@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "TomatoWall.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Camera.h"
@@ -16,7 +17,8 @@ PlayScene::PlayScene(const MODE& mode)
 		//m_map->PlayerCreate();  // プレイヤーを生成
 	}
   
-
+	m_pTomatoWall = new TomatoWall(ObjectTag::TomatoWall, VGet(50.0f, 0.0f, 50.0f));
+	m_pGameObjects.push_back(m_pTomatoWall);
 	m_pPlayer1P = new Player(ObjectTag::Player1, VGet(0.0f, 0.0f, 0.0f));
 	m_pCamera1P = new Camera(ObjectTag::Camera1, VGet(0.0f, 20.0f, 0.0f));
 	m_pCamera1P->SetPlayerptr(m_pPlayer1P);

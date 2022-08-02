@@ -14,6 +14,8 @@ public:
 
 	void SetGameObjectPtr(GameObject* object);  // Enemyに見せたいGameObjectをセット
 private:
+	void ProcessTomato();
+
 	int m_moveTime;  // 乱数行動時間
 	float m_shotTime;   // トマトを投げる時間
 
