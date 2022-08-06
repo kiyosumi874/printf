@@ -63,6 +63,9 @@
     <ClCompile Include="TomatoWall.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -135,6 +138,9 @@
     <ClInclude Include="TomatoWall.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Collider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -154,6 +160,9 @@
     </Filter>
     <Filter Include="Effect">
       <UniqueIdentifier>{b1ea0e36-0045-4a4a-871f-aa30bf8b0a1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collider">
+      <UniqueIdentifier>{323895cb-8e37-480e-b1cb-9ec3b46c1869}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

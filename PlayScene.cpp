@@ -18,20 +18,23 @@ PlayScene::PlayScene(const MODE& mode)
 	}
   
 	m_pTomatoWall = new TomatoWall(ObjectTag::TomatoWall, VGet(50.0f, 0.0f, 50.0f));
-	m_pGameObjects.push_back(m_pTomatoWall);
 	m_pPlayer1P = new Player(ObjectTag::Player1, VGet(0.0f, 0.0f, 0.0f));
 	m_pCamera1P = new Camera(ObjectTag::Camera1, VGet(0.0f, 20.0f, 0.0f));
-	m_pCamera1P->SetPlayerptr(m_pPlayer1P);
-	m_pGameObjects.push_back(m_pPlayer1P);
-	m_pGameObjects.push_back(m_pCamera1P);
 	m_pPlayer2P = new Player(ObjectTag::Player2, VGet(50.0f, 0.0f, 50.0f));
 	m_pCamera2P = new Camera(ObjectTag::Camera2, VGet(0.0f, 20.0f, 0.0f));
-	m_pCamera2P->SetPlayerptr(m_pPlayer2P);
-	m_pGameObjects.push_back(m_pPlayer2P);
-	m_pGameObjects.push_back(m_pCamera2P);
 	m_pEnemy = new Enemy(ObjectTag::Enemy, VGet(0.0f, 0.0f, -10.0f));
+
+	m_pCamera1P->SetPlayerptr(m_pPlayer1P);
+	m_pCamera2P->SetPlayerptr(m_pPlayer2P);
 	m_pEnemy->SetGameObjectPtr(m_pPlayer1P);
+
+	m_pGameObjects.push_back(m_pTomatoWall);
 	m_pGameObjects.push_back(m_pEnemy);
+	m_pGameObjects.push_back(m_pPlayer1P);
+	m_pGameObjects.push_back(m_pPlayer2P);
+	m_pGameObjects.push_back(m_pCamera1P);
+	m_pGameObjects.push_back(m_pCamera2P);
+
 }
 
 PlayScene::~PlayScene()
@@ -70,21 +73,18 @@ void PlayScene::Draw()
 	printfDx("PlayScene\n");
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
+	SetDrawArea(0, 0, 640, 960);
+	SetCameraScreenCenter(320.0f, 480.0f);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
-		if(m_pGameObjects[i]->GetTag() == ObjectTag::Camera1)
-		{
-			SetDrawArea(0, 0, 640, 960);
-			SetCameraScreenCenter(320.0f, 480.0f);
-		}
-		if (m_pGameObjects[i]->GetTag() == ObjectTag::Camera2)
-		{
-			SetDrawArea(640, 0, 1280, 960);
-			SetCameraScreenCenter(960.0f, 480.0f);
-		}
-		m_pGameObjects[i]->Draw();
+		if(m_pGameObjects[i]->GetTag() != ObjectTag::Camera2){ m_pGameObjects[i]->Draw(); }
 	}
-	
+	SetDrawArea(640, 0, 1280, 960);
+	SetCameraScreenCenter(960.0f, 480.0f);
+	for (auto i = 0; i < m_pGameObjects.size(); i++)
+	{
+		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera1) { m_pGameObjects[i]->Draw(); }
+	}
 	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();
 }
