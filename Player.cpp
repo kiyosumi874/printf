@@ -6,6 +6,9 @@ Player::Player(ObjectTag tag, VECTOR position)
 	: m_angle(0.0f)
 	, m_rotateNow(false)
 {
+	m_position = position;
+	m_tag = tag;
+
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);
 
 	// 3Dモデルの読み込み
@@ -80,12 +83,7 @@ void Player::Draw()
 	}
 	SetUseLighting(true);
 #ifdef _DEBUG
-	printfDx("angle:%f\n", m_angle);
-	XINPUT_STATE input;
-	// 入力状態を取得
-	GetJoypadXInputState(DX_INPUT_PAD1, &input);
-	printfDx("X = %d\n", input.ThumbRX);
-	printfDx("Y = %d\n", input.ThumbRY);
+
 #endif // _DEBUG
 
 }
@@ -105,51 +103,109 @@ void Player::Input()
 	bool input = false;		// 入力したか判定用
 
 	XINPUT_STATE inputState;
-	// 入力状態を取得
-	GetJoypadXInputState(DX_INPUT_PAD1, &inputState);
-	if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
+
+	// 1Pの操作
+	if (m_tag == ObjectTag::Player1)
 	{
-		m_angle += 0.02f;
-	}
-	if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
-	{
-		m_angle -= 0.02f;
+		// 入力状態を取得
+		GetJoypadXInputState(DX_INPUT_PAD2, &inputState);
+
+		if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
+		{
+			m_angle += 0.01f;
+		}
+		if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
+		{
+			m_angle -= 0.01f;
+		}
+
+		// 前に進む
+		if (Input::IsPress2P(BUTTON_ID_UP))
+		{
+			front.x = sinf(m_angle);
+			front.z = cosf(m_angle);
+			inputVec = VAdd(front, inputVec);
+			input = true;
+		}
+
+		// 後ろに進む
+		if (Input::IsPress2P(BUTTON_ID_DOWN))
+		{
+			rear.x = sinf(m_angle) * -1.0f;
+			rear.z = cosf(m_angle) * -1.0f;
+			inputVec = VAdd(rear, inputVec);
+			input = true;
+		}
+
+		// 右に進む
+		if (Input::IsPress2P(BUTTON_ID_LEFT))
+		{
+			right.x = sinf(m_angle - addRad);
+			right.z = cosf(m_angle - addRad);
+			inputVec = VAdd(right, inputVec);
+			input = true;
+		}
+
+		// 左に進む
+		if (Input::IsPress2P(BUTTON_ID_RIGHT))
+		{
+			left.x = sinf(m_angle + addRad);
+			left.z = cosf(m_angle + addRad);
+			inputVec = VAdd(left, inputVec);
+			input = true;
+		}
 	}
 
-	// 前に進む
-	if (Input::IsPress1P(BUTTON_ID_UP))
+	// 2Pの操作
+	if (m_tag == ObjectTag::Player2)
 	{
-		front.x = sinf(m_angle);
-		front.z = cosf(m_angle);
-		inputVec = VAdd(front, inputVec);
-		input = true;
-	}
+		// 入力状態を取得
+		GetJoypadXInputState(DX_INPUT_PAD1, &inputState);
 
-	// 後ろに進む
-	if (Input::IsPress1P(BUTTON_ID_DOWN))
-	{
-		rear.x = sinf(m_angle) * -1.0f;
-		rear.z = cosf(m_angle) * -1.0f;
-		inputVec = VAdd(rear, inputVec);
-		input = true;
-	}
+		if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
+		{
+			m_angle += 0.01f;
+		}
+		if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
+		{
+			m_angle -= 0.01f;
+		}
 
-	// 右に進む
-	if (Input::IsPress1P(BUTTON_ID_LEFT))
-	{
-		right.x = sinf(m_angle - addRad);
-		right.z = cosf(m_angle - addRad);
-		inputVec = VAdd(right, inputVec);
-		input = true;
-	}
+		// 前に進む
+		if (Input::IsPress1P(BUTTON_ID_UP))
+		{
+			front.x = sinf(m_angle);
+			front.z = cosf(m_angle);
+			inputVec = VAdd(front, inputVec);
+			input = true;
+		}
 
-	// 左に進む
-	if (Input::IsPress1P(BUTTON_ID_RIGHT))
-	{
-		left.x = sinf(m_angle + addRad);
-		left.z = cosf(m_angle + addRad);
-		inputVec = VAdd(left, inputVec);
-		input = true;
+		// 後ろに進む
+		if (Input::IsPress1P(BUTTON_ID_DOWN))
+		{
+			rear.x = sinf(m_angle) * -1.0f;
+			rear.z = cosf(m_angle) * -1.0f;
+			inputVec = VAdd(rear, inputVec);
+			input = true;
+		}
+
+		// 右に進む
+		if (Input::IsPress1P(BUTTON_ID_LEFT))
+		{
+			right.x = sinf(m_angle - addRad);
+			right.z = cosf(m_angle - addRad);
+			inputVec = VAdd(right, inputVec);
+			input = true;
+		}
+
+		// 左に進む
+		if (Input::IsPress1P(BUTTON_ID_RIGHT))
+		{
+			left.x = sinf(m_angle + addRad);
+			left.z = cosf(m_angle + addRad);
+			inputVec = VAdd(left, inputVec);
+			input = true;
+		}
 	}
 
 	// 入力有（加速）・入力無（減速）

@@ -23,6 +23,10 @@ Camera::~Camera()
 
 void Camera::Update()
 {
+}
+
+void Camera::Draw()
+{
 	// プレイヤーの座標を目標視点に代入
 	m_targetViewPoint = m_pPlayer->GetPosition();
 	auto angle = m_pPlayer->GetAngle();
@@ -41,11 +45,6 @@ void Camera::Update()
 	m_viewPoint = VAdd(m_viewPoint, L_lookMoveDir);
 
 	SetCameraPositionAndTarget_UpVecY(m_position, m_viewPoint);
-}
-
-void Camera::Draw()
-{
-
 }
 
 void Camera::SetPlayerptr(Player* ptr)
