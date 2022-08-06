@@ -6,8 +6,9 @@ Enemy::Enemy(ObjectTag tag, VECTOR position)
 	: m_movePhaseTime(50)
 {
 	// 3Dモデルの読み込み
-	m_modelHandle = MV1LoadModel("data/enemy/low_poly_character.mv1");
-	MV1SetScale(m_modelHandle, VGet(1.0f, 1.0f, 1.0f));
+	m_modelHandle = MV1LoadModel("data/enemy/woman.mv1");
+	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
+
 	m_velocity = VGet(1.0f, 1.0f, 1.0f);
 	m_dir = VGet(0.0f, 0.0f, 0.0f);
 	m_tomatoDir = VGet(0.0f, 0.0f, 0.0f);
@@ -16,6 +17,12 @@ Enemy::Enemy(ObjectTag tag, VECTOR position)
 	m_targetFoundFlag = false;
 	m_aimTargetFlag = false;
 	m_moveTime = 0;
+
+	// アニメーション準備
+	m_animNum = 1;
+	m_animIndex = MV1AttachAnim(m_modelHandle, m_animNum);
+	m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animNum);
+	m_animTime = 0.0f;
 }
 
 Enemy::~Enemy()
@@ -64,8 +71,48 @@ void Enemy::Update()
 		Move2(m_objects[objectNum]);
 	}
 
+	VECTOR nowPosition = MV1GetPosition(m_modelHandle);
+	if (nowPosition.x == m_position.x &&
+		nowPosition.y == m_position.y &&
+		nowPosition.z == m_position.z)
+	{
+		m_moveFlag = false;
+	}
+	else
+	{
+		m_moveFlag = true;
+	}
+
 	// トマトの処理
 	ProcessTomato();
+
+	// アニメーション処理
+	if (!m_moveFlag && m_animNum != 1)  // 止まるアニメーション
+	{
+		m_animTime = 0.0f;
+		m_animNum = 1;
+		MV1DetachAnim(m_modelHandle, m_animIndex);
+		m_animIndex = MV1AttachAnim(m_modelHandle, m_animNum);
+		m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animNum);
+		m_animTime = 0.0f;
+	}
+	else if(m_moveFlag && m_animNum != 2)  // 走るアニメーション
+	{
+		m_animTime = 0.0f;
+		m_animNum = 2;
+		MV1DetachAnim(m_modelHandle, m_animIndex);
+		m_animIndex = MV1AttachAnim(m_modelHandle, m_animNum);
+		m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animNum);
+		m_animTime = 0.0f;
+	}
+
+	m_animTime += 0.3f;
+	if (m_animTime > m_animTotalTime)
+	{
+		m_animTime = 0.0f;
+	}
+
+	MV1SetAttachAnimTime(m_modelHandle, m_animIndex, m_animTime);
 
 	MV1SetRotationXYZ(m_modelHandle, m_dir);
 	// 3Dモデルのポジション設定
