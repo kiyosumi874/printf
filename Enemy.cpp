@@ -58,7 +58,7 @@ void Enemy::Update()
 		}
 
 		// 距離が一番近いオブジェクト番号を保存する
-		if (distance > tmp && distance == 0)
+		if (distance > tmp || distance == 0.0f)
 		{
 			distance = tmp;
 			objectNum = i;
