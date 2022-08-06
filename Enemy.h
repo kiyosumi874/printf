@@ -16,6 +16,12 @@ public:
 private:
 	void ProcessTomato();
 
+	int m_animNum;  // アニメーション番号
+	int m_animIndex;  // 現在のアニメーションを記録
+	float m_animTime;  // アニメーションの経過時間
+	float m_animTotalTime;  // アニメーションの総時間
+	bool m_moveFlag;  // 動いているか
+
 	int m_moveTime;  // 乱数行動時間
 	float m_shotTime;   // トマトを投げる時間
 
