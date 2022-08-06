@@ -27,6 +27,7 @@ PlayScene::PlayScene(const MODE& mode)
 	m_pCamera1P->SetPlayerptr(m_pPlayer1P);
 	m_pCamera2P->SetPlayerptr(m_pPlayer2P);
 	m_pEnemy->SetGameObjectPtr(m_pPlayer1P);
+	m_pEnemy->SetGameObjectPtr(m_pPlayer2P);
 
 	m_pGameObjects.push_back(m_pTomatoWall);
 	m_pGameObjects.push_back(m_pEnemy);
