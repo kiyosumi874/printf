@@ -25,5 +25,6 @@ private:
 	Player* m_pPlayer2P;
 	Camera* m_pCamera1P;
 	Camera* m_pCamera2P;
-	Enemy* m_pEnemy;
+	Enemy* m_pEnemy1;
+	Enemy* m_pEnemy2;
 };

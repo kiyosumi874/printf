@@ -22,15 +22,19 @@ PlayScene::PlayScene(const MODE& mode)
 	m_pCamera1P = new Camera(ObjectTag::Camera1, VGet(0.0f, 20.0f, 0.0f));
 	m_pPlayer2P = new Player(ObjectTag::Player2, VGet(50.0f, 0.0f, 50.0f));
 	m_pCamera2P = new Camera(ObjectTag::Camera2, VGet(0.0f, 20.0f, 0.0f));
-	m_pEnemy = new Enemy(ObjectTag::Enemy, VGet(0.0f, 0.0f, -10.0f));
+	m_pEnemy1 = new Enemy(ObjectTag::Enemy, VGet(50.0f, 0.0f, -50.0f));
+	m_pEnemy2 = new Enemy(ObjectTag::Enemy, VGet(-50.0f, 0.0f, 50.0f));
 
 	m_pCamera1P->SetPlayerptr(m_pPlayer1P);
 	m_pCamera2P->SetPlayerptr(m_pPlayer2P);
-	m_pEnemy->SetGameObjectPtr(m_pPlayer1P);
-	m_pEnemy->SetGameObjectPtr(m_pPlayer2P);
+	m_pEnemy1->SetGameObjectPtr(m_pPlayer1P);
+	m_pEnemy1->SetGameObjectPtr(m_pPlayer2P);
+	m_pEnemy2->SetGameObjectPtr(m_pPlayer1P);
+	m_pEnemy2->SetGameObjectPtr(m_pPlayer2P);
 
 	m_pGameObjects.push_back(m_pTomatoWall);
-	m_pGameObjects.push_back(m_pEnemy);
+	m_pGameObjects.push_back(m_pEnemy1);
+	m_pGameObjects.push_back(m_pEnemy2);
 	m_pGameObjects.push_back(m_pPlayer1P);
 	m_pGameObjects.push_back(m_pPlayer2P);
 	m_pGameObjects.push_back(m_pCamera1P);
