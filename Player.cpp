@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Player.h"
 #include "Tomato.h"
+#include "ModelManager.h"
 
 Player::Player(ObjectTag tag, VECTOR position)
 	: m_angle(0.0f)
@@ -12,10 +13,20 @@ Player::Player(ObjectTag tag, VECTOR position)
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);
 
 	// 3Dモデルの読み込み
-	m_modelHandle = MV1LoadModel("data/player/hackadoll.pmx");
+	ModelManager* model = new ModelManager();
+	srand(rand() % 100);
+	int modelNum = rand() % MODEL_NUM;
+	m_modelHandle = model->GetModelData(modelNum);
+	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
 
 	m_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_aimDir = m_dir;
+
+	// アニメーション準備
+	m_animType = Anim::Idle;
+	m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
+	m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
+	m_animTime = 0.0f;
 
 	// �G�t�F�N�g�̐���
 	m_effect = new Effect("data/effect/hit/ToonHit.efkefc");
@@ -54,6 +65,15 @@ void Player::Update()
 	// モデルに回転をセットする
 	MV1SetRotationZYAxis(m_modelHandle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
 
+	// アニメーション処理
+	ChangeAnimation();
+	m_animTime += 0.3f;
+	if (m_animTime > m_animTotalTime)
+	{
+		m_animTime = 0.0f;
+	}
+	MV1SetAttachAnimTime(m_modelHandle, m_animIndex, m_animTime);
+
 	// トマト処理
 	for (int i = 0; i < m_tomatos.size(); i++)
 	{
@@ -74,8 +94,8 @@ void Player::Update()
 void Player::Draw()
 {
 	// 3Dモデルの描画
-	MV1DrawModel(m_modelHandle);
 	SetUseLighting(false);
+	MV1DrawModel(m_modelHandle);
 	// トマト描画
 	for (int i = 0; i < m_tomatos.size(); i++)
 	{
@@ -103,6 +123,8 @@ void Player::Input()
 	bool input = false;		// 入力したか判定用
 
 	XINPUT_STATE inputState;
+
+	m_moveFlag = false;
 
 	// 1Pの操作
 	if (m_tag == ObjectTag::Player1)
@@ -232,6 +254,7 @@ void Player::Input()
 		}
 
 		m_velocity = inputVec;
+		m_moveFlag = true;
 	}
 	else
 	{
@@ -278,5 +301,28 @@ void Player::Rotate()
 			// 目標ベクトルに10度だけ近づえた角度
 			m_dir = interPolateDir;
 		}
+	}
+}
+
+void Player::ChangeAnimation()
+{
+	// アニメーション処理
+	if (!m_moveFlag && m_animType != Anim::Idle)  // 止まるアニメーション
+	{
+		m_animTime = 0.0f;
+		m_animType = Anim::Idle;
+		MV1DetachAnim(m_modelHandle, m_animIndex);
+		m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
+		m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
+		m_animTime = 0.0f;
+	}
+	else if (m_moveFlag && m_animType != Anim::Run)  // 走るアニメーション
+	{
+		m_animTime = 0.0f;
+		m_animType = Anim::Run;
+		MV1DetachAnim(m_modelHandle, m_animIndex);
+		m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
+		m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
+		m_animTime = 0.0f;
 	}
 }

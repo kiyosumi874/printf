@@ -66,6 +66,7 @@
     <ClCompile Include="Collision.cpp">
       <Filter>Collider</Filter>
     </ClCompile>
+    <ClCompile Include="ModelManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -141,6 +142,7 @@
     <ClInclude Include="Collision.h">
       <Filter>Collider</Filter>
     </ClInclude>
+    <ClInclude Include="ModelManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
