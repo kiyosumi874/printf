@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 class Tomato;
+class TomatoWall;
 class Effct;
 class ModelManager;
 
@@ -16,15 +17,20 @@ public:
 
 	// ゲッター
 	const float& GetAngle() const { return m_angle; }
+	void SetTomatoWallPtr(TomatoWall* tomatoWall) { m_tomatoWall.push_back(tomatoWall); }
 private:
 	void Input();			// 入力移動処理.
 	void Rotate();			// 回転処理.
+
+	void TomatoCollect();  // トマト回収処理
 
 	void ChangeAnimation();  // アニメーション変更処理
 
 	VECTOR m_dir;			// 向き
 	VECTOR m_aimDir;		// 目標向き
 	VECTOR m_velocity;		// 速度
+	int m_bulletNum;        // 球の所持数
+	const int m_bulletCapacity; // 球の限界所持数
 
 	float m_angle;			//	視点回転角度
 
@@ -43,5 +49,8 @@ private:
 	bool m_moveFlag;  // 動いているか
 
 	std::vector<Tomato*> m_tomatos;
+	std::vector<TomatoWall*> m_tomatoWall;
 	Effect* m_effect;
+
+	double GetDistance(VECTOR& pos1, VECTOR& pos2);
 };

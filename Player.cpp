@@ -1,11 +1,14 @@
 #include "pch.h"
 #include "Player.h"
 #include "Tomato.h"
+#include "TomatoWall.h"
 #include "ModelManager.h"
 
 Player::Player(ObjectTag tag, VECTOR position)
 	: m_angle(0.0f)
 	, m_rotateNow(false)
+	, m_bulletNum(10)
+	, m_bulletCapacity(10)
 {
 	m_position = position;
 	m_tag = tag;
@@ -102,6 +105,7 @@ void Player::Draw()
 		m_tomatos[i]->Draw();
 	}
 	SetUseLighting(true);
+	DrawFormatString(200, 0, GetColor(255, 255, 255), "PlayerBulletNum:%d", m_bulletNum);
 #ifdef _DEBUG
 
 #endif // _DEBUG
@@ -263,11 +267,18 @@ void Player::Input()
 	}
 
 	// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
-	if (Input::IsDown1P(BUTTON_ID_B) || Input::IsDown1P(BUTTON_ID_R))
+	if (Input::IsDown1P(BUTTON_ID_R) && m_bulletNum > 0)
 	{
+		m_bulletNum--;
 		m_tomatos.push_back(new Tomato(m_position, m_dir));
     
     m_effect->PlayEffect(m_position);
+	}
+
+	// トマトを限界まで持っていないとき、トマトの壁からトマトを回収
+	if (Input::IsDown1P(BUTTON_ID_B) && m_bulletNum < m_bulletCapacity)
+	{
+		TomatoCollect();
 	}
 }
 
@@ -304,6 +315,37 @@ void Player::Rotate()
 	}
 }
 
+// @detail トマト回収処理
+void Player::TomatoCollect()
+{
+	int objectNum = 0;
+	float distance = 0;
+	for (int i = 0; i < m_tomatoWall.size(); i++)
+	{
+		// そのトマトの壁にトマトはあるのか
+		if (m_tomatoWall[i]->GetAllTomatoNum() != 0)
+		{
+			// どのトマトの壁かを調べる
+			VECTOR gPos = m_tomatoWall[i]->GetPosition();
+			distance = GetDistance(gPos, m_position);
+
+			// 距離が負の値なら正の値に変える
+			if (distance < 0.0f)
+			{
+				distance = distance * -1.0f;
+			}
+
+			// 範囲に入っているトマトの壁からトマトを回収
+			if (distance < m_tomatoWall[i]->GetWidthDistance())
+			{
+				m_bulletNum++;
+				m_tomatoWall[i]->DecreaseAllTomatoNum();
+				break;
+			}
+		}
+	}
+}
+
 void Player::ChangeAnimation()
 {
 	// アニメーション処理
@@ -325,4 +367,12 @@ void Player::ChangeAnimation()
 		m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
 		m_animTime = 0.0f;
 	}
+}
+
+// @detail 自身と他のオブジェクトの距離を出す
+double Player::GetDistance(VECTOR& pos1, VECTOR& pos2)
+{
+	double tmp1 = pos1.x - pos2.x;
+	double tmp2 = pos1.z - pos2.z;
+	return sqrt(tmp1 * tmp1 + tmp2 * tmp2);
 }

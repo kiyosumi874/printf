@@ -20,7 +20,9 @@ private:
   
 	std::vector<GameObject*>m_pGameObjects;
 
-	TomatoWall* m_pTomatoWall;
+	const int m_tomatoWallNum = 2;
+
+	TomatoWall* m_pTomatoWall[2];
 	Player* m_pPlayer1P;
 	Player* m_pPlayer2P;
 	Camera* m_pCamera1P;
