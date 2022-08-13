@@ -17,7 +17,9 @@ PlayScene::PlayScene(const MODE& mode)
 		//m_map->PlayerCreate();  // プレイヤーを生成
 	}
   
-	m_pTomatoWall = new TomatoWall(ObjectTag::TomatoWall, VGet(50.0f, 0.0f, 50.0f));
+	m_pTomatoWall[0] = new TomatoWall(ObjectTag::TomatoWall, VGet(50.0f, 0.0f, 50.0f));
+	m_pTomatoWall[1] = new TomatoWall(ObjectTag::TomatoWall, VGet(150.0f, 0.0f, 150.0f));
+	m_pTomatoWall[2] = new TomatoWall(ObjectTag::TomatoWall, VGet(-150.0f, 0.0f, -150.0f));
 	m_pPlayer1P = new Player(ObjectTag::Player1, VGet(0.0f, 0.0f, 0.0f));
 	m_pCamera1P = new Camera(ObjectTag::Camera1, VGet(0.0f, 20.0f, 0.0f));
 	m_pPlayer2P = new Player(ObjectTag::Player2, VGet(50.0f, 0.0f, 50.0f));
@@ -25,14 +27,34 @@ PlayScene::PlayScene(const MODE& mode)
 	m_pEnemy1 = new Enemy(ObjectTag::Enemy, VGet(50.0f, 0.0f, -50.0f));
 	m_pEnemy2 = new Enemy(ObjectTag::Enemy, VGet(-50.0f, 0.0f, 50.0f));
 
+	// カメラ
 	m_pCamera1P->SetPlayerptr(m_pPlayer1P);
 	m_pCamera2P->SetPlayerptr(m_pPlayer2P);
-	m_pEnemy1->SetGameObjectPtr(m_pPlayer1P);
-	m_pEnemy1->SetGameObjectPtr(m_pPlayer2P);
-	m_pEnemy2->SetGameObjectPtr(m_pPlayer1P);
-	m_pEnemy2->SetGameObjectPtr(m_pPlayer2P);
+	// プレイヤー
+	for (int i = 0; i < m_tomatoWallNum; i++)
+	{
+		m_pPlayer1P->SetTomatoWallPtr(m_pTomatoWall[i]);
+		m_pPlayer2P->SetTomatoWallPtr(m_pTomatoWall[i]);
+	}
+	// エネミー1
+	m_pEnemy1->SetPlayerPtr(m_pPlayer1P);
+	m_pEnemy1->SetPlayerPtr(m_pPlayer2P);
+	for (int i = 0; i < m_tomatoWallNum; i++)
+	{
+		m_pEnemy1->SetTomatoWallPtr(m_pTomatoWall[i]);
+	}
+	// エネミー2
+	m_pEnemy2->SetPlayerPtr(m_pPlayer1P);
+	m_pEnemy2->SetPlayerPtr(m_pPlayer2P);
+	for (int i = 0; i < m_tomatoWallNum; i++)
+	{
+		m_pEnemy2->SetTomatoWallPtr(m_pTomatoWall[i]);
+	}
 
-	m_pGameObjects.push_back(m_pTomatoWall);
+	for (int i = 0; i < m_tomatoWallNum; i++)
+	{
+		m_pGameObjects.push_back(m_pTomatoWall[i]);
+	}
 	m_pGameObjects.push_back(m_pEnemy1);
 	m_pGameObjects.push_back(m_pEnemy2);
 	m_pGameObjects.push_back(m_pPlayer1P);
@@ -48,6 +70,12 @@ PlayScene::~PlayScene()
 	delete m_pCamera1P;
 	delete m_pPlayer2P;
 	delete m_pCamera2P;
+	delete m_pEnemy1;
+	delete m_pEnemy2;
+	for (int i = 0; i < 3; i++)
+	{
+		delete m_pTomatoWall[i];
+	}
 	delete m_map;
 	m_pGameObjects.clear();
 }
