@@ -72,7 +72,7 @@ PlayScene::~PlayScene()
 	delete m_pCamera2P;
 	delete m_pEnemy1;
 	delete m_pEnemy2;
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < m_tomatoWallNum; i++)
 	{
 		delete m_pTomatoWall[i];
 	}
