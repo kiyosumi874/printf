@@ -44,6 +44,7 @@ private:
 	VECTOR m_dir;       // 向き
 	VECTOR m_tomatoDir;  // トマトを投げる向き
 	VECTOR m_moveValue;  // 乱数移動量
+	VECTOR m_avoidVelocity;
 	int m_bulletNum;  // 球の所持弾数
 	const int m_bulletCapacity; // 球の限界所持数
 
@@ -56,11 +57,12 @@ private:
 	int m_moveType;  // 今の行動
 	bool m_moveFlag;  // 動いているか
 	bool m_aimTargetFlag;  // 標的に向けて移動するか
+	bool m_avoidWallFlag;  // 壁を避ける
 
 	// 範囲指定変数
 	const float m_targetRangeMin = 0.0f;        // ターゲットを感知する始まり値
 	const float m_targetRangeMax = 150.0f;      // ターゲットを感知する最終範囲値
-	const float m_targetMoveRangeMin = 50.0f;   // ターゲットに対する行動の変化最小値
+	const float m_targetMoveRangeMin = 60.0f;   // ターゲットに対する行動の変化最小値
 	const float m_targetMoveRangeMax = 100.0f;  // ターゲットに対する行動の変化最大値
 	const float m_targetEscapeRange = 200.0f;   // ターゲットから逃げる範囲
 
@@ -73,16 +75,19 @@ private:
 	void CheckMovePattern();  // 行動パターンをチェックして実行する
 
 	void CheckTargetMovePattern();  // ターゲットに対しての行動パターンを実行する
-	void TargetMove1(GameObject* object);  // 標的に合わせて動く処理
-	void TargetMove2(GameObject* object);  // 標的がいないときの処理
-	void TargetMove3(GameObject* object);  // 標的から逃げる処理
+	void Move1Target(GameObject* object);  // 標的に合わせて動く処理
+	void Move2Target(GameObject* object);  // 標的がいないときの処理
+	void Move3Target(GameObject* object);  // 標的から逃げる処理
 
 	void CheckTomatoWall();  // トマトを回収する行動パターンを実行する
-	void TomatoCollectMove(TomatoWall* object);  // トマトを回収しに行く処理
+	void CollectTomato(TomatoWall* object);  // トマトを回収しに行く処理
+	void AvoidTomatoWall(TomatoWall* object);    // トマトの壁を避ける処理
+
 	void RotateTowardTarget(VECTOR& aimTargetPos);  // 標的がいる方向に正面を向ける
 
 	void ChangeAnimation();  // アニメーションを変更する関数
 
 	double GetDistance(VECTOR& pos1, VECTOR& pos2);  // 自身と他のオブジェクトの距離を出す
+	float GetSize(float v1, float v2);
 };
 
