@@ -10,6 +10,7 @@ public:
 	void Draw();  // •`‰æˆ—
 
 	float GetTime();  // ƒgƒ}ƒg‚ğ“Š‚°‚Ä‚©‚ç‚ÌŠÔ‚ğ•Ô‚·
+	VECTOR GetPosition() { return m_position; }
 private:
 	void Move();  // “Š‚°‚ç‚ê‚½Œã‚Ìˆ—
 
