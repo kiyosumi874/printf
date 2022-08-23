@@ -14,6 +14,7 @@ public:
 	int GetAllTomatoNum() { return m_allTomatoNum; }
 	float GetWidthDistance() { return m_width; }
 private:
+	VECTOR m_size;
 	const int m_modelPattern = 5;
 	int m_modelPatternIndex;
 	std::string m_modelPatternHandle[5];
