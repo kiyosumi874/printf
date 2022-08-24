@@ -19,6 +19,7 @@ private:
 	class Map* m_map;  // Map
   
 	std::vector<GameObject*>m_pGameObjects;
+	std::list<class Object*>m_pObjectLists;
 
 	const int m_tomatoWallNum = 2;
 

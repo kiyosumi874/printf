@@ -169,6 +169,7 @@
     <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
+    <ClCompile Include="Human.cpp" />
     <ClCompile Include="Image.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
@@ -186,6 +187,7 @@
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="Projector.cpp" />
     <ClCompile Include="RapidJson.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TitleScene.cpp" />
@@ -197,6 +199,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="DebugDraw.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Enemy.h" />
@@ -204,6 +207,7 @@
     <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameOverScene.h" />
+    <ClInclude Include="Human.h" />
     <ClInclude Include="Image.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
@@ -212,16 +216,20 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="ModelManager.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectTag.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="Projector.h" />
     <ClInclude Include="RapidJson.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Tag.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Tomato.h" />
     <ClInclude Include="TomatoWall.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
