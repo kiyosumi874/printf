@@ -5,9 +5,11 @@
 #include "Tag.h"
 
 Human::Human()
-	: m_angle(0.0f)
-	, m_rotateNow(false)
+	: m_rotateNow(false)
 {
+	m_pTransform = nullptr;
+	m_pTag = nullptr;
+
 	m_modelHandle = MV1LoadModel("data/character/man1.mv1");
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);
 
@@ -29,15 +31,18 @@ void Human::Update()
 	{
 		m_pTransform = m_pParent->GetComponent<Transform>();
 	}
-	Input();	// 入力
 	Rotate();	// 回転
+	Input();	// 入力
 
 	// 移動処理
-	auto pos = m_pTransform->transform;
+	auto pos = m_pTransform->position;
 	pos = VAdd(pos, m_velocity);
 
 	// 3Dモデルのポジション設定
 	MV1SetPosition(m_modelHandle, pos);
+	
+	// 3Dモデルの大きさを設定
+	MV1SetScale(m_modelHandle, m_pTransform->scale);
 
 	// 向きに合わせてモデルを回転
 	MATRIX rotYMat = MGetRotY(180.0f * DX_PI_F / 180.0f);
@@ -50,6 +55,8 @@ void Human::Update()
 void Human::Draw()
 {
 	MV1DrawModel(m_modelHandle);
+	auto pos = m_pTransform->position;
+	DrawSphere3D(pos, 5.0f, 32, GetColor(255, 0, 0), GetColor(255, 255, 255), TRUE);
 }
 
 void Human::Input()
@@ -66,6 +73,7 @@ void Human::Input()
 	bool input = false;		// 入力したか判定用
 
 	XINPUT_STATE inputState;
+	auto angle = m_pTransform->rotate.y;
 
 	// 1Pの操作
 	if (m_pTag->tag == ObjectTag::Player1)
@@ -75,18 +83,18 @@ void Human::Input()
 
 		if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
 		{
-			m_angle += 0.01f;
+			angle += 0.01f;
 		}
 		if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
 		{
-			m_angle -= 0.01f;
+			angle -= 0.01f;
 		}
 
 		// 前に進む
 		if (Input::IsPress2P(BUTTON_ID_UP))
 		{
-			front.x = sinf(m_angle);
-			front.z = cosf(m_angle);
+			front.x = sinf(angle);
+			front.z = cosf(angle);
 			inputVec = VAdd(front, inputVec);
 			input = true;
 		}
@@ -94,8 +102,8 @@ void Human::Input()
 		// 後ろに進む
 		if (Input::IsPress2P(BUTTON_ID_DOWN))
 		{
-			rear.x = sinf(m_angle) * -1.0f;
-			rear.z = cosf(m_angle) * -1.0f;
+			rear.x = sinf(angle) * -1.0f;
+			rear.z = cosf(angle) * -1.0f;
 			inputVec = VAdd(rear, inputVec);
 			input = true;
 		}
@@ -103,8 +111,8 @@ void Human::Input()
 		// 右に進む
 		if (Input::IsPress2P(BUTTON_ID_LEFT))
 		{
-			right.x = sinf(m_angle - addRad);
-			right.z = cosf(m_angle - addRad);
+			right.x = sinf(angle - addRad);
+			right.z = cosf(angle - addRad);
 			inputVec = VAdd(right, inputVec);
 			input = true;
 		}
@@ -112,8 +120,8 @@ void Human::Input()
 		// 左に進む
 		if (Input::IsPress2P(BUTTON_ID_RIGHT))
 		{
-			left.x = sinf(m_angle + addRad);
-			left.z = cosf(m_angle + addRad);
+			left.x = sinf(angle + addRad);
+			left.z = cosf(angle + addRad);
 			inputVec = VAdd(left, inputVec);
 			input = true;
 		}
@@ -127,18 +135,18 @@ void Human::Input()
 
 		if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
 		{
-			m_angle += 0.01f;
+			angle += 0.01f;
 		}
 		if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
 		{
-			m_angle -= 0.01f;
+			angle -= 0.01f;
 		}
 
 		// 前に進む
 		if (Input::IsPress1P(BUTTON_ID_UP))
 		{
-			front.x = sinf(m_angle);
-			front.z = cosf(m_angle);
+			front.x = sinf(angle);
+			front.z = cosf(angle);
 			inputVec = VAdd(front, inputVec);
 			input = true;
 		}
@@ -146,8 +154,8 @@ void Human::Input()
 		// 後ろに進む
 		if (Input::IsPress1P(BUTTON_ID_DOWN))
 		{
-			rear.x = sinf(m_angle) * -1.0f;
-			rear.z = cosf(m_angle) * -1.0f;
+			rear.x = sinf(angle) * -1.0f;
+			rear.z = cosf(angle) * -1.0f;
 			inputVec = VAdd(rear, inputVec);
 			input = true;
 		}
@@ -155,8 +163,8 @@ void Human::Input()
 		// 右に進む
 		if (Input::IsPress1P(BUTTON_ID_LEFT))
 		{
-			right.x = sinf(m_angle - addRad);
-			right.z = cosf(m_angle - addRad);
+			right.x = sinf(angle - addRad);
+			right.z = cosf(angle - addRad);
 			inputVec = VAdd(right, inputVec);
 			input = true;
 		}
@@ -164,8 +172,8 @@ void Human::Input()
 		// 左に進む
 		if (Input::IsPress1P(BUTTON_ID_RIGHT))
 		{
-			left.x = sinf(m_angle + addRad);
-			left.z = cosf(m_angle + addRad);
+			left.x = sinf(angle + addRad);
+			left.z = cosf(angle + addRad);
 			inputVec = VAdd(left, inputVec);
 			input = true;
 		}

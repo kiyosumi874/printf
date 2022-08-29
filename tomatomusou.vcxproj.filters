@@ -167,6 +167,9 @@
     <ClInclude Include="Projector.h">
       <Filter>oriented</Filter>
     </ClInclude>
+    <ClInclude Include="ColliderManager.h">
+      <Filter>oriented</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">

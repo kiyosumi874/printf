@@ -5,5 +5,7 @@
 class Transform : public Component
 {
 public:
-	VECTOR transform;
+	VECTOR position;
+	VECTOR rotate;
+	VECTOR scale;
 };

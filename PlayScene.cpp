@@ -67,7 +67,9 @@ PlayScene::PlayScene(const MODE& mode)
 
 	Object* obj = new Object;
 	auto trs = obj->AddComponent<Transform>();
-	trs->transform = VGet(0.0f, 0.0f, 0.0f);
+	trs->position = VGet(5.0f, 0.0f, 0.0f);
+	trs->rotate = VGet(0.0f, 0.0f, 0.0f);
+	trs->scale = VGet(0.1f, 0.1f, 0.1f);
 	auto tag = obj->AddComponent<Tag>();
 	tag->tag = ObjectTag::Player1;
 	obj->AddComponent<Human>();
@@ -114,7 +116,6 @@ TAG_SCENE PlayScene::Update()
 	{
 		return TAG_SCENE::TAG_END;
 	}
-
 	return TAG_SCENE::TAG_NONE;
 }
 

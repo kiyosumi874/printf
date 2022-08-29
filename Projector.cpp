@@ -6,6 +6,12 @@
 const float r = -30.0f;
 Projector::Projector()
 {
+	m_pPlayerTransform = nullptr;
+
+	VECTOR vec = VGet(0.0f, 0.0f, 0.0f);
+	m_position = vec;
+	m_targetViewPoint = vec;
+	m_viewPoint = vec;
 }
 
 Projector::~Projector()
@@ -14,21 +20,16 @@ Projector::~Projector()
 
 void Projector::Update()
 {
-	if (m_pTransform == nullptr)
-	{
-		m_pTransform = m_pParent->GetComponent<Transform>();
-	}
-	auto playerPos = m_pPlayerTransform->transform;
+	auto& playerPos = m_pPlayerTransform->position;
 	// プレイヤーの座標を目標視点に代入
 	m_targetViewPoint = playerPos;
-	auto angle = m_pPlayer->GetAngle();
+	auto& angle = m_pPlayerTransform->rotate.y;
 
 	m_position.x = m_targetViewPoint.x + sinf(angle) * r;
 	m_position.z = m_targetViewPoint.z + cosf(angle) * r;
 
 	// カメラの注視点をセット
 	m_targetViewPoint.y = m_targetViewPoint.y + 8.0f;
-	m_targetCameraPosition = VAdd(m_targetViewPoint, m_cameraOffSet);
 
 	// カメラ位置から目標点に向かうベクトルを計算
 	VECTOR L_lookMoveDir = VSub(m_targetViewPoint, m_viewPoint);

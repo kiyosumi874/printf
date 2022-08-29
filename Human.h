@@ -30,7 +30,7 @@ private:
 
 	int m_modelHandle;		// ƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹
 
-	float m_angle;			//	Ž‹“_‰ñ“]Šp“x
+	//float m_angle;			//	Ž‹“_‰ñ“]Šp“x
 
 	bool m_rotateNow;		// ‰ñ“]’†‚©”»’è—p
 };
