@@ -67,6 +67,9 @@
       <Filter>Collider</Filter>
     </ClCompile>
     <ClCompile Include="ModelManager.cpp" />
+    <ClCompile Include="Ground2.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -143,6 +146,9 @@
       <Filter>Collider</Filter>
     </ClInclude>
     <ClInclude Include="ModelManager.h" />
+    <ClInclude Include="Ground2.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">

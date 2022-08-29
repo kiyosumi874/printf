@@ -36,6 +36,7 @@
 
 /* Ground */
 #include "Ground.h"
+#include "Ground2.h"
 
 /* Map */
 #include "Map.h"

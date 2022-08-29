@@ -8,15 +8,16 @@
 PlayScene::PlayScene(const MODE& mode)
 	: Scene(mode)
 {
-	m_map = new Map();
+	//m_map = new Map();
 
-	// このシーンで使うjsonファイルが読み込めたら
-	if (m_map->OpenFile())
-	{
-		m_map->GroundCreate();  // 床を生成
-		//m_map->PlayerCreate();  // プレイヤーを生成
-	}
+	//// このシーンで使うjsonファイルが読み込めたら
+	//if (m_map->OpenFile())
+	//{
+	//	m_map->GroundCreate();  // 床を生成
+	//	//m_map->PlayerCreate();  // プレイヤーを生成
+	//}
   
+	m_pGround = new Ground2(ObjectTag::Ground, VGet(0.0f, -5.0f, 0.0f));
 	m_pTomatoWall[0] = new TomatoWall(ObjectTag::TomatoWall, VGet(50.0f, 0.0f, 50.0f));
 	m_pTomatoWall[1] = new TomatoWall(ObjectTag::TomatoWall, VGet(150.0f, 0.0f, 150.0f));
 	m_pPlayer1P = new Player(ObjectTag::Player1, VGet(0.0f, 0.0f, 0.0f));
@@ -29,6 +30,7 @@ PlayScene::PlayScene(const MODE& mode)
 	// カメラ
 	m_pCamera1P->SetPlayerptr(m_pPlayer1P);
 	m_pCamera2P->SetPlayerptr(m_pPlayer2P);
+
 	// プレイヤー
 	for (int i = 0; i < m_tomatoWallNum; i++)
 	{
@@ -54,6 +56,7 @@ PlayScene::PlayScene(const MODE& mode)
 	{
 		m_pGameObjects.push_back(m_pTomatoWall[i]);
 	}
+	m_pGameObjects.push_back(m_pGround);
 	m_pGameObjects.push_back(m_pEnemy1);
 	m_pGameObjects.push_back(m_pEnemy2);
 	m_pGameObjects.push_back(m_pPlayer1P);
@@ -71,11 +74,12 @@ PlayScene::~PlayScene()
 	delete m_pCamera2P;
 	delete m_pEnemy1;
 	delete m_pEnemy2;
+	delete m_pGround;
 	for (int i = 0; i < m_tomatoWallNum; i++)
 	{
 		delete m_pTomatoWall[i];
 	}
-	delete m_map;
+	//delete m_map;
 	m_pGameObjects.clear();
 }
 
@@ -103,7 +107,7 @@ void PlayScene::Draw()
 {
 #ifdef _DEBUG
 	printfDx("PlayScene\n");
-	DrawGrid(1000.0f, 30);
+	//DrawGrid(1000.0f, 30);
 #endif // _DEBUG
 	SetDrawArea(0, 0, 640, 960);
 	SetCameraScreenCenter(320.0f, 480.0f);

@@ -4,6 +4,7 @@ class TomatoWall;
 class Player;
 class Enemy;
 class Camera;
+class Ground2;
 
 class PlayScene : public Scene
 {
@@ -16,7 +17,7 @@ public:
 	void Draw() override;
 
 private:
-	class Map* m_map;  // Map
+	//class Map* m_map;  // Map
   
 	std::vector<GameObject*>m_pGameObjects;
 
@@ -29,4 +30,5 @@ private:
 	Camera* m_pCamera2P;
 	Enemy* m_pEnemy1;
 	Enemy* m_pEnemy2;
+	Ground2* m_pGround;
 };
