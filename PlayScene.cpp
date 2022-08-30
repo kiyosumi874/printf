@@ -4,6 +4,10 @@
 #include "Enemy.h"
 #include "Camera.h"
 #include "DebugDraw.h"
+#include "Object.h"
+#include "Human.h"
+#include "Transform.h"
+#include "Tag.h"
 
 PlayScene::PlayScene(const MODE& mode)
 	: Scene(mode)
@@ -61,6 +65,15 @@ PlayScene::PlayScene(const MODE& mode)
 	m_pGameObjects.push_back(m_pCamera1P);
 	m_pGameObjects.push_back(m_pCamera2P);
 
+	Object* obj = new Object;
+	auto trs = obj->AddComponent<Transform>();
+	trs->position = VGet(5.0f, 0.0f, 0.0f);
+	trs->rotate = VGet(0.0f, 0.0f, 0.0f);
+	trs->scale = VGet(0.1f, 0.1f, 0.1f);
+	auto tag = obj->AddComponent<Tag>();
+	tag->tag = ObjectTag::Player1;
+	obj->AddComponent<Human>();
+	m_pObjectLists.push_back(obj);
 }
 
 PlayScene::~PlayScene()
@@ -76,6 +89,11 @@ PlayScene::~PlayScene()
 		delete m_pTomatoWall[i];
 	}
 	delete m_map;
+	for (auto obj : m_pObjectLists)
+	{
+		delete obj;
+	}
+	m_pObjectLists.clear();
 	m_pGameObjects.clear();
 }
 
@@ -85,7 +103,10 @@ TAG_SCENE PlayScene::Update()
 	{
 		m_pGameObjects[i]->Update();
 	}
-
+	for(auto obj : m_pObjectLists)
+	{
+		obj->Update();
+	}
 	if (Input::IsDown1P(BUTTON_ID_START))
 	{
 		return TAG_SCENE::TAG_OVER;
@@ -95,7 +116,6 @@ TAG_SCENE PlayScene::Update()
 	{
 		return TAG_SCENE::TAG_END;
 	}
-
 	return TAG_SCENE::TAG_NONE;
 }
 
@@ -103,19 +123,30 @@ void PlayScene::Draw()
 {
 #ifdef _DEBUG
 	printfDx("PlayScene\n");
-	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
 	SetDrawArea(0, 0, 640, 960);
 	SetCameraScreenCenter(320.0f, 480.0f);
+	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
 		if(m_pGameObjects[i]->GetTag() != ObjectTag::Camera2){ m_pGameObjects[i]->Draw(); }
 	}
+	for (auto obj : m_pObjectLists)
+	{
+		//auto com = obj->
+		//if(com->tag != ObjectTag::Camera2)
+		obj->Draw();
+	}
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
+	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
 		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera1) { m_pGameObjects[i]->Draw(); }
+	}
+	for (auto obj : m_pObjectLists)
+	{
+		obj->Draw();
 	}
 	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();
