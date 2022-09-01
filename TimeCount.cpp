@@ -1,3 +1,10 @@
+//----------------------------------------
+// @file TimeCount.cpp
+// @brief 時間を計測する
+// @author shiihara_kiyosumi
+// @date 2022_09_01
+//----------------------------------------
+
 // ヘッダーファイルのインクルード
 #include "pch.h"
 #include "TimeCount.h"
