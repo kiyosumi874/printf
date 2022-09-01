@@ -30,4 +30,7 @@ private:
 	Camera* m_pCamera2P;
 	Enemy* m_pEnemy1;
 	Enemy* m_pEnemy2;
+
+	// kiyosumi
+	class TimeCount* m_pTimeCount;
 };

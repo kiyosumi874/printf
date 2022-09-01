@@ -73,6 +73,9 @@
     <ClCompile Include="Projector.cpp">
       <Filter>oriented</Filter>
     </ClCompile>
+    <ClCompile Include="TimeCount.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="ColliderManager.h">
       <Filter>oriented</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeCount.h">
+      <Filter>System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

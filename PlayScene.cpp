@@ -8,9 +8,11 @@
 #include "Human.h"
 #include "Transform.h"
 #include "Tag.h"
+#include "TimeCount.h"
 
 PlayScene::PlayScene(const MODE& mode)
 	: Scene(mode)
+	, m_pTimeCount(nullptr)
 {
 	m_map = new Map();
 
@@ -74,6 +76,14 @@ PlayScene::PlayScene(const MODE& mode)
 	tag->tag = ObjectTag::Player1;
 	obj->AddComponent<Human>();
 	m_pObjectLists.push_back(obj);
+
+	// kiyosumi
+	{
+		Object* object = new Object;
+		m_pTimeCount = object->AddComponent<TimeCount>();
+		m_pTimeCount->StartCount();
+		m_pObjectLists.push_back(object);
+	}
 }
 
 PlayScene::~PlayScene()
@@ -150,4 +160,7 @@ void PlayScene::Draw()
 	}
 	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();
+
+	// kiyosumi
+	MyOutputDebugString("Time:%lf\n", m_pTimeCount->CheckCount());
 }
