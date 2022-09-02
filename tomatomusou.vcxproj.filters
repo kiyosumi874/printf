@@ -76,6 +76,9 @@
     <ClCompile Include="TimeCount.cpp">
       <Filter>System</Filter>
     </ClCompile>
+    <ClCompile Include="TimeUIController.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -175,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="TimeCount.h">
       <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeUIController.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

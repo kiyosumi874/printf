@@ -9,10 +9,11 @@
 #include "Transform.h"
 #include "Tag.h"
 #include "TimeCount.h"
+#include "Image.h"
+#include "TimeUIController.h"
 
 PlayScene::PlayScene(const MODE& mode)
 	: Scene(mode)
-	, m_pTimeCount(nullptr)
 {
 	m_map = new Map();
 
@@ -79,10 +80,29 @@ PlayScene::PlayScene(const MODE& mode)
 
 	// kiyosumi
 	{
-		Object* object = new Object;
-		m_pTimeCount = object->AddComponent<TimeCount>();
-		m_pTimeCount->StartCount();
-		m_pObjectLists.push_back(object);
+		Object* object = nullptr;
+		int x = 450;
+		for (int i = 0; i < 4; i++)
+		{
+			x -= 200;
+			for (int j = 0; j < 10; j++)
+			{
+				std::string str = "data/Number/";
+				str += std::to_string(j);
+				str += ".png";
+				object = new Object;
+				object->AddComponent<TimeCount>();
+				auto img = object->AddComponent<Image>(); 
+				img->Init(VGet(SCREEN_WIDTH / 2 + x, SCREEN_HEIGHT / 2 + 200, 1.0f), VGet(1.0f, 1.0f, 1.0f), 0.0, str.c_str());
+				if (j != 0)
+				{
+					img->IsDraw(false);
+				}
+
+				object->AddComponent<TimeUIController>()->Init(i, j);
+				m_pObjectLists.push_back(object);
+			}
+		}
 	}
 }
 
@@ -160,7 +180,4 @@ void PlayScene::Draw()
 	}
 	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();
-
-	// kiyosumi
-	MyOutputDebugString("Time:%lf\n", m_pTimeCount->CheckCount());
 }
