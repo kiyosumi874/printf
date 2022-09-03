@@ -190,6 +190,8 @@
     <ClCompile Include="Projector.cpp" />
     <ClCompile Include="RapidJson.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="TimeCount.cpp" />
+    <ClCompile Include="TimeUIController.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Tomato.cpp" />
     <ClCompile Include="TomatoWall.cpp" />
@@ -227,6 +229,8 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Tag.h" />
+    <ClInclude Include="TimeCount.h" />
+    <ClInclude Include="TimeUIController.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Tomato.h" />
     <ClInclude Include="TomatoWall.h" />
