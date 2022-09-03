@@ -19,7 +19,6 @@ void TimeUIController::Init(int digit, int number)
 	m_digit = digit;
 	m_number = number;
 	m_pTimeCount = m_pParent->GetComponent<TimeCount>();
-	m_pTimeCount->StartCount();
 
 	m_pImage = m_pParent->GetComponent<Image>();
 }
@@ -27,11 +26,14 @@ void TimeUIController::Init(int digit, int number)
 void TimeUIController::Update()
 {
 	auto nowTime = m_pTimeCount->CheckCount();
+	if (nowTime != -1.0)
+	{
+		UpdateDidit0(180 - nowTime);
+		UpdateDidit1(180 - nowTime);
+		UpdateDidit2(180 - nowTime);
+		UpdateDidit3(180 - nowTime);
+	}
 	
-	UpdateDidit0(180-nowTime);
-	UpdateDidit1(180-nowTime);
-	UpdateDidit2(180-nowTime);
-	UpdateDidit3(180-nowTime);
 
 	MyOutputDebugString("Time:%lf\n", nowTime);
 }

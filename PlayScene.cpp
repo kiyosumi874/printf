@@ -14,6 +14,12 @@
 
 PlayScene::PlayScene(const MODE& mode)
 	: Scene(mode)
+	, m_transition(Transition::START)
+	, m_tagScene(TAG_SCENE::TAG_NONE)
+	, m_timeCount(nullptr)
+	, m_isStartBlendAdd(false)
+	, m_startBlendAdd(0.0f)
+	, m_graphHandleWhite(-1)
 {
 	m_map = new Map();
 
@@ -94,20 +100,26 @@ PlayScene::PlayScene(const MODE& mode)
 				object->AddComponent<TimeCount>();
 				auto img = object->AddComponent<Image>(); 
 				img->Init(VGet(SCREEN_WIDTH / 2 + x, SCREEN_HEIGHT / 2 + 200, 1.0f), VGet(1.0f, 1.0f, 1.0f), 0.0, str.c_str());
-				if (j != 0)
-				{
-					img->IsDraw(false);
-				}
+				img->IsDraw(false);
+
 
 				object->AddComponent<TimeUIController>()->Init(i, j);
 				m_pObjectLists.push_back(object);
 			}
 		}
 	}
+	{
+		Object* object = new Object;
+		m_timeCount = object->AddComponent<TimeCount>();
+		m_timeCount->StartCount();
+		m_pObjectLists.push_back(object);
+	}
+	m_graphHandleWhite = LoadGraph("data/white.png");
 }
 
 PlayScene::~PlayScene()
 {
+	DeleteGraph(m_graphHandleWhite);
 	delete m_pPlayer1P;
 	delete m_pCamera1P;
 	delete m_pPlayer2P;
@@ -129,24 +141,24 @@ PlayScene::~PlayScene()
 
 TAG_SCENE PlayScene::Update()
 {
-	for (auto i = 0; i < m_pGameObjects.size(); i++)
+	switch (m_transition)
 	{
-		m_pGameObjects[i]->Update();
+	case PlayScene::Transition::START:
+		UpdateTransitionStart();
+		break;
+	case PlayScene::Transition::PLAY:
+		UpdateTransitionPlay();
+		break;
+	case PlayScene::Transition::OVER:
+		UpdateTransitionOver();
+		break;
+	case PlayScene::Transition::END:
+		UpdateTransitionEnd();
+		break;
+	default:
+		break;
 	}
-	for(auto obj : m_pObjectLists)
-	{
-		obj->Update();
-	}
-	if (Input::IsDown1P(BUTTON_ID_START))
-	{
-		return TAG_SCENE::TAG_OVER;
-	}
-
-	if (Input::IsDown1P(BUTTON_ID_BACK))
-	{
-		return TAG_SCENE::TAG_END;
-	}
-	return TAG_SCENE::TAG_NONE;
+	return m_tagScene;
 }
 
 void PlayScene::Draw()
@@ -154,12 +166,208 @@ void PlayScene::Draw()
 #ifdef _DEBUG
 	printfDx("PlayScene\n");
 #endif // _DEBUG
+
+	switch (m_transition)
+	{
+	case PlayScene::Transition::START:
+		DrawTransitionStart();
+		break;
+	case PlayScene::Transition::PLAY:
+		DrawTransitionPlay();
+		break;
+	case PlayScene::Transition::OVER:
+		DrawTransitionOver();
+		break;
+	case PlayScene::Transition::END:
+		DrawTransitionEnd();
+		break;
+	default:
+		break;
+	}
+	
+}
+
+void PlayScene::UpdateTransitionStart()
+{
+	if (m_timeCount->CheckCount() > 3.0)
+	{
+		m_isStartBlendAdd = true;
+	}
+	if (m_isStartBlendAdd)
+	{
+		m_startBlendAdd += 1.5;
+		if (m_startBlendAdd > 255.0f)
+		{
+			m_transition = Transition::PLAY;
+			m_timeCount->RestCount();
+			
+		}
+	}
+	for (auto i = 0; i < m_pGameObjects.size(); i++)
+	{
+		m_pGameObjects[i]->Update();
+	}
+	for (auto obj : m_pObjectLists)
+	{
+		obj->Update();
+	}
+	if (Input::IsDown1P(BUTTON_ID_START))
+	{
+		m_transition = Transition::OVER;
+	}
+
+	if (Input::IsDown1P(BUTTON_ID_BACK))
+	{
+		m_transition = Transition::END;
+	}
+}
+
+void PlayScene::UpdateTransitionPlay()
+{
+	if (m_isStartBlendAdd)
+	{
+		m_startBlendAdd -= 3.0;
+		if (m_startBlendAdd < 0.0f)
+		{
+			for (const auto it : m_pObjectLists)
+			{
+				auto timeCount = it->GetComponent<TimeCount>();
+				if (timeCount != nullptr)
+				{
+					timeCount->StartCount();
+				}
+			}
+			m_isStartBlendAdd = false;
+		}
+	}
+	for (auto i = 0; i < m_pGameObjects.size(); i++)
+	{
+		m_pGameObjects[i]->Update();
+	}
+	for (auto obj : m_pObjectLists)
+	{
+		obj->Update();
+	}
+	if (Input::IsDown1P(BUTTON_ID_START))
+	{
+		m_transition = Transition::OVER;
+
+	}
+
+	if (Input::IsDown1P(BUTTON_ID_BACK))
+	{
+		m_transition = Transition::END;
+
+	}
+}
+
+void PlayScene::UpdateTransitionOver()
+{
+	m_tagScene = TAG_SCENE::TAG_OVER;
+}
+
+void PlayScene::UpdateTransitionEnd()
+{
+	m_tagScene = TAG_SCENE::TAG_END;
+}
+
+void PlayScene::DrawTransitionStart()
+{
+	DrawGrid(1000.0f, 30);
+	for (auto i = 0; i < m_pGameObjects.size(); i++)
+	{
+		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2 || m_pGameObjects[i]->GetTag() != ObjectTag::Camera1) { m_pGameObjects[i]->Draw(); }
+	}
+	for (auto obj : m_pObjectLists)
+	{
+		//auto com = obj->
+		//if(com->tag != ObjectTag::Camera2)
+		obj->Draw();
+	}
+	static float x = 50.0f;
+	x += 0.1;
+	VECTOR pos = VGet(0.0f,20.0f,x);
+	VECTOR target = VGet(0.0f, 0.0f, 0.0f);
+	
+	SetCameraPositionAndTarget_UpVecY(pos, target);
+
+	SetDrawBlendMode(DX_BLENDMODE_ADD, static_cast<int>(m_startBlendAdd));
+	DrawGraph(0, 0, m_graphHandleWhite, FALSE);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+}
+
+void PlayScene::DrawTransitionPlay()
+{
 	SetDrawArea(0, 0, 640, 960);
 	SetCameraScreenCenter(320.0f, 480.0f);
 	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
-		if(m_pGameObjects[i]->GetTag() != ObjectTag::Camera2){ m_pGameObjects[i]->Draw(); }
+		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2) { m_pGameObjects[i]->Draw(); }
+	}
+	for (auto obj : m_pObjectLists)
+	{
+		//auto com = obj->
+		//if(com->tag != ObjectTag::Camera2)
+		obj->Draw();
+	}
+	SetDrawArea(640, 0, 1280, 960);
+	SetCameraScreenCenter(960.0f, 480.0f);
+	DrawGrid(1000.0f, 30);
+	for (auto i = 0; i < m_pGameObjects.size(); i++)
+	{
+		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera1) { m_pGameObjects[i]->Draw(); }
+	}
+	for (auto obj : m_pObjectLists)
+	{
+		obj->Draw();
+	}
+	// 描画可能領域を描画対象画面全体にする
+	SetDrawAreaFull();
+
+	SetDrawBlendMode(DX_BLENDMODE_ADD, static_cast<int>(m_startBlendAdd));
+	DrawGraph(0, 0, m_graphHandleWhite, FALSE);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+}
+
+void PlayScene::DrawTransitionOver()
+{
+	SetDrawArea(0, 0, 640, 960);
+	SetCameraScreenCenter(320.0f, 480.0f);
+	DrawGrid(1000.0f, 30);
+	for (auto i = 0; i < m_pGameObjects.size(); i++)
+	{
+		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2) { m_pGameObjects[i]->Draw(); }
+	}
+	for (auto obj : m_pObjectLists)
+	{
+		//auto com = obj->
+		//if(com->tag != ObjectTag::Camera2)
+		obj->Draw();
+	}
+	SetDrawArea(640, 0, 1280, 960);
+	SetCameraScreenCenter(960.0f, 480.0f);
+	DrawGrid(1000.0f, 30);
+	for (auto i = 0; i < m_pGameObjects.size(); i++)
+	{
+		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera1) { m_pGameObjects[i]->Draw(); }
+	}
+	for (auto obj : m_pObjectLists)
+	{
+		obj->Draw();
+	}
+	// 描画可能領域を描画対象画面全体にする
+	SetDrawAreaFull();
+}
+
+void PlayScene::DrawTransitionEnd()
+{
+	SetDrawArea(0, 0, 640, 960);
+	SetCameraScreenCenter(320.0f, 480.0f);
+	DrawGrid(1000.0f, 30);
+	for (auto i = 0; i < m_pGameObjects.size(); i++)
+	{
+		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2) { m_pGameObjects[i]->Draw(); }
 	}
 	for (auto obj : m_pObjectLists)
 	{

@@ -28,6 +28,9 @@ public:
 	// カウントを開始する
 	void StartCount();
 
+	// 休憩
+	void RestCount();
+
 	// カウントを確認する
 	double CheckCount();
 

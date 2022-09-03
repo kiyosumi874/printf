@@ -16,6 +16,34 @@ public:
 	void Draw() override;
 
 private:
+	// ƒV[ƒ““à‚Ìó‘Ô‘JˆÚ‚ğ•\‚·
+	enum class Transition
+	{
+		START,
+		PLAY,
+		OVER,
+		END
+	};
+
+	Transition m_transition;
+	TAG_SCENE m_tagScene;
+
+	bool m_isStartBlendAdd;
+	float m_startBlendAdd;
+	int m_graphHandleWhite;
+
+	void UpdateTransitionStart();
+	void UpdateTransitionPlay();
+	void UpdateTransitionOver();
+	void UpdateTransitionEnd();
+
+	void DrawTransitionStart();
+	void DrawTransitionPlay();
+	void DrawTransitionOver();
+	void DrawTransitionEnd();
+
+	class TimeCount* m_timeCount;
+
 	class Map* m_map;  // Map
   
 	std::vector<GameObject*>m_pGameObjects;
