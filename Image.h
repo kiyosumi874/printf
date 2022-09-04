@@ -52,6 +52,20 @@ public:
 		m_pos = pos;
 	}
 
+	// 座標のゲッター
+	const VECTOR& GetPos() const
+	{
+		return m_pos;
+	}
+
+	// 画像を動かす
+	void MovePos(const VECTOR& pos)
+	{
+		m_pos.x += pos.x;
+		m_pos.y += pos.y;
+		m_pos.z += pos.z;
+	}
+
 	/// <summary>
 	/// 自分の拡大率を変更
 	/// </summary>

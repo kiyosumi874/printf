@@ -31,6 +31,8 @@ public:
 	// 休憩
 	void RestCount();
 
+	bool CheckIsCount();
+
 	// カウントを確認する
 	double CheckCount();
 

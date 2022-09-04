@@ -47,6 +47,11 @@ void TimeCount::RestCount()
 	m_isCount = false;
 }
 
+bool TimeCount::CheckIsCount()
+{
+	return m_isCount;
+}
+
 
 // カウントを確認する
 double TimeCount::CheckCount()

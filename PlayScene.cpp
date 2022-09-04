@@ -12,6 +12,10 @@
 #include "Image.h"
 #include "TimeUIController.h"
 
+
+// いたっんおいてる定数.いつの日かまとめる
+const int timerUIY = SCREEN_HEIGHT / 2 + 200;
+
 PlayScene::PlayScene(const MODE& mode)
 	: Scene(mode)
 	, m_transition(Transition::START)
@@ -99,7 +103,7 @@ PlayScene::PlayScene(const MODE& mode)
 				object = new Object;
 				object->AddComponent<TimeCount>();
 				auto img = object->AddComponent<Image>(); 
-				img->Init(VGet(SCREEN_WIDTH / 2 + x, SCREEN_HEIGHT / 2 + 200, 1.0f), VGet(1.0f, 1.0f, 1.0f), 0.0, str.c_str());
+				img->Init(VGet(SCREEN_WIDTH / 2 + x, SCREEN_HEIGHT, 1.0f), VGet(1.0f, 1.0f, 1.0f), 0.0, str.c_str());
 				img->IsDraw(false);
 
 
@@ -229,17 +233,93 @@ void PlayScene::UpdateTransitionPlay()
 		m_startBlendAdd -= 3.0;
 		if (m_startBlendAdd < 0.0f)
 		{
-			for (const auto it : m_pObjectLists)
-			{
-				auto timeCount = it->GetComponent<TimeCount>();
-				if (timeCount != nullptr)
-				{
-					timeCount->StartCount();
-				}
-			}
+			m_timeCount->StartCount();
+			
 			m_isStartBlendAdd = false;
 		}
 	}
+
+	static bool isCount[3] = { false };
+	static bool startCount = false;
+	if (!startCount && !m_isStartBlendAdd)
+	{
+		if (m_timeCount->CheckCount() > 0.5 && !isCount[0])
+		{
+			isCount[0] = true;
+			// 音を出す(3)
+			MyOutputDebugString("3\n");
+		}
+
+		if (m_timeCount->CheckCount() > 1.5 && !isCount[1])
+		{
+			isCount[1] = true;
+			// 音を出す(2)
+			MyOutputDebugString("2\n");
+		}
+
+		if (m_timeCount->CheckCount() > 2.5 && !isCount[2])
+		{
+			isCount[2] = true;
+			// 音を出す(1)
+			MyOutputDebugString("1\n");
+		}
+
+		if (m_timeCount->CheckCount() > 3.5)
+		{
+			// 音を出す(start)
+			m_timeCount->RestCount();
+			startCount = true;
+			MyOutputDebugString("Start\n");
+
+			// 試合のタイマー開始
+			for (const auto it : m_pObjectLists)
+			{
+				auto controller = it->GetComponent<TimeUIController>();
+				if (controller != nullptr)
+				{
+					it->GetComponent<TimeCount>()->StartCount();
+				}
+			}
+		}
+	}
+
+	static bool moveTimerFlag = false;
+
+	// 時計のUIを画面内に動かす
+	if (!moveTimerFlag && startCount)
+	{
+		// オブジェクトリストをなめる
+		for (const auto it : m_pObjectLists)
+		{
+			auto controller = it->GetComponent<TimeUIController>();
+			// TimeUIControllerの時だけ
+			if (controller != nullptr)
+			{
+				auto image = it->GetComponent<Image>();
+				// UIを移動
+				image->MovePos(VGet(0.0f,-10.0, 0.0f));
+				//　目標座標に到達
+				if (image->GetPos().y < timerUIY)
+				{
+					// UIの座標を調整
+					for (const auto itr : m_pObjectLists)
+					{
+						auto controller = itr->GetComponent<TimeUIController>();
+						if (controller != nullptr)
+						{
+							auto image2 = itr->GetComponent<Image>();
+							float x = image2->GetPos().x;
+							float z = image2->GetPos().z;
+							image2->SetPos(VGet(x, timerUIY, z));
+						}
+					}
+					moveTimerFlag = true;
+					break;
+				}
+			}
+		}
+	}
+
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
 		m_pGameObjects[i]->Update();

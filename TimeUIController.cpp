@@ -28,14 +28,14 @@ void TimeUIController::Update()
 	auto nowTime = m_pTimeCount->CheckCount();
 	if (nowTime != -1.0)
 	{
-		UpdateDidit0(180 - nowTime);
-		UpdateDidit1(180 - nowTime);
-		UpdateDidit2(180 - nowTime);
-		UpdateDidit3(180 - nowTime);
+		UpdateDidit0(181 - nowTime);
+		UpdateDidit1(181 - nowTime);
+		UpdateDidit2(181 - nowTime);
+		UpdateDidit3(181 - nowTime);
 	}
 	
 
-	MyOutputDebugString("Time:%lf\n", nowTime);
+	//MyOutputDebugString("Time:%lf\n", nowTime);
 }
 
 void TimeUIController::UpdateDidit0(double nowTime)
