@@ -5,6 +5,7 @@
 #include "ModelManager.h"
 #include "Object.h"
 #include "Transform.h"
+#include "Collider.h"
 
 Enemy::Enemy()
 	: m_movePhaseTime(50)
@@ -107,7 +108,8 @@ void Enemy::ProcessTomato()
 	m_shotTime++;
 	if (m_shotTime > 100.0f && m_moveType == Type::AimTarget && m_bulletNum > 0)
 	{
-		m_tomatos.push_back(new Tomato(m_position, m_tomatoDir));
+		//m_tomatos.push_back(new Tomato(m_position, m_tomatoDir));
+		m_pParent->GetComponent<Collider>()->Shot(m_position, m_tomatoDir);
 		m_bulletNum--;
 		m_shotTime = 0.0f;
 	}

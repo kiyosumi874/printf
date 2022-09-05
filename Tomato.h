@@ -4,9 +4,10 @@
 class Tomato : public Component
 {
 public:
-	Tomato(VECTOR& position, VECTOR& dir);   // コンストラクタ
+	Tomato();   // コンストラクタ
 	~Tomato();  // デストラクタ
 
+	void Init(VECTOR& position, VECTOR& dir);  // 位置と目標方向
 	void Update();  // 更新処理
 	void Draw();  // 描画処理
 

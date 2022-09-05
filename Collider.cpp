@@ -2,7 +2,8 @@
 #include "Collider.h"
 #include "Object.h"
 #include "Transform.h"
-#include "Player.h"
+#include "Human.h"
+#include "Tomato.h"
 
 Collider::Collider()
 	: flag(false)
@@ -43,7 +44,7 @@ void Collider::CollisionCheck()
 		{
 			distance = distance * -1.0f;
 		}
-		// 範囲に入っているトマトの壁からトマトを回収
+
 		if (distance < 10.0f)
 		{
 			flag = true;
@@ -52,6 +53,13 @@ void Collider::CollisionCheck()
 		}
 		flag = false;
 	}
+}
+
+void Collider::Shot(VECTOR& position, VECTOR& dir)
+{
+	Object* obj = new Object;
+	obj->AddComponent<Tomato>()->Init(position, dir);
+	copyObjectList->push_back(obj);
 }
 
 double Collider::GetDistance(VECTOR& pos1, VECTOR& pos2)

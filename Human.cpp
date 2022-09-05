@@ -112,10 +112,10 @@ void Human::Draw()
 	SetUseLighting(false);
 	MV1DrawModel(m_modelHandle);
 	// トマト描画
-	for (int i = 0; i < m_tomatos.size(); i++)
-	{
-		m_tomatos[i]->Draw();
-	}
+	//for (int i = 0; i < m_tomatos.size(); i++)
+	//{
+	//	m_tomatos[i]->Draw();
+	//}
 	SetUseLighting(true);
 	auto pos = m_pTransform->position;
 	int t = 0;
@@ -279,7 +279,7 @@ void Human::Input()
 
 	if (m_pParent->GetComponent<Collider>()->flag)
 	{
-		m_pTransform->position = VSub(m_pTransform->position, inputVec);
+		m_pTransform->position = VSub(m_pTransform->position, VScale(inputVec, 1.5f));
 		m_velocity = VGet(0.0f, 0.0f, 0.0f);
 	}
 	// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
@@ -287,8 +287,7 @@ void Human::Input()
 	{
 		//m_bulletNum--;
 		auto pos = m_pParent->GetComponent<Transform>()->position;
-		m_tomatos.push_back(new Tomato(pos, m_dir));
-
+		m_pParent->GetComponent<Collider>()->Shot(pos, m_dir);
 		//m_effect->PlayEffect(m_position);
 	}
 }

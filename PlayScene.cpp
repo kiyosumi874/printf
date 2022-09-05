@@ -84,7 +84,6 @@ PlayScene::PlayScene(const MODE& mode)
 
 
 	// iguchi
-	Collider* coll1,* coll2;
 	// playerを2つ生成
 	{
 		{
@@ -115,6 +114,9 @@ PlayScene::PlayScene(const MODE& mode)
 			int num = 0;
 			Object* obj = new Object;
 			auto enemy = obj->AddComponent<Enemy>();
+			obj->AddComponent<Collider>()->Init(&m_pObjectLists);
+			obj->AddComponent<Transform>();
+			obj->AddComponent<Tag>()->tag = ObjectTag::Enemy;
 			for (auto ob : m_pObjectLists)
 			{
 				enemy->SetPlayerPtr(ob);

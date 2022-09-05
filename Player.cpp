@@ -270,9 +270,10 @@ void Player::Input()
 	if (Input::IsDown1P(BUTTON_ID_R) && m_bulletNum > 0)
 	{
 		m_bulletNum--;
-		m_tomatos.push_back(new Tomato(m_position, m_dir));
+		//m_tomatos.push_back(new Tomato(m_position, m_dir));
+		
     
-    m_effect->PlayEffect(m_position);
+		m_effect->PlayEffect(m_position);
 	}
 
 	// トマトを限界まで持っていないとき、トマトの壁からトマトを回収
