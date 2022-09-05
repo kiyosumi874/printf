@@ -7,7 +7,9 @@ public:
 	Projector();				// コンストラクタ
 	~Projector();				// デストラクタ
 
+	void Start();
 	void Update()override;	// 更新処理.
+	void Draw();
 
 	// 初めに一回呼ぶセッター
 	void SetPlayerptr(class Transform* ptr);

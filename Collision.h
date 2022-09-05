@@ -1,4 +1,22 @@
 #pragma once
+#include "Component.h"
+#include "Tag.h"
+
+class Collider : public Component
+{
+public:
+	Collider();
+	~Collider();
+
+	void Update();
+	void CollisionCheck();
+	double GetDistance(VECTOR& pos1, VECTOR& pos2);
+	const bool& Getflag() const { return flag; }
+	const ObjectTag& GetTag()const { return tag; }
+private:
+	bool flag;
+	ObjectTag tag;
+};
 
 // Õ“Ëî•ñ
 struct CollisionInfo

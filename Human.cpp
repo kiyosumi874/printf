@@ -3,9 +3,13 @@
 #include "Object.h"
 #include "Transform.h"
 #include "Tag.h"
+#include "Collision.h"
+#include "ModelManager.h"
+#include "Tomato.h"
 
 Human::Human()
 	: m_rotateNow(false)
+	, m_moveFlag(false)
 {
 	m_pTransform = nullptr;
 	m_pTag = nullptr;
@@ -13,12 +17,41 @@ Human::Human()
 	m_modelHandle = MV1LoadModel("data/character/man1.mv1");
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);
 
+	// 3Dモデルの読み込み
+	//ModelManager* model = new ModelManager();
+	//srand(rand() % 100);
+	//int modelNum = rand() % MODEL_NUM;
+	//m_modelHandle = model->GetModelData(modelNum);
+	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
+
 	m_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_aimDir = m_dir;
+
+	// アニメーション準備
+	m_animType = Anim::Idle;
+	m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
+	m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
+	m_animTime = 0.0f;
 }
 
 Human::~Human()
 {
+	MV1DeleteModel(m_modelHandle);
+
+	for (int i = 0; i < m_tomatos.size(); i++)
+	{
+		if (!m_tomatos[i])
+		{
+			delete(m_tomatos[i]);
+		}
+		m_tomatos.erase(std::cbegin(m_tomatos) + i);
+		m_tomatos.shrink_to_fit();
+	}
+}
+
+void Human::Start()
+{
+	m_pParent->AddComponent<Collider>();
 }
 
 void Human::Update()
@@ -35,14 +68,11 @@ void Human::Update()
 	Input();	// 入力
 
 	// 移動処理
-	auto pos = m_pTransform->position;
-	pos = VAdd(pos, m_velocity);
+	m_pTransform->position;
+	m_pTransform->position = VAdd(m_pTransform->position, m_velocity);
 
 	// 3Dモデルのポジション設定
-	MV1SetPosition(m_modelHandle, pos);
-	
-	// 3Dモデルの大きさを設定
-	MV1SetScale(m_modelHandle, m_pTransform->scale);
+	MV1SetPosition(m_modelHandle, m_pTransform->position);
 
 	// 向きに合わせてモデルを回転
 	MATRIX rotYMat = MGetRotY(180.0f * DX_PI_F / 180.0f);
@@ -50,13 +80,49 @@ void Human::Update()
 
 	// モデルに回転をセットする
 	MV1SetRotationZYAxis(m_modelHandle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
+
+	// アニメーション処理
+	ChangeAnimation();
+	m_animTime += 0.3f;
+	if (m_animTime > m_animTotalTime)
+	{
+		m_animTime = 0.0f;
+	}
+	MV1SetAttachAnimTime(m_modelHandle, m_animIndex, m_animTime);
+
+	// トマト処理
+	for (int i = 0; i < m_tomatos.size(); i++)
+	{
+		m_tomatos[i]->Update();
+	}
+	for (int i = 0; i < m_tomatos.size(); i++)
+	{
+		// トマトの生存時間が5.0fを超えると削除
+		if (m_tomatos[i]->GetTime() > 1.0f)
+		{
+			delete(m_tomatos[i]);
+			m_tomatos.erase(std::cbegin(m_tomatos) + i);
+			m_tomatos.shrink_to_fit();
+		}
+	}
 }
 
 void Human::Draw()
 {
+	// 3Dモデルの描画
+	SetUseLighting(false);
 	MV1DrawModel(m_modelHandle);
+	// トマト描画
+	for (int i = 0; i < m_tomatos.size(); i++)
+	{
+		m_tomatos[i]->Draw();
+	}
+	SetUseLighting(true);
 	auto pos = m_pTransform->position;
-	DrawSphere3D(pos, 5.0f, 32, GetColor(255, 0, 0), GetColor(255, 255, 255), TRUE);
+	int t = 0;
+	auto collider = m_pParent->GetComponent<Collider>();
+	if (collider->Getflag()) { t = 1; }
+	printfDx("flag:%d\n", t);
 }
 
 void Human::Input()
@@ -73,28 +139,29 @@ void Human::Input()
 	bool input = false;		// 入力したか判定用
 
 	XINPUT_STATE inputState;
-	auto angle = m_pTransform->rotate.y;
+
+	m_moveFlag = false;
 
 	// 1Pの操作
-	if (m_pTag->tag == ObjectTag::Player1)
+	if (m_pTag->tag == ObjectTag::Player2)
 	{
 		// 入力状態を取得
 		GetJoypadXInputState(DX_INPUT_PAD2, &inputState);
 
 		if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
 		{
-			angle += 0.01f;
+			m_pTransform->rotate.y += 0.01f;
 		}
 		if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
 		{
-			angle -= 0.01f;
+			m_pTransform->rotate.y -= 0.01f;
 		}
 
 		// 前に進む
 		if (Input::IsPress2P(BUTTON_ID_UP))
 		{
-			front.x = sinf(angle);
-			front.z = cosf(angle);
+			front.x = sinf(m_pTransform->rotate.y);
+			front.z = cosf(m_pTransform->rotate.y);
 			inputVec = VAdd(front, inputVec);
 			input = true;
 		}
@@ -102,8 +169,8 @@ void Human::Input()
 		// 後ろに進む
 		if (Input::IsPress2P(BUTTON_ID_DOWN))
 		{
-			rear.x = sinf(angle) * -1.0f;
-			rear.z = cosf(angle) * -1.0f;
+			rear.x = sinf(m_pTransform->rotate.y) * -1.0f;
+			rear.z = cosf(m_pTransform->rotate.y) * -1.0f;
 			inputVec = VAdd(rear, inputVec);
 			input = true;
 		}
@@ -111,8 +178,8 @@ void Human::Input()
 		// 右に進む
 		if (Input::IsPress2P(BUTTON_ID_LEFT))
 		{
-			right.x = sinf(angle - addRad);
-			right.z = cosf(angle - addRad);
+			right.x = sinf(m_pTransform->rotate.y - addRad);
+			right.z = cosf(m_pTransform->rotate.y - addRad);
 			inputVec = VAdd(right, inputVec);
 			input = true;
 		}
@@ -120,33 +187,33 @@ void Human::Input()
 		// 左に進む
 		if (Input::IsPress2P(BUTTON_ID_RIGHT))
 		{
-			left.x = sinf(angle + addRad);
-			left.z = cosf(angle + addRad);
+			left.x = sinf(m_pTransform->rotate.y + addRad);
+			left.z = cosf(m_pTransform->rotate.y + addRad);
 			inputVec = VAdd(left, inputVec);
 			input = true;
 		}
 	}
 
 	// 2Pの操作
-	if (m_pTag->tag == ObjectTag::Player2)
+	if (m_pTag->tag == ObjectTag::Player1)
 	{
 		// 入力状態を取得
 		GetJoypadXInputState(DX_INPUT_PAD1, &inputState);
 
 		if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
 		{
-			angle += 0.01f;
+			m_pTransform->rotate.y += 0.01f;
 		}
 		if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
 		{
-			angle -= 0.01f;
+			m_pTransform->rotate.y -= 0.01f;
 		}
 
 		// 前に進む
 		if (Input::IsPress1P(BUTTON_ID_UP))
 		{
-			front.x = sinf(angle);
-			front.z = cosf(angle);
+			front.x = sinf(m_pTransform->rotate.y);
+			front.z = cosf(m_pTransform->rotate.y);
 			inputVec = VAdd(front, inputVec);
 			input = true;
 		}
@@ -154,8 +221,8 @@ void Human::Input()
 		// 後ろに進む
 		if (Input::IsPress1P(BUTTON_ID_DOWN))
 		{
-			rear.x = sinf(angle) * -1.0f;
-			rear.z = cosf(angle) * -1.0f;
+			rear.x = sinf(m_pTransform->rotate.y) * -1.0f;
+			rear.z = cosf(m_pTransform->rotate.y) * -1.0f;
 			inputVec = VAdd(rear, inputVec);
 			input = true;
 		}
@@ -163,8 +230,8 @@ void Human::Input()
 		// 右に進む
 		if (Input::IsPress1P(BUTTON_ID_LEFT))
 		{
-			right.x = sinf(angle - addRad);
-			right.z = cosf(angle - addRad);
+			right.x = sinf(m_pTransform->rotate.y - addRad);
+			right.z = cosf(m_pTransform->rotate.y - addRad);
 			inputVec = VAdd(right, inputVec);
 			input = true;
 		}
@@ -172,8 +239,8 @@ void Human::Input()
 		// 左に進む
 		if (Input::IsPress1P(BUTTON_ID_RIGHT))
 		{
-			left.x = sinf(angle + addRad);
-			left.z = cosf(angle + addRad);
+			left.x = sinf(m_pTransform->rotate.y + addRad);
+			left.z = cosf(m_pTransform->rotate.y + addRad);
 			inputVec = VAdd(left, inputVec);
 			input = true;
 		}
@@ -203,11 +270,22 @@ void Human::Input()
 		}
 
 		m_velocity = inputVec;
+		m_moveFlag = true;
 	}
 	else
 	{
 		m_velocity.x = m_velocity.x * 0.9f;
 		m_velocity.z = m_velocity.z * 0.9f;
+	}
+
+	// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
+	if (Input::IsDown1P(BUTTON_ID_R)/* && m_bulletNum > 0*/)
+	{
+		//m_bulletNum--;
+		auto pos = m_pParent->GetComponent<Transform>()->position;
+		m_tomatos.push_back(new Tomato(pos, m_dir));
+
+		//m_effect->PlayEffect(m_position);
 	}
 }
 
@@ -241,6 +319,29 @@ void Human::Rotate()
 			// 目標ベクトルに10度だけ近づえた角度
 			m_dir = interPolateDir;
 		}
+	}
+}
+
+void Human::ChangeAnimation()
+{
+	// アニメーション処理
+	if (!m_moveFlag && m_animType != Anim::Idle)  // 止まるアニメーション
+	{
+		m_animTime = 0.0f;
+		m_animType = Anim::Idle;
+		MV1DetachAnim(m_modelHandle, m_animIndex);
+		m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
+		m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
+		m_animTime = 0.0f;
+	}
+	else if (m_moveFlag && m_animType != Anim::Run)  // 走るアニメーション
+	{
+		m_animTime = 0.0f;
+		m_animType = Anim::Run;
+		MV1DetachAnim(m_modelHandle, m_animIndex);
+		m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
+		m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
+		m_animTime = 0.0f;
 	}
 }
 
