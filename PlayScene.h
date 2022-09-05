@@ -43,6 +43,7 @@ private:
 	void DrawTransitionEnd();
 
 	class TimeCount* m_timeCount;
+	class Image* m_startNumber[4];
 
 	class Map* m_map;  // Map
   

@@ -112,6 +112,21 @@ PlayScene::PlayScene(const MODE& mode)
 			}
 		}
 	}
+	// 最初のカウントダウン
+	{
+		Object* object = nullptr;
+		for (int i = 0; i < 4; i++)
+		{
+			std::string str = "data/Number/";
+			str += std::to_string(i);
+			str += ".png";
+			auto object = new Object;
+			m_startNumber[i] = object->AddComponent<Image>();
+			m_startNumber[i]->Init(VGet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0f), VGet(1.0f, 1.0f, 1.0f), 0.0, str.c_str());
+			m_startNumber[i]->IsDraw(false);
+			m_pObjectLists.push_back(object);
+		}
+	}
 	{
 		Object* object = new Object;
 		m_timeCount = object->AddComponent<TimeCount>();
@@ -247,6 +262,7 @@ void PlayScene::UpdateTransitionPlay()
 		{
 			isCount[0] = true;
 			// 音を出す(3)
+			m_startNumber[3]->IsDraw(true);
 			MyOutputDebugString("3\n");
 		}
 
@@ -254,6 +270,8 @@ void PlayScene::UpdateTransitionPlay()
 		{
 			isCount[1] = true;
 			// 音を出す(2)
+			m_startNumber[3]->IsDraw(false);
+			m_startNumber[2]->IsDraw(true);
 			MyOutputDebugString("2\n");
 		}
 
@@ -261,14 +279,17 @@ void PlayScene::UpdateTransitionPlay()
 		{
 			isCount[2] = true;
 			// 音を出す(1)
+			m_startNumber[2]->IsDraw(false);
+			m_startNumber[1]->IsDraw(true);
 			MyOutputDebugString("1\n");
 		}
 
 		if (m_timeCount->CheckCount() > 3.5)
 		{
 			// 音を出す(start)
-			m_timeCount->RestCount();
-			startCount = true;
+			
+			m_startNumber[1]->IsDraw(false);
+			m_startNumber[0]->IsDraw(true);
 			MyOutputDebugString("Start\n");
 
 			// 試合のタイマー開始
@@ -280,6 +301,13 @@ void PlayScene::UpdateTransitionPlay()
 					it->GetComponent<TimeCount>()->StartCount();
 				}
 			}
+		}
+
+		if (m_timeCount->CheckCount() > 4.5)
+		{
+			m_timeCount->RestCount();
+			startCount = true;
+			m_startNumber[0]->IsDraw(false);
 		}
 	}
 
