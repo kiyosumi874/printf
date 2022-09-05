@@ -3,7 +3,7 @@
 #include "Object.h"
 #include "Transform.h"
 #include "Tag.h"
-#include "Collision.h"
+#include "Collider.h"
 #include "ModelManager.h"
 #include "Tomato.h"
 
@@ -51,7 +51,6 @@ Human::~Human()
 
 void Human::Start()
 {
-	m_pParent->AddComponent<Collider>();
 }
 
 void Human::Update()
@@ -122,7 +121,7 @@ void Human::Draw()
 	int t = 0;
 	auto collider = m_pParent->GetComponent<Collider>();
 	if (collider->Getflag()) { t = 1; }
-	printfDx("flag:%d\n", t);
+	printfDx("x:%f y:%f z:%f flag:%d\n", pos.x, pos.y, pos.z, t);
 }
 
 void Human::Input()
@@ -278,6 +277,11 @@ void Human::Input()
 		m_velocity.z = m_velocity.z * 0.9f;
 	}
 
+	if (m_pParent->GetComponent<Collider>()->flag)
+	{
+		m_pTransform->position = VSub(m_pTransform->position, inputVec);
+		m_velocity = VGet(0.0f, 0.0f, 0.0f);
+	}
 	// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
 	if (Input::IsDown1P(BUTTON_ID_R)/* && m_bulletNum > 0*/)
 	{

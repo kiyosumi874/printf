@@ -1,6 +1,7 @@
 #pragma once
+#include "Component.h"
 
-class Tomato
+class Tomato : public Component
 {
 public:
 	Tomato(VECTOR& position, VECTOR& dir);   // コンストラクタ

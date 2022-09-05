@@ -6,6 +6,7 @@
 #include "DebugDraw.h"
 #include "Object.h"
 #include "Human.h"
+#include "Collider.h"
 #include "Projector.h"
 #include "Transform.h"
 #include "Tag.h"
@@ -78,24 +79,27 @@ PlayScene::PlayScene(const MODE& mode)
 
 
 	// iguchi
+	Collider* coll1,* coll2;
 	// playerを2つ生成
 	{
 		{
 			Object* obj = new Object;
-			auto p1 = obj->AddComponent<Human>();
 			auto trs = obj->AddComponent<Transform>();
 			trs->position = VGet(0.0f, 0.0f, 0.0f);
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Player1;
+			obj->AddComponent<Collider>()->Init(&m_pObjectLists);
+			auto p1 = obj->AddComponent<Human>();
 			m_pObjectLists.push_back(obj);
 		}
 		{
 			Object* obj = new Object;
-			auto p1 = obj->AddComponent<Human>();
 			auto trs = obj->AddComponent<Transform>();
 			trs->position = VGet(20.0f, 0.0f, 20.0f);
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Player2;
+			obj->AddComponent<Collider>()->Init(&m_pObjectLists);
+			auto p1 = obj->AddComponent<Human>();
 			m_pObjectLists.push_back(obj);
 		}
 	}

@@ -1,16 +1,23 @@
 #include "pch.h"
-#include "Collision.h"
+#include "Collider.h"
 #include "Object.h"
 #include "Transform.h"
+#include "Player.h"
 
 Collider::Collider()
 	: flag(false)
 	, tag(ObjectTag::End)
+	, width(0.0f)
 {
 }
 
 Collider::~Collider()
 {
+}
+
+void Collider::Init(std::list<Object*>* objectLists)
+{
+	copyObjectList = objectLists;
 }
 
 void Collider::Update()
@@ -22,7 +29,7 @@ void Collider::CollisionCheck()
 {
 	auto self = m_pParent;
 	auto selfPosition = self->GetComponent<Transform>()->position;
-	for (auto obj : m_pObjectLists)
+	for (auto obj : *copyObjectList)
 	{
 		if (self == obj) { continue; }	// 自分以外のオブジェクトと判定するため
 		Transform* trans = nullptr;
@@ -37,7 +44,7 @@ void Collider::CollisionCheck()
 			distance = distance * -1.0f;
 		}
 		// 範囲に入っているトマトの壁からトマトを回収
-		if (distance < 5.0f)
+		if (distance < 10.0f)
 		{
 			flag = true;
 			tag = obj->GetComponent<Tag>()->tag;

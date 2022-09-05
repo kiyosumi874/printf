@@ -57,5 +57,3 @@ public:
 		return buff;
 	}
 };
-
-static std::list<Object*>m_pObjectLists;
