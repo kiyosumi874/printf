@@ -3,8 +3,10 @@
 #include "Tomato.h"
 #include "TomatoWall.h"
 #include "ModelManager.h"
+#include "Object.h"
+#include "Transform.h"
 
-Enemy::Enemy(ObjectTag tag, VECTOR position)
+Enemy::Enemy()
 	: m_movePhaseTime(50)
 	, m_bulletNum(10)
 	, m_bulletCapacity(10)
@@ -16,7 +18,7 @@ Enemy::Enemy(ObjectTag tag, VECTOR position)
 	m_modelHandle = model->GetModelData(modelNum);
 	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
 
-	m_position = position;
+	m_position = VGet(0.0f, 0.0f, 0.0f);
 	m_velocity = VGet(1.0f, 1.0f, 1.0f);
 	m_dir = VGet(0.0f, 0.0f, 0.0f);
 	m_tomatoDir = VGet(0.0f, 0.0f, 0.0f);
@@ -88,7 +90,7 @@ void Enemy::Draw()
 	DrawFormatString(500, 0, GetColor(255, 255, 255), "EnemyBulletNum:%d", m_bulletNum);
 }
 
-void Enemy::SetPlayerPtr(GameObject* player)
+void Enemy::SetPlayerPtr(class Object* player)
 {
 	m_player.push_back(player);
 }
@@ -200,10 +202,11 @@ void Enemy::CheckTargetMovePattern()
 	int objectNum = 0;
 	float distance = 0;
 	float tmp = 0;
-	for (int i = 0; i < m_player.size(); i++)
+	int i = 0;
+	for (auto player : m_player)
 	{
 		// どのキャラクターが一番近いかを調べる
-		VECTOR gPos = m_player[i]->GetPosition();
+		VECTOR gPos = player->GetComponent<Transform>()->position;
 		tmp = GetDistance(gPos, m_position);
 
 		// tmpが負の値なら正の値に変える
@@ -229,6 +232,7 @@ void Enemy::CheckTargetMovePattern()
 				break;
 			}
 		}
+		i++;
 	}
 	if (m_moveType != Type::EscapeTarget)
 	{
@@ -247,9 +251,9 @@ void Enemy::CheckTargetMovePattern()
 
 // @detail ターゲットに合わせて動く処理
 // @param object ターゲットのゲームオブジェクト
-void Enemy::Move1Target(GameObject* object)
+void Enemy::Move1Target(class Object* player)
 {
-	VECTOR gPos = object->GetPosition();
+	VECTOR gPos = player->GetComponent<Transform>()->position;
 	double distance = GetDistance(gPos, m_position);
 
 	if (distance >= m_targetRangeMin && distance < m_targetRangeMax)  // この範囲に標的がいたら行動
@@ -310,7 +314,7 @@ void Enemy::Move1Target(GameObject* object)
 
 // @detail ターゲットが見つからないときの処理
 // @param object ターゲットのゲームオブジェクト
-void Enemy::Move2Target(GameObject* object)
+void Enemy::Move2Target(class Object* player)
 {
 	// 標的の方向に移動するか乱数決定
 	if (!m_aimTargetFlag && m_moveTime == 0)
@@ -333,7 +337,7 @@ void Enemy::Move2Target(GameObject* object)
 	// 標的に近づく
 	if (m_aimTargetFlag)
 	{
-		VECTOR gPos = object->GetPosition();
+		VECTOR gPos = player->GetComponent<Transform>()->position;
 		VECTOR moveVector = VGet(m_position.x + m_moveValue.x, m_position.y, m_position.z + m_moveValue.z);
 
 		if (gPos.x > m_position.x)
@@ -388,9 +392,9 @@ void Enemy::Move2Target(GameObject* object)
 }
 
 // @detail ターゲットから逃げる処理
-void Enemy::Move3Target(GameObject* object)
+void Enemy::Move3Target(class Object* player)
 {
-	VECTOR gPos = object->GetPosition();
+	VECTOR gPos = player->GetComponent<Transform>()->position;
 	
 	int objectNum = 0;
 	float distance = 0;

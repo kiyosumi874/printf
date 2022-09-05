@@ -5,6 +5,7 @@
 class Object
 {
 public:
+
 	Object(){}
 	~Object()
 	{
@@ -52,6 +53,7 @@ public:
 		T* buff = new T();
 		buff->m_pParent = this;
 		m_pComponentLists.push_back(buff);
+		buff->Start();
 		return buff;
 	}
 };

@@ -7,12 +7,14 @@ public:
 	Human();
 	~Human();
 
+	void Start();
 	void Update();
 	void Draw();
 
 private:
 	void Input();
 	void Rotate();
+	void ChangeAnimation();  // アニメーション変更処理
 
 	// 二つのベクトルの角度が同じか
 	bool IsNearAngle(const VECTOR& v1, const VECTOR& v2);
@@ -33,4 +35,18 @@ private:
 	//float m_angle;			//	視点回転角度
 
 	bool m_rotateNow;		// 回転中か判定用
+
+	enum Anim
+	{
+		Idle,
+		Run,
+	};
+
+	int m_animType;  // 現在のアニメーションが何か
+	int m_animIndex;  // 現在のアニメーションを記録
+	float m_animTime;  // アニメーションの経過時間
+	float m_animTotalTime;  // アニメーションの総時間
+	bool m_moveFlag;  // 動いているか
+
+	std::vector<class Tomato*> m_tomatos;
 };

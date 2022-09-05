@@ -6,6 +6,8 @@
 #include "DebugDraw.h"
 #include "Object.h"
 #include "Human.h"
+#include "Collider.h"
+#include "Projector.h"
 #include "Transform.h"
 #include "Tag.h"
 #include "TimeCount.h"
@@ -41,57 +43,108 @@ PlayScene::PlayScene(const MODE& mode)
   
 	m_pTomatoWall[0] = new TomatoWall(ObjectTag::TomatoWall, VGet(50.0f, 0.0f, 50.0f));
 	m_pTomatoWall[1] = new TomatoWall(ObjectTag::TomatoWall, VGet(150.0f, 0.0f, 150.0f));
-	m_pPlayer1P = new Player(ObjectTag::Player1, VGet(0.0f, 0.0f, 0.0f));
-	m_pCamera1P = new Camera(ObjectTag::Camera1, VGet(0.0f, 20.0f, 0.0f));
-	m_pPlayer2P = new Player(ObjectTag::Player2, VGet(50.0f, 0.0f, 50.0f));
-	m_pCamera2P = new Camera(ObjectTag::Camera2, VGet(0.0f, 20.0f, 0.0f));
-	m_pEnemy1 = new Enemy(ObjectTag::Enemy, VGet(50.0f, 0.0f, -50.0f));
-	m_pEnemy2 = new Enemy(ObjectTag::Enemy, VGet(-50.0f, 0.0f, 50.0f));
-
-	// カメラ
-	m_pCamera1P->SetPlayerptr(m_pPlayer1P);
-	m_pCamera2P->SetPlayerptr(m_pPlayer2P);
-	// プレイヤー
-	for (int i = 0; i < m_tomatoWallNum; i++)
-	{
-		m_pPlayer1P->SetTomatoWallPtr(m_pTomatoWall[i]);
-		m_pPlayer2P->SetTomatoWallPtr(m_pTomatoWall[i]);
-	}
-	// エネミー1
-	m_pEnemy1->SetPlayerPtr(m_pPlayer1P);
-	m_pEnemy1->SetPlayerPtr(m_pPlayer2P);
-	for (int i = 0; i < m_tomatoWallNum; i++)
-	{
-		m_pEnemy1->SetTomatoWallPtr(m_pTomatoWall[i]);
-	}
-	// エネミー2
-	m_pEnemy2->SetPlayerPtr(m_pPlayer1P);
-	m_pEnemy2->SetPlayerPtr(m_pPlayer2P);
-	for (int i = 0; i < m_tomatoWallNum; i++)
-	{
-		m_pEnemy2->SetTomatoWallPtr(m_pTomatoWall[i]);
-	}
 
 	for (int i = 0; i < m_tomatoWallNum; i++)
 	{
 		m_pGameObjects.push_back(m_pTomatoWall[i]);
 	}
-	m_pGameObjects.push_back(m_pEnemy1);
-	m_pGameObjects.push_back(m_pEnemy2);
-	m_pGameObjects.push_back(m_pPlayer1P);
-	m_pGameObjects.push_back(m_pPlayer2P);
-	m_pGameObjects.push_back(m_pCamera1P);
-	m_pGameObjects.push_back(m_pCamera2P);
 
-	Object* obj = new Object;
-	auto trs = obj->AddComponent<Transform>();
-	trs->position = VGet(5.0f, 0.0f, 0.0f);
-	trs->rotate = VGet(0.0f, 0.0f, 0.0f);
-	trs->scale = VGet(0.1f, 0.1f, 0.1f);
-	auto tag = obj->AddComponent<Tag>();
-	tag->tag = ObjectTag::Player1;
-	obj->AddComponent<Human>();
-	m_pObjectLists.push_back(obj);
+	// 以前の初期化
+	{
+	//m_pEnemy1 = new Enemy(ObjectTag::Enemy, VGet(50.0f, 0.0f, -50.0f));
+	//m_pEnemy2 = new Enemy(ObjectTag::Enemy, VGet(-50.0f, 0.0f, 50.0f));
+
+	// プレイヤー
+	//for (int i = 0; i < m_tomatoWallNum; i++)
+	//{
+	//	m_pPlayer1P->SetTomatoWallPtr(m_pTomatoWall[i]);
+	//	m_pPlayer2P->SetTomatoWallPtr(m_pTomatoWall[i]);
+	//}
+	// エネミー1
+	//m_pEnemy1->SetPlayerPtr(m_pPlayer2P);
+	//m_pEnemy1->SetPlayerPtr(m_pPlayer2P);
+	//for (int i = 0; i < m_tomatoWallNum; i++)
+	//{
+	//	m_pEnemy1->SetTomatoWallPtr(m_pTomatoWall[i]);
+	//}
+	// エネミー2
+	//m_pEnemy2->SetPlayerPtr(m_pPlayer2P);
+	//m_pEnemy2->SetPlayerPtr(m_pPlayer2P);
+	//for (int i = 0; i < m_tomatoWallNum; i++)
+	//{
+	//	m_pEnemy2->SetTomatoWallPtr(m_pTomatoWall[i]);
+	//}	
+	//m_pGameObjects.push_back(m_pEnemy1);
+	//m_pGameObjects.push_back(m_pEnemy2);
+	//m_pGameObjects.push_back(m_pPlayer1P);
+	//m_pGameObjects.push_back(m_pPlayer2P);
+	//m_pGameObjects.push_back(m_pCamera1P);
+	//m_pGameObjects.push_back(m_pCamera2P);
+	}
+
+
+	// iguchi
+	Collider* coll1,* coll2;
+	// playerを2つ生成
+	{
+		{
+			Object* obj = new Object;
+			auto trs = obj->AddComponent<Transform>();
+			trs->position = VGet(0.0f, 0.0f, 0.0f);
+			auto tag = obj->AddComponent<Tag>();
+			tag->tag = ObjectTag::Player1;
+			obj->AddComponent<Collider>()->Init(&m_pObjectLists);
+			auto p1 = obj->AddComponent<Human>();
+			m_pObjectLists.push_back(obj);
+		}
+		{
+			Object* obj = new Object;
+			auto trs = obj->AddComponent<Transform>();
+			trs->position = VGet(20.0f, 0.0f, 20.0f);
+			auto tag = obj->AddComponent<Tag>();
+			tag->tag = ObjectTag::Player2;
+			obj->AddComponent<Collider>()->Init(&m_pObjectLists);
+			auto p1 = obj->AddComponent<Human>();
+			m_pObjectLists.push_back(obj);
+		}
+	}
+	// enemyを生成
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			int num = 0;
+			Object* obj = new Object;
+			auto enemy = obj->AddComponent<Enemy>();
+			for (auto ob : m_pObjectLists)
+			{
+				enemy->SetPlayerPtr(ob);
+				num++;
+				if (num > 1) { break; }
+			}
+			for (int i = 0; i < m_tomatoWallNum; i++)
+			{
+				enemy->SetTomatoWallPtr(m_pTomatoWall[i]);
+			}
+			m_pObjectLists.push_back(obj);
+		}
+	}
+	//	cameraを2つ生成
+	{
+		int num = 0;
+		for (auto ob : m_pObjectLists)
+		{
+			Object* obj = new Object;
+			auto proj = obj->AddComponent<Projector>();
+			auto tag = obj->AddComponent<Tag>();
+			if (num == 0) { tag->tag = ObjectTag::Camera1; }
+			if (num == 1) { tag->tag = ObjectTag::Camera2; }
+			proj->SetPlayerptr(ob->GetComponent<Transform>());
+			m_pObjectLists.push_back(obj);
+			num++;
+			if (num > 1) { break; }
+		}
+	}
+
 
 	// kiyosumi
 	{
@@ -459,8 +512,6 @@ void PlayScene::DrawTransitionStart()
 	}
 	for (auto obj : m_pObjectLists)
 	{
-		//auto com = obj->
-		//if(com->tag != ObjectTag::Camera2)
 		obj->Draw();
 	}
 	static float x = 50.0f;
@@ -486,9 +537,15 @@ void PlayScene::DrawTransitionPlay()
 	}
 	for (auto obj : m_pObjectLists)
 	{
-		//auto com = obj->
-		//if(com->tag != ObjectTag::Camera2)
-		obj->Draw();
+		auto tag = obj->GetComponent<Tag>();
+		if (tag == nullptr)
+		{
+			obj->Draw();
+		}
+		else
+		{
+			if (tag->tag != ObjectTag::Camera2) { obj->Draw(); }
+		}
 	}
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
@@ -499,7 +556,15 @@ void PlayScene::DrawTransitionPlay()
 	}
 	for (auto obj : m_pObjectLists)
 	{
-		obj->Draw();
+		auto tag = obj->GetComponent<Tag>();
+		if (tag == nullptr) 
+		{ 
+			obj->Draw();
+		}
+		else
+		{
+			if (tag->tag != ObjectTag::Camera1) { obj->Draw(); }
+		}
 	}
 	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();
@@ -520,9 +585,15 @@ void PlayScene::DrawTransitionOver()
 	}
 	for (auto obj : m_pObjectLists)
 	{
-		//auto com = obj->
-		//if(com->tag != ObjectTag::Camera2)
-		obj->Draw();
+		auto tag = obj->GetComponent<Tag>();
+		if (tag == nullptr)
+		{
+			obj->Draw();
+		}
+		else
+		{
+			if (tag->tag != ObjectTag::Camera2) { obj->Draw(); }
+		}
 	}
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
@@ -533,7 +604,15 @@ void PlayScene::DrawTransitionOver()
 	}
 	for (auto obj : m_pObjectLists)
 	{
-		obj->Draw();
+		auto tag = obj->GetComponent<Tag>();
+		if (tag == nullptr)
+		{
+			obj->Draw();
+		}
+		else
+		{
+			if (tag->tag != ObjectTag::Camera1) { obj->Draw(); }
+		}
 	}
 	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();
@@ -550,9 +629,15 @@ void PlayScene::DrawTransitionEnd()
 	}
 	for (auto obj : m_pObjectLists)
 	{
-		//auto com = obj->
-		//if(com->tag != ObjectTag::Camera2)
-		obj->Draw();
+		auto tag = obj->GetComponent<Tag>();
+		if (tag == nullptr)
+		{
+			obj->Draw();
+		}
+		else
+		{
+			if (tag->tag != ObjectTag::Camera2) { obj->Draw(); }
+		}
 	}
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
@@ -563,7 +648,15 @@ void PlayScene::DrawTransitionEnd()
 	}
 	for (auto obj : m_pObjectLists)
 	{
-		obj->Draw();
+		auto tag = obj->GetComponent<Tag>();
+		if (tag == nullptr)
+		{
+			obj->Draw();
+		}
+		else
+		{
+			if (tag->tag != ObjectTag::Camera1) { obj->Draw(); }
+		}
 	}
 	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();

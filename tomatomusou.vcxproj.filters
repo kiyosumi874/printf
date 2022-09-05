@@ -63,7 +63,7 @@
     <ClCompile Include="TomatoWall.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
+    <ClCompile Include="Collider.cpp">
       <Filter>Collider</Filter>
     </ClCompile>
     <ClCompile Include="ModelManager.cpp" />
@@ -151,7 +151,7 @@
     <ClInclude Include="TomatoWall.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
+    <ClInclude Include="Collider.h">
       <Filter>Collider</Filter>
     </ClInclude>
     <ClInclude Include="ModelManager.h" />
