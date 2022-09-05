@@ -44,6 +44,7 @@ private:
 
 	class TimeCount* m_timeCount;
 	class Image* m_startNumber[4];
+	class Image* m_transitionImage[2];
 
 	class Map* m_map;  // Map
   

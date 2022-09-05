@@ -25,6 +25,11 @@ PlayScene::PlayScene(const MODE& mode)
 	, m_startBlendAdd(0.0f)
 	, m_graphHandleWhite(-1)
 {
+	for (int i = 0; i < 2; i++)
+	{
+		m_transitionImage[i] = nullptr;
+	}
+
 	m_map = new Map();
 
 	// このシーンで使うjsonファイルが読み込めたら
@@ -230,10 +235,23 @@ void PlayScene::UpdateTransitionStart()
 	{
 		obj->Update();
 	}
-	if (Input::IsDown1P(BUTTON_ID_START))
-	{
-		m_transition = Transition::OVER;
-	}
+	//if (Input::IsDown1P(BUTTON_ID_START))
+	//{
+	//	// トランジションの処理
+	//	m_transition = Transition::OVER;
+	//	{
+	//		Object* obj = new Object;
+	//		m_transitionImage[0] = obj->AddComponent<Image>();
+	//		m_transitionImage[0]->Init(VGet(SCREEN_WIDTH, 0.0f, 0.0f), VGet(1.0f, 1.0f, 1.0f), 0.0f, "data/transition.png");
+	//		m_pObjectLists.push_back(obj);
+	//	}
+	//	{
+	//		Object* obj = new Object;
+	//		m_transitionImage[1] = obj->AddComponent<Image>();
+	//		m_transitionImage[1]->Init(VGet(SCREEN_WIDTH * 1.5f, 0.0f, 0.0f), VGet(1.0f, 1.0f, 1.0f), 0.0f, "data/black.png");
+	//		m_pObjectLists.push_back(obj);
+	//	}
+	//}
 
 	if (Input::IsDown1P(BUTTON_ID_BACK))
 	{
@@ -348,6 +366,32 @@ void PlayScene::UpdateTransitionPlay()
 		}
 	}
 
+	// タイムアップ終了処理
+	// オブジェクトリストをなめる
+	for (const auto it : m_pObjectLists)
+	{
+		if (it->GetComponent<TimeUIController>() != nullptr)
+		{
+			if (it->GetComponent<TimeCount>()->CheckCount() > 180.0)
+			{
+				m_transition = Transition::OVER;
+				{
+					Object* obj = new Object;
+					m_transitionImage[0] = obj->AddComponent<Image>();
+					m_transitionImage[0]->Init(VGet(SCREEN_WIDTH, 0.0f, 0.0f), VGet(1.0f, 1.0f, 1.0f), 0.0f, "data/transition.png");
+					m_pObjectLists.push_back(obj);
+				}
+				{
+					Object* obj = new Object;
+					m_transitionImage[1] = obj->AddComponent<Image>();
+					m_transitionImage[1]->Init(VGet(SCREEN_WIDTH * 1.5f, 0.0f, 0.0f), VGet(1.0f, 1.0f, 1.0f), 0.0f, "data/black.png");
+					m_pObjectLists.push_back(obj);
+				}
+			}
+			break;
+		}
+	}
+
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
 		m_pGameObjects[i]->Update();
@@ -358,7 +402,21 @@ void PlayScene::UpdateTransitionPlay()
 	}
 	if (Input::IsDown1P(BUTTON_ID_START))
 	{
+
+		// トランジションの処理
 		m_transition = Transition::OVER;
+		{
+			Object* obj = new Object;
+			m_transitionImage[0] = obj->AddComponent<Image>();
+			m_transitionImage[0]->Init(VGet(SCREEN_WIDTH, 0.0f, 0.0f), VGet(1.0f, 1.0f, 1.0f), 0.0f, "data/transition.png");
+			m_pObjectLists.push_back(obj);
+		}
+		{
+			Object* obj = new Object;
+			m_transitionImage[1] = obj->AddComponent<Image>();
+			m_transitionImage[1]->Init(VGet(SCREEN_WIDTH * 1.5f, 0.0f, 0.0f), VGet(1.0f, 1.0f, 1.0f), 0.0f, "data/black.png");
+			m_pObjectLists.push_back(obj);
+		}
 
 	}
 
@@ -371,7 +429,20 @@ void PlayScene::UpdateTransitionPlay()
 
 void PlayScene::UpdateTransitionOver()
 {
-	m_tagScene = TAG_SCENE::TAG_OVER;
+	if (m_transitionImage[0] != nullptr)
+	{
+		m_transitionImage[0]->MovePos(VGet(-10.0f, 0.0f, 0.0f));
+		m_transitionImage[1]->MovePos(VGet(-10.0f, 0.0f, 0.0f));
+		if (m_transitionImage[0]->GetPos().x < -10.0f)
+		{
+			m_tagScene = TAG_SCENE::TAG_OVER;
+		}
+	}
+	else
+	{
+		m_tagScene = TAG_SCENE::TAG_OVER;
+	}
+	
 }
 
 void PlayScene::UpdateTransitionEnd()
