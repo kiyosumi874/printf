@@ -7,12 +7,14 @@ public:
 	Tomato();   // コンストラクタ
 	~Tomato();  // デストラクタ
 
-	void Init(VECTOR& position, VECTOR& dir);  // 位置と目標方向
+	void Init(VECTOR position, VECTOR dir, class Tag* tag);  // 位置と目標方向
 	void Update();  // 更新処理
 	void Draw();  // 描画処理
 
 	float GetTime();  // トマトを投げてからの時間を返す
 	VECTOR GetPosition() { return m_position; }
+
+	class Tag* m_tag;
 private:
 	void Move();  // 投げられた後の処理
 

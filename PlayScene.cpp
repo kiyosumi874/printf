@@ -82,7 +82,6 @@ PlayScene::PlayScene(const MODE& mode)
 	//m_pGameObjects.push_back(m_pCamera2P);
 	}
 
-
 	// iguchi
 	// playerを2つ生成
 	{
@@ -92,43 +91,47 @@ PlayScene::PlayScene(const MODE& mode)
 			trs->position = VGet(0.0f, 0.0f, 0.0f);
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Player1;
-			obj->AddComponent<Collider>()->Init(&m_pObjectLists);
+			auto collider = obj->AddComponent<Collider>();
+			collider->Init(&m_pObjectLists); collider->width = 10.0f;
 			auto p1 = obj->AddComponent<Human>();
 			m_pObjectLists.push_back(obj);
 		}
 		{
 			Object* obj = new Object;
 			auto trs = obj->AddComponent<Transform>();
-			trs->position = VGet(20.0f, 0.0f, 20.0f);
+			trs->position = VGet(50.0f, 0.0f, 50.0f);
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Player2;
-			obj->AddComponent<Collider>()->Init(&m_pObjectLists);
+			auto collider = obj->AddComponent<Collider>();
+			collider->Init(&m_pObjectLists); collider->width = 10.0f;
 			auto p1 = obj->AddComponent<Human>();
 			m_pObjectLists.push_back(obj);
 		}
 	}
 	// enemyを生成
 	{
-		for (int i = 0; i < 2; i++)
-		{
-			int num = 0;
-			Object* obj = new Object;
-			auto enemy = obj->AddComponent<Enemy>();
-			obj->AddComponent<Collider>()->Init(&m_pObjectLists);
-			obj->AddComponent<Transform>();
-			obj->AddComponent<Tag>()->tag = ObjectTag::Enemy;
-			for (auto ob : m_pObjectLists)
-			{
-				enemy->SetPlayerPtr(ob);
-				num++;
-				if (num > 1) { break; }
-			}
-			for (int i = 0; i < m_tomatoWallNum; i++)
-			{
-				enemy->SetTomatoWallPtr(m_pTomatoWall[i]);
-			}
-			m_pObjectLists.push_back(obj);
-		}
+		//for (int i = 0; i < 2; i++)
+		//{
+		//	int num = 0;
+		//	Object* obj = new Object;
+		//	auto collider = obj->AddComponent<Collider>();
+		//	collider->Init(&m_pObjectLists); collider->width = 10.0f;
+		//	auto pos = obj->AddComponent<Transform>();
+		//	pos->position.x = 100 * i; pos->position.z = 100 * i;
+		//	obj->AddComponent<Tag>()->tag = ObjectTag::Enemy;
+		//	auto enemy = obj->AddComponent<Enemy>();
+		//	for (auto ob : m_pObjectLists)
+		//	{
+		//		enemy->SetPlayerPtr(ob);
+		//		num++;
+		//		if (num > 1) { break; }
+		//	}
+		//	for (int i = 0; i < m_tomatoWallNum; i++)
+		//	{
+		//		enemy->SetTomatoWallPtr(m_pTomatoWall[i]);
+		//	}
+		//	m_pObjectLists.push_back(obj);
+		//}
 	}
 	//	cameraを2つ生成
 	{

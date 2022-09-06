@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "Tomato.h"
+#include "Object.h"
+#include "Transform.h"
+#include "Tag.h"
 
 // @detail コンストラクタ
 // @param position トマトを投げる人の位置
@@ -28,11 +31,16 @@ Tomato::~Tomato()
 	MV1DeleteModel(m_modelHandle);
 }
 
-void Tomato::Init(VECTOR& position, VECTOR& dir)
+//void Tomato::Init(VECTOR position, VECTOR dir)
+//{
+//}
+
+void Tomato::Init(VECTOR position, VECTOR dir, Tag* tag)
 {
 	m_position = position;
 	m_position = VAdd(m_position, VGet(0.0f, 15.0f, 0.0f));
 	m_dir = dir;
+	m_tag = tag;
 }
 
 // @detail 更新処理
@@ -41,6 +49,8 @@ void Tomato::Update()
 	Move();
 	m_position = VAdd(m_position, m_velocity);
 	MV1SetPosition(m_modelHandle, m_position);
+	auto pos = m_pParent->GetComponent<Transform>();
+	pos->position = m_position;
 }
 
 // @detail 描画処理

@@ -41,15 +41,20 @@ Enemy::~Enemy()
 {
 	MV1DeleteModel(m_modelHandle);
 
-	for (int i = 0; i < m_tomatos.size(); i++)
-	{
-		if (!m_tomatos[i])
-		{
-			delete(m_tomatos[i]);
-		}
-		m_tomatos.erase(std::cbegin(m_tomatos) + i);
-		m_tomatos.shrink_to_fit();
-	}
+	//for (int i = 0; i < m_tomatos.size(); i++)
+	//{
+	//	if (!m_tomatos[i])
+	//	{
+	//		delete(m_tomatos[i]);
+	//	}
+	//	m_tomatos.erase(std::cbegin(m_tomatos) + i);
+	//	m_tomatos.shrink_to_fit();
+	//}
+}
+
+void Enemy::Start()
+{
+	m_position = m_pParent->GetComponent<Transform>()->position;
 }
 
 void Enemy::Update()
@@ -72,6 +77,8 @@ void Enemy::Update()
 	MV1SetRotationXYZ(m_modelHandle, m_dir);
 
 	// 3Dモデルのポジション設定
+	auto pos = m_pParent->GetComponent<Transform>();
+	pos->position = m_position;
 	MV1SetPosition(m_modelHandle, m_position);
 }
 
@@ -81,11 +88,11 @@ void Enemy::Draw()
 	// 3Dモデルの描画
 	MV1DrawModel(m_modelHandle);
 
-	// トマト描画
-	for (int i = 0; i < m_tomatos.size(); i++)
-	{
-		m_tomatos[i]->Draw();
-	}
+	//// トマト描画
+	//for (int i = 0; i < m_tomatos.size(); i++)
+	//{
+	//	m_tomatos[i]->Draw();
+	//}
 	SetUseLighting(true);
 
 	DrawFormatString(500, 0, GetColor(255, 255, 255), "EnemyBulletNum:%d", m_bulletNum);
@@ -109,26 +116,26 @@ void Enemy::ProcessTomato()
 	if (m_shotTime > 100.0f && m_moveType == Type::AimTarget && m_bulletNum > 0)
 	{
 		//m_tomatos.push_back(new Tomato(m_position, m_tomatoDir));
-		m_pParent->GetComponent<Collider>()->Shot(m_position, m_tomatoDir);
+		m_pParent->GetComponent<Collider>()->Shot(m_position, m_tomatoDir, m_pParent->GetComponent<Tag>());
 		m_bulletNum--;
 		m_shotTime = 0.0f;
 	}
 
 	// トマト処理
-	for (int i = 0; i < m_tomatos.size(); i++)
-	{
-		m_tomatos[i]->Update();
-	}
-	for (int i = 0; i < m_tomatos.size(); i++)
-	{
-		// トマトの生存時間が5.0fを超えると削除
-		if (m_tomatos[i]->GetTime() > 1.0f)
-		{
-			delete(m_tomatos[i]);
-			m_tomatos.erase(std::cbegin(m_tomatos) + i);
-			m_tomatos.shrink_to_fit();
-		}
-	}
+	//for (int i = 0; i < m_tomatos.size(); i++)
+	//{
+	//	m_tomatos[i]->Update();
+	//}
+	//for (int i = 0; i < m_tomatos.size(); i++)
+	//{
+	//	// トマトの生存時間が5.0fを超えると削除
+	//	if (m_tomatos[i]->GetTime() > 1.0f)
+	//	{
+	//		delete(m_tomatos[i]);
+	//		m_tomatos.erase(std::cbegin(m_tomatos) + i);
+	//		m_tomatos.shrink_to_fit();
+	//	}
+	//}
 }
 
 // @detail 標的がいる方向に正面を向ける

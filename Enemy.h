@@ -11,6 +11,7 @@ public:
 	Enemy();				// コンストラクタ
 	~Enemy();				// デストラクタ
 
+	void Start()override;	// コンポーネント初期化処理.
 	void Update()override;	// 更新処理.
 	void Draw()override;	// 描画処理.
 

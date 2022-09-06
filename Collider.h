@@ -12,7 +12,7 @@ public:
 	void Init(std::list<Object*>* objectLists);		// シーンのオブジェクトリストを参照渡しでみる
 	void Update();
 	void CollisionCheck();
-	void Shot(VECTOR& position, VECTOR& dir);
+	void Shot(VECTOR position, VECTOR dir, Tag* tag);
 	double GetDistance(VECTOR& pos1, VECTOR& pos2);
 	const bool& Getflag() const { return flag; }
 	const ObjectTag& GetTag()const { return tag; }
