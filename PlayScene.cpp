@@ -14,6 +14,7 @@
 #include "Image.h"
 #include "TimeUIController.h"
 #include "Score.h"
+#include "TomatoUIContoroller.h"
 
 
 // いたっんおいてる定数.いつの日かまとめる
@@ -29,10 +30,12 @@ PlayScene::PlayScene(const MODE& mode)
 	, m_graphHandleWhite(-1)
 	, m_skyDomeHandle(-1)
 {
+	// skyDome生成
 	m_skyDomeHandle = MV1LoadModel("data/Skydome_T2/Dome_T201.pmx");
 	MV1SetScale(m_skyDomeHandle, VGet(1.0f, 1.0f, 1.0f));
 	MV1SetPosition(m_skyDomeHandle, VGet(0.0f, 0.0f, 0.0f));
 
+	// トランジション用の画像初期化
 	for (int i = 0; i < 2; i++)
 	{
 		m_transitionImage[i] = nullptr;
@@ -205,6 +208,18 @@ PlayScene::PlayScene(const MODE& mode)
 		m_timeCount = object->AddComponent<TimeCount>();
 		m_timeCount->StartCount();
 		m_pObjectLists.push_back(object);
+	}
+	// トマトUI(残段数)
+	{
+		Object* object = nullptr;
+		for (int i = 0; i < 2; i++)
+		{
+			object = new Object;
+			object->AddComponent<Transform>()->position = VGet((SCREEN_WIDTH + 50.0f) * i - 50.0f, 900.0f, 0.0f);
+			m_tomatoUICon[i] = object->AddComponent<TomatoUIController>();
+			m_pObjectLists.push_back(object);
+		}
+		
 	}
 	m_graphHandleWhite = LoadGraph("data/white.png");
 }
@@ -396,6 +411,9 @@ void PlayScene::UpdateTransitionPlay()
 			m_timeCount->RestCount();
 			startCount = true;
 			m_startNumber[0]->IsDraw(false);
+			// トマトUI開始
+			m_tomatoUICon[0]->CheckIsStart(0);
+			m_tomatoUICon[1]->CheckIsStart(1);
 		}
 	}
 

@@ -82,6 +82,9 @@
     <ClCompile Include="Score.cpp">
       <Filter>oriented</Filter>
     </ClCompile>
+    <ClCompile Include="TomatoUIContoroller.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -184,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="Score.h">
       <Filter>oriented</Filter>
+    </ClInclude>
+    <ClInclude Include="TomatoUIContoroller.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
