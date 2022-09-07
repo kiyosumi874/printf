@@ -14,14 +14,14 @@ Human::Human()
 	m_pTransform = nullptr;
 	m_pTag = nullptr;
 
-	m_modelHandle = MV1LoadModel("data/character/man1.mv1");
+	//m_modelHandle = MV1LoadModel("data/character/man1.mv1");
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);
 
 	// 3Dモデルの読み込み
-	//ModelManager* model = new ModelManager();
-	//srand(rand() % 100);
-	//int modelNum = rand() % MODEL_NUM;
-	//m_modelHandle = model->GetModelData(modelNum);
+	ModelManager* model = new ModelManager();
+	srand(rand() % 100);
+	int modelNum = rand() % MODEL_NUM;
+	m_modelHandle = model->GetModelData(modelNum);
 	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
 
 	m_dir = VGet(0.0f, 0.0f, 1.0f);
@@ -106,13 +106,7 @@ void Human::Draw()
 	// 3Dモデルの描画
 	SetUseLighting(false);
 	MV1DrawModel(m_modelHandle);
-	// トマト描画
-	//for (int i = 0; i < m_tomatos.size(); i++)
-	//{
-	//	m_tomatos[i]->Draw();
-	//}
 	SetUseLighting(true);
-	auto pos = m_pTransform->position;
 	int t = 0;
 	auto collider = m_pParent->GetComponent<Collider>();
 	if (collider->Getflag()) 
@@ -121,7 +115,6 @@ void Human::Draw()
 		if (collider->tag == ObjectTag::tomato) { t = 2; }
 		if (collider->tag == ObjectTag::Player2) { t = 3; }
 	}
-	printfDx("x:%f y:%f z:%f flag:%d\n", pos.x, pos.y, pos.z, t);
 }
 
 void Human::Input()

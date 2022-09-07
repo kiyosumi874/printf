@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "Human.h"
 #include "Tomato.h"
+#include "Score.h"
 
 Collider::Collider()
 	: flag(false)
@@ -59,6 +60,9 @@ void Collider::CollisionCheck()
 					continue;
 				}
 				// ここにカプセル化したスコア管理クラスを呼べばいいと思う
+				if (tag == ObjectTag::Player1) { Score::AddTeam1Score(); }
+				if (tag == ObjectTag::Player2) { Score::AddTeam2Score(); }
+				if (tag == ObjectTag::Enemy) { Score::AddTeam3Score(); }
 			}
 			flag = true;
 			break;

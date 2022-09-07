@@ -36,6 +36,8 @@ private:
 
 	bool m_rotateNow;		// ‰ñ“]’†‚©”»’è—p
 
+
+
 	enum Anim
 	{
 		Idle,
