@@ -31,7 +31,6 @@ private:
 	bool m_isStartBlendAdd;
 	float m_startBlendAdd;
 	int m_graphHandleWhite;
-	int m_skyDomeHandle;
 
 	void UpdateTransitionStart();
 	void UpdateTransitionPlay();

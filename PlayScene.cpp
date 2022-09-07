@@ -26,12 +26,7 @@ PlayScene::PlayScene(const MODE& mode)
 	, m_isStartBlendAdd(false)
 	, m_startBlendAdd(0.0f)
 	, m_graphHandleWhite(-1)
-	, m_skyDomeHandle(-1)
 {
-	m_skyDomeHandle = MV1LoadModel("data/Skydome_T2/Dome_T201.pmx");
-	MV1SetScale(m_skyDomeHandle, VGet(1.0f, 1.0f, 1.0f));
-	MV1SetPosition(m_skyDomeHandle, VGet(0.0f, 0.0f, 0.0f));
-
 	for (int i = 0; i < 2; i++)
 	{
 		m_transitionImage[i] = nullptr;
@@ -202,7 +197,6 @@ PlayScene::PlayScene(const MODE& mode)
 PlayScene::~PlayScene()
 {
 	DeleteGraph(m_graphHandleWhite);
-	MV1DeleteModel(m_skyDomeHandle);
 	delete m_pPlayer1P;
 	delete m_pCamera1P;
 	delete m_pPlayer2P;
@@ -249,6 +243,7 @@ void PlayScene::Draw()
 #ifdef _DEBUG
 	printfDx("PlayScene\n");
 #endif // _DEBUG
+
 	switch (m_transition)
 	{
 	case PlayScene::Transition::START:
@@ -510,7 +505,6 @@ void PlayScene::UpdateTransitionEnd()
 
 void PlayScene::DrawTransitionStart()
 {
-	MV1DrawModel(m_skyDomeHandle);
 	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
@@ -536,7 +530,6 @@ void PlayScene::DrawTransitionPlay()
 {
 	SetDrawArea(0, 0, 640, 960);
 	SetCameraScreenCenter(320.0f, 480.0f);
-	MV1DrawModel(m_skyDomeHandle);
 	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
@@ -556,7 +549,6 @@ void PlayScene::DrawTransitionPlay()
 	}
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
-	MV1DrawModel(m_skyDomeHandle);
 	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
@@ -586,7 +578,6 @@ void PlayScene::DrawTransitionOver()
 {
 	SetDrawArea(0, 0, 640, 960);
 	SetCameraScreenCenter(320.0f, 480.0f);
-	MV1DrawModel(m_skyDomeHandle);
 	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
@@ -606,7 +597,6 @@ void PlayScene::DrawTransitionOver()
 	}
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
-	MV1DrawModel(m_skyDomeHandle);
 	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
@@ -632,7 +622,6 @@ void PlayScene::DrawTransitionEnd()
 {
 	SetDrawArea(0, 0, 640, 960);
 	SetCameraScreenCenter(320.0f, 480.0f);
-	MV1DrawModel(m_skyDomeHandle);
 	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
@@ -652,7 +641,6 @@ void PlayScene::DrawTransitionEnd()
 	}
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
-	MV1DrawModel(m_skyDomeHandle);
 	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
