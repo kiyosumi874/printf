@@ -13,6 +13,7 @@ enum class ObjectTag : unsigned char
 	Player2Bullet,
 	Enemy,
 	EnemyBullet,
+	tomato,
 	TomatoWall,
 	Ground,
 	Camera1,

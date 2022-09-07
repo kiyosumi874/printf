@@ -13,6 +13,7 @@
 #include "TimeCount.h"
 #include "Image.h"
 #include "TimeUIController.h"
+#include "Score.h"
 
 
 // いたっんおいてる定数.いつの日かまとめる
@@ -87,9 +88,11 @@ PlayScene::PlayScene(const MODE& mode)
 	//m_pGameObjects.push_back(m_pCamera2P);
 	}
 
-
 	// iguchi
-	Collider* coll1,* coll2;
+	
+	// scoreクラスを初期化
+	Score::GetInstance();
+	
 	// playerを2つ生成
 	{
 		{
@@ -98,17 +101,19 @@ PlayScene::PlayScene(const MODE& mode)
 			trs->position = VGet(0.0f, 0.0f, 0.0f);
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Player1;
-			obj->AddComponent<Collider>()->Init(&m_pObjectLists);
+			auto collider = obj->AddComponent<Collider>();
+			collider->Init(&m_pObjectLists); collider->width = 10.0f;
 			auto p1 = obj->AddComponent<Human>();
 			m_pObjectLists.push_back(obj);
 		}
 		{
 			Object* obj = new Object;
 			auto trs = obj->AddComponent<Transform>();
-			trs->position = VGet(20.0f, 0.0f, 20.0f);
+			trs->position = VGet(50.0f, 0.0f, 50.0f);
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Player2;
-			obj->AddComponent<Collider>()->Init(&m_pObjectLists);
+			auto collider = obj->AddComponent<Collider>();
+			collider->Init(&m_pObjectLists); collider->width = 10.0f;
 			auto p1 = obj->AddComponent<Human>();
 			m_pObjectLists.push_back(obj);
 		}
@@ -119,6 +124,11 @@ PlayScene::PlayScene(const MODE& mode)
 		{
 			int num = 0;
 			Object* obj = new Object;
+			auto collider = obj->AddComponent<Collider>();
+			collider->Init(&m_pObjectLists); collider->width = 10.0f;
+			auto pos = obj->AddComponent<Transform>();
+			pos->position.x = 100 * i; pos->position.z = 100 * i;
+			obj->AddComponent<Tag>()->tag = ObjectTag::Enemy;
 			auto enemy = obj->AddComponent<Enemy>();
 			for (auto ob : m_pObjectLists)
 			{
@@ -220,6 +230,7 @@ PlayScene::~PlayScene()
 	}
 	m_pObjectLists.clear();
 	m_pGameObjects.clear();
+	Score::Terminate();
 }
 
 TAG_SCENE PlayScene::Update()
@@ -248,6 +259,7 @@ void PlayScene::Draw()
 {
 #ifdef _DEBUG
 	printfDx("PlayScene\n");
+	printfDx("T1:%d T2:%d T3:%d\n", Score::GetTeam1Score(), Score::GetTeam2Score(), Score::GetTeam3Score());
 #endif // _DEBUG
 	switch (m_transition)
 	{

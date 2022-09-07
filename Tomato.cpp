@@ -1,23 +1,25 @@
 #include "pch.h"
 #include "Tomato.h"
+#include "Object.h"
+#include "Transform.h"
+#include "Tag.h"
 
 // @detail コンストラクタ
 // @param position トマトを投げる人の位置
 // @param dir 投げる人の向き
-Tomato::Tomato(VECTOR& position, VECTOR& dir)
+Tomato::Tomato()
 {
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);  // 速さはまだ0
 	m_startVelocity = VGet(20.0f, 1.0f, 20.0f);
 	m_modelHandle = MV1LoadModel("data/Tomato/Tomato.mv1");
-	m_position = position;
-	m_position = VAdd(m_position, VGet(0.0f, 15.0f, 0.0f));
+	m_position = VGet(0.0f,0.0f,0.0f);
 
 	m_time = 0.0f;
 	m_gravity = 9.80665f;  // 平均重力
 	m_deg = 30.0f;
 	m_rad = m_deg * (DX_PI_F / 180.0f);
 
-	m_dir = dir;
+	m_dir = VGet(0.0f, 0.0f, 0.0f);
 
 	// サイズ調整
 	MV1SetScale(m_modelHandle, VGet(0.02f,0.02f,0.02f));
@@ -29,12 +31,26 @@ Tomato::~Tomato()
 	MV1DeleteModel(m_modelHandle);
 }
 
+//void Tomato::Init(VECTOR position, VECTOR dir)
+//{
+//}
+
+void Tomato::Init(VECTOR position, VECTOR dir, Tag* tag)
+{
+	m_position = position;
+	m_position = VAdd(m_position, VGet(0.0f, 15.0f, 0.0f));
+	m_dir = dir;
+	m_tag = tag;
+}
+
 // @detail 更新処理
 void Tomato::Update()
 {
 	Move();
 	m_position = VAdd(m_position, m_velocity);
 	MV1SetPosition(m_modelHandle, m_position);
+	auto pos = m_pParent->GetComponent<Transform>();
+	pos->position = m_position;
 }
 
 // @detail 描画処理

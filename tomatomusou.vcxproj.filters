@@ -79,6 +79,9 @@
     <ClCompile Include="TimeUIController.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Score.cpp">
+      <Filter>oriented</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -173,14 +176,14 @@
     <ClInclude Include="Projector.h">
       <Filter>oriented</Filter>
     </ClInclude>
-    <ClInclude Include="ColliderManager.h">
-      <Filter>oriented</Filter>
-    </ClInclude>
     <ClInclude Include="TimeCount.h">
       <Filter>System</Filter>
     </ClInclude>
     <ClInclude Include="TimeUIController.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Score.h">
+      <Filter>oriented</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

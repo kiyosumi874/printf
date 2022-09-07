@@ -14,14 +14,14 @@ Human::Human()
 	m_pTransform = nullptr;
 	m_pTag = nullptr;
 
-	m_modelHandle = MV1LoadModel("data/character/man1.mv1");
+	//m_modelHandle = MV1LoadModel("data/character/man1.mv1");
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);
 
 	// 3Dモデルの読み込み
-	//ModelManager* model = new ModelManager();
-	//srand(rand() % 100);
-	//int modelNum = rand() % MODEL_NUM;
-	//m_modelHandle = model->GetModelData(modelNum);
+	ModelManager* model = new ModelManager();
+	srand(rand() % 100);
+	int modelNum = rand() % MODEL_NUM;
+	m_modelHandle = model->GetModelData(modelNum);
 	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
 
 	m_dir = VGet(0.0f, 0.0f, 1.0f);
@@ -89,11 +89,6 @@ void Human::Update()
 	}
 	MV1SetAttachAnimTime(m_modelHandle, m_animIndex, m_animTime);
 
-	// トマト処理
-	for (int i = 0; i < m_tomatos.size(); i++)
-	{
-		m_tomatos[i]->Update();
-	}
 	for (int i = 0; i < m_tomatos.size(); i++)
 	{
 		// トマトの生存時間が5.0fを超えると削除
@@ -111,17 +106,15 @@ void Human::Draw()
 	// 3Dモデルの描画
 	SetUseLighting(false);
 	MV1DrawModel(m_modelHandle);
-	// トマト描画
-	for (int i = 0; i < m_tomatos.size(); i++)
-	{
-		m_tomatos[i]->Draw();
-	}
 	SetUseLighting(true);
-	auto pos = m_pTransform->position;
 	int t = 0;
 	auto collider = m_pParent->GetComponent<Collider>();
-	if (collider->Getflag()) { t = 1; }
-	printfDx("x:%f y:%f z:%f flag:%d\n", pos.x, pos.y, pos.z, t);
+	if (collider->Getflag()) 
+	{ 
+		if (collider->tag == ObjectTag::Enemy) { t = 1; }
+		if (collider->tag == ObjectTag::tomato) { t = 2; }
+		if (collider->tag == ObjectTag::Player2) { t = 3; }
+	}
 }
 
 void Human::Input()
@@ -142,7 +135,7 @@ void Human::Input()
 	m_moveFlag = false;
 
 	// 1Pの操作
-	if (m_pTag->tag == ObjectTag::Player2)
+	if (m_pTag->tag == ObjectTag::Player1)
 	{
 		// 入力状態を取得
 		GetJoypadXInputState(DX_INPUT_PAD2, &inputState);
@@ -191,10 +184,19 @@ void Human::Input()
 			inputVec = VAdd(left, inputVec);
 			input = true;
 		}
+
+		// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
+		if (Input::IsDown2P(BUTTON_ID_R)/* && m_bulletNum > 0*/)
+		{
+			//m_bulletNum--;
+			auto pos = m_pParent->GetComponent<Transform>()->position;
+			m_pParent->GetComponent<Collider>()->Shot(pos, m_dir, m_pParent->GetComponent<Tag>());
+			//m_effect->PlayEffect(m_position);
+		}
 	}
 
 	// 2Pの操作
-	if (m_pTag->tag == ObjectTag::Player1)
+	if (m_pTag->tag == ObjectTag::Player2)
 	{
 		// 入力状態を取得
 		GetJoypadXInputState(DX_INPUT_PAD1, &inputState);
@@ -243,6 +245,15 @@ void Human::Input()
 			inputVec = VAdd(left, inputVec);
 			input = true;
 		}
+
+		// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
+		if (Input::IsDown1P(BUTTON_ID_R)/* && m_bulletNum > 0*/)
+		{
+			//m_bulletNum--;
+			auto pos = m_pParent->GetComponent<Transform>()->position;
+			m_pParent->GetComponent<Collider>()->Shot(pos, m_dir, m_pParent->GetComponent<Tag>());
+			//m_effect->PlayEffect(m_position);
+		}
 	}
 
 	// 入力有（加速）・入力無（減速）
@@ -279,17 +290,8 @@ void Human::Input()
 
 	if (m_pParent->GetComponent<Collider>()->flag)
 	{
-		m_pTransform->position = VSub(m_pTransform->position, inputVec);
+		m_pTransform->position = VSub(m_pTransform->position, VScale(inputVec, 2.5f));
 		m_velocity = VGet(0.0f, 0.0f, 0.0f);
-	}
-	// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
-	if (Input::IsDown1P(BUTTON_ID_R)/* && m_bulletNum > 0*/)
-	{
-		//m_bulletNum--;
-		auto pos = m_pParent->GetComponent<Transform>()->position;
-		m_tomatos.push_back(new Tomato(pos, m_dir));
-
-		//m_effect->PlayEffect(m_position);
 	}
 }
 
