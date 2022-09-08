@@ -74,7 +74,6 @@ private:
 	// ポインタ
 	std::vector<class Object*> m_player;  // エネミークラスにに情報を渡したいプレイヤー
 	std::vector<TomatoWall*> m_tomatoWall;  // トマトの壁オブジェクトを格納する
-	std::vector<Tomato*> m_tomatos;  // 投げたトマトを確保
 
 	// 関数
 	void CheckMovePattern();  // 行動パターンをチェックして実行する
