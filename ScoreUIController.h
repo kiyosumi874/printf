@@ -1,8 +1,8 @@
 //----------------------------------------
-// @file TomatoUIController.h
-// @brief 残段数のUI
+// @file ScoreUIController.h
+// @brief スコアのUI
 // @author shiihara_kiyosumi
-// @date 2022_09_08
+// @date 2022_09_10
 //----------------------------------------
 
 // 多重インクルード防止
@@ -11,10 +11,8 @@
 // ヘッダーファイルのインクルード
 #include "Component.h"
 
-// 定数
-const int cTomatoMax = 10;
 
-class TomatoUIController : public Component
+class ScoreUIController : public Component
 {
 public:
 
@@ -36,11 +34,11 @@ public:
 
 private:
 
-	void AdjustTomato(const int index);
+	void AdjustScore();
 
-	class Image* m_tomatoUI[cTomatoMax];
+	class Image* m_scoreUI[4][10]; // 4桁 0から9
 	class Transform* m_transform;
 
 	bool m_isStart;
-	int m_index; // 1 or 0 (1だったら1P,0だったら2PのUIということ)
+	int m_index; // 0 or 1 or 2 (0だったら1P,1だったら2PのUIということ)
 };

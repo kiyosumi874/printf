@@ -191,6 +191,7 @@
     <ClCompile Include="RapidJson.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Score.cpp" />
+    <ClCompile Include="ScoreUIController.cpp" />
     <ClCompile Include="TimeCount.cpp" />
     <ClCompile Include="TimeUIController.cpp" />
     <ClCompile Include="TitleScene.cpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Score.h" />
+    <ClInclude Include="ScoreUIController.h" />
     <ClInclude Include="Tag.h" />
     <ClInclude Include="TimeCount.h" />
     <ClInclude Include="TimeUIController.h" />
