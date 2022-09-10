@@ -85,6 +85,12 @@
     <ClCompile Include="TomatoUIContoroller.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="ResultScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticHuman.cpp">
+      <Filter>oriented</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -190,6 +196,12 @@
     </ClInclude>
     <ClInclude Include="TomatoUIContoroller.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticHuman.h">
+      <Filter>oriented</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
