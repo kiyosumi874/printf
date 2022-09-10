@@ -14,6 +14,7 @@
 #include "Image.h"
 #include "TimeUIController.h"
 #include "Score.h"
+#include "TomatoUIContoroller.h"
 
 
 // いたっんおいてる定数.いつの日かまとめる
@@ -29,10 +30,12 @@ PlayScene::PlayScene(const MODE& mode)
 	, m_graphHandleWhite(-1)
 	, m_skyDomeHandle(-1)
 {
+	// skyDome生成
 	m_skyDomeHandle = MV1LoadModel("data/Skydome_T2/Dome_T201.pmx");
 	MV1SetScale(m_skyDomeHandle, VGet(1.0f, 1.0f, 1.0f));
 	MV1SetPosition(m_skyDomeHandle, VGet(0.0f, 0.0f, 0.0f));
 
+	// トランジション用の画像初期化
 	for (int i = 0; i < 2; i++)
 	{
 		m_transitionImage[i] = nullptr;
@@ -46,13 +49,11 @@ PlayScene::PlayScene(const MODE& mode)
 		m_map->GroundCreate();  // 床を生成
 		//m_map->PlayerCreate();  // プレイヤーを生成
 	}
-  
-	m_pTomatoWall[0] = new TomatoWall(ObjectTag::TomatoWall, VGet(50.0f, 0.0f, 50.0f));
-	m_pTomatoWall[1] = new TomatoWall(ObjectTag::TomatoWall, VGet(150.0f, 0.0f, 150.0f));
 
 	for (int i = 0; i < m_tomatoWallNum; i++)
 	{
-		m_pGameObjects.push_back(m_pTomatoWall[i]);
+		auto tomato = new TomatoWall(ObjectTag::TomatoWall, VGet(30.0f * i + 1, 0.0f, 30.0f * i + 1));
+		m_pGameObjects.push_back(tomato);
 	}
 
 	// 以前の初期化
@@ -104,6 +105,7 @@ PlayScene::PlayScene(const MODE& mode)
 			auto collider = obj->AddComponent<Collider>();
 			collider->Init(&m_pObjectLists); collider->width = 10.0f;
 			auto p1 = obj->AddComponent<Human>();
+			p1->SetTomatoWallPtr(&m_pGameObjects);
 			m_pObjectLists.push_back(obj);
 		}
 		{
@@ -114,7 +116,8 @@ PlayScene::PlayScene(const MODE& mode)
 			tag->tag = ObjectTag::Player2;
 			auto collider = obj->AddComponent<Collider>();
 			collider->Init(&m_pObjectLists); collider->width = 10.0f;
-			auto p1 = obj->AddComponent<Human>();
+			auto p2 = obj->AddComponent<Human>();
+			p2->SetTomatoWallPtr(&m_pGameObjects);
 			m_pObjectLists.push_back(obj);
 		}
 	}
@@ -136,9 +139,9 @@ PlayScene::PlayScene(const MODE& mode)
 				num++;
 				if (num > 1) { break; }
 			}
-			for (int i = 0; i < m_tomatoWallNum; i++)
+			for (int i = 0; i < m_pGameObjects.size(); i++)
 			{
-				enemy->SetTomatoWallPtr(m_pTomatoWall[i]);
+				enemy->SetTomatoWallPtr(m_pGameObjects[i]);
 			}
 			m_pObjectLists.push_back(obj);
 		}
@@ -206,6 +209,18 @@ PlayScene::PlayScene(const MODE& mode)
 		m_timeCount->StartCount();
 		m_pObjectLists.push_back(object);
 	}
+	// トマトUI(残段数)
+	{
+		Object* object = nullptr;
+		for (int i = 0; i < 2; i++)
+		{
+			object = new Object;
+			object->AddComponent<Transform>()->position = VGet((SCREEN_WIDTH + 50.0f) * i - 50.0f, 900.0f, 0.0f);
+			m_tomatoUICon[i] = object->AddComponent<TomatoUIController>();
+			m_pObjectLists.push_back(object);
+		}
+		
+	}
 	m_graphHandleWhite = LoadGraph("data/white.png");
 }
 
@@ -213,15 +228,9 @@ PlayScene::~PlayScene()
 {
 	DeleteGraph(m_graphHandleWhite);
 	MV1DeleteModel(m_skyDomeHandle);
-	delete m_pPlayer1P;
-	delete m_pCamera1P;
-	delete m_pPlayer2P;
-	delete m_pCamera2P;
-	delete m_pEnemy1;
-	delete m_pEnemy2;
-	for (int i = 0; i < m_tomatoWallNum; i++)
+	for (auto obj : m_pGameObjects)
 	{
-		delete m_pTomatoWall[i];
+		delete obj;
 	}
 	delete m_map;
 	for (auto obj : m_pObjectLists)
@@ -396,6 +405,9 @@ void PlayScene::UpdateTransitionPlay()
 			m_timeCount->RestCount();
 			startCount = true;
 			m_startNumber[0]->IsDraw(false);
+			// トマトUI開始
+			m_tomatoUICon[0]->CheckIsStart(0);
+			m_tomatoUICon[1]->CheckIsStart(1);
 		}
 	}
 

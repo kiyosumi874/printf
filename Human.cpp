@@ -6,10 +6,14 @@
 #include "Collider.h"
 #include "ModelManager.h"
 #include "Tomato.h"
+#include "TomatoWall.h"
+#include "Score.h"
 
 Human::Human()
 	: m_rotateNow(false)
 	, m_moveFlag(false)
+	, m_bulletNum(10)
+	, m_bulletCapacity(10)
 {
 	m_pTransform = nullptr;
 	m_pTag = nullptr;
@@ -37,16 +41,6 @@ Human::Human()
 Human::~Human()
 {
 	MV1DeleteModel(m_modelHandle);
-
-	for (int i = 0; i < m_tomatos.size(); i++)
-	{
-		if (!m_tomatos[i])
-		{
-			delete(m_tomatos[i]);
-		}
-		m_tomatos.erase(std::cbegin(m_tomatos) + i);
-		m_tomatos.shrink_to_fit();
-	}
 }
 
 void Human::Start()
@@ -88,17 +82,6 @@ void Human::Update()
 		m_animTime = 0.0f;
 	}
 	MV1SetAttachAnimTime(m_modelHandle, m_animIndex, m_animTime);
-
-	for (int i = 0; i < m_tomatos.size(); i++)
-	{
-		// トマトの生存時間が5.0fを超えると削除
-		if (m_tomatos[i]->GetTime() > 1.0f)
-		{
-			delete(m_tomatos[i]);
-			m_tomatos.erase(std::cbegin(m_tomatos) + i);
-			m_tomatos.shrink_to_fit();
-		}
-	}
 }
 
 void Human::Draw()
@@ -115,6 +98,11 @@ void Human::Draw()
 		if (collider->tag == ObjectTag::tomato) { t = 2; }
 		if (collider->tag == ObjectTag::Player2) { t = 3; }
 	}
+}
+
+void Human::SetTomatoWallPtr(std::vector<TomatoWall*>* tomatoWall)
+{
+	m_tomatoWall = tomatoWall;
 }
 
 void Human::Input()
@@ -186,13 +174,21 @@ void Human::Input()
 		}
 
 		// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
-		if (Input::IsDown2P(BUTTON_ID_R)/* && m_bulletNum > 0*/)
+		if (Input::IsDown2P(BUTTON_ID_R) && m_bulletNum > 0)
 		{
-			//m_bulletNum--;
+			m_bulletNum--;
 			auto pos = m_pParent->GetComponent<Transform>()->position;
 			m_pParent->GetComponent<Collider>()->Shot(pos, m_dir, m_pParent->GetComponent<Tag>());
 			//m_effect->PlayEffect(m_position);
 		}
+
+		// トマトを限界まで持っていないとき、トマトの壁からトマトを回収
+		if (Input::IsDown2P(BUTTON_ID_B) && m_bulletNum < m_bulletCapacity)
+		{
+			TomatoCollect();
+		}
+
+		Score::Set1PBulletNum(m_bulletNum);
 	}
 
 	// 2Pの操作
@@ -247,13 +243,21 @@ void Human::Input()
 		}
 
 		// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
-		if (Input::IsDown1P(BUTTON_ID_R)/* && m_bulletNum > 0*/)
+		if (Input::IsDown1P(BUTTON_ID_R) && m_bulletNum > 0)
 		{
-			//m_bulletNum--;
+			m_bulletNum--;
 			auto pos = m_pParent->GetComponent<Transform>()->position;
 			m_pParent->GetComponent<Collider>()->Shot(pos, m_dir, m_pParent->GetComponent<Tag>());
 			//m_effect->PlayEffect(m_position);
 		}
+
+		// トマトを限界まで持っていないとき、トマトの壁からトマトを回収
+		if (Input::IsDown1P(BUTTON_ID_B) && m_bulletNum < m_bulletCapacity)
+		{
+			TomatoCollect();
+		}
+
+		Score::Set2PBulletNum(m_bulletNum);
 	}
 
 	// 入力有（加速）・入力無（減速）
@@ -290,8 +294,8 @@ void Human::Input()
 
 	if (m_pParent->GetComponent<Collider>()->flag)
 	{
-		m_pTransform->position = VSub(m_pTransform->position, VScale(inputVec, 2.5f));
-		m_velocity = VGet(0.0f, 0.0f, 0.0f);
+		//m_pTransform->position = VSub(m_pTransform->position, VScale(inputVec, 2.5f));
+		//m_velocity = VGet(0.0f, 0.0f, 0.0f);
 	}
 }
 
@@ -349,6 +353,45 @@ void Human::ChangeAnimation()
 		m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
 		m_animTime = 0.0f;
 	}
+}
+
+void Human::TomatoCollect()
+{
+	int objectNum = 0;
+	float distance = 0;
+	int i = 0;
+	auto pos = m_pParent->GetComponent<Transform>()->position;
+	for (auto tomatowall : *m_tomatoWall)
+	{
+		// その壁にトマトはあるのか
+		if (tomatowall[i].GetAllTomatoNum() != 0)
+		{
+			// どのトマトの壁かを調べる
+			VECTOR gPos = tomatowall[i].GetPosition();
+			distance = GetDistance(gPos, pos);
+
+			// 距離が負の値なら正の値に変える
+			if (distance < 0.0f)
+			{
+				distance = distance * -1.0f;
+			}
+		}
+
+		// 範囲に入っているトマトの壁からトマトを回収
+		if (distance < tomatowall[i].GetWidthDistance())
+		{
+			m_bulletNum++;
+			tomatowall[i].DecreaseAllTomatoNum();
+			break;
+		}
+	}
+}
+
+double Human::GetDistance(VECTOR& pos1, VECTOR& pos2)
+{
+	double tmp1 = pos1.x - pos2.x;
+	double tmp2 = pos1.z - pos2.z;
+	return sqrt(tmp1 * tmp1 + tmp2 * tmp2);
 }
 
 bool Human::IsNearAngle(const VECTOR& v1, const VECTOR& v2)

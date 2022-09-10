@@ -1,9 +1,5 @@
 #pragma once
 class GameObject;
-class TomatoWall;
-class Player;
-class Enemy;
-class Camera;
 
 class PlayScene : public Scene
 {
@@ -47,18 +43,12 @@ private:
 	class Image* m_startNumber[4];
 	class Image* m_transitionImage[2];
 
+	class TomatoUIController* m_tomatoUICon[2];
+
 	class Map* m_map;  // Map
   
-	std::vector<GameObject*>m_pGameObjects;
+	std::vector<class TomatoWall*>m_pGameObjects;
 	//std::list<class Object*>m_pObjectLists;
 
 	const int m_tomatoWallNum = 2;
-
-	TomatoWall* m_pTomatoWall[2];
-	Player* m_pPlayer1P;
-	Player* m_pPlayer2P;
-	Camera* m_pCamera1P;
-	Camera* m_pCamera2P;
-	Enemy* m_pEnemy1;
-	Enemy* m_pEnemy2;
 };
