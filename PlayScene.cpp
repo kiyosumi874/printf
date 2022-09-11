@@ -228,7 +228,7 @@ PlayScene::PlayScene(const MODE& mode)
 		for (int i = 0; i < 3; i++)
 		{
 			object = new Object;
-			object->AddComponent<Transform>()->position = VGet(400 * i, 0.0f, 0.0f);
+			object->AddComponent<Transform>()->position = VGet(450 * i, 0.0f, 0.0f);
 			m_scoreUICon[i] = object->AddComponent<ScoreUIController>();
 			m_pObjectLists.push_back(object);
 		}
