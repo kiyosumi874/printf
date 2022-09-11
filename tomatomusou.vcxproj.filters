@@ -87,6 +87,11 @@
     </ClCompile>
     <ClCompile Include="ScoreUIController.cpp">
       <Filter>GameObject</Filter>
+    <ClCompile Include="ResultScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticHuman.cpp">
+      <Filter>oriented</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +201,11 @@
     </ClInclude>
     <ClInclude Include="ScoreUIController.h">
       <Filter>GameObject</Filter>
+    <ClInclude Include="ResultScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticHuman.h">
+      <Filter>oriented</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
