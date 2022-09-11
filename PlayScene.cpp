@@ -15,6 +15,7 @@
 #include "TimeUIController.h"
 #include "Score.h"
 #include "TomatoUIContoroller.h"
+#include "ScoreUIController.h"
 
 
 // いたっんおいてる定数.いつの日かまとめる
@@ -178,7 +179,7 @@ PlayScene::PlayScene(const MODE& mode)
 				str += ".png";
 				object = new Object;
 				object->AddComponent<TimeCount>();
-				auto img = object->AddComponent<Image>(); 
+				auto img = object->AddComponent<Image>();
 				img->Init(VGet(SCREEN_WIDTH / 2 + x, SCREEN_HEIGHT, 1.0f), VGet(1.0f, 1.0f, 1.0f), 0.0, str.c_str());
 				img->IsDraw(false);
 
@@ -220,6 +221,17 @@ PlayScene::PlayScene(const MODE& mode)
 			m_pObjectLists.push_back(object);
 		}
 		
+	}
+	// ScoreUI
+	{
+		Object* object = nullptr;
+		for (int i = 0; i < 3; i++)
+		{
+			object = new Object;
+			object->AddComponent<Transform>()->position = VGet(400 * i, 0.0f, 0.0f);
+			m_scoreUICon[i] = object->AddComponent<ScoreUIController>();
+			m_pObjectLists.push_back(object);
+		}
 	}
 	m_graphHandleWhite = LoadGraph("data/white.png");
 }

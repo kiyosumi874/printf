@@ -85,6 +85,8 @@
     <ClCompile Include="TomatoUIContoroller.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="ScoreUIController.cpp">
+      <Filter>GameObject</Filter>
     <ClCompile Include="ResultScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -197,6 +199,8 @@
     <ClInclude Include="TomatoUIContoroller.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="ScoreUIController.h">
+      <Filter>GameObject</Filter>
     <ClInclude Include="ResultScene.h">
       <Filter>Scene</Filter>
     </ClInclude>

@@ -3,6 +3,7 @@
 #include "Object.h"
 #include "Image.h"
 #include "Transform.h"
+#include "Score.h"
 
 void TomatoUIController::Start()
 {
@@ -52,14 +53,50 @@ void TomatoUIController::Draw()
 void TomatoUIController::AdjustTomato(const int index)
 {
 	// 1Pの残段数
-	if (index == 0)
-	{
-
-	}
-
-	// 2Pの残段数
 	if (index == 1)
 	{
 
+		if (cTomatoMax >= Score::Get1PBulletNum())
+		{
+			for (int i = 0; i < cTomatoMax; i++)
+			{
+				m_tomatoUI[i]->IsDraw(false);
+			}
+			for (int i = 0; i < Score::Get1PBulletNum(); i++)
+			{
+				m_tomatoUI[i]->IsDraw(true);
+			}
+		}
+		else
+		{
+			for (int i = 0; i < cTomatoMax; i++)
+			{
+				m_tomatoUI[i]->IsDraw(true);
+			}
+		}
+		
+	}
+
+	// 2Pの残段数
+	if (index == 0)
+	{
+		if (cTomatoMax >= Score::Get2pBulletNum())
+		{
+			for (int i = 0; i < cTomatoMax; i++)
+			{
+				m_tomatoUI[i]->IsDraw(false);
+			}
+			for (int i = 0; i < Score::Get2pBulletNum(); i++)
+			{
+				m_tomatoUI[i]->IsDraw(true);
+			}
+		}
+		else
+		{
+			for (int i = 0; i < cTomatoMax; i++)
+			{
+				m_tomatoUI[i]->IsDraw(true);
+			}
+		}
 	}
 }

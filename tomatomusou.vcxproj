@@ -192,6 +192,7 @@
     <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Score.cpp" />
+    <ClCompile Include="ScoreUIController.cpp" />
     <ClCompile Include="StaticHuman.cpp" />
     <ClCompile Include="TimeCount.cpp" />
     <ClCompile Include="TimeUIController.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Score.h" />
+    <ClInclude Include="ScoreUIController.h" />
     <ClInclude Include="StaticHuman.h" />
     <ClInclude Include="Tag.h" />
     <ClInclude Include="TimeCount.h" />

@@ -44,6 +44,7 @@ private:
 	class Image* m_transitionImage[2];
 
 	class TomatoUIController* m_tomatoUICon[2];
+	class ScoreUIController* m_scoreUICon[3];
 
 	class Map* m_map;  // Map
   
