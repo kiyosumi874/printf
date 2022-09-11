@@ -1,237 +1,79 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="DebugDraw.cpp" />
+    <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Fps.cpp" />
+    <ClCompile Include="GameClearScene.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
+    <ClCompile Include="Human.cpp" />
+    <ClCompile Include="Image.cpp" />
+    <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="TitleScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="GameClearScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="GameOverScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Fps.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugDraw.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="RapidJson.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>Map</Filter>
-    </ClCompile>
-    <ClCompile Include="Image.cpp">
-      <Filter>Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Ground.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Tomato.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Effect.cpp">
-      <Filter>Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="TomatoWall.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>Collider</Filter>
-    </ClCompile>
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="ModelManager.cpp" />
-    <ClCompile Include="Human.cpp">
-      <Filter>oriented</Filter>
-    </ClCompile>
-    <ClCompile Include="Projector.cpp">
-      <Filter>oriented</Filter>
-    </ClCompile>
-    <ClCompile Include="TimeCount.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="TimeUIController.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Score.cpp">
-      <Filter>oriented</Filter>
-    </ClCompile>
-    <ClCompile Include="TomatoUIContoroller.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreUIController.cpp">
-      <Filter>GameObject</Filter>
-    <ClCompile Include="ResultScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="StaticHuman.cpp">
-      <Filter>oriented</Filter>
-    </ClCompile>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="Projector.cpp" />
+    <ClCompile Include="RapidJson.cpp" />
+    <ClCompile Include="ResultScene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Score.cpp" />
+    <ClCompile Include="ScoreUIController.cpp" />
+    <ClCompile Include="StaticHuman.cpp" />
+    <ClCompile Include="TimeCount.cpp" />
+    <ClCompile Include="TimeUIController.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="Tomato.cpp" />
+    <ClCompile Include="TomatoUIContoroller.cpp" />
+    <ClCompile Include="TomatoWall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
-    <ClInclude Include="TitleScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="GameClearScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="GameOverScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Common.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="Fps.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugDraw.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="RapidJson.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>Map</Filter>
-    </ClInclude>
-    <ClInclude Include="Image.h">
-      <Filter>Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Ground.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectTag.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Tomato.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Effect.h">
-      <Filter>Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="TomatoWall.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider.h">
-      <Filter>Collider</Filter>
-    </ClInclude>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="DebugDraw.h" />
+    <ClInclude Include="Effect.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Fps.h" />
+    <ClInclude Include="GameClearScene.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameOverScene.h" />
+    <ClInclude Include="Human.h" />
+    <ClInclude Include="Image.h" />
+    <ClInclude Include="Ground.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="ModelManager.h" />
-    <ClInclude Include="Object.h">
-      <Filter>oriented</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>oriented</Filter>
-    </ClInclude>
-    <ClInclude Include="Human.h">
-      <Filter>oriented</Filter>
-    </ClInclude>
-    <ClInclude Include="Tag.h">
-      <Filter>oriented</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>oriented</Filter>
-    </ClInclude>
-    <ClInclude Include="Projector.h">
-      <Filter>oriented</Filter>
-    </ClInclude>
-    <ClInclude Include="TimeCount.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="TimeUIController.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Score.h">
-      <Filter>oriented</Filter>
-    </ClInclude>
-    <ClInclude Include="TomatoUIContoroller.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreUIController.h">
-      <Filter>GameObject</Filter>
-    <ClInclude Include="ResultScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="StaticHuman.h">
-      <Filter>oriented</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="System">
-      <UniqueIdentifier>{c018f60c-6df8-4e19-b2dd-7b9d94cc198b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{1c4348a1-0f8c-4451-9c4b-4542482783ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Map">
-      <UniqueIdentifier>{82bfb0c1-25c9-4eff-949e-764a4421569f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Image">
-      <UniqueIdentifier>{452fd9d5-300e-48cf-ab42-1f7d9c75f4ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject">
-      <UniqueIdentifier>{7b9389a2-2441-43d5-b6a5-801cb874ef4f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Effect">
-      <UniqueIdentifier>{b1ea0e36-0045-4a4a-871f-aa30bf8b0a1f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Collider">
-      <UniqueIdentifier>{323895cb-8e37-480e-b1cb-9ec3b46c1869}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="oriented">
-      <UniqueIdentifier>{4a416e5e-5839-4c8b-abcd-e9852ad1ba31}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="ObjectTag.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="Projector.h" />
+    <ClInclude Include="RapidJson.h" />
+    <ClInclude Include="ResultScene.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Score.h" />
+    <ClInclude Include="ScoreUIController.h" />
+    <ClInclude Include="StaticHuman.h" />
+    <ClInclude Include="Tag.h" />
+    <ClInclude Include="TimeCount.h" />
+    <ClInclude Include="TimeUIController.h" />
+    <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="Tomato.h" />
+    <ClInclude Include="TomatoUIContoroller.h" />
+    <ClInclude Include="TomatoWall.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
 </Project>
