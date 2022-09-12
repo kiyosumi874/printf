@@ -40,11 +40,11 @@ void StaticHuman::Update()
 	MV1SetPosition(m_modelHandle, m_pParent->GetComponent<Transform>()->position);
 
 	// 向きに合わせてモデルを回転
-	MATRIX rotYMat = MGetRotY(180.0f * DX_PI_F / 180.0f);
-	VECTOR negativeVec = VTransform(m_dir, rotYMat);
+	//MATRIX rotYMat = MGetRotY(180.0f * DX_PI_F / 180.0f);
+	//VECTOR negativeVec = VTransform(m_dir, rotYMat);
 
 	// モデルに回転をセットする
-	MV1SetRotationZYAxis(m_modelHandle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
+	//MV1SetRotationZYAxis(m_modelHandle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
 
 	// アニメーション処理
 	m_animTime += 0.3f;

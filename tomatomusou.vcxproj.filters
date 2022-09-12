@@ -34,6 +34,8 @@
     <ClCompile Include="Tomato.cpp" />
     <ClCompile Include="TomatoUIContoroller.cpp" />
     <ClCompile Include="TomatoWall.cpp" />
+    <ClCompile Include="StillProjector.cpp" />
+    <ClCompile Include="Rank.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -75,5 +77,7 @@
     <ClInclude Include="TomatoUIContoroller.h" />
     <ClInclude Include="TomatoWall.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="StillProjector.h" />
+    <ClInclude Include="Rank.h" />
   </ItemGroup>
 </Project>
