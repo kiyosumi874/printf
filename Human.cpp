@@ -96,14 +96,6 @@ void Human::Draw()
 	SetUseLighting(false);
 	MV1DrawModel(m_modelHandle);
 	SetUseLighting(true);
-	int t = 0;
-	auto collider = m_pParent->GetComponent<Collider>();
-	if (collider->Getflag()) 
-	{ 
-		if (collider->tag == ObjectTag::Team3) { t = 1; }
-		if (collider->tag == ObjectTag::tomato) { t = 2; }
-		if (collider->tag == ObjectTag::Team2) { t = 3; }
-	}
 }
 
 void Human::SetTomatoWallPtr(std::vector<TomatoWall*>* tomatoWall)
@@ -136,11 +128,11 @@ void Human::Input()
 
 		if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
 		{
-			m_pTransform->rotate.y += 0.01f;
+			m_pTransform->rotate.y += 0.02f;
 		}
 		if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
 		{
-			m_pTransform->rotate.y -= 0.01f;
+			m_pTransform->rotate.y -= 0.02f;
 		}
 
 		// 前に進む
@@ -205,11 +197,11 @@ void Human::Input()
 
 		if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
 		{
-			m_pTransform->rotate.y += 0.01f;
+			m_pTransform->rotate.y += 0.02f;
 		}
 		if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
 		{
-			m_pTransform->rotate.y -= 0.01f;
+			m_pTransform->rotate.y -= 0.02f;
 		}
 
 		// 前に進む

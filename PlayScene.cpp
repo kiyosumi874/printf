@@ -648,7 +648,9 @@ void PlayScene::UpdateTransitionEnd()
 void PlayScene::DrawTransitionStart()
 {
 	DrawSkyDome();
+#ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
+#endif // _DEBUG
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
 		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2 || m_pGameObjects[i]->GetTag() != ObjectTag::Camera1) { m_pGameObjects[i]->Draw(); }
@@ -674,7 +676,9 @@ void PlayScene::DrawTransitionPlay()
 	SetDrawArea(0, 0, 640, 960);
 	SetCameraScreenCenter(320.0f, 480.0f);
 	DrawSkyDome();
+#ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
+#endif // _DEBUG
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
 		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2) { m_pGameObjects[i]->Draw(); }
@@ -694,7 +698,9 @@ void PlayScene::DrawTransitionPlay()
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
 	DrawSkyDome();
+#ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
+#endif // _DEBUG
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
 		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera1) { m_pGameObjects[i]->Draw(); }
@@ -724,7 +730,9 @@ void PlayScene::DrawTransitionOver()
 	SetDrawArea(0, 0, 640, 960);
 	SetCameraScreenCenter(320.0f, 480.0f);	
 	DrawSkyDome();
+#ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
+#endif // _DEBUG
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
 		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2) { m_pGameObjects[i]->Draw(); }
@@ -744,7 +752,9 @@ void PlayScene::DrawTransitionOver()
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
 	DrawSkyDome();
+#ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
+#endif // _DEBUG
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
 		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera1) { m_pGameObjects[i]->Draw(); }
@@ -770,7 +780,9 @@ void PlayScene::DrawTransitionEnd()
 	SetDrawArea(0, 0, 640, 960);
 	SetCameraScreenCenter(320.0f, 480.0f);
 	DrawSkyDome();
+#ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
+#endif // _DEBUG
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
 		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2) { m_pGameObjects[i]->Draw(); }
@@ -790,7 +802,9 @@ void PlayScene::DrawTransitionEnd()
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
 	DrawSkyDome();
+#ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
+#endif // _DEBUG
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
 		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera1) { m_pGameObjects[i]->Draw(); }
