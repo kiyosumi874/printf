@@ -6,3 +6,5 @@ void InitSkyDome();
 
 
 void DrawSkyDome();
+
+void RotateSkyDome();

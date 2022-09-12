@@ -208,11 +208,20 @@ PlayScene::PlayScene(const MODE& mode)
 		for (int i = 0; i < 4; i++)
 		{
 			std::string str = "data/Number/";
-			str += std::to_string(i);
+			int num = 0;
+			if (i == 0)
+			{
+				str += "Go";
+				num = -201 + 67;
+			}
+			else
+			{
+				str += std::to_string(i);
+			}
 			str += ".png";
 			auto object = new Object;
 			m_startNumber[i] = object->AddComponent<Image>();
-			m_startNumber[i]->Init(VGet(SCREEN_WIDTH / 2 - 67, SCREEN_HEIGHT / 2, 1.0f), VGet(1.0f, 1.0f, 1.0f), 0.0, str.c_str());
+			m_startNumber[i]->Init(VGet(SCREEN_WIDTH / 2 - 67 + num, SCREEN_HEIGHT / 2, 1.0f), VGet(1.0f, 1.0f, 1.0f), 0.0, str.c_str());
 			m_startNumber[i]->IsDraw(false);
 			m_pObjectLists.push_back(object);
 		}
@@ -268,6 +277,7 @@ PlayScene::~PlayScene()
 
 TAG_SCENE PlayScene::Update()
 {
+	RotateSkyDome();
 	switch (m_transition)
 	{
 	case PlayScene::Transition::START:

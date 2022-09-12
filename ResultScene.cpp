@@ -47,6 +47,7 @@ ResultScene::~ResultScene()
 
 TAG_SCENE ResultScene::Update()
 {
+	RotateSkyDome();
 	switch (m_transition)
 	{
 	case ResultScene::Transition::START:
