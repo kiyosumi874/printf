@@ -26,6 +26,5 @@ private:
 	Transition m_transition;
 	TAG_SCENE m_tagScene;
 	class Image* m_transitionImage[2];
-
-	int m_skyDomeHandle;
+	class ScoreUIController* m_scoreUICon[3];
 };

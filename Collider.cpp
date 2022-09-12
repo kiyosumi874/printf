@@ -60,9 +60,9 @@ void Collider::CollisionCheck()
 					continue;
 				}
 				// ここにカプセル化したスコア管理クラスを呼べばいいと思う
-				if (tag == ObjectTag::Player1) { Score::AddTeam1Score(); }
-				if (tag == ObjectTag::Player2) { Score::AddTeam2Score(); }
-				if (tag == ObjectTag::Enemy) { Score::AddTeam3Score(); }
+				if (tag == ObjectTag::Team1) { Score::AddTeam1Score(); }
+				if (tag == ObjectTag::Team2) { Score::AddTeam2Score(); }
+				if (tag == ObjectTag::Team3) { Score::AddTeam3Score(); }
 			}
 			flag = true;
 			break;

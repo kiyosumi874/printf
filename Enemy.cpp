@@ -12,12 +12,6 @@ Enemy::Enemy()
 	, m_bulletNum(10)
 	, m_bulletCapacity(10)
 {
-	// 3Dƒ‚ƒfƒ‹‚Ì“Ç‚Ýž‚Ý
-	ModelManager* model = new ModelManager();
-	srand(rand() % 100);
-	int modelNum = rand() % MODEL_NUM;
-	m_modelHandle = model->GetModelData(modelNum);
-	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
 
 	m_position = VGet(0.0f, 0.0f, 0.0f);
 	m_velocity = VGet(1.0f, 1.0f, 1.0f);
@@ -54,6 +48,12 @@ Enemy::~Enemy()
 
 void Enemy::Start()
 {
+	// 3Dƒ‚ƒfƒ‹‚Ì“Ç‚Ýž‚Ý
+	auto tag = m_pParent->GetComponent<Tag>();
+	if (tag->tag == ObjectTag::Team1) { m_modelHandle = MV1LoadModel("data/character/man1.mv1"); }
+	if (tag->tag == ObjectTag::Team2) { m_modelHandle = MV1LoadModel("data/character/man3.mv1"); }
+	if (tag->tag == ObjectTag::Team3) { m_modelHandle = MV1LoadModel("data/character/woman2.mv1"); }
+	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
 	m_position = m_pParent->GetComponent<Transform>()->position;
 	MV1SetPosition(m_modelHandle, m_position);
 }

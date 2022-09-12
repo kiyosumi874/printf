@@ -2,18 +2,11 @@
 #include "StaticHuman.h"
 #include "Object.h"
 #include "Transform.h"
-#include "ModelManager.h"
+#include "Tag.h"
 
 StaticHuman::StaticHuman()
 {
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);
-
-	// 3Dモデルの読み込み
-	ModelManager model;
-	srand(rand() % 100);
-	int modelNum = rand() % MODEL_NUM;
-	m_modelHandle = model.GetModelData(modelNum);
-	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
 
 	m_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_aimDir = m_dir;
@@ -32,19 +25,22 @@ StaticHuman::~StaticHuman()
 
 void StaticHuman::Start()
 {
+	// 3Dモデルの読み込み
+	auto tag = m_pParent->GetComponent<Tag>();
+	if (tag->tag == ObjectTag::Team1) { m_modelHandle = MV1LoadModel("data/character/man1.mv1"); }
+	if (tag->tag == ObjectTag::Team2) { m_modelHandle = MV1LoadModel("data/character/man3.mv1"); }
+	if (tag->tag == ObjectTag::Team3) { m_modelHandle = MV1LoadModel("data/character/woman2.mv1"); }
+	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
+	// 3Dモデルのポジション設定
+	auto pos = m_pParent->GetComponent<Transform>();
+	MV1SetPosition(m_modelHandle, pos->position);
 }
 
 void StaticHuman::Update()
 {
 	// 3Dモデルのポジション設定
-	MV1SetPosition(m_modelHandle, m_pParent->GetComponent<Transform>()->position);
-
-	// 向きに合わせてモデルを回転
-	//MATRIX rotYMat = MGetRotY(180.0f * DX_PI_F / 180.0f);
-	//VECTOR negativeVec = VTransform(m_dir, rotYMat);
-
-	// モデルに回転をセットする
-	//MV1SetRotationZYAxis(m_modelHandle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
+	auto pos = m_pParent->GetComponent<Transform>();
+	MV1SetPosition(m_modelHandle, pos->position);
 
 	// アニメーション処理
 	m_animTime += 0.3f;

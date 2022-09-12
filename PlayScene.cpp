@@ -95,7 +95,7 @@ PlayScene::PlayScene(const MODE& mode)
 			auto trs = obj->AddComponent<Transform>();
 			trs->position = VGet(50.0f, 0.0f, -50.0f);
 			auto tag = obj->AddComponent<Tag>();
-			tag->tag = ObjectTag::Player1;
+			tag->tag = ObjectTag::Team1;
 			auto collider = obj->AddComponent<Collider>();
 			collider->Init(&m_pObjectLists); collider->width = 10.0f;
 			auto p1 = obj->AddComponent<Human>();
@@ -107,7 +107,7 @@ PlayScene::PlayScene(const MODE& mode)
 			auto trs = obj->AddComponent<Transform>();
 			trs->position = VGet(-50.0f, 0.0f, -50.0f);
 			auto tag = obj->AddComponent<Tag>();
-			tag->tag = ObjectTag::Player2;
+			tag->tag = ObjectTag::Team2;
 			auto collider = obj->AddComponent<Collider>();
 			collider->Init(&m_pObjectLists); collider->width = 10.0f;
 			auto p2 = obj->AddComponent<Human>();
@@ -117,27 +117,64 @@ PlayScene::PlayScene(const MODE& mode)
 	}
 	// enemyを生成
 	{
-		for (int i = 0; i < 2; i++)
+		Object* obj = new Object;
+		auto collider = obj->AddComponent<Collider>();
+		collider->Init(&m_pObjectLists); collider->width = 10.0f;
+		auto pos = obj->AddComponent<Transform>();
+		pos->position.x = -10; pos->position.z = 50.0f;
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
+		auto enemy1 = obj->AddComponent<Enemy>();
+		for (int i = 0; i < m_pGameObjects.size(); i++)
 		{
-			int num = 0;
-			Object* obj = new Object;
-			auto collider = obj->AddComponent<Collider>();
-			collider->Init(&m_pObjectLists); collider->width = 10.0f;
-			auto pos = obj->AddComponent<Transform>();
-			pos->position.x = 100 * i; pos->position.z = 100 * i;
-			obj->AddComponent<Tag>()->tag = ObjectTag::Enemy;
-			auto enemy = obj->AddComponent<Enemy>();
-			for (auto ob : m_pObjectLists)
-			{
-				enemy->SetPlayerPtr(ob);
-				num++;
-				if (num > 1) { break; }
-			}
-			for (int i = 0; i < m_pGameObjects.size(); i++)
-			{
-				enemy->SetTomatoWallPtr(m_pGameObjects[i]);
-			}
-			m_pObjectLists.push_back(obj);
+			enemy1->SetTomatoWallPtr(m_pGameObjects[i]);
+		}
+
+		m_pObjectLists.push_back(obj);
+		obj = new Object;
+		auto collider2 = obj->AddComponent<Collider>();
+		collider2->Init(&m_pObjectLists); collider2->width = 10.0f;
+		auto pos2 = obj->AddComponent<Transform>();
+		pos2->position.x = 10; pos2->position.z = 50.0f;
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
+		auto enemy2 = obj->AddComponent<Enemy>();
+		for (int i = 0; i < m_pGameObjects.size(); i++)
+		{
+			enemy2->SetTomatoWallPtr(m_pGameObjects[i]);
+		}
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto collider3 = obj->AddComponent<Collider>();
+		collider3->Init(&m_pObjectLists); collider3->width = 10.0f;
+		auto pos3 = obj->AddComponent<Transform>();
+		pos3->position = VGet(60.0f, 0.0f, -50.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
+		auto enemy3 = obj->AddComponent<Enemy>();
+		for (int i = 0; i < m_pGameObjects.size(); i++)
+		{
+			enemy3->SetTomatoWallPtr(m_pGameObjects[i]);
+		}
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto collider4 = obj->AddComponent<Collider>();
+		collider4->Init(&m_pObjectLists); collider4->width = 10.0f;
+		auto pos4 = obj->AddComponent<Transform>();
+		pos4->position = VGet(-60.0f, 0.0f, -50.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
+		auto enemy4 = obj->AddComponent<Enemy>();
+		for (int i = 0; i < m_pGameObjects.size(); i++)
+		{
+			enemy4->SetTomatoWallPtr(m_pGameObjects[i]);
+		}
+		m_pObjectLists.push_back(obj);
+
+		for (auto ob : m_pObjectLists)
+		{
+			auto tag = ob->GetComponent<Tag>();
+			if (tag->tag != ObjectTag::Team1) { enemy3->SetPlayerPtr(ob); }
+			if (tag->tag != ObjectTag::Team2) { enemy4->SetPlayerPtr(ob); }
+			if (tag->tag != ObjectTag::Team3) { enemy1->SetPlayerPtr(ob); enemy2->SetPlayerPtr(ob); }
 		}
 	}
 	//	cameraを2つ生成
