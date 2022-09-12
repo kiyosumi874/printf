@@ -1,10 +1,12 @@
 #include "pch.h"
+#include "SkyDome.h"
 
 SceneManager::SceneManager()
 	: m_nowScene(nullptr)
 {
 	Input::GetInstance();
 	Fps::GetInstance();
+	InitSkyDome();
 }
 
 SceneManager::~SceneManager()
@@ -40,7 +42,6 @@ void SceneManager::GameLoop()
 		{
 			ClearDrawScreen();
 			clsDx();
-
 			m_nowScene->Draw();
 
 			Effekseer_Sync3DSetting();

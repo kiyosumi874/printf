@@ -1,17 +1,14 @@
 #include "pch.h"
+#include"SkyDome.h"
 
 TitleScene::TitleScene(const MODE& mode)
 	: Scene(mode)
 {
-	m_skyDomeHandle = MV1LoadModel("data/Skydome_T2/Dome_T201.pmx");
-	MV1SetScale(m_skyDomeHandle, VGet(1.0f, 1.0f, 1.0f));
-	MV1SetPosition(m_skyDomeHandle, VGet(0.0f, 0.0f, 0.0f));
 	SetCameraPositionAndTarget_UpVecY(VGet(0.0f, 0.0f, 0.0f), VGet(0.0f, 0.0f, 1.0f));
 }
 
 TitleScene::~TitleScene()
 {
-	MV1DeleteModel(m_skyDomeHandle);
 }
 
 TAG_SCENE TitleScene::Update()
@@ -34,5 +31,5 @@ void TitleScene::Draw()
 #ifdef _DEBUG
 	printfDx("TitleScene\n");
 #endif // _DEBUG
-	MV1DrawModel(m_skyDomeHandle);
+	DrawSkyDome();
 }

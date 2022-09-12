@@ -37,7 +37,7 @@ private:
 	void AdjustScore();
 
 	class Image* m_scoreUI[4][10]; // 4Œ… 0‚©‚ç9
-	class Image* m_scoreBack[3];
+	class Image* m_scoreBack;
 	class Transform* m_transform;
 
 	bool m_isStart;
