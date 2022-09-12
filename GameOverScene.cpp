@@ -21,7 +21,7 @@ GameOverScene::GameOverScene(const MODE& mode)
 		{
 			Object* obj = new Object;
 			auto pos = obj->AddComponent<Transform>();
-			pos->position = VGet(-50.0f + (i * 16.0f) + (j * 4), 0.0f, 0.0f);
+			pos->position = VGet(-100.0f + (i * 16.0f) + (j * 4), 0.0f, 0.0f);
 			if (i == 0) { pos->position = VAdd(pos->position, VGet(0.0f, 0.0f, 5.0f)); }
 			if (i == 2) { pos->position = VAdd(pos->position, VGet(0.0f, 0.0f, 10.0f)); }
 			obj->AddComponent<StaticHuman>();

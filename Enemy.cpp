@@ -55,6 +55,7 @@ Enemy::~Enemy()
 void Enemy::Start()
 {
 	m_position = m_pParent->GetComponent<Transform>()->position;
+	MV1SetPosition(m_modelHandle, m_position);
 }
 
 void Enemy::Update()

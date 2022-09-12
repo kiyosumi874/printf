@@ -27,6 +27,7 @@ PlayScene::PlayScene(const MODE& mode)
 	, m_transition(Transition::START)
 	, m_tagScene(TAG_SCENE::TAG_NONE)
 	, m_timeCount(nullptr)
+	, m_playOnFlag(false)
 	, m_isStartBlendAdd(false)
 	, m_startBlendAdd(0.0f)
 	, m_graphHandleWhite(-1)
@@ -336,7 +337,22 @@ void PlayScene::UpdateTransitionStart()
 	}
 	for (auto obj : m_pObjectLists)
 	{
-		obj->Update();
+		if (m_playOnFlag)
+		{
+			obj->Update();
+		}
+		else
+		{
+			auto tag = obj->GetComponent<Tag>();
+			if (tag == nullptr)
+			{
+				obj->Update();
+			}
+			else
+			{
+				if (tag->tag == ObjectTag::Camera1 || tag->tag == ObjectTag::Camera2) { obj->Update(); }
+			}
+		}
 	}
 	//if (Input::IsDown1P(BUTTON_ID_START))
 	//{
@@ -408,7 +424,7 @@ void PlayScene::UpdateTransitionPlay()
 		if (m_timeCount->CheckCount() > 3.5)
 		{
 			// 音を出す(start)
-			
+			m_playOnFlag = true;
 			m_startNumber[1]->IsDraw(false);
 			m_startNumber[0]->IsDraw(true);
 			MyOutputDebugString("Start\n");
@@ -516,7 +532,22 @@ void PlayScene::UpdateTransitionPlay()
 	}
 	for (auto obj : m_pObjectLists)
 	{
-		obj->Update();
+		if (m_playOnFlag)
+		{
+			obj->Update();
+		}
+		else
+		{
+			auto tag = obj->GetComponent<Tag>();
+			if (tag == nullptr)
+			{
+				obj->Update();
+			}
+			else
+			{
+				if (tag->tag == ObjectTag::Camera1 || tag->tag == ObjectTag::Camera2) { obj->Update(); }
+			}
+		}
 	}
 	if (Input::IsDown1P(BUTTON_ID_START))
 	{
@@ -535,7 +566,6 @@ void PlayScene::UpdateTransitionPlay()
 			m_transitionImage[1]->Init(VGet(SCREEN_WIDTH * 1.5f, 0.0f, 0.0f), VGet(1.0f, 1.0f, 1.0f), 0.0f, "data/black.png");
 			m_pObjectLists.push_back(obj);
 		}
-
 	}
 
 	if (Input::IsDown1P(BUTTON_ID_BACK))

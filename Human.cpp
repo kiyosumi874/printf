@@ -45,6 +45,16 @@ Human::~Human()
 
 void Human::Start()
 {
+	if (m_pTag == nullptr)
+	{
+		m_pTag = m_pParent->GetComponent<Tag>();
+	}
+	if (m_pTransform == nullptr)
+	{
+		m_pTransform = m_pParent->GetComponent<Transform>();
+	}
+	// 3Dモデルのポジション設定
+	MV1SetPosition(m_modelHandle, m_pTransform->position);
 }
 
 void Human::Update()
