@@ -4,13 +4,12 @@
 #include "Image.h"
 #include "Projector.h"
 #include "Transform.h"
+#include"SkyDome.h"
 
 ResultScene::ResultScene(const MODE& mode)
 	: m_transition(Transition::START)
 	, m_tagScene(TAG_SCENE::TAG_NONE)
 {
-	// skyDome¶¬
-	m_skyDomeHandle = MV1LoadModel("data/Skydome_T2/Dome_T201.pmx");
 	// ƒgƒ‰ƒ“ƒWƒVƒ‡ƒ“‚Ìˆ—
 	{
 		Object* obj = new Object;
@@ -39,7 +38,6 @@ ResultScene::ResultScene(const MODE& mode)
 
 ResultScene::~ResultScene()
 {
-	MV1DeleteModel(m_skyDomeHandle);
 	for (auto obj : m_pObjectLists)
 	{
 		delete obj;
@@ -121,7 +119,7 @@ void ResultScene::UpdateTransitionEnd()
 
 void ResultScene::DrawTransitionStart()
 {
-	MV1DrawModel(m_skyDomeHandle);
+	DrawSkyDome();
 	for (auto obj : m_pObjectLists)
 	{
 		obj->Draw();
@@ -130,7 +128,7 @@ void ResultScene::DrawTransitionStart()
 
 void ResultScene::DrawTransitionPlay()
 {
-	MV1DrawModel(m_skyDomeHandle);
+	DrawSkyDome();
 	for (auto obj : m_pObjectLists)
 	{
 		obj->Draw();
@@ -139,7 +137,7 @@ void ResultScene::DrawTransitionPlay()
 
 void ResultScene::DrawTransitionOver()
 {
-	MV1DrawModel(m_skyDomeHandle);
+	DrawSkyDome();
 	for (auto obj : m_pObjectLists)
 	{
 		obj->Draw();
@@ -148,7 +146,7 @@ void ResultScene::DrawTransitionOver()
 
 void ResultScene::DrawTransitionEnd()
 {
-	MV1DrawModel(m_skyDomeHandle);
+	DrawSkyDome();
 	for (auto obj : m_pObjectLists)
 	{
 		obj->Draw();

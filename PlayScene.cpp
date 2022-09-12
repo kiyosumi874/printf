@@ -16,6 +16,7 @@
 #include "Score.h"
 #include "TomatoUIContoroller.h"
 #include "ScoreUIController.h"
+#include "SkyDome.h"
 
 
 // いたっんおいてる定数.いつの日かまとめる
@@ -29,12 +30,7 @@ PlayScene::PlayScene(const MODE& mode)
 	, m_isStartBlendAdd(false)
 	, m_startBlendAdd(0.0f)
 	, m_graphHandleWhite(-1)
-	, m_skyDomeHandle(-1)
 {
-	// skyDome生成
-	m_skyDomeHandle = MV1LoadModel("data/Skydome_T2/Dome_T201.pmx");
-	MV1SetScale(m_skyDomeHandle, VGet(1.0f, 1.0f, 1.0f));
-	MV1SetPosition(m_skyDomeHandle, VGet(0.0f, 0.0f, 0.0f));
 
 	// トランジション用の画像初期化
 	for (int i = 0; i < 2; i++)
@@ -257,7 +253,6 @@ PlayScene::PlayScene(const MODE& mode)
 PlayScene::~PlayScene()
 {
 	DeleteGraph(m_graphHandleWhite);
-	MV1DeleteModel(m_skyDomeHandle);
 	for (auto obj : m_pGameObjects)
 	{
 		delete obj;
@@ -575,7 +570,7 @@ void PlayScene::UpdateTransitionEnd()
 
 void PlayScene::DrawTransitionStart()
 {
-	MV1DrawModel(m_skyDomeHandle);
+	DrawSkyDome();
 	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
@@ -601,7 +596,7 @@ void PlayScene::DrawTransitionPlay()
 {
 	SetDrawArea(0, 0, 640, 960);
 	SetCameraScreenCenter(320.0f, 480.0f);
-	MV1DrawModel(m_skyDomeHandle);
+	DrawSkyDome();
 	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
@@ -621,7 +616,7 @@ void PlayScene::DrawTransitionPlay()
 	}
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
-	MV1DrawModel(m_skyDomeHandle);
+	DrawSkyDome();
 	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
@@ -650,8 +645,8 @@ void PlayScene::DrawTransitionPlay()
 void PlayScene::DrawTransitionOver()
 {
 	SetDrawArea(0, 0, 640, 960);
-	SetCameraScreenCenter(320.0f, 480.0f);
-	MV1DrawModel(m_skyDomeHandle);
+	SetCameraScreenCenter(320.0f, 480.0f);	
+	DrawSkyDome();
 	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
@@ -671,7 +666,7 @@ void PlayScene::DrawTransitionOver()
 	}
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
-	MV1DrawModel(m_skyDomeHandle);
+	DrawSkyDome();
 	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
@@ -697,7 +692,7 @@ void PlayScene::DrawTransitionEnd()
 {
 	SetDrawArea(0, 0, 640, 960);
 	SetCameraScreenCenter(320.0f, 480.0f);
-	MV1DrawModel(m_skyDomeHandle);
+	DrawSkyDome();
 	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
@@ -717,7 +712,7 @@ void PlayScene::DrawTransitionEnd()
 	}
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
-	MV1DrawModel(m_skyDomeHandle);
+	DrawSkyDome();
 	DrawGrid(1000.0f, 30);
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{

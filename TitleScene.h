@@ -11,5 +11,4 @@ public:
 	void Draw() override;
 
 private:
-	int m_skyDomeHandle;
 };

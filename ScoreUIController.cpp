@@ -5,22 +5,27 @@
 #include "Transform.h"
 #include "Score.h"
 
+
 void ScoreUIController::Start()
 {
 	m_transform = m_pParent->GetComponent<Transform>();
 	m_index = -1;
 	m_alpha = 0;
 	int x = -100;
-	for (int i = 0; i < 3; i++)
+
+	x += 20;
+	std::string str = "data/scoreBack";
+	static int num = 0;
+	str += std::to_string(num);
+	if (++num > 2)
 	{
-		x += 20;
-		std::string str = "data/scoreBack";
-		str += std::to_string(i);
-		str += ".png";
-		m_scoreBack[i] = m_pParent->AddComponent<Image>();
-		m_scoreBack[i]->Init(VAdd(VGet(0, 0.0f, 0.0f), m_transform->position), VGet(1.0f, 1.0f, 1.0f), 0.0, str.c_str());
-		m_scoreBack[i]->IsDraw(true);
+		num = 0;
 	}
+	str += ".png";
+	m_scoreBack = m_pParent->AddComponent<Image>();
+	m_scoreBack->Init(VAdd(VGet(-85.0f, -5.0f, 0.0f), m_transform->position), VGet(0.2f, 0.15f, 1.0f), 0.0, str.c_str());
+	m_scoreBack->IsDraw(true);
+	m_scoreBack->SetAlpha(0.0f);
 
 	x = -100;
 	for (int i = 0; i < 4; i++)
@@ -52,10 +57,8 @@ void ScoreUIController::Update()
 				}
 			}
 
-			for (int i = 0; i < 3; i++)
-			{
-				m_scoreBack[i]->SetAlpha(m_alpha);
-			}
+			m_scoreBack->SetAlpha(m_alpha);
+
 			m_alpha += 8.0f;
 		}
 		else

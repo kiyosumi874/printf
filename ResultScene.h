@@ -24,8 +24,6 @@ private:
 	TAG_SCENE m_tagScene;
 	class Image* m_transitionImage[2];
 
-	int m_skyDomeHandle;
-
 	void UpdateTransitionStart();
 	void UpdateTransitionPlay();
 	void UpdateTransitionOver();
