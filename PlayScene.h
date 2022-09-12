@@ -53,5 +53,5 @@ private:
 	std::vector<class TomatoWall*>m_pGameObjects;
 	//std::list<class Object*>m_pObjectLists;
 
-	const int m_tomatoWallNum = 2;
+	const int m_tomatoWallNum = 8;
 };

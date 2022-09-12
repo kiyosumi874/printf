@@ -1,10 +1,12 @@
 #include "pch.h"
+#include "Score.h"
 
 SceneManager::SceneManager()
 	: m_nowScene(nullptr)
 {
 	Input::GetInstance();
 	Fps::GetInstance();
+	Score::GetInstance();
 }
 
 SceneManager::~SceneManager()
@@ -12,6 +14,7 @@ SceneManager::~SceneManager()
 	ClearScene();
 	Fps::Terminate();
 	Input::Terminate();
+	Score::Terminate();
 }
 
 void SceneManager::GameLoop()

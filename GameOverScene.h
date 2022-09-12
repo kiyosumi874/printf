@@ -11,6 +11,9 @@ public:
 	void Draw() override;
 
 private:
+	void UpdateTransitionStart();
+	void UpdateTransitionPlay();
+	void UpdateTransitionEnd();
 	// ƒV[ƒ““à‚Ìó‘Ô‘JˆÚ‚ğ•\‚·
 	enum class Transition
 	{
