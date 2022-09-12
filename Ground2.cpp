@@ -8,7 +8,7 @@ Ground2::Ground2(ObjectTag tag, VECTOR position)
 	//m_modelHandle = MV1LoadModel("data/Tomato/Tomato.mv1");
 
 	// 床のサイズを設定
-	MV1SetScale(m_modelHandle, VGet(500.0f, 5.0f, 500.0f));
+	MV1SetScale(m_modelHandle, VGet(3.0f, 0.4f, 3.0f));
 	// 床のポジションを設定
 	MV1SetPosition(m_modelHandle, m_position);
 }
