@@ -168,19 +168,40 @@ PlayScene::PlayScene(const MODE& mode)
 	// kiyosumi
 	{
 		Object* object = nullptr;
-		int x = 450;
+		int x = 745;
+		float exX = 1.0f;
+		float exY = 1.0f;
+		{
+			object = new Object;
+			m_timerBack = object->AddComponent<Image>();
+			m_timerBack->Init(VGet(x - 290, 0, 1.0f), VGet(1.3 * exX, 0.6 * exY, 1.0f), 0.0, "data/ink_blot4.png");
+			m_timerBack->IsDraw(false);
+			m_pObjectLists.push_back(object);
+		}
 		for (int i = 0; i < 4; i++)
 		{
-			x -= 200;
+			x -= 50;
+			if (i == 2)
+			{
+				x += 25;
+				object = new Object;
+				m_timerKoron = object->AddComponent<Image>();
+				m_timerKoron->Init(VGet( x, 60, 1.0f), VGet(0.4f * exX, 0.4f * exY, 1.0f), 0.0, "data/DigitalNumber/koron.png");
+				m_timerKoron->IsDraw(false);
+				m_pObjectLists.push_back(object);
+
+				x -= 25;
+
+			}
 			for (int j = 0; j < 10; j++)
 			{
-				std::string str = "data/Number/";
+				std::string str = "data/DigitalNumber/";
 				str += std::to_string(j);
 				str += ".png";
 				object = new Object;
 				object->AddComponent<TimeCount>();
 				auto img = object->AddComponent<Image>();
-				img->Init(VGet(SCREEN_WIDTH / 2 + x, SCREEN_HEIGHT, 1.0f), VGet(1.0f, 1.0f, 1.0f), 0.0, str.c_str());
+				img->Init(VGet( x, 60, 1.0f), VGet(0.4f *exX, 0.4f *exY, 1.0f), 0.0, str.c_str());
 				img->IsDraw(false);
 
 
@@ -199,7 +220,7 @@ PlayScene::PlayScene(const MODE& mode)
 			str += ".png";
 			auto object = new Object;
 			m_startNumber[i] = object->AddComponent<Image>();
-			m_startNumber[i]->Init(VGet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0f), VGet(1.0f, 1.0f, 1.0f), 0.0, str.c_str());
+			m_startNumber[i]->Init(VGet(SCREEN_WIDTH / 2 - 67, SCREEN_HEIGHT / 2, 1.0f), VGet(1.0f, 1.0f, 1.0f), 0.0, str.c_str());
 			m_startNumber[i]->IsDraw(false);
 			m_pObjectLists.push_back(object);
 		}
@@ -222,13 +243,14 @@ PlayScene::PlayScene(const MODE& mode)
 		}
 		
 	}
+
 	// ScoreUI
 	{
 		Object* object = nullptr;
 		for (int i = 0; i < 3; i++)
 		{
 			object = new Object;
-			object->AddComponent<Transform>()->position = VGet(450 * i, 0.0f, 0.0f);
+			object->AddComponent<Transform>()->position = VGet(110 * i + 570, 180.0f, 0.0f);
 			m_scoreUICon[i] = object->AddComponent<ScoreUIController>();
 			m_pObjectLists.push_back(object);
 		}
@@ -408,6 +430,7 @@ void PlayScene::UpdateTransitionPlay()
 				if (controller != nullptr)
 				{
 					it->GetComponent<TimeCount>()->StartCount();
+					it->GetComponent<Image>()->SetAlpha(0.0f);
 				}
 			}
 		}
@@ -420,6 +443,13 @@ void PlayScene::UpdateTransitionPlay()
 			// トマトUI開始
 			m_tomatoUICon[0]->CheckIsStart(0);
 			m_tomatoUICon[1]->CheckIsStart(1);
+			// scoreUI開始
+			m_scoreUICon[0]->CheckIsStart(0);
+			m_scoreUICon[1]->CheckIsStart(1);
+			m_scoreUICon[2]->CheckIsStart(2);
+
+			m_timerKoron->IsDraw(true);
+			m_timerBack->IsDraw(true);
 		}
 	}
 
@@ -428,6 +458,9 @@ void PlayScene::UpdateTransitionPlay()
 	// 時計のUIを画面内に動かす
 	if (!moveTimerFlag && startCount)
 	{
+		static float alpha = 0.0f;
+		m_timerKoron->SetAlpha(alpha);
+		m_timerBack->SetAlpha(alpha);
 		// オブジェクトリストをなめる
 		for (const auto it : m_pObjectLists)
 		{
@@ -437,27 +470,28 @@ void PlayScene::UpdateTransitionPlay()
 			{
 				auto image = it->GetComponent<Image>();
 				// UIを移動
-				image->MovePos(VGet(0.0f,-10.0, 0.0f));
+				image->SetAlpha(alpha);
 				//　目標座標に到達
-				if (image->GetPos().y < timerUIY)
+				if (alpha > 270)
 				{
-					// UIの座標を調整
-					for (const auto itr : m_pObjectLists)
-					{
-						auto controller = itr->GetComponent<TimeUIController>();
-						if (controller != nullptr)
-						{
-							auto image2 = itr->GetComponent<Image>();
-							float x = image2->GetPos().x;
-							float z = image2->GetPos().z;
-							image2->SetPos(VGet(x, timerUIY, z));
-						}
-					}
+					//// UIの座標を調整
+					//for (const auto itr : m_pObjectLists)
+					//{
+					//	auto controller = itr->GetComponent<TimeUIController>();
+					//	if (controller != nullptr)
+					//	{
+					//		auto image2 = itr->GetComponent<Image>();
+					//		float x = image2->GetPos().x;
+					//		float z = image2->GetPos().z;
+					//		image2->SetPos(VGet(x, timerUIY, z));
+					//	}
+					//}
 					moveTimerFlag = true;
 					break;
 				}
 			}
 		}
+		alpha += 8.0f;
 	}
 
 	// タイムアップ終了処理
@@ -527,7 +561,7 @@ void PlayScene::UpdateTransitionOver()
 	{
 		m_transitionImage[0]->MovePos(VGet(-10.0f, 0.0f, 0.0f));
 		m_transitionImage[1]->MovePos(VGet(-10.0f, 0.0f, 0.0f));
-		if (m_transitionImage[0]->GetPos().x < -10.0f)
+		if (m_transitionImage[0]->GetPos().x < -400.0f)
 		{
 			m_tagScene = TAG_SCENE::TAG_OVER;
 		}

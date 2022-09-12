@@ -42,6 +42,8 @@ private:
 	class TimeCount* m_timeCount;
 	class Image* m_startNumber[4];
 	class Image* m_transitionImage[2];
+	class Image* m_timerKoron;
+	class Image* m_timerBack;
 
 	class TomatoUIController* m_tomatoUICon[2];
 	class ScoreUIController* m_scoreUICon[3];

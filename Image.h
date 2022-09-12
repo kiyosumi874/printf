@@ -81,12 +81,18 @@ public:
 		m_isDraw = isDraw;
 	}
 
+	void SetAlpha(float alpha)
+	{
+		m_alpha = alpha;
+	}
+
 private:
 	VECTOR m_pos;        // グローバル座標
 	VECTOR m_extendRate; // 拡大率
 	double m_angle;      // 角度(弧度法)
 	double m_addAngle;   // 回転させる角度(弧度法)
 	int m_graphHandle;   // 画像ハンドル
+	int m_alpha;
 	bool m_transFlag;    // 画像の透明度を有効にするかどうか
 	bool m_turnFlagX;    // 画像の左右反転を行うか
 	bool m_turnFlagY;    // 画像の上下反転を行うか
