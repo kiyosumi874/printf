@@ -37,8 +37,10 @@ private:
 	void AdjustScore();
 
 	class Image* m_scoreUI[4][10]; // 4Œ… 0‚©‚ç9
+	class Image* m_scoreBack[3];
 	class Transform* m_transform;
 
 	bool m_isStart;
 	int m_index; // 0 or 1 or 2 (0‚¾‚Á‚½‚ç1P,1‚¾‚Á‚½‚ç2P‚ÌUI‚Æ‚¢‚¤‚±‚Æ)
+	float m_alpha;
 };

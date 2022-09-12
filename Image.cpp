@@ -18,6 +18,7 @@ void Image::Init(const VECTOR& pos, const VECTOR& extendRate, double angle, cons
 	m_extendRate = extendRate;
 	m_angle = angle * DX_PI / 180.0;
 	m_addAngle = 0.0;
+	m_alpha = 255.0f;
 	m_graphHandle = LoadGraph(fileName);
 	m_transFlag = transFlag;
 	m_turnFlagX = turnFlagX;
@@ -36,7 +37,17 @@ void Image::Draw()
 {
 	if (m_isDraw)
 	{ 
-		DrawRotaGraph3F(m_pos.x, m_pos.y, 0.0f, 0.0f, m_extendRate.x, m_extendRate.y, m_angle, m_graphHandle, m_transFlag, m_turnFlagX, m_turnFlagY);
+		if (m_alpha != 255.0f)
+		{
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(m_alpha));
+			DrawRotaGraph3F(m_pos.x, m_pos.y, 0.0f, 0.0f, m_extendRate.x, m_extendRate.y, m_angle, m_graphHandle, m_transFlag, m_turnFlagX, m_turnFlagY);
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+		}
+		else
+		{
+			DrawRotaGraph3F(m_pos.x, m_pos.y, 0.0f, 0.0f, m_extendRate.x, m_extendRate.y, m_angle, m_graphHandle, m_transFlag, m_turnFlagX, m_turnFlagY);
+		}
+
 	}
 	
 }
