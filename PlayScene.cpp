@@ -49,7 +49,7 @@ PlayScene::PlayScene(const MODE& mode)
 
 	for (int i = 0; i < m_tomatoWallNum; i++)
 	{
-		auto tomato = new TomatoWall(ObjectTag::TomatoWall, VGet(30.0f * i + 1, 0.0f, 30.0f * i + 1));
+		auto tomato = new TomatoWall(ObjectTag::TomatoWall, VGet(-300 + 100.0f * i, 0.0f, 0.0f));
 		m_pGameObjects.push_back(tomato);
 	}
 
@@ -87,16 +87,12 @@ PlayScene::PlayScene(const MODE& mode)
 	}
 
 	// iguchi
-	
-	// scoreクラスを初期化
-	Score::GetInstance();
-	
 	// playerを2つ生成
 	{
 		{
 			Object* obj = new Object;
 			auto trs = obj->AddComponent<Transform>();
-			trs->position = VGet(0.0f, 0.0f, 0.0f);
+			trs->position = VGet(50.0f, 0.0f, -50.0f);
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Player1;
 			auto collider = obj->AddComponent<Collider>();
@@ -108,7 +104,7 @@ PlayScene::PlayScene(const MODE& mode)
 		{
 			Object* obj = new Object;
 			auto trs = obj->AddComponent<Transform>();
-			trs->position = VGet(50.0f, 0.0f, 50.0f);
+			trs->position = VGet(-50.0f, 0.0f, -50.0f);
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Player2;
 			auto collider = obj->AddComponent<Collider>();
@@ -268,7 +264,6 @@ PlayScene::~PlayScene()
 	}
 	m_pObjectLists.clear();
 	m_pGameObjects.clear();
-	Score::Terminate();
 }
 
 TAG_SCENE PlayScene::Update()

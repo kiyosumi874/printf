@@ -188,6 +188,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Projector.cpp" />
+    <ClCompile Include="Rank.cpp" />
     <ClCompile Include="RapidJson.cpp" />
     <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -195,6 +196,7 @@
     <ClCompile Include="ScoreUIController.cpp" />
     <ClCompile Include="SkyDome.cpp" />
     <ClCompile Include="StaticHuman.cpp" />
+    <ClCompile Include="StillProjector.cpp" />
     <ClCompile Include="TimeCount.cpp" />
     <ClCompile Include="TimeUIController.cpp" />
     <ClCompile Include="TitleScene.cpp" />
@@ -230,6 +232,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Projector.h" />
+    <ClInclude Include="Rank.h" />
     <ClInclude Include="RapidJson.h" />
     <ClInclude Include="ResultScene.h" />
     <ClInclude Include="Scene.h" />
@@ -238,6 +241,7 @@
     <ClInclude Include="ScoreUIController.h" />
     <ClInclude Include="SkyDome.h" />
     <ClInclude Include="StaticHuman.h" />
+    <ClInclude Include="StillProjector.h" />
     <ClInclude Include="Tag.h" />
     <ClInclude Include="TimeCount.h" />
     <ClInclude Include="TimeUIController.h" />

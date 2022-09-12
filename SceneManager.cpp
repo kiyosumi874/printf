@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "SkyDome.h"
+#include "Score.h"
+
 
 SceneManager::SceneManager()
 	: m_nowScene(nullptr)
@@ -7,6 +9,7 @@ SceneManager::SceneManager()
 	Input::GetInstance();
 	Fps::GetInstance();
 	InitSkyDome();
+	Score::GetInstance();
 }
 
 SceneManager::~SceneManager()
@@ -14,6 +17,7 @@ SceneManager::~SceneManager()
 	ClearScene();
 	Fps::Terminate();
 	Input::Terminate();
+	Score::Terminate();
 }
 
 void SceneManager::GameLoop()
