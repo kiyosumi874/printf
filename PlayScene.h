@@ -24,6 +24,7 @@ private:
 	Transition m_transition;
 	TAG_SCENE m_tagScene;
 
+	bool m_playOnFlag;
 	bool m_isStartBlendAdd;
 	float m_startBlendAdd;
 	int m_graphHandleWhite;

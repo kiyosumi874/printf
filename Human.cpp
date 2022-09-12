@@ -18,15 +18,7 @@ Human::Human()
 	m_pTransform = nullptr;
 	m_pTag = nullptr;
 
-	//m_modelHandle = MV1LoadModel("data/character/man1.mv1");
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);
-
-	// 3Dモデルの読み込み
-	ModelManager model;
-	srand(rand() % 100);
-	int modelNum = rand() % MODEL_NUM;
-	m_modelHandle = model.GetModelData(modelNum);
-	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
 
 	m_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_aimDir = m_dir;
@@ -45,6 +37,20 @@ Human::~Human()
 
 void Human::Start()
 {
+	if (m_pTag == nullptr)
+	{
+		m_pTag = m_pParent->GetComponent<Tag>();
+	}
+	if (m_pTransform == nullptr)
+	{
+		m_pTransform = m_pParent->GetComponent<Transform>();
+	}
+	// 3Dモデルの読み込み
+	if (m_pTag->tag == ObjectTag::Team1) { m_modelHandle = MV1LoadModel("data/character/man1.mv1"); }
+	if (m_pTag->tag == ObjectTag::Team2) { m_modelHandle = MV1LoadModel("data/character/man3.mv1"); }
+	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
+	// 3Dモデルのポジション設定
+	MV1SetPosition(m_modelHandle, m_pTransform->position);
 }
 
 void Human::Update()
@@ -94,9 +100,9 @@ void Human::Draw()
 	auto collider = m_pParent->GetComponent<Collider>();
 	if (collider->Getflag()) 
 	{ 
-		if (collider->tag == ObjectTag::Enemy) { t = 1; }
+		if (collider->tag == ObjectTag::Team3) { t = 1; }
 		if (collider->tag == ObjectTag::tomato) { t = 2; }
-		if (collider->tag == ObjectTag::Player2) { t = 3; }
+		if (collider->tag == ObjectTag::Team2) { t = 3; }
 	}
 }
 
@@ -123,7 +129,7 @@ void Human::Input()
 	m_moveFlag = false;
 
 	// 1Pの操作
-	if (m_pTag->tag == ObjectTag::Player1)
+	if (m_pTag->tag == ObjectTag::Team1)
 	{
 		// 入力状態を取得
 		GetJoypadXInputState(DX_INPUT_PAD2, &inputState);
@@ -192,7 +198,7 @@ void Human::Input()
 	}
 
 	// 2Pの操作
-	if (m_pTag->tag == ObjectTag::Player2)
+	if (m_pTag->tag == ObjectTag::Team2)
 	{
 		// 入力状態を取得
 		GetJoypadXInputState(DX_INPUT_PAD1, &inputState);

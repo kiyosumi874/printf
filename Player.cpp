@@ -131,7 +131,7 @@ void Player::Input()
 	m_moveFlag = false;
 
 	// 1P‚Ì‘€ì
-	if (m_tag == ObjectTag::Player1)
+	if (m_tag == ObjectTag::Team1)
 	{
 		// “ü—Íó‘Ô‚ğæ“¾
 		GetJoypadXInputState(DX_INPUT_PAD2, &inputState);
@@ -183,7 +183,7 @@ void Player::Input()
 	}
 
 	// 2P‚Ì‘€ì
-	if (m_tag == ObjectTag::Player2)
+	if (m_tag == ObjectTag::Team2)
 	{
 		// “ü—Íó‘Ô‚ğæ“¾
 		GetJoypadXInputState(DX_INPUT_PAD1, &inputState);

@@ -7,11 +7,11 @@ enum class ObjectTag : unsigned char
 {
 	Begin,			// Tagの開始マーカー（Beginより手前に定義しないこと）
 
-	Player1 = Begin,
+	Team1 = Begin,
 	Player1Bullet,
-	Player2,
+	Team2,
 	Player2Bullet,
-	Enemy,
+	Team3,
 	EnemyBullet,
 	tomato,
 	TomatoWall,
@@ -26,11 +26,11 @@ enum class ObjectTag : unsigned char
 // for( ObjectTag &tag : ObjectTagAll )で全Tag要素のループにできる
 constexpr static ObjectTag ObjectTagAll[] =
 {
-	ObjectTag::Player1,
+	ObjectTag::Team1,
 	ObjectTag::Player1Bullet,
-	ObjectTag::Player2,
+	ObjectTag::Team2,
 	ObjectTag::Player2Bullet,
-	ObjectTag::Enemy,
+	ObjectTag::Team3,
 	ObjectTag::EnemyBullet,
 	ObjectTag::TomatoWall,
 	ObjectTag::Ground,

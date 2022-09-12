@@ -38,17 +38,17 @@ public:
 
 	static void AddTeam1Score()	// チーム1のスコア加算
 	{
-		m_score->m_team1 += 10;
+		m_score->m_team1 += 5;
 	}
 
 	static void AddTeam2Score()	// チーム2のスコア加算
 	{
-		m_score->m_team2 += 10;
+		m_score->m_team2 += 5;
 	}
 
 	static void AddTeam3Score()	// チーム3のスコア加算
 	{
-		m_score->m_team3 += 10;
+		m_score->m_team3 += 5;
 	}
 
 	static const int GetTeam1Score()	// チーム1のスコア
