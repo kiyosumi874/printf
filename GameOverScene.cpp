@@ -12,19 +12,6 @@ GameOverScene::GameOverScene(const MODE& mode)
 {
 	// skyDome生成
 	m_skyDomeHandle = MV1LoadModel("data/Skydome_T2/Dome_T201.pmx");
-	// トランジションの処理
-	{
-		Object* obj = new Object;
-		m_transitionImage[0] = obj->AddComponent<Image>();
-		m_transitionImage[0]->Init(VGet(0.0f, 0.0f, 0.0f), VGet(1.0f, 1.0f, 1.0f), 0.0f, "data/black.png");
-		m_pObjectLists.push_back(obj);
-	}
-	{
-		Object* obj = new Object;
-		m_transitionImage[1] = obj->AddComponent<Image>();
-		m_transitionImage[1]->Init(VGet(SCREEN_WIDTH, 0.0f, 0.0f), VGet(1.0f, 1.0f, 1.0f), 0.0f, "data/transition.png");
-		m_pObjectLists.push_back(obj);
-	}
 	{
 		Object* ob = new Object;
 		auto cameraAimPos = ob->AddComponent<Transform>();
@@ -45,6 +32,19 @@ GameOverScene::GameOverScene(const MODE& mode)
 			obj->AddComponent<StaticHuman>();
 			m_pObjectLists.push_back(obj);
 		}
+	}
+	// トランジションの処理
+	{
+		Object* obj = new Object;
+		m_transitionImage[0] = obj->AddComponent<Image>();
+		m_transitionImage[0]->Init(VGet(0.0f, 0.0f, 0.0f), VGet(1.0f, 1.0f, 1.0f), 0.0f, "data/black.png");
+		m_pObjectLists.push_back(obj);
+	}
+	{
+		Object* obj = new Object;
+		m_transitionImage[1] = obj->AddComponent<Image>();
+		m_transitionImage[1]->Init(VGet(SCREEN_WIDTH, 0.0f, 0.0f), VGet(1.0f, 1.0f, 1.0f), 0.0f, "data/transition.png");
+		m_pObjectLists.push_back(obj);
 	}
 }
 

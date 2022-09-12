@@ -9,10 +9,10 @@ StaticHuman::StaticHuman()
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);
 
 	// 3Dƒ‚ƒfƒ‹‚Ì“Ç‚Ýž‚Ý
-	ModelManager* model = new ModelManager();
+	ModelManager model;
 	srand(rand() % 100);
 	int modelNum = rand() % MODEL_NUM;
-	m_modelHandle = model->GetModelData(modelNum);
+	m_modelHandle = model.GetModelData(modelNum);
 	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
 
 	m_dir = VGet(0.0f, 0.0f, 1.0f);
