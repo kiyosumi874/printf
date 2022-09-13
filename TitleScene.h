@@ -11,5 +11,7 @@ public:
 	void Draw() override;
 
 private:
-
+	int m_logoGraph;
+	int m_enterGraph;
+	int m_postUIGraph;
 };

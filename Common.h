@@ -6,6 +6,18 @@ const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 960;
 const int COLOR_BIT_DEPTH = 16;
 
+// VisualStadioの出力ウィンドウに動的な値などを出力するときに使うマクロ
+#ifdef _DEBUG
+#   define MyOutputDebugString( ... ) \
+      { \
+        TCHAR c[256]; \
+        sprintf_s( c, __VA_ARGS__ ); \
+        OutputDebugString( c ); \
+      }
+#else
+#    define MyOutputDebugString( str, ... ) // 空実装
+#endif
+
 struct Pos
 {
 	float x;

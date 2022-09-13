@@ -1,4 +1,28 @@
 #pragma once
+#include <list>
+#include "Object.h"
+#include "Tag.h"
+
+class Collider : public Component
+{
+public:
+	Collider();
+	~Collider();
+
+	void Init(std::list<Object*>* objectLists);		// シーンのオブジェクトリストを参照渡しでみる
+	void Update();
+	void CollisionCheck();
+	void Shot(VECTOR position, VECTOR dir, Tag* tag);
+	double GetDistance(VECTOR& pos1, VECTOR& pos2);
+	const bool& Getflag() const { return flag; }
+	const ObjectTag& GetTag()const { return tag; }
+
+	bool flag;
+	float width;
+	ObjectTag tag;
+private:
+	std::list<Object*>* copyObjectList;
+};
 
 // 衝突情報
 struct CollisionInfo

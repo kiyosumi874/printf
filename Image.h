@@ -1,27 +1,27 @@
 #pragma once
+#include "Component.h"
 
-class Image
+class Image : public Component
 {
 public:
-	// デフォルトコンストラクタは使わないのでdelete
-	Image() = delete;
-
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="pos">グローバル座標(xとyだけ)</param>
-	/// <param name="extendRate">拡大率(xとyだけ)</param>
-	/// <param name="angle">角度(度数法)</param>
-	/// <param name="fileName">画像のパス</param>
-	/// <param name="transFlag">画像の透明度を有効にするかどうか</param>
-	/// <param name="turnFlagX">画像の左右反転を行うか</param>
-	/// <param name="turnFlagY">画像の上下反転を行うか</param>
-	Image(const VECTOR& pos, const VECTOR& extendRate, double angle, const char* fileName, bool transFlag = true, bool turnFlagX = false, bool turnFlagY = false);
+	Image();
 	// デストラクタ
 	~Image();
 
-	void Update();	// 更新処理
-	void Draw();	// 描画処理
+	/// <param name="pos">グローバル座標(xとyだけ)</param>
+    /// <param name="extendRate">拡大率(xとyだけ)</param>
+    /// <param name="angle">角度(度数法)</param>
+    /// <param name="fileName">画像のパス</param>
+    /// <param name="transFlag">画像の透明度を有効にするかどうか</param>
+    /// <param name="turnFlagX">画像の左右反転を行うか</param>
+    /// <param name="turnFlagY">画像の上下反転を行うか</param>
+	void Init(const VECTOR& pos, const VECTOR& extendRate, double angle, const char* fileName, bool transFlag = true, bool turnFlagX = false, bool turnFlagY = false);
+
+	void Update()override;	// 更新処理
+	void Draw()override;	// 描画処理
 
 	/// <summary>
 	/// 自分を回す
@@ -52,6 +52,20 @@ public:
 		m_pos = pos;
 	}
 
+	// 座標のゲッター
+	const VECTOR& GetPos() const
+	{
+		return m_pos;
+	}
+
+	// 画像を動かす
+	void MovePos(const VECTOR& pos)
+	{
+		m_pos.x += pos.x;
+		m_pos.y += pos.y;
+		m_pos.z += pos.z;
+	}
+
 	/// <summary>
 	/// 自分の拡大率を変更
 	/// </summary>
@@ -61,13 +75,26 @@ public:
 		m_extendRate = extendRate;
 	}
 
+	// 描画するか否か
+	void IsDraw(bool isDraw)
+	{
+		m_isDraw = isDraw;
+	}
+
+	void SetAlpha(float alpha)
+	{
+		m_alpha = alpha;
+	}
+
 private:
 	VECTOR m_pos;        // グローバル座標
 	VECTOR m_extendRate; // 拡大率
 	double m_angle;      // 角度(弧度法)
 	double m_addAngle;   // 回転させる角度(弧度法)
 	int m_graphHandle;   // 画像ハンドル
+	int m_alpha;
 	bool m_transFlag;    // 画像の透明度を有効にするかどうか
 	bool m_turnFlagX;    // 画像の左右反転を行うか
 	bool m_turnFlagY;    // 画像の上下反転を行うか
+	bool m_isDraw;       // 描画するか？
 };

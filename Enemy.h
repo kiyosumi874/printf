@@ -1,20 +1,21 @@
 #pragma once
-#include "GameObject.h"
+#include "Component.h"
 
 class Tomato;
 class TomatoWall;
 class ModelManager;
 
-class Enemy : public GameObject
+class Enemy : public Component
 {
 public:
-	Enemy(ObjectTag tag, VECTOR position);				// コンストラクタ
+	Enemy();				// コンストラクタ
 	~Enemy();				// デストラクタ
 
+	void Start()override;	// コンポーネント初期化処理.
 	void Update()override;	// 更新処理.
 	void Draw()override;	// 描画処理.
 
-	void SetPlayerPtr(GameObject* player);  // Enemyに見せたいPlayerをセット
+	void SetPlayerPtr(class Object* player);  // Enemyに見せたいPlayerをセット
 	void SetTomatoWallPtr(TomatoWall* tomatoWall);  // Enemyに見せたいTomatoWallをセット
 private:
 	void ProcessTomato();
@@ -33,6 +34,9 @@ private:
 		Run,   // 走る
 	};
 
+	// モデルハンドル
+	int m_modelHandle;
+
 	// アニメーション変数
 	int m_animType;  // 現在のアニメーションが何か
 	int m_animIndex;  // 現在のアニメーションを記録
@@ -40,6 +44,7 @@ private:
 	float m_animTotalTime;  // アニメーションの総時間
 
 	// エネミーのパラメーター
+	VECTOR m_position;	// 位置座標
 	VECTOR m_velocity;  // 移動スピード
 	VECTOR m_dir;       // 向き
 	VECTOR m_tomatoDir;  // トマトを投げる向き
@@ -67,17 +72,16 @@ private:
 	const float m_targetEscapeRange = 200.0f;   // ターゲットから逃げる範囲
 
 	// ポインタ
-	std::vector<GameObject*> m_player;  // エネミークラスにに情報を渡したいプレイヤー
+	std::vector<class Object*> m_player;  // エネミークラスにに情報を渡したいプレイヤー
 	std::vector<TomatoWall*> m_tomatoWall;  // トマトの壁オブジェクトを格納する
-	std::vector<Tomato*> m_tomatos;  // 投げたトマトを確保
 
 	// 関数
 	void CheckMovePattern();  // 行動パターンをチェックして実行する
 
 	void CheckTargetMovePattern();  // ターゲットに対しての行動パターンを実行する
-	void Move1Target(GameObject* object);  // 標的に合わせて動く処理
-	void Move2Target(GameObject* object);  // 標的がいないときの処理
-	void Move3Target(GameObject* object);  // 標的から逃げる処理
+	void Move1Target(class Object* player);  // 標的に合わせて動く処理
+	void Move2Target(class Object* player);  // 標的がいないときの処理
+	void Move3Target(class Object* player);  // 標的から逃げる処理
 
 	void CheckTomatoWall();  // トマトを回収する行動パターンを実行する
 	void CollectTomato(TomatoWall* object);  // トマトを回収しに行く処理

@@ -16,10 +16,11 @@ TomatoWall::TomatoWall(ObjectTag tag, VECTOR position)
 
 	m_tag = tag;
 	m_position = position;
+	m_size = VGet(0.035f, 0.035f, 0.035f);
 
 	m_modelHandle = MV1LoadModel(m_modelPatternHandle[0].c_str());
 	MV1SetPosition(m_modelHandle, m_position);
-	MV1SetScale(m_modelHandle, VGet(0.15f, 0.15f, 0.15f));
+	MV1SetScale(m_modelHandle, m_size);
 }
 
 TomatoWall::~TomatoWall()
@@ -38,7 +39,7 @@ void TomatoWall::Update()
 		MV1DeleteModel(m_modelHandle);
 		m_modelHandle = MV1LoadModel(m_modelPatternHandle[m_modelPatternIndex].c_str());
 		MV1SetPosition(m_modelHandle, m_position);
-		MV1SetScale(m_modelHandle, VGet(0.15f, 0.15f, 0.15f));
+		MV1SetScale(m_modelHandle, m_size);
 	}
 
 	// すべてのトマトがなくなったら、時間が来たら復元
@@ -51,7 +52,7 @@ void TomatoWall::Update()
 			m_modelPatternIndex = 0;
 			m_modelHandle = MV1LoadModel(m_modelPatternHandle[m_modelPatternIndex].c_str());
 			MV1SetPosition(m_modelHandle, m_position);
-			MV1SetScale(m_modelHandle, VGet(0.15f, 0.15f, 0.15f));
+			MV1SetScale(m_modelHandle, m_size);
 			m_time = 0;
 		}
 	}

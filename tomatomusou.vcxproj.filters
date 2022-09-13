@@ -1,8 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="DebugDraw.cpp" />
+    <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Fps.cpp" />
+    <ClCompile Include="GameClearScene.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
+    <ClCompile Include="Human.cpp" />
+    <ClCompile Include="Image.cpp" />
+    <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
+
     <ClCompile Include="TitleScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -151,5 +165,40 @@
     <Filter Include="Collider">
       <UniqueIdentifier>{323895cb-8e37-480e-b1cb-9ec3b46c1869}</UniqueIdentifier>
     </Filter>
+
+    <ClCompile Include="Projector.cpp" />
+    <ClCompile Include="ResultScene.cpp" />
+    <ClCompile Include="Score.cpp" />
+    <ClCompile Include="ScoreUIController.cpp" />
+    <ClCompile Include="StaticHuman.cpp" />
+    <ClCompile Include="TimeCount.cpp" />
+    <ClCompile Include="TimeUIController.cpp" />
+    <ClCompile Include="TomatoUIContoroller.cpp" />
+    <ClCompile Include="SkyDome.cpp" />
+    <ClCompile Include="StillProjector.cpp" />
+    <ClCompile Include="Rank.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="App.h" />
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="Human.h" />
+    <ClInclude Include="ModelManager.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="Projector.h" />
+    <ClInclude Include="ResultScene.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Score.h" />
+    <ClInclude Include="ScoreUIController.h" />
+    <ClInclude Include="StaticHuman.h" />
+    <ClInclude Include="Tag.h" />
+    <ClInclude Include="TimeCount.h" />
+    <ClInclude Include="TimeUIController.h" />
+    <ClInclude Include="TomatoUIContoroller.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="SkyDome.h" />
+    <ClInclude Include="StillProjector.h" />
+    <ClInclude Include="Rank.h" />
+
   </ItemGroup>
 </Project>

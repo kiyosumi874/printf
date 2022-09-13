@@ -15,7 +15,7 @@ Player::Player(ObjectTag tag, VECTOR position)
 
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);
 
-	// 3Dãƒ¢ãƒ‡ãƒ«ã®èª­ã¿è¾¼ã¿
+	// 3Dƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
 	ModelManager* model = new ModelManager();
 	srand(rand() % 100);
 	int modelNum = rand() % MODEL_NUM;
@@ -25,13 +25,13 @@ Player::Player(ObjectTag tag, VECTOR position)
 	m_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_aimDir = m_dir;
 
-	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æº–å‚™
+	// ƒAƒjƒ[ƒVƒ‡ƒ“€”õ
 	m_animType = Anim::Idle;
 	m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
 	m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
 	m_animTime = 0.0f;
 
-	// ï¿½Gï¿½tï¿½Fï¿½Nï¿½gï¿½Ìï¿½ï¿½ï¿½
+	// ?G?t?F?N?g?????
 	m_effect = new Effect("data/effect/hit/ToonHit.efkefc");
 }
 
@@ -55,20 +55,20 @@ void Player::Update()
 	Rotate();
 	Input();
 
-	// ç§»å‹•å‡¦ç†
+	// ˆÚ“®ˆ—
 	m_position = VAdd(m_position, m_velocity);
 
-	// 3Dãƒ¢ãƒ‡ãƒ«ã®ãƒã‚¸ã‚·ãƒ§ãƒ³è¨­å®š
+	// 3Dƒ‚ƒfƒ‹‚Ìƒ|ƒWƒVƒ‡ƒ“İ’è
 	MV1SetPosition(m_modelHandle, m_position);
 
-	// å‘ãã«åˆã‚ã›ã¦ãƒ¢ãƒ‡ãƒ«ã‚’å›è»¢
+	// Œü‚«‚É‡‚í‚¹‚Äƒ‚ƒfƒ‹‚ğ‰ñ“]
 	MATRIX rotYMat = MGetRotY(180.0f * DX_PI_F / 180.0f);
 	VECTOR negativeVec = VTransform(m_dir, rotYMat);
 
-	// ãƒ¢ãƒ‡ãƒ«ã«å›è»¢ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
+	// ƒ‚ƒfƒ‹‚É‰ñ“]‚ğƒZƒbƒg‚·‚é
 	MV1SetRotationZYAxis(m_modelHandle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
 
-	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†
+	// ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
 	ChangeAnimation();
 	m_animTime += 0.3f;
 	if (m_animTime > m_animTotalTime)
@@ -77,14 +77,14 @@ void Player::Update()
 	}
 	MV1SetAttachAnimTime(m_modelHandle, m_animIndex, m_animTime);
 
-	// ãƒˆãƒãƒˆå‡¦ç†
+	// ƒgƒ}ƒgˆ—
 	for (int i = 0; i < m_tomatos.size(); i++)
 	{
 		m_tomatos[i]->Update();
 	}
 	for (int i = 0; i < m_tomatos.size(); i++)
 	{
-		// ãƒˆãƒãƒˆã®ç”Ÿå­˜æ™‚é–“ãŒ5.0fã‚’è¶…ãˆã‚‹ã¨å‰Šé™¤
+		// ƒgƒ}ƒg‚Ì¶‘¶ŠÔ‚ª5.0f‚ğ’´‚¦‚é‚Æíœ
 		if (m_tomatos[i]->GetTime() > 1.0f)
 		{
 			delete(m_tomatos[i]);
@@ -96,10 +96,10 @@ void Player::Update()
 
 void Player::Draw()
 {
-	// 3Dãƒ¢ãƒ‡ãƒ«ã®æç”»
+	// 3Dƒ‚ƒfƒ‹‚Ì•`‰æ
 	SetUseLighting(false);
 	MV1DrawModel(m_modelHandle);
-	// ãƒˆãƒãƒˆæç”»
+	// ƒgƒ}ƒg•`‰æ
 	for (int i = 0; i < m_tomatos.size(); i++)
 	{
 		m_tomatos[i]->Draw();
@@ -115,25 +115,25 @@ void Player::Draw()
 void Player::Input()
 {
 
-	// å‰å¾Œå·¦å³
+	// ‘OŒã¶‰E
 	VECTOR front = { 0.0f,0.0f,1.0f };
 	VECTOR rear = { 0.0f,0.0f,-1.0f };
 	VECTOR left = { 1.0f,0.0f,0.0f };
 	VECTOR right = { -1.0f,0.0f,0.0f };
 
-	VECTOR inputVec = VGet(0.0f, 0.0f, 0.0f);	// æŠ¼ã—ãŸåˆè¨ˆåº§æ¨™å–å¾—ç”¨å¤‰æ•°
+	VECTOR inputVec = VGet(0.0f, 0.0f, 0.0f);	// ‰Ÿ‚µ‚½‡ŒvÀ•Wæ“¾—p•Ï”
 
-	float addRad = 1.58f;	// åŠ ç®—ã™ã‚‹è§’åº¦
-	bool input = false;		// å…¥åŠ›ã—ãŸã‹åˆ¤å®šç”¨
+	float addRad = 1.58f;	// ‰ÁZ‚·‚éŠp“x
+	bool input = false;		// “ü—Í‚µ‚½‚©”»’è—p
 
 	XINPUT_STATE inputState;
 
 	m_moveFlag = false;
 
-	// 1Pã®æ“ä½œ
-	if (m_tag == ObjectTag::Player1)
+	// 1P‚Ì‘€ì
+	if (m_tag == ObjectTag::Team1)
 	{
-		// å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—
+		// “ü—Íó‘Ô‚ğæ“¾
 		GetJoypadXInputState(DX_INPUT_PAD2, &inputState);
 
 		if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
@@ -145,7 +145,7 @@ void Player::Input()
 			m_angle -= 0.01f;
 		}
 
-		// å‰ã«é€²ã‚€
+		// ‘O‚Éi‚Ş
 		if (Input::IsPress2P(BUTTON_ID_UP))
 		{
 			front.x = sinf(m_angle);
@@ -154,7 +154,7 @@ void Player::Input()
 			input = true;
 		}
 
-		// å¾Œã‚ã«é€²ã‚€
+		// Œã‚ë‚Éi‚Ş
 		if (Input::IsPress2P(BUTTON_ID_DOWN))
 		{
 			rear.x = sinf(m_angle) * -1.0f;
@@ -163,7 +163,7 @@ void Player::Input()
 			input = true;
 		}
 
-		// å³ã«é€²ã‚€
+		// ‰E‚Éi‚Ş
 		if (Input::IsPress2P(BUTTON_ID_LEFT))
 		{
 			right.x = sinf(m_angle - addRad);
@@ -172,7 +172,7 @@ void Player::Input()
 			input = true;
 		}
 
-		// å·¦ã«é€²ã‚€
+		// ¶‚Éi‚Ş
 		if (Input::IsPress2P(BUTTON_ID_RIGHT))
 		{
 			left.x = sinf(m_angle + addRad);
@@ -182,10 +182,10 @@ void Player::Input()
 		}
 	}
 
-	// 2Pã®æ“ä½œ
-	if (m_tag == ObjectTag::Player2)
+	// 2P‚Ì‘€ì
+	if (m_tag == ObjectTag::Team2)
 	{
-		// å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—
+		// “ü—Íó‘Ô‚ğæ“¾
 		GetJoypadXInputState(DX_INPUT_PAD1, &inputState);
 
 		if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
@@ -197,7 +197,7 @@ void Player::Input()
 			m_angle -= 0.01f;
 		}
 
-		// å‰ã«é€²ã‚€
+		// ‘O‚Éi‚Ş
 		if (Input::IsPress1P(BUTTON_ID_UP))
 		{
 			front.x = sinf(m_angle);
@@ -206,7 +206,7 @@ void Player::Input()
 			input = true;
 		}
 
-		// å¾Œã‚ã«é€²ã‚€
+		// Œã‚ë‚Éi‚Ş
 		if (Input::IsPress1P(BUTTON_ID_DOWN))
 		{
 			rear.x = sinf(m_angle) * -1.0f;
@@ -215,7 +215,7 @@ void Player::Input()
 			input = true;
 		}
 
-		// å³ã«é€²ã‚€
+		// ‰E‚Éi‚Ş
 		if (Input::IsPress1P(BUTTON_ID_LEFT))
 		{
 			right.x = sinf(m_angle - addRad);
@@ -224,7 +224,7 @@ void Player::Input()
 			input = true;
 		}
 
-		// å·¦ã«é€²ã‚€
+		// ¶‚Éi‚Ş
 		if (Input::IsPress1P(BUTTON_ID_RIGHT))
 		{
 			left.x = sinf(m_angle + addRad);
@@ -234,19 +234,19 @@ void Player::Input()
 		}
 	}
 
-	// å…¥åŠ›æœ‰ï¼ˆåŠ é€Ÿï¼‰ãƒ»å…¥åŠ›ç„¡ï¼ˆæ¸›é€Ÿï¼‰
+	// “ü—Í—Li‰Á‘¬jE“ü—Í–³iŒ¸‘¬j
 	if (input)
 	{
-		// å·¦å³ãƒ»å‰å¾ŒåŒæ™‚æŠ¼ã—ãªã©ã§å…¥åŠ›ãƒ™ã‚¯ãƒˆãƒ«ãŒ0ã®æ™‚ã¯ç„¡è¦–
+		// ¶‰EE‘OŒã“¯‰Ÿ‚µ‚È‚Ç‚Å“ü—ÍƒxƒNƒgƒ‹‚ª0‚Ì‚Í–³‹
 		if (VSquareSize(inputVec) < 0.5f)
 		{
 			return;
 		}
 
-		// æ–¹å‘ã‚’æ­£è¦åŒ–
+		// •ûŒü‚ğ³‹K‰»
 		inputVec = VNorm(inputVec);
 
-		// å…¥åŠ›æ–¹å‘ã¯ç¾åœ¨å‘ã„ã¦ã„ã‚‹å‘ãã¨ç•°ãªã‚‹ã‹
+		// “ü—Í•ûŒü‚ÍŒ»İŒü‚¢‚Ä‚¢‚éŒü‚«‚ÆˆÙ‚È‚é‚©
 		if (IsNearAngle(inputVec, m_dir))
 		{
 			m_dir = inputVec;
@@ -266,16 +266,17 @@ void Player::Input()
 		m_velocity.z = m_velocity.z * 0.9f;
 	}
 
-	// ãƒˆãƒãƒˆç”Ÿæˆ(Playerã®å›è»¢å‡¦ç†ãŒçµ‚ã‚ã£ãŸå¾Œç”Ÿæˆ(ä¸Šã ã¨ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å‘ãã«ãªã‚‰ãšå°‘ã—ãšã‚Œã‚‹))
+	// ƒgƒ}ƒg¶¬(Player‚Ì‰ñ“]ˆ—‚ªI‚í‚Á‚½Œã¶¬(ã‚¾‚ÆƒvƒŒƒCƒ„[‚ÌŒü‚«‚É‚È‚ç‚¸­‚µ‚¸‚ê‚é))
 	if (Input::IsDown1P(BUTTON_ID_R) && m_bulletNum > 0)
 	{
 		m_bulletNum--;
-		m_tomatos.push_back(new Tomato(m_position, m_dir));
+		//m_tomatos.push_back(new Tomato(m_position, m_dir));
+		
     
-    m_effect->PlayEffect(m_position);
+		m_effect->PlayEffect(m_position);
 	}
 
-	// ãƒˆãƒãƒˆã‚’é™ç•Œã¾ã§æŒã£ã¦ã„ãªã„ã¨ãã€ãƒˆãƒãƒˆã®å£ã‹ã‚‰ãƒˆãƒãƒˆã‚’å›å
+	// ƒgƒ}ƒg‚ğŒÀŠE‚Ü‚Å‚Á‚Ä‚¢‚È‚¢‚Æ‚«Aƒgƒ}ƒg‚Ì•Ç‚©‚çƒgƒ}ƒg‚ğ‰ñû
 	if (Input::IsDown1P(BUTTON_ID_B) && m_bulletNum < m_bulletCapacity)
 	{
 		TomatoCollect();
@@ -286,7 +287,7 @@ void Player::Rotate()
 {
 	if (m_rotateNow)
 	{
-		// å›è»¢ãŒç›®æ¨™è§’åº¦ã«åˆ°é”ã™ã‚Œã°å›è»¢ãƒ¢ãƒ¼ãƒ‰çµ‚äº†
+		// ‰ñ“]‚ª–Ú•WŠp“x‚É“’B‚·‚ê‚Î‰ñ“]ƒ‚[ƒhI—¹
 		if (IsNearAngle(m_aimDir, m_dir))
 		{
 			m_dir = m_aimDir;
@@ -294,48 +295,48 @@ void Player::Rotate()
 		}
 		else
 		{
-			// å›è»¢
+			// ‰ñ“]
 			VECTOR interPolateDir;
 			interPolateDir = RotateForAimVecYAxis(m_dir, m_aimDir, 10.0f);
 
-			// å›è»¢ãŒç›®æ¨™è§’åº¦ã‚’è¶…ãˆã¦ã„ãªã„ã‹
+			// ‰ñ“]‚ª–Ú•WŠp“x‚ğ’´‚¦‚Ä‚¢‚È‚¢‚©
 			VECTOR cross1, cross2;
 			cross1 = VCross(m_dir, m_aimDir);
 			cross2 = VCross(interPolateDir, m_aimDir);
 
-			// ç›®æ¨™è§’åº¦ã‚’è¶…ãˆãŸã‚‰çµ‚äº†
+			// –Ú•WŠp“x‚ğ’´‚¦‚½‚çI—¹
 			if (cross1.y * cross2.y < 0.0f)
 			{
 				interPolateDir = m_aimDir;
 				m_rotateNow = false;
 			}
-			// ç›®æ¨™ãƒ™ã‚¯ãƒˆãƒ«ã«10åº¦ã ã‘è¿‘ã¥ãˆãŸè§’åº¦
+			// –Ú•WƒxƒNƒgƒ‹‚É10“x‚¾‚¯‹ß‚Ã‚¦‚½Šp“x
 			m_dir = interPolateDir;
 		}
 	}
 }
 
-// @detail ãƒˆãƒãƒˆå›åå‡¦ç†
+// @detail ƒgƒ}ƒg‰ñûˆ—
 void Player::TomatoCollect()
 {
 	int objectNum = 0;
 	float distance = 0;
 	for (int i = 0; i < m_tomatoWall.size(); i++)
 	{
-		// ãã®ãƒˆãƒãƒˆã®å£ã«ãƒˆãƒãƒˆã¯ã‚ã‚‹ã®ã‹
+		// ‚»‚Ìƒgƒ}ƒg‚Ì•Ç‚Éƒgƒ}ƒg‚Í‚ ‚é‚Ì‚©
 		if (m_tomatoWall[i]->GetAllTomatoNum() != 0)
 		{
-			// ã©ã®ãƒˆãƒãƒˆã®å£ã‹ã‚’èª¿ã¹ã‚‹
+			// ‚Ç‚Ìƒgƒ}ƒg‚Ì•Ç‚©‚ğ’²‚×‚é
 			VECTOR gPos = m_tomatoWall[i]->GetPosition();
 			distance = GetDistance(gPos, m_position);
 
-			// è·é›¢ãŒè² ã®å€¤ãªã‚‰æ­£ã®å€¤ã«å¤‰ãˆã‚‹
+			// ‹——£‚ª•‰‚Ì’l‚È‚ç³‚Ì’l‚É•Ï‚¦‚é
 			if (distance < 0.0f)
 			{
 				distance = distance * -1.0f;
 			}
 
-			// ç¯„å›²ã«å…¥ã£ã¦ã„ã‚‹ãƒˆãƒãƒˆã®å£ã‹ã‚‰ãƒˆãƒãƒˆã‚’å›å
+			// ”ÍˆÍ‚É“ü‚Á‚Ä‚¢‚éƒgƒ}ƒg‚Ì•Ç‚©‚çƒgƒ}ƒg‚ğ‰ñû
 			if (distance < m_tomatoWall[i]->GetWidthDistance())
 			{
 				m_bulletNum++;
@@ -348,8 +349,8 @@ void Player::TomatoCollect()
 
 void Player::ChangeAnimation()
 {
-	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†
-	if (!m_moveFlag && m_animType != Anim::Idle)  // æ­¢ã¾ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
+	// ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
+	if (!m_moveFlag && m_animType != Anim::Idle)  // ~‚Ü‚éƒAƒjƒ[ƒVƒ‡ƒ“
 	{
 		m_animTime = 0.0f;
 		m_animType = Anim::Idle;
@@ -358,7 +359,7 @@ void Player::ChangeAnimation()
 		m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
 		m_animTime = 0.0f;
 	}
-	else if (m_moveFlag && m_animType != Anim::Run)  // èµ°ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
+	else if (m_moveFlag && m_animType != Anim::Run)  // ‘–‚éƒAƒjƒ[ƒVƒ‡ƒ“
 	{
 		m_animTime = 0.0f;
 		m_animType = Anim::Run;
@@ -369,7 +370,7 @@ void Player::ChangeAnimation()
 	}
 }
 
-// @detail è‡ªèº«ã¨ä»–ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è·é›¢ã‚’å‡ºã™
+// @detail ©g‚Æ‘¼‚ÌƒIƒuƒWƒFƒNƒg‚Ì‹——£‚ğo‚·
 double Player::GetDistance(VECTOR& pos1, VECTOR& pos2)
 {
 	double tmp1 = pos1.x - pos2.x;

@@ -3,20 +3,17 @@
 #include "Tomato.h"
 #include "TomatoWall.h"
 #include "ModelManager.h"
+#include "Object.h"
+#include "Transform.h"
+#include "Collider.h"
 
-Enemy::Enemy(ObjectTag tag, VECTOR position)
+Enemy::Enemy()
 	: m_movePhaseTime(50)
 	, m_bulletNum(10)
 	, m_bulletCapacity(10)
 {
-	// 3Dモデルの読み込み
-	ModelManager* model = new ModelManager();
-	srand(rand() % 100);
-	int modelNum = rand() % MODEL_NUM;
-	m_modelHandle = model->GetModelData(modelNum);
-	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
 
-	m_position = position;
+	m_position = VGet(0.0f, 0.0f, 0.0f);
 	m_velocity = VGet(1.0f, 1.0f, 1.0f);
 	m_dir = VGet(0.0f, 0.0f, 0.0f);
 	m_tomatoDir = VGet(0.0f, 0.0f, 0.0f);
@@ -38,15 +35,27 @@ Enemy::~Enemy()
 {
 	MV1DeleteModel(m_modelHandle);
 
-	for (int i = 0; i < m_tomatos.size(); i++)
-	{
-		if (!m_tomatos[i])
-		{
-			delete(m_tomatos[i]);
-		}
-		m_tomatos.erase(std::cbegin(m_tomatos) + i);
-		m_tomatos.shrink_to_fit();
-	}
+	//for (int i = 0; i < m_tomatos.size(); i++)
+	//{
+	//	if (!m_tomatos[i])
+	//	{
+	//		delete(m_tomatos[i]);
+	//	}
+	//	m_tomatos.erase(std::cbegin(m_tomatos) + i);
+	//	m_tomatos.shrink_to_fit();
+	//}
+}
+
+void Enemy::Start()
+{
+	// 3Dモデルの読み込み
+	auto tag = m_pParent->GetComponent<Tag>();
+	if (tag->tag == ObjectTag::Team1) { m_modelHandle = MV1LoadModel("data/character/man1.mv1"); }
+	if (tag->tag == ObjectTag::Team2) { m_modelHandle = MV1LoadModel("data/character/man3.mv1"); }
+	if (tag->tag == ObjectTag::Team3) { m_modelHandle = MV1LoadModel("data/character/woman2.mv1"); }
+	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
+	m_position = m_pParent->GetComponent<Transform>()->position;
+	MV1SetPosition(m_modelHandle, m_position);
 }
 
 void Enemy::Update()
@@ -69,6 +78,8 @@ void Enemy::Update()
 	MV1SetRotationXYZ(m_modelHandle, m_dir);
 
 	// 3Dモデルのポジション設定
+	auto pos = m_pParent->GetComponent<Transform>();
+	pos->position = m_position;
 	MV1SetPosition(m_modelHandle, m_position);
 }
 
@@ -78,17 +89,17 @@ void Enemy::Draw()
 	// 3Dモデルの描画
 	MV1DrawModel(m_modelHandle);
 
-	// トマト描画
-	for (int i = 0; i < m_tomatos.size(); i++)
-	{
-		m_tomatos[i]->Draw();
-	}
+	//// トマト描画
+	//for (int i = 0; i < m_tomatos.size(); i++)
+	//{
+	//	m_tomatos[i]->Draw();
+	//}
 	SetUseLighting(true);
 
 	DrawFormatString(500, 0, GetColor(255, 255, 255), "EnemyBulletNum:%d", m_bulletNum);
 }
 
-void Enemy::SetPlayerPtr(GameObject* player)
+void Enemy::SetPlayerPtr(class Object* player)
 {
 	m_player.push_back(player);
 }
@@ -105,26 +116,27 @@ void Enemy::ProcessTomato()
 	m_shotTime++;
 	if (m_shotTime > 100.0f && m_moveType == Type::AimTarget && m_bulletNum > 0)
 	{
-		m_tomatos.push_back(new Tomato(m_position, m_tomatoDir));
+		//m_tomatos.push_back(new Tomato(m_position, m_tomatoDir));
+		m_pParent->GetComponent<Collider>()->Shot(m_position, m_tomatoDir, m_pParent->GetComponent<Tag>());
 		m_bulletNum--;
 		m_shotTime = 0.0f;
 	}
 
 	// トマト処理
-	for (int i = 0; i < m_tomatos.size(); i++)
-	{
-		m_tomatos[i]->Update();
-	}
-	for (int i = 0; i < m_tomatos.size(); i++)
-	{
-		// トマトの生存時間が5.0fを超えると削除
-		if (m_tomatos[i]->GetTime() > 1.0f)
-		{
-			delete(m_tomatos[i]);
-			m_tomatos.erase(std::cbegin(m_tomatos) + i);
-			m_tomatos.shrink_to_fit();
-		}
-	}
+	//for (int i = 0; i < m_tomatos.size(); i++)
+	//{
+	//	m_tomatos[i]->Update();
+	//}
+	//for (int i = 0; i < m_tomatos.size(); i++)
+	//{
+	//	// トマトの生存時間が5.0fを超えると削除
+	//	if (m_tomatos[i]->GetTime() > 1.0f)
+	//	{
+	//		delete(m_tomatos[i]);
+	//		m_tomatos.erase(std::cbegin(m_tomatos) + i);
+	//		m_tomatos.shrink_to_fit();
+	//	}
+	//}
 }
 
 // @detail 標的がいる方向に正面を向ける
@@ -200,10 +212,11 @@ void Enemy::CheckTargetMovePattern()
 	int objectNum = 0;
 	float distance = 0;
 	float tmp = 0;
-	for (int i = 0; i < m_player.size(); i++)
+	int i = 0;
+	for (auto player : m_player)
 	{
 		// どのキャラクターが一番近いかを調べる
-		VECTOR gPos = m_player[i]->GetPosition();
+		VECTOR gPos = player->GetComponent<Transform>()->position;
 		tmp = GetDistance(gPos, m_position);
 
 		// tmpが負の値なら正の値に変える
@@ -229,6 +242,7 @@ void Enemy::CheckTargetMovePattern()
 				break;
 			}
 		}
+		i++;
 	}
 	if (m_moveType != Type::EscapeTarget)
 	{
@@ -247,9 +261,9 @@ void Enemy::CheckTargetMovePattern()
 
 // @detail ターゲットに合わせて動く処理
 // @param object ターゲットのゲームオブジェクト
-void Enemy::Move1Target(GameObject* object)
+void Enemy::Move1Target(class Object* player)
 {
-	VECTOR gPos = object->GetPosition();
+	VECTOR gPos = player->GetComponent<Transform>()->position;
 	double distance = GetDistance(gPos, m_position);
 
 	if (distance >= m_targetRangeMin && distance < m_targetRangeMax)  // この範囲に標的がいたら行動
@@ -310,7 +324,7 @@ void Enemy::Move1Target(GameObject* object)
 
 // @detail ターゲットが見つからないときの処理
 // @param object ターゲットのゲームオブジェクト
-void Enemy::Move2Target(GameObject* object)
+void Enemy::Move2Target(class Object* player)
 {
 	// 標的の方向に移動するか乱数決定
 	if (!m_aimTargetFlag && m_moveTime == 0)
@@ -333,7 +347,7 @@ void Enemy::Move2Target(GameObject* object)
 	// 標的に近づく
 	if (m_aimTargetFlag)
 	{
-		VECTOR gPos = object->GetPosition();
+		VECTOR gPos = player->GetComponent<Transform>()->position;
 		VECTOR moveVector = VGet(m_position.x + m_moveValue.x, m_position.y, m_position.z + m_moveValue.z);
 
 		if (gPos.x > m_position.x)
@@ -388,9 +402,9 @@ void Enemy::Move2Target(GameObject* object)
 }
 
 // @detail ターゲットから逃げる処理
-void Enemy::Move3Target(GameObject* object)
+void Enemy::Move3Target(class Object* player)
 {
-	VECTOR gPos = object->GetPosition();
+	VECTOR gPos = player->GetComponent<Transform>()->position;
 	
 	int objectNum = 0;
 	float distance = 0;
