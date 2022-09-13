@@ -1,6 +1,8 @@
 #pragma once
 class GameObject;
 
+class Ground;
+
 class PlayScene : public Scene
 {
 public:
@@ -12,7 +14,8 @@ public:
 	void Draw() override;
 
 private:
-	// ƒV[ƒ““à‚Ìó‘Ô‘JˆÚ‚ğ•\‚·
+	//class Map* m_map;  // Map
+	// ã‚·ãƒ¼ãƒ³å†…ã®çŠ¶æ…‹é·ç§»ã‚’è¡¨ã™
 	enum class Transition
 	{
 		START,
@@ -47,11 +50,13 @@ private:
 
 	class TomatoUIController* m_tomatoUICon[2];
 	class ScoreUIController* m_scoreUICon[3];
-
-	class Map* m_map;  // Map
   
 	std::vector<class TomatoWall*>m_pGameObjects;
 	//std::list<class Object*>m_pObjectLists;
 
+
+	Ground* m_pGround;
+
 	const int m_tomatoWallNum = 8;
+
 };

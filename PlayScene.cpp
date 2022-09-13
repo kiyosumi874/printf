@@ -33,19 +33,25 @@ PlayScene::PlayScene(const MODE& mode)
 	, m_graphHandleWhite(-1)
 {
 
+	m_pGround = new Ground(ObjectTag::Ground, VGet(0.0f, -5.0f, 0.0f));
+	m_pTomatoWall[0] = new TomatoWall(ObjectTag::TomatoWall, VGet(50.0f, 0.0f, 50.0f));
+	m_pTomatoWall[1] = new TomatoWall(ObjectTag::TomatoWall, VGet(150.0f, 0.0f, 150.0f));
+	m_pPlayer1P = new Player(ObjectTag::Player1, VGet(0.0f, 0.0f, 0.0f));
+	m_pCamera1P = new Camera(ObjectTag::Camera1, VGet(0.0f, 20.0f, 0.0f));
+	m_pPlayer2P = new Player(ObjectTag::Player2, VGet(50.0f, 0.0f, 50.0f));
+	m_pCamera2P = new Camera(ObjectTag::Camera2, VGet(0.0f, 20.0f, 0.0f));
+	m_pEnemy1 = new Enemy(ObjectTag::Enemy, VGet(50.0f, 0.0f, -50.0f));
+	m_pEnemy2 = new Enemy(ObjectTag::Enemy, VGet(-50.0f, 0.0f, 50.0f));
+
+	// カメラ
+	m_pCamera1P->SetPlayerptr(m_pPlayer1P);
+	m_pCamera2P->SetPlayerptr(m_pPlayer2P);
+
+
 	// トランジション用の画像初期化
 	for (int i = 0; i < 2; i++)
 	{
 		m_transitionImage[i] = nullptr;
-	}
-
-	m_map = new Map();
-
-	// このシーンで使うjsonファイルが読み込めたら
-	if (m_map->OpenFile())
-	{
-		m_map->GroundCreate();  // 床を生成
-		//m_map->PlayerCreate();  // プレイヤーを生成
 	}
 
 	for (int i = 0; i < m_tomatoWallNum; i++)
@@ -282,6 +288,7 @@ PlayScene::PlayScene(const MODE& mode)
 		}
 		
 	}
+	m_pGameObjects.push_back(m_pGround);
 
 	// ScoreUI
 	{
@@ -299,12 +306,13 @@ PlayScene::PlayScene(const MODE& mode)
 
 PlayScene::~PlayScene()
 {
+
 	DeleteGraph(m_graphHandleWhite);
 	for (auto obj : m_pGameObjects)
 	{
 		delete obj;
 	}
-	delete m_map;
+
 	for (auto obj : m_pObjectLists)
 	{
 		delete obj;
@@ -753,7 +761,8 @@ void PlayScene::DrawTransitionOver()
 	SetCameraScreenCenter(960.0f, 480.0f);
 	DrawSkyDome();
 #ifdef _DEBUG
-	DrawGrid(1000.0f, 30);
+	printfDx("PlayScene\n");
+	
 #endif // _DEBUG
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{

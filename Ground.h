@@ -1,14 +1,14 @@
 #pragma once
+#include "GameObject.h"
 
-/* 床関連のクラス */
-class Ground
+class Ground :public GameObject
 {
 public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_pos">ポジション</param>
-	Ground(const VECTOR& _pos);
+	Ground(ObjectTag tag, VECTOR position);
 	// デストラクタ
 	~Ground();
 
@@ -16,14 +16,11 @@ public:
 	/// 更新処理
 	/// </summary>
 	/// <param name="_deltaTime">最後のフレームを完了するのに要した時間</param>
-	void Update(float _deltaTime);
+	void Update()override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
-
-private:
-	int mModel;    // モデルデータ
+	void Draw()override;
 };
 

@@ -8,7 +8,6 @@
 #include <Windows.h>
 #include <vector>
 #include <mmsystem.h>
-#include <document.h>
 #include <fstream>
 #include <sstream>
 #include <math.h>
@@ -24,7 +23,6 @@
 /* System */
 #include "Input.h"
 #include "Fps.h"
-#include "RapidJson.h"
 
 /* Scene */
 #include "Scene.h"
@@ -36,9 +34,6 @@
 
 /* Ground */
 #include "Ground.h"
-
-/* Map */
-#include "Map.h"
 
 /* Effect */
 #include "Effect.h"
