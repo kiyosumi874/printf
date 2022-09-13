@@ -17,7 +17,7 @@ PlayScene::PlayScene(const MODE& mode)
 	//	//m_map->PlayerCreate();  // プレイヤーを生成
 	//}
   
-	m_pGround = new Ground2(ObjectTag::Ground, VGet(0.0f, -5.0f, 0.0f));
+	m_pGround = new Ground(ObjectTag::Ground, VGet(0.0f, -5.0f, 0.0f));
 	m_pTomatoWall[0] = new TomatoWall(ObjectTag::TomatoWall, VGet(50.0f, 0.0f, 50.0f));
 	m_pTomatoWall[1] = new TomatoWall(ObjectTag::TomatoWall, VGet(150.0f, 0.0f, 150.0f));
 	m_pPlayer1P = new Player(ObjectTag::Player1, VGet(0.0f, 0.0f, 0.0f));

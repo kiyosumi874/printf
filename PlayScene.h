@@ -4,7 +4,7 @@ class TomatoWall;
 class Player;
 class Enemy;
 class Camera;
-class Ground2;
+class Ground;
 
 class PlayScene : public Scene
 {
@@ -30,5 +30,5 @@ private:
 	Camera* m_pCamera2P;
 	Enemy* m_pEnemy1;
 	Enemy* m_pEnemy2;
-	Ground2* m_pGround;
+	Ground* m_pGround;
 };
