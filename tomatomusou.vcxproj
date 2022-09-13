@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -169,11 +169,8 @@
     <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
-
     <ClCompile Include="Ground.cpp" />
-
     <ClCompile Include="Human.cpp" />
-
     <ClCompile Include="Image.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
@@ -189,12 +186,9 @@
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
-
     <ClCompile Include="Projector.cpp" />
     <ClCompile Include="Rank.cpp" />
-    <ClCompile Include="RapidJson.cpp" />
     <ClCompile Include="ResultScene.cpp" />
-
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="ScoreUIController.cpp" />
@@ -221,11 +215,8 @@
     <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameOverScene.h" />
-
     <ClInclude Include="Ground.h" />
-
     <ClInclude Include="Human.h" />
-
     <ClInclude Include="Image.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
@@ -237,12 +228,9 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
-
     <ClInclude Include="Projector.h" />
     <ClInclude Include="Rank.h" />
-    <ClInclude Include="RapidJson.h" />
     <ClInclude Include="ResultScene.h" />
-
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Score.h" />

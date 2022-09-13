@@ -16,7 +16,6 @@
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
-
     <ClCompile Include="TitleScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -67,9 +66,6 @@
     </ClCompile>
     <ClCompile Include="TomatoWall.cpp">
       <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Collider</Filter>
     </ClCompile>
     <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="Ground.cpp">
@@ -138,13 +134,11 @@
     <ClInclude Include="TomatoWall.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>Collider</Filter>
-    </ClInclude>
     <ClInclude Include="ModelManager.h" />
     <ClInclude Include="Ground.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Collider.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -165,7 +159,6 @@
     <Filter Include="Collider">
       <UniqueIdentifier>{323895cb-8e37-480e-b1cb-9ec3b46c1869}</UniqueIdentifier>
     </Filter>
-
     <ClCompile Include="Projector.cpp" />
     <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="Score.cpp" />
@@ -199,6 +192,5 @@
     <ClInclude Include="SkyDome.h" />
     <ClInclude Include="StillProjector.h" />
     <ClInclude Include="Rank.h" />
-
   </ItemGroup>
 </Project>
