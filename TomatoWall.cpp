@@ -65,5 +65,5 @@ void TomatoWall::Draw()
 	{
 		MV1DrawModel(m_modelHandle);
 	}
-	DrawFormatString(800, 0, GetColor(255, 255, 255), "TomatoWallNum:%d", m_allTomatoNum);
+	//DrawFormatString(800, 0, GetColor(255, 255, 255), "TomatoWallNum:%d", m_allTomatoNum);
 }

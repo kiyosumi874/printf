@@ -175,8 +175,14 @@ void Human::Input()
 		if (Input::IsDown2P(BUTTON_ID_R) && m_bulletNum > 0)
 		{
 			m_bulletNum--;
-			auto pos = m_pParent->GetComponent<Transform>()->position;
-			m_pParent->GetComponent<Collider>()->Shot(pos, m_dir, m_pParent->GetComponent<Tag>());
+			auto pos = m_pParent->GetComponent<Transform>();
+			VECTOR position = VGet(0.0f, 0.0f, 0.0f);
+			position.x = pos->position.x + sinf(pos->rotate.y) * -30.0f;
+			position.z = pos->position.z + cosf(pos->rotate.y) * -30.0f;
+			position = VSub(pos->position, position);
+			// •ûŒü‚ð³‹K‰»
+			position = VNorm(position);
+			m_pParent->GetComponent<Collider>()->Shot(pos->position, position, m_pParent->GetComponent<Tag>());
 			//m_effect->PlayEffect(m_position);
 		}
 
@@ -244,8 +250,14 @@ void Human::Input()
 		if (Input::IsDown1P(BUTTON_ID_R) && m_bulletNum > 0)
 		{
 			m_bulletNum--;
-			auto pos = m_pParent->GetComponent<Transform>()->position;
-			m_pParent->GetComponent<Collider>()->Shot(pos, m_dir, m_pParent->GetComponent<Tag>());
+			auto pos = m_pParent->GetComponent<Transform>();
+			VECTOR position = VGet(0.0f, 0.0f, 0.0f);
+			position.x = pos->position.x + sinf(pos->rotate.y) * -30.0f;
+			position.z = pos->position.z + cosf(pos->rotate.y) * -30.0f;
+			position = VSub(pos->position, position);
+			// •ûŒü‚ð³‹K‰»
+			position = VNorm(position);
+			m_pParent->GetComponent<Collider>()->Shot(pos->position, position, m_pParent->GetComponent<Tag>());
 			//m_effect->PlayEffect(m_position);
 		}
 

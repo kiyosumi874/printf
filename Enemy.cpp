@@ -96,7 +96,7 @@ void Enemy::Draw()
 	//}
 	SetUseLighting(true);
 
-	DrawFormatString(500, 0, GetColor(255, 255, 255), "EnemyBulletNum:%d", m_bulletNum);
+	//DrawFormatString(500, 0, GetColor(255, 255, 255), "EnemyBulletNum:%d", m_bulletNum);
 }
 
 void Enemy::SetPlayerPtr(class Object* player)
