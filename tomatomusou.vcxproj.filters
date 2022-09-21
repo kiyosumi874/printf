@@ -6,7 +6,6 @@
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="Effect.cpp" />
-    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fps.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -69,6 +68,12 @@
     </ClCompile>
     <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="Ground.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Icon.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
@@ -139,6 +144,9 @@
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="Icon.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
