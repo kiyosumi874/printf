@@ -8,6 +8,7 @@
 #include "Tomato.h"
 #include "TomatoWall.h"
 #include "Score.h"
+#include "Icon.h"
 
 Human::Human()
 	: m_rotateNow(false)
@@ -28,6 +29,12 @@ Human::Human()
 	m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
 	m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
 	m_animTime = 0.0f;
+	m_animSpeed = 0.3f;
+	m_throwSpeed = 1.2f;
+	m_pickSpeed = 1.2f;
+	m_moveFlag = true;
+	m_throwFlag = false;
+	m_pickFlag = false;
 }
 
 Human::~Human()
@@ -51,6 +58,10 @@ void Human::Start()
 	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
 	// 3Dモデルのポジション設定
 	MV1SetPosition(m_modelHandle, m_pTransform->position);
+
+	// アイコンをセット
+	m_icon = new Icon(m_pTag);
+	m_icon->Init(m_pTransform->position);
 }
 
 void Human::Update()
@@ -65,14 +76,19 @@ void Human::Update()
 	}
 	Rotate();	// 回転
 	Input();	// 入力
+	// アニメーション処理
+	Animation();
 
 	// 移動処理
-	m_pTransform->position;
-	m_pTransform->position = VAdd(m_pTransform->position, m_velocity);
+	if (m_moveFlag)
+	{
+		m_pTransform->position;
+		m_pTransform->position = VAdd(m_pTransform->position, m_velocity);
 
-	// 3Dモデルのポジション設定
-	MV1SetPosition(m_modelHandle, m_pTransform->position);
-
+		// 3Dモデルのポジション設定
+		MV1SetPosition(m_modelHandle, m_pTransform->position);
+	}
+	
 	// 向きに合わせてモデルを回転
 	MATRIX rotYMat = MGetRotY(180.0f * DX_PI_F / 180.0f);
 	VECTOR negativeVec = VTransform(m_dir, rotYMat);
@@ -80,14 +96,7 @@ void Human::Update()
 	// モデルに回転をセットする
 	MV1SetRotationZYAxis(m_modelHandle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
 
-	// アニメーション処理
-	ChangeAnimation();
-	m_animTime += 0.3f;
-	if (m_animTime > m_animTotalTime)
-	{
-		m_animTime = 0.0f;
-	}
-	MV1SetAttachAnimTime(m_modelHandle, m_animIndex, m_animTime);
+	m_icon->Update(m_pTransform->position);
 }
 
 void Human::Draw()
@@ -95,6 +104,7 @@ void Human::Draw()
 	// 3Dモデルの描画
 	SetUseLighting(false);
 	MV1DrawModel(m_modelHandle);
+	m_icon->Draw();
 	SetUseLighting(true);
 }
 
@@ -105,20 +115,17 @@ void Human::SetTomatoWallPtr(std::vector<TomatoWall*>* tomatoWall)
 
 void Human::Input()
 {
+	m_inputVector = VGet(0.0f, 0.0f, 0.0f); // 押した合計座標取得用変数
 	// 前後左右
 	VECTOR front = { 0.0f,0.0f,1.0f };
 	VECTOR rear = { 0.0f,0.0f,-1.0f };
 	VECTOR left = { 1.0f,0.0f,0.0f };
 	VECTOR right = { -1.0f,0.0f,0.0f };
 
-	VECTOR inputVec = VGet(0.0f, 0.0f, 0.0f);	// 押した合計座標取得用変数
-
 	float addRad = 1.58f;	// 加算する角度
 	bool input = false;		// 入力したか判定用
 
 	XINPUT_STATE inputState;
-
-	m_moveFlag = false;
 
 	// 1Pの操作
 	if (m_pTag->tag == ObjectTag::Team1)
@@ -140,7 +147,7 @@ void Human::Input()
 		{
 			front.x = sinf(m_pTransform->rotate.y);
 			front.z = cosf(m_pTransform->rotate.y);
-			inputVec = VAdd(front, inputVec);
+			m_inputVector = VAdd(front, m_inputVector);
 			input = true;
 		}
 
@@ -149,7 +156,7 @@ void Human::Input()
 		{
 			rear.x = sinf(m_pTransform->rotate.y) * -1.0f;
 			rear.z = cosf(m_pTransform->rotate.y) * -1.0f;
-			inputVec = VAdd(rear, inputVec);
+			m_inputVector = VAdd(rear, m_inputVector);
 			input = true;
 		}
 
@@ -158,7 +165,7 @@ void Human::Input()
 		{
 			right.x = sinf(m_pTransform->rotate.y - addRad);
 			right.z = cosf(m_pTransform->rotate.y - addRad);
-			inputVec = VAdd(right, inputVec);
+			m_inputVector = VAdd(right, m_inputVector);
 			input = true;
 		}
 
@@ -167,13 +174,15 @@ void Human::Input()
 		{
 			left.x = sinf(m_pTransform->rotate.y + addRad);
 			left.z = cosf(m_pTransform->rotate.y + addRad);
-			inputVec = VAdd(left, inputVec);
+			m_inputVector = VAdd(left, m_inputVector);
 			input = true;
 		}
 
 		// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
-		if (Input::IsDown2P(BUTTON_ID_R) && m_bulletNum > 0)
+		if (Input::IsDown2P(BUTTON_ID_R) && m_bulletNum > 0 && !m_throwFlag)
 		{
+			m_throwFlag = true;
+			m_animType = Anim::Throw;
 			m_bulletNum--;
 			auto pos = m_pParent->GetComponent<Transform>();
 			VECTOR position = VGet(0.0f, 0.0f, 0.0f);
@@ -215,7 +224,7 @@ void Human::Input()
 		{
 			front.x = sinf(m_pTransform->rotate.y);
 			front.z = cosf(m_pTransform->rotate.y);
-			inputVec = VAdd(front, inputVec);
+			m_inputVector = VAdd(front, m_inputVector);
 			input = true;
 		}
 
@@ -224,7 +233,7 @@ void Human::Input()
 		{
 			rear.x = sinf(m_pTransform->rotate.y) * -1.0f;
 			rear.z = cosf(m_pTransform->rotate.y) * -1.0f;
-			inputVec = VAdd(rear, inputVec);
+			m_inputVector = VAdd(rear, m_inputVector);
 			input = true;
 		}
 
@@ -233,7 +242,7 @@ void Human::Input()
 		{
 			right.x = sinf(m_pTransform->rotate.y - addRad);
 			right.z = cosf(m_pTransform->rotate.y - addRad);
-			inputVec = VAdd(right, inputVec);
+			m_inputVector = VAdd(right, m_inputVector);
 			input = true;
 		}
 
@@ -242,13 +251,16 @@ void Human::Input()
 		{
 			left.x = sinf(m_pTransform->rotate.y + addRad);
 			left.z = cosf(m_pTransform->rotate.y + addRad);
-			inputVec = VAdd(left, inputVec);
+			m_inputVector = VAdd(left, m_inputVector);
 			input = true;
 		}
 
 		// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
-		if (Input::IsDown1P(BUTTON_ID_R) && m_bulletNum > 0)
+		if (Input::IsDown1P(BUTTON_ID_R) && m_bulletNum > 0 && !m_throwFlag)
 		{
+			m_throwFlag = true;
+			m_animType = Anim::Throw;
+			m_moveFlag = false;
 			m_bulletNum--;
 			auto pos = m_pParent->GetComponent<Transform>();
 			VECTOR position = VGet(0.0f, 0.0f, 0.0f);
@@ -274,27 +286,26 @@ void Human::Input()
 	if (input)
 	{
 		// 左右・前後同時押しなどで入力ベクトルが0の時は無視
-		if (VSquareSize(inputVec) < 0.5f)
+		if (VSquareSize(m_inputVector) < 0.5f)
 		{
 			return;
 		}
 
 		// 方向を正規化
-		inputVec = VNorm(inputVec);
+		m_inputVector = VNorm(m_inputVector);
 
 		// 入力方向は現在向いている向きと異なるか
-		if (IsNearAngle(inputVec, m_dir))
+		if (IsNearAngle(m_inputVector, m_dir))
 		{
-			m_dir = inputVec;
+			m_dir = m_inputVector;
 		}
 		else
 		{
 			m_rotateNow = true;
-			m_aimDir = inputVec;
+			m_aimDir = m_inputVector;
 		}
 
-		m_velocity = inputVec;
-		m_moveFlag = true;
+		m_velocity = m_inputVector;
 	}
 	else
 	{
@@ -342,26 +353,70 @@ void Human::Rotate()
 	}
 }
 
-void Human::ChangeAnimation()
+void Human::Animation()
 {
 	// アニメーション処理
-	if (!m_moveFlag && m_animType != Anim::Idle)  // 止まるアニメーション
+	if (m_animType == Anim::Throw)
 	{
-		m_animTime = 0.0f;
-		m_animType = Anim::Idle;
-		MV1DetachAnim(m_modelHandle, m_animIndex);
-		m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
-		m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
-		m_animTime = 0.0f;
+		m_animTime += m_throwSpeed;
 	}
-	else if (m_moveFlag && m_animType != Anim::Run)  // 走るアニメーション
+	else if (m_animType == Anim::Pick)
+	{
+		m_animTime += m_pickSpeed;
+	}
+	else
+	{
+		m_animTime += m_animSpeed;
+	}
+
+	if (m_animTime > m_animTotalTime)
 	{
 		m_animTime = 0.0f;
-		m_animType = Anim::Run;
+		if (m_pickFlag)
+		{
+			m_pickFlag = false;
+			m_animType = Anim::None;
+			m_moveFlag = true;
+		}
+		if (m_throwFlag)
+		{
+			m_throwFlag = false;
+			m_animType = Anim::None;
+			m_moveFlag = true;
+		}
+	}
+	ChangeAnimation();
+
+	MV1SetAttachAnimTime(m_modelHandle, m_animIndex, m_animTime);
+}
+
+void Human::ChangeAnimation()
+{
+	// 移動できるアニメーションなら
+	// 今動いているのか、止まっているのかを判断
+	if (m_moveFlag)
+	{
+		VECTOR nowPosition = MV1GetPosition(m_modelHandle);
+		if (m_inputVector.x == 0.0f &&
+			m_inputVector.y == 0.0f &&
+			m_inputVector.z == 0.0f)
+		{
+			m_animType = Anim::Idle;
+		}
+		else
+		{
+			m_animType = Anim::Run;
+		}
+	}
+
+	// アニメーション処理
+	if (m_animType != m_beforeAnimType)
+	{
 		MV1DetachAnim(m_modelHandle, m_animIndex);
 		m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
 		m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
 		m_animTime = 0.0f;
+		m_beforeAnimType = m_animType;
 	}
 }
 
@@ -388,8 +443,11 @@ void Human::TomatoCollect()
 		}
 
 		// 範囲に入っているトマトの壁からトマトを回収
-		if (distance < tomatowall[i].GetWidthDistance())
+		if (distance < tomatowall[i].GetWidthDistance() && !m_pickFlag)
 		{
+			m_pickFlag = true;
+			m_moveFlag = false;
+			m_animType = Anim::Pick;
 			m_bulletNum++;
 			tomatowall[i].DecreaseAllTomatoNum();
 			break;

@@ -171,6 +171,7 @@
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="Human.cpp" />
+    <ClCompile Include="Icon.cpp" />
     <ClCompile Include="Image.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
@@ -217,6 +218,7 @@
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="Human.h" />
+    <ClInclude Include="Icon.h" />
     <ClInclude Include="Image.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
