@@ -707,15 +707,7 @@ void PlayScene::DrawTransitionPlay()
 
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
-		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2)
-		{
-			m_pGameObjects[i]->Draw();
-
-			if (m_HitEffect->m_DrawFlag)
-			{
-				m_HitEffect->Draw();
-			}
-		}
+		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2) { m_pGameObjects[i]->Draw(); }
 	}
 	for (auto obj : m_pObjectLists)
 	{
