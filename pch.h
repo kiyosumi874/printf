@@ -36,4 +36,5 @@
 #include "Ground.h"
 
 /* Effect */
-#include "Effect.h"
+#include "EffectManager.h"
+#include "HitEffect.h"

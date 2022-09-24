@@ -184,7 +184,7 @@ PlayScene::PlayScene(const MODE& mode)
 		}
 	}
 
-	// saito
+	// saito 床を生成
 	{
 		Object* obj = new Object;
 		auto trs = obj->AddComponent<Transform>();
@@ -260,8 +260,6 @@ PlayScene::PlayScene(const MODE& mode)
 		}
 	}
 
-	
-
 	// 最初のカウントダウン
 	{
 		Object* object = nullptr;
@@ -317,6 +315,8 @@ PlayScene::PlayScene(const MODE& mode)
 		}
 	}
 	m_graphHandleWhite = LoadGraph("data/white.png");
+
+	m_HitEffect = new HitEffect();
 }
 
 PlayScene::~PlayScene()
@@ -619,6 +619,7 @@ void PlayScene::UpdateTransitionPlay()
 			}
 		}
 	}
+
 	if (Input::IsDown1P(BUTTON_ID_START))
 	{
 
@@ -699,12 +700,22 @@ void PlayScene::DrawTransitionPlay()
 	SetDrawArea(0, 0, 640, 960);
 	SetCameraScreenCenter(320.0f, 480.0f);
 	DrawSkyDome();
+
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
+
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
-		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2) { m_pGameObjects[i]->Draw(); }
+		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2)
+		{
+			m_pGameObjects[i]->Draw();
+
+			if (m_HitEffect->m_DrawFlag)
+			{
+				m_HitEffect->Draw();
+			}
+		}
 	}
 	for (auto obj : m_pObjectLists)
 	{
@@ -718,12 +729,15 @@ void PlayScene::DrawTransitionPlay()
 			if (tag->tag != ObjectTag::Camera2) { obj->Draw(); }
 		}
 	}
+
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
 	DrawSkyDome();
+
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
+
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
 		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera1) { m_pGameObjects[i]->Draw(); }
@@ -740,6 +754,7 @@ void PlayScene::DrawTransitionPlay()
 			if (tag->tag != ObjectTag::Camera1) { obj->Draw(); }
 		}
 	}
+
 	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();
 

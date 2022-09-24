@@ -51,6 +51,8 @@ void SceneManager::GameLoop()
 			Effekseer_Sync3DSetting();
 
 			DrawEffekseer3D();
+
+
 #ifdef _DEBUG
 			Fps::Draw();
 #endif // _DEBUG
