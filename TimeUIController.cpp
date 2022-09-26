@@ -28,10 +28,10 @@ void TimeUIController::Update()
 	auto nowTime = m_pTimeCount->CheckCount();
 	if (nowTime != -1.0)
 	{
-		UpdateDidit0(181 - nowTime);
-		UpdateDidit1(181 - nowTime);
-		UpdateDidit2(181 - nowTime);
-		UpdateDidit3(181 - nowTime);
+		UpdateDidit0(91 - nowTime);
+		UpdateDidit1(91 - nowTime);
+		UpdateDidit2(91 - nowTime);
+		UpdateDidit3(91 - nowTime);
 	}
 	
 

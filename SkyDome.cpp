@@ -18,6 +18,6 @@ void DrawSkyDome()
 void RotateSkyDome()
 {
 	static float rot = 0;
-	rot += 0.005f;
+	rot += 0.0025f;
 	MV1SetRotationXYZ(g_skyDomeHandle, VGet(0.0f, rot * DX_PI_F / 180.0f, 0.0f));
 }
