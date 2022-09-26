@@ -37,3 +37,5 @@
 
 /* Effect */
 #include "Effect.h"
+
+#include "Sound.h"
