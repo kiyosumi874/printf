@@ -15,6 +15,7 @@ public:
 private:
 	void Input();
 	void Rotate();
+	void Animation();  // アニメーション処理
 	void ChangeAnimation();	// アニメーション変更処理
 	void TomatoCollect();	// トマト回収処理
 	double GetDistance(VECTOR& pos1, VECTOR& pos2);
@@ -29,10 +30,12 @@ private:
 	class Transform* m_pTransform;
 	class Tag* m_pTag;
 	std::vector<class TomatoWall*>* m_tomatoWall;
+	class Icon* m_icon;  // アイコンクラス
 
 	VECTOR m_dir;			// 向き
 	VECTOR m_aimDir;		// 目標向き
 	VECTOR m_velocity;		// 速度
+	VECTOR m_inputVector;  // 押した合計座標取得用変数
 
 	int m_modelHandle;		// モデルハンドル
 	int m_bulletNum;        // 球の所持数
@@ -42,13 +45,22 @@ private:
 
 	enum Anim
 	{
-		Idle,
-		Run,
+		None = -1,  // 何もしない
+		Idle,  // 止まる
+		Run,   // 走る
+		Throw,  // 投げる
+		Pick,  // 拾う
 	};
 
 	int m_animType;  // 現在のアニメーションが何か
+	int m_beforeAnimType;  // 前のアニメーション
 	int m_animIndex;  // 現在のアニメーションを記録
 	float m_animTime;  // アニメーションの経過時間
 	float m_animTotalTime;  // アニメーションの総時間
+	float m_animSpeed;  // 基準のアニメーションスピード
+	float m_throwSpeed;  // 投げるスピード(補正をかける)
+	float m_pickSpeed;  // 拾うスピード(補正をかける)
 	bool m_moveFlag;  // 動いているか
+	bool m_throwFlag;  // トマトを投げたか
+	bool m_pickFlag;  // トマトを拾ったか
 };

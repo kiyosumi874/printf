@@ -6,11 +6,13 @@
 #include "Object.h"
 #include "Transform.h"
 #include "Collider.h"
+#include "Icon.h"
 
 Enemy::Enemy()
 	: m_movePhaseTime(50)
 	, m_bulletNum(10)
 	, m_bulletCapacity(10)
+	, m_shotPhaseTime(200.0f)
 {
 
 	m_position = VGet(0.0f, 0.0f, 0.0f);
@@ -26,9 +28,15 @@ Enemy::Enemy()
 
 	// アニメーション準備
 	m_animType = Anim::Idle;
+	m_beforeAnimType = Anim::Idle;
 	m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
 	m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
 	m_animTime = 0.0f;
+	m_animSpeed = 0.3f;
+	m_throwSpeed = 1.2f;
+	m_pickSpeed = 1.2f;
+	m_moveFlag = true;
+	m_pickFlag = true;
 }
 
 Enemy::~Enemy()
@@ -56,20 +64,18 @@ void Enemy::Start()
 	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
 	m_position = m_pParent->GetComponent<Transform>()->position;
 	MV1SetPosition(m_modelHandle, m_position);
+
+	m_icon = new Icon(tag);
+	m_icon->Init(m_position);
 }
 
 void Enemy::Update()
 {
+	// エネミーの行動パターンを調べる
 	CheckMovePattern();
 
-	// アニメーション処理
-	ChangeAnimation();
-	m_animTime += 0.3f;
-	if (m_animTime > m_animTotalTime)
-	{
-		m_animTime = 0.0f;
-	}
-	MV1SetAttachAnimTime(m_modelHandle, m_animIndex, m_animTime);
+	// アニメーションの処理
+	Animation();
 
 	// トマトの処理
 	ProcessTomato();
@@ -81,6 +87,8 @@ void Enemy::Update()
 	auto pos = m_pParent->GetComponent<Transform>();
 	pos->position = m_position;
 	MV1SetPosition(m_modelHandle, m_position);
+
+	m_icon->Update(m_position);
 }
 
 void Enemy::Draw()
@@ -88,7 +96,7 @@ void Enemy::Draw()
 	SetUseLighting(false);
 	// 3Dモデルの描画
 	MV1DrawModel(m_modelHandle);
-
+	m_icon->Draw();
 	//// トマト描画
 	//for (int i = 0; i < m_tomatos.size(); i++)
 	//{
@@ -114,12 +122,18 @@ void Enemy::ProcessTomato()
 {
 	// トマトを投げる
 	m_shotTime++;
-	if (m_shotTime > 100.0f && m_moveType == Type::AimTarget && m_bulletNum > 0)
+	// 敵が近づいていたり、離れていたら投げるのをキャンセルする
+	if (m_shotTime > m_shotPhaseTime && m_moveType == Type::AimTarget && m_bulletNum > 0 && !m_absolutelyMoveFlag)
 	{
 		//m_tomatos.push_back(new Tomato(m_position, m_tomatoDir));
-		m_pParent->GetComponent<Collider>()->Shot(m_position, m_tomatoDir, m_pParent->GetComponent<Tag>());
-		m_bulletNum--;
-		m_shotTime = 0.0f;
+		m_animType = Anim::Throw;
+		m_moveFlag = false;
+		if (m_animTime == 0.0f)
+		{
+			m_pParent->GetComponent<Collider>()->Shot(m_position, m_tomatoDir, m_pParent->GetComponent<Tag>());
+			m_bulletNum--;
+			m_shotTime = 0.0f;
+		}
 	}
 
 	// トマト処理
@@ -150,46 +164,75 @@ void Enemy::RotateTowardTarget(VECTOR& aimTargetPos)
 	m_tomatoDir = VAdd(VGet(0.0f, 0.0f, 0.0f), VGet(sin(angle), 0, cos(angle)));
 }
 
-// @detail アニメーションを変更する関数
-void Enemy::ChangeAnimation()
+void Enemy::Animation()
 {
-	// 今動いているのか、止まっているのかを判断
-	VECTOR nowPosition = MV1GetPosition(m_modelHandle);
-	if (nowPosition.x == m_position.x &&
-		nowPosition.y == m_position.y &&
-		nowPosition.z == m_position.z)
+	// アニメーション処理
+	if (m_animType == Anim::Throw)
 	{
-		m_moveFlag = false;
+		m_animTime += m_throwSpeed;
+	}
+	else if (m_animType == Anim::Pick)
+	{
+		m_animTime += m_pickSpeed;
 	}
 	else
 	{
-		m_moveFlag = true;
+		m_animTime += m_animSpeed;
+	}
+
+	if (m_animTime > m_animTotalTime)
+	{
+		m_animTime = 0.0f;
+		if (!m_moveFlag)
+		{
+			if (m_animType == Anim::Pick)
+			{
+				m_pickFlag = false;
+			}
+			m_animType = Anim::None;
+			m_moveFlag = true;
+		}
+	}
+	ChangeAnimation();
+
+	MV1SetAttachAnimTime(m_modelHandle, m_animIndex, m_animTime);
+}
+
+// @detail アニメーションを変更する関数
+void Enemy::ChangeAnimation()
+{
+	// 移動できるアニメーションなら
+	// 今動いているのか、止まっているのかを判断
+	if (m_moveFlag)
+	{
+		VECTOR nowPosition = MV1GetPosition(m_modelHandle);
+		if (nowPosition.x == m_position.x &&
+			nowPosition.y == m_position.y &&
+			nowPosition.z == m_position.z)
+		{
+			m_animType = Anim::Idle;
+		}
+		else
+		{
+			m_animType = Anim::Run;
+		}
 	}
 
 	// アニメーション処理
-	if (!m_moveFlag && m_animType != Anim::Idle)  // 止まるアニメーション
+	if (m_animType != m_beforeAnimType)
 	{
-		m_animTime = 0.0f;
-		m_animType = Anim::Idle;
 		MV1DetachAnim(m_modelHandle, m_animIndex);
 		m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
 		m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
 		m_animTime = 0.0f;
-	}
-	else if (m_moveFlag && m_animType != Anim::Run)  // 走るアニメーション
-	{
-		m_animTime = 0.0f;
-		m_animType = Anim::Run;
-		MV1DetachAnim(m_modelHandle, m_animIndex);
-		m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
-		m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
-		m_animTime = 0.0f;
+		m_beforeAnimType = m_animType;
 	}
 }
 
 // @detail 行動パターンをチェックして実行する
 void Enemy::CheckMovePattern()
 {
+	m_absolutelyMoveFlag = false;
 	// 球がなかったら、集めに行く
 	if (m_bulletNum <= 0 && m_moveType != Type::EscapeTarget)
 	{
@@ -287,6 +330,8 @@ void Enemy::Move1Target(class Object* player)
 			{
 				m_position = VAdd(m_position, VGet(0.0f, 0.0f, -0.5f));
 			}
+
+			m_absolutelyMoveFlag = true;
 		}
 		else if (distance < m_targetMoveRangeMin)  // 標的が近づいてきたら離れる
 		{
@@ -307,6 +352,7 @@ void Enemy::Move1Target(class Object* player)
 			{
 				m_position = VAdd(m_position, VGet(0.0f, 0.0f, 0.5f));
 			}
+			m_absolutelyMoveFlag = true;
 		}
 
 		// 標的の方向に回転
@@ -570,8 +616,14 @@ void Enemy::CollectTomato(TomatoWall* object)
 		}
 		else if(m_bulletNum < m_bulletCapacity)
 		{
-			m_bulletNum++;
-			object->DecreaseAllTomatoNum();
+			if (!m_pickFlag)
+			{
+				m_pickFlag = true;
+				m_bulletNum++;
+				object->DecreaseAllTomatoNum();
+			}
+			m_animType = Anim::Pick;
+			m_moveFlag = false;
 		}
 	}
 }

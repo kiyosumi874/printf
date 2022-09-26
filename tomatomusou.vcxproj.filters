@@ -3,6 +3,17 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
+
+    <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="Fps.cpp" />
+    <ClCompile Include="GameClearScene.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
+    <ClCompile Include="Human.cpp" />
+    <ClCompile Include="Image.cpp" />
+    <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="Input.cpp" />
+
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TitleScene.cpp">
       <Filter>Scene</Filter>
@@ -58,6 +69,7 @@
     <ClCompile Include="Ground.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+
     <ClCompile Include="HitEffect.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
@@ -101,6 +113,14 @@
     <ClCompile Include="Image.cpp">
       <Filter>Image</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Icon.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp" />
+
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -167,6 +187,7 @@
     <ClInclude Include="Ground.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+
     <ClInclude Include="EffectManager.h">
       <Filter>Effect</Filter>
     </ClInclude>
@@ -186,6 +207,13 @@
     <ClInclude Include="Object.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="Icon.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h" />
+
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">

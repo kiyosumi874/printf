@@ -30,8 +30,11 @@ private:
 
 	enum Anim
 	{
+		None = -1,  // 何もしない
 		Idle,  // 止まる
 		Run,   // 走る
+		Throw,  // 投げる
+		Pick,  // 拾う
 	};
 
 	// モデルハンドル
@@ -39,9 +42,13 @@ private:
 
 	// アニメーション変数
 	int m_animType;  // 現在のアニメーションが何か
+	int m_beforeAnimType;  // 前のアニメーション
 	int m_animIndex;  // 現在のアニメーションを記録
 	float m_animTime;  // アニメーションの経過時間
 	float m_animTotalTime;  // アニメーションの総時間
+	float m_animSpeed;  // 基準のアニメーションスピード
+	float m_throwSpeed;  // 投げるスピード(補正をかける)
+	float m_pickSpeed;  // 拾うスピード(補正をかける)
 
 	// エネミーのパラメーター
 	VECTOR m_position;	// 位置座標
@@ -56,13 +63,16 @@ private:
 	// 動作時間
 	int m_moveTime;  // 乱数行動時間
 	const int m_movePhaseTime;  // 次の行動に移る時間
-	float m_shotTime;   // トマトを投げる時間
+	float m_shotTime;   // 投げる時間
+	const float m_shotPhaseTime;  // 投げた後のクール時間
 
 	// フラグ変数
 	int m_moveType;  // 今の行動
 	bool m_moveFlag;  // 動いているか
+	bool m_pickFlag;  // トマトを拾ったか
 	bool m_aimTargetFlag;  // 標的に向けて移動するか
 	bool m_avoidWallFlag;  // 壁を避ける
+	bool m_absolutelyMoveFlag;  // 絶対に移動させるフラグ
 
 	// 範囲指定変数
 	const float m_targetRangeMin = 0.0f;        // ターゲットを感知する始まり値
@@ -74,6 +84,7 @@ private:
 	// ポインタ
 	std::vector<class Object*> m_player;  // エネミークラスにに情報を渡したいプレイヤー
 	std::vector<TomatoWall*> m_tomatoWall;  // トマトの壁オブジェクトを格納する
+	class Icon* m_icon;  // アイコンクラス
 
 	// 関数
 	void CheckMovePattern();  // 行動パターンをチェックして実行する
@@ -89,6 +100,7 @@ private:
 
 	void RotateTowardTarget(VECTOR& aimTargetPos);  // 標的がいる方向に正面を向ける
 
+	void Animation();  // アニメーション処理関数
 	void ChangeAnimation();  // アニメーションを変更する関数
 
 	double GetDistance(VECTOR& pos1, VECTOR& pos2);  // 自身と他のオブジェクトの距離を出す

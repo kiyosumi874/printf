@@ -14,4 +14,9 @@ private:
 	int m_logoGraph;
 	int m_enterGraph;
 	int m_postUIGraph;
+
+	int m_groundHandle;
+	int m_tomatoHandle;
+	int m_tomatoHandle2;
+	int m_tomatoHandle3;
 };

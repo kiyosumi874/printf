@@ -467,6 +467,7 @@ void PlayScene::UpdateTransitionPlay()
 		{
 			isCount[0] = true;
 			// 音を出す(3)
+			Sound::Play(Sound::Kind::CountDown);
 			m_startNumber[3]->IsDraw(true);
 			MyOutputDebugString("3\n");
 		}
@@ -574,7 +575,7 @@ void PlayScene::UpdateTransitionPlay()
 	{
 		if (it->GetComponent<TimeUIController>() != nullptr)
 		{
-			if (it->GetComponent<TimeCount>()->CheckCount() > 180.0)
+			if (it->GetComponent<TimeCount>()->CheckCount() > 90.0)
 			{
 				m_transition = Transition::OVER;
 				{
