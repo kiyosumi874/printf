@@ -469,6 +469,7 @@ void PlayScene::UpdateTransitionPlay()
 		{
 			isCount[0] = true;
 			// 音を出す(3)
+			Sound::Play(Sound::Kind::CountDown);
 			m_startNumber[3]->IsDraw(true);
 			MyOutputDebugString("3\n");
 		}

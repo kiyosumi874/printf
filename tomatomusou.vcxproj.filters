@@ -76,6 +76,7 @@
     <ClCompile Include="Icon.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Sound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -147,6 +148,7 @@
     <ClInclude Include="Icon.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Sound.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
