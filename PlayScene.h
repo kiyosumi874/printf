@@ -1,8 +1,6 @@
 #pragma once
 class GameObject;
 
-class Ground;
-
 class PlayScene : public Scene
 {
 public:
@@ -54,8 +52,7 @@ private:
 	std::vector<class TomatoWall*>m_pGameObjects;
 	//std::list<class Object*>m_pObjectLists;
 
-
-	Ground* m_pGround;
+	class Ground* m_pGround;
 
 	const int m_tomatoWallNum = 8;
 

@@ -3,7 +3,6 @@
 
 class Tomato;
 class TomatoWall;
-class Effct;
 class ModelManager;
 
 class Player : public GameObject
@@ -50,7 +49,6 @@ private:
 
 	std::vector<Tomato*> m_tomatos;
 	std::vector<TomatoWall*> m_tomatoWall;
-	Effect* m_effect;
 
 	double GetDistance(VECTOR& pos1, VECTOR& pos2);
 };

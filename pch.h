@@ -1,8 +1,8 @@
-/* ƒvƒŠƒRƒ“ƒpƒCƒ‹Ï‚İƒwƒbƒ_[ */
-// ‘S‚Ä‚Ìƒwƒbƒ_[‚ğ‚±‚±‚É‘‚«‚ŞBg‚¤‚Æ‚«‚Ípch.h‚ğƒCƒ“ƒNƒ‹[ƒh‚·‚é
+/* ãƒ—ãƒªã‚³ãƒ³ãƒ‘ã‚¤ãƒ«æ¸ˆã¿ãƒ˜ãƒƒãƒ€ãƒ¼ */
+// å…¨ã¦ã®ãƒ˜ãƒƒãƒ€ãƒ¼ã‚’ã“ã“ã«æ›¸ãè¾¼ã‚€ã€‚ä½¿ã†ã¨ãã¯pch.hã‚’ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ã™ã‚‹
 #pragma once
 
-/* ŠO•”QÆ */
+/* å¤–éƒ¨å‚ç…§ */
 #include <DxLib.h>
 #include <EffekseerForDXLib.h>
 #include <Windows.h>
@@ -36,6 +36,9 @@
 #include "Ground.h"
 
 /* Effect */
-#include "Effect.h"
+
+#include "EffectManager.h"
+#include "HitEffect.h"
 
 #include "Sound.h"
+

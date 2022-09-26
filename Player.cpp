@@ -30,9 +30,6 @@ Player::Player(ObjectTag tag, VECTOR position)
 	m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
 	m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
 	m_animTime = 0.0f;
-
-	// ?G?t?F?N?g?????
-	m_effect = new Effect("data/effect/hit/ToonHit.efkefc");
 }
 
 Player::~Player()
@@ -271,9 +268,6 @@ void Player::Input()
 	{
 		m_bulletNum--;
 		//m_tomatos.push_back(new Tomato(m_position, m_dir));
-		
-    
-		m_effect->PlayEffect(m_position);
 	}
 
 	// トマトを限界まで持っていないとき、トマトの壁からトマトを回収

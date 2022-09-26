@@ -163,7 +163,8 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
-    <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="HitEffect.cpp" />
+    <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fps.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
@@ -211,7 +212,8 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="DebugDraw.h" />
-    <ClInclude Include="Effect.h" />
+    <ClInclude Include="HitEffect.h" />
+    <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fps.h" />
     <ClInclude Include="GameClearScene.h" />

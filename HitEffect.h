@@ -1,19 +1,24 @@
 #pragma once
 
-/* エフェクトの制御を行うクラス */
-class Effect
+/* Hitしたときのフェクトの描画を行うクラス */
+class HitEffect
 {
 public:
 	// コンストラクタ
-	Effect(const char* _SourceEffectHandle);
+	HitEffect();
 	// デストラクタ
-	~Effect();
+	~HitEffect();
 
 	/// <summary>
-	/// エフェクトの再生
+	/// エフェクトの更新
 	/// </summary>
 	/// <param name="_EffectPos">エフェクトのポジション </param>
-	void PlayEffect(VECTOR _EffectPos);
+	void Update(const VECTOR _EffectPos,const VECTOR _dir);
+
+	/// <summary>
+	/// エフェクトの描画
+	/// </summary>
+	void Draw();
 
 	/// <summary>
 	/// エフェクトが再生中かどうか
@@ -21,7 +26,12 @@ public:
 	/// <returns>0:再生中、-1:再生されていない、もしくは再生終了</returns>
 	int GetNowPlaying3D();
 
+	static VECTOR m_DrawPos;    // 描画ポジション
+	static bool m_DrawFlag;     // 描画するかしないか
+
 private:
+
 	int m_effectHandle;  // エフェクトのハンドル
 	int m_playingEffect; // 再生中のエフェクトデータ
+
 };

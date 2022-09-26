@@ -2,9 +2,8 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
+
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Fps.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
@@ -14,6 +13,7 @@
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="Input.cpp" />
+
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TitleScene.cpp">
       <Filter>Scene</Filter>
@@ -66,9 +66,52 @@
     <ClCompile Include="TomatoWall.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="Ground.cpp">
       <Filter>GameObject</Filter>
+    </ClCompile>
+
+    <ClCompile Include="HitEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectManager.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Fps.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticHuman.cpp" />
+    <ClCompile Include="Enemy.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClearScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Human.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelManager.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>Image</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>GameObject</Filter>
@@ -77,6 +120,7 @@
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Sound.cpp" />
+
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -134,21 +178,42 @@
     <ClInclude Include="Tomato.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Effect.h">
+    <ClInclude Include="HitEffect.h">
       <Filter>Effect</Filter>
     </ClInclude>
     <ClInclude Include="TomatoWall.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="ModelManager.h" />
     <ClInclude Include="Ground.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+
+    <ClInclude Include="EffectManager.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticHuman.h" />
+    <ClInclude Include="Component.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Human.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelManager.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Icon.h">
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Sound.h" />
+
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -173,27 +238,25 @@
     <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="ScoreUIController.cpp" />
-    <ClCompile Include="StaticHuman.cpp" />
     <ClCompile Include="TimeCount.cpp" />
     <ClCompile Include="TimeUIController.cpp" />
     <ClCompile Include="TomatoUIContoroller.cpp" />
     <ClCompile Include="SkyDome.cpp" />
     <ClCompile Include="StillProjector.cpp" />
     <ClCompile Include="Rank.cpp" />
+    <Filter Include="Component">
+      <UniqueIdentifier>{69952f12-72b9-41e3-8f24-c99c7ff433bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Common.h" />
-    <ClInclude Include="Component.h" />
-    <ClInclude Include="Human.h" />
     <ClInclude Include="ModelManager.h" />
-    <ClInclude Include="Object.h" />
     <ClInclude Include="Projector.h" />
     <ClInclude Include="ResultScene.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="ScoreUIController.h" />
-    <ClInclude Include="StaticHuman.h" />
     <ClInclude Include="Tag.h" />
     <ClInclude Include="TimeCount.h" />
     <ClInclude Include="TimeUIController.h" />
