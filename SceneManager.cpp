@@ -48,9 +48,9 @@ void SceneManager::GameLoop()
 			clsDx();
 			m_nowScene->Draw();
 
-			Effekseer_Sync3DSetting();
+			//Effekseer_Sync3DSetting();
 
-			DrawEffekseer3D();
+			//DrawEffekseer3D();
 
 
 #ifdef _DEBUG

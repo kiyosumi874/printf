@@ -11,10 +11,12 @@ Collider::Collider()
 	, tag(ObjectTag::End)
 	, width(0.0f)
 {
+	m_HitEffect = new HitEffect();
 }
 
 Collider::~Collider()
 {
+	delete m_HitEffect;
 }
 
 void Collider::Init(std::list<Object*>* objectLists)
@@ -59,16 +61,16 @@ void Collider::CollisionCheck()
 				{
 					continue;
 				}
-				else if(!HitEffect::m_DrawFlag)
-				{
-					HitEffect::m_DrawFlag = true;
-					HitEffect::m_DrawPos = tomato->GetPosition();
-				}
 				// ここにカプセル化したスコア管理クラスを呼べばいいと思う
 				if (tag == ObjectTag::Team1) { Score::AddTeam1Score(); }
-				if (tag == ObjectTag::Team2) { Score::AddTeam2Score(); }
-				if (tag == ObjectTag::Team3) { Score::AddTeam3Score(); }
-				
+				else if (tag == ObjectTag::Team2) { Score::AddTeam2Score(); }
+				else if (tag == ObjectTag::Team3) { Score::AddTeam3Score(); }
+
+				if (!m_HitEffect->m_DrawFlag)
+				{
+					m_HitEffect->m_DrawFlag = true;
+					m_HitEffect->Update(tomato->GetPosition(),tomato->GetDir());
+				}
 			}
 			flag = true;
 			break;

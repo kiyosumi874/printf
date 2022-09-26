@@ -13,6 +13,7 @@ public:
 
 	float GetTime();  // ƒgƒ}ƒg‚ð“Š‚°‚Ä‚©‚ç‚ÌŽžŠÔ‚ð•Ô‚·
 	VECTOR GetPosition() { return m_position; }
+	VECTOR GetDir() { return m_dir; }
 
 	class Tag* m_tag;
 private:

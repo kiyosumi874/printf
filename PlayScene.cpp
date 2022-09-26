@@ -103,7 +103,7 @@ PlayScene::PlayScene(const MODE& mode)
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Team1;
 			auto collider = obj->AddComponent<Collider>();
-			collider->Init(&m_pObjectLists); collider->width = 10.0f;
+			collider->Init(&m_pObjectLists); collider->width = 3.0f;
 			auto p1 = obj->AddComponent<Human>();
 			p1->SetTomatoWallPtr(&m_pGameObjects);
 			m_pObjectLists.push_back(obj);
@@ -115,7 +115,7 @@ PlayScene::PlayScene(const MODE& mode)
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Team2;
 			auto collider = obj->AddComponent<Collider>();
-			collider->Init(&m_pObjectLists); collider->width = 10.0f;
+			collider->Init(&m_pObjectLists); collider->width = 3.0f;
 			auto p2 = obj->AddComponent<Human>();
 			p2->SetTomatoWallPtr(&m_pGameObjects);
 			m_pObjectLists.push_back(obj);
@@ -125,7 +125,7 @@ PlayScene::PlayScene(const MODE& mode)
 	{
 		Object* obj = new Object;
 		auto collider = obj->AddComponent<Collider>();
-		collider->Init(&m_pObjectLists); collider->width = 10.0f;
+		collider->Init(&m_pObjectLists); collider->width = 3.0f;
 		auto pos = obj->AddComponent<Transform>();
 		pos->position.x = -10; pos->position.z = 50.0f;
 		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
@@ -138,7 +138,7 @@ PlayScene::PlayScene(const MODE& mode)
 		m_pObjectLists.push_back(obj);
 		obj = new Object;
 		auto collider2 = obj->AddComponent<Collider>();
-		collider2->Init(&m_pObjectLists); collider2->width = 10.0f;
+		collider2->Init(&m_pObjectLists); collider2->width = 3.0f;
 		auto pos2 = obj->AddComponent<Transform>();
 		pos2->position.x = 10; pos2->position.z = 50.0f;
 		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
@@ -151,7 +151,7 @@ PlayScene::PlayScene(const MODE& mode)
 
 		obj = new Object;
 		auto collider3 = obj->AddComponent<Collider>();
-		collider3->Init(&m_pObjectLists); collider3->width = 10.0f;
+		collider3->Init(&m_pObjectLists); collider3->width = 3.0f;
 		auto pos3 = obj->AddComponent<Transform>();
 		pos3->position = VGet(60.0f, 0.0f, -50.0f);
 		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
@@ -164,7 +164,7 @@ PlayScene::PlayScene(const MODE& mode)
 
 		obj = new Object;
 		auto collider4 = obj->AddComponent<Collider>();
-		collider4->Init(&m_pObjectLists); collider4->width = 10.0f;
+		collider4->Init(&m_pObjectLists); collider4->width = 3.0f;
 		auto pos4 = obj->AddComponent<Transform>();
 		pos4->position = VGet(-60.0f, 0.0f, -50.0f);
 		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
@@ -192,7 +192,7 @@ PlayScene::PlayScene(const MODE& mode)
 		auto tag = obj->AddComponent<Tag>();
 		tag->tag = ObjectTag::Ground;
 		auto collider = obj->AddComponent<Collider>();
-		collider->Init(&m_pObjectLists); collider->width = 10.0f;
+		collider->Init(&m_pObjectLists); collider->width = 0.0f;
 		auto p1 = obj->AddComponent<Ground>();
 		m_pObjectLists.push_back(obj);
 	}
@@ -316,12 +316,10 @@ PlayScene::PlayScene(const MODE& mode)
 	}
 	m_graphHandleWhite = LoadGraph("data/white.png");
 
-	m_HitEffect = new HitEffect();
 }
 
 PlayScene::~PlayScene()
 {
-
 	DeleteGraph(m_graphHandleWhite);
 	for (auto obj : m_pGameObjects)
 	{
@@ -700,11 +698,11 @@ void PlayScene::DrawTransitionPlay()
 	SetDrawArea(0, 0, 640, 960);
 	SetCameraScreenCenter(320.0f, 480.0f);
 	DrawSkyDome();
+	Effekseer_Sync3DSetting();
 
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
-
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
 	{
 		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2) { m_pGameObjects[i]->Draw(); }
@@ -722,12 +720,15 @@ void PlayScene::DrawTransitionPlay()
 		}
 	}
 
+	DrawEffekseer3D();
+
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
 	DrawSkyDome();
 
+	Effekseer_Sync3DSetting();
 #ifdef _DEBUG
-	DrawGrid(1000.0f, 30);
+	//DrawGrid(1000.0f, 30);
 #endif // _DEBUG
 
 	for (auto i = 0; i < m_pGameObjects.size(); i++)
@@ -746,6 +747,8 @@ void PlayScene::DrawTransitionPlay()
 			if (tag->tag != ObjectTag::Camera1) { obj->Draw(); }
 		}
 	}
+
+	DrawEffekseer3D();
 
 	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();

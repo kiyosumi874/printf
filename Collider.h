@@ -22,6 +22,7 @@ public:
 	ObjectTag tag;
 private:
 	std::list<Object*>* copyObjectList;
+	class HitEffect* m_HitEffect;
 };
 
 // Õ“Ëî•ñ

@@ -16,25 +16,27 @@ HitEffect::~HitEffect()
 	DeleteEffekseerEffect(m_effectHandle);
 }
 
-//void HitEffect::Update(VECTOR _EffectPos)
-//{
-//	m_DrawPos = _EffectPos;
-//	
-//	//SetRotationPlayingEffekseer3DEffect(m_playingEffect,0.0f, 0.0f, 90.0f * DX_PI_F / 180.0f);
-//}
+void HitEffect::Update(const VECTOR _EffectPos, const VECTOR _dir)
+{
+	m_playingEffect = PlayEffekseer3DEffect(m_effectHandle);
+	SetRotationPlayingEffekseer3DEffect(m_playingEffect, _dir.x, _dir.y, _dir.z);
+
+	SetScalePlayingEffekseer3DEffect(m_playingEffect, 3.0f, 3.0f, 3.0f);
+
+	SetPosPlayingEffekseer3DEffect(m_playingEffect, _EffectPos.x, _EffectPos.y, _EffectPos.z);
+
+	m_DrawFlag = false;
+}
 
 void HitEffect::Draw()
 {
-	if (m_DrawFlag)
-	{
-		m_playingEffect = PlayEffekseer3DEffect(m_effectHandle);
+	m_playingEffect = PlayEffekseer3DEffect(m_effectHandle);
 
-		SetScalePlayingEffekseer3DEffect(m_playingEffect, 1.0f, 1.0f, 1.0f);
+	SetScalePlayingEffekseer3DEffect(m_playingEffect, 1.0f, 1.0f, 1.0f);
 
-		SetPosPlayingEffekseer3DEffect(m_playingEffect, 0.0f, 0.0f, 0.0f);
+	SetPosPlayingEffekseer3DEffect(m_playingEffect, m_DrawPos.x, m_DrawPos.y, m_DrawPos.z);
 
-		m_DrawFlag = false;
-	}
+	m_DrawFlag = false;
 }
 
 int HitEffect::GetNowPlaying3D()

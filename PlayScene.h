@@ -53,7 +53,6 @@ private:
 	//std::list<class Object*>m_pObjectLists;
 
 	class Ground* m_pGround;
-	class HitEffect* m_HitEffect;
 
 	const int m_tomatoWallNum = 8;
 

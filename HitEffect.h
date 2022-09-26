@@ -9,11 +9,11 @@ public:
 	// デストラクタ
 	~HitEffect();
 
-	///// <summary>
-	///// エフェクトの更新
-	///// </summary>
-	///// <param name="_EffectPos">エフェクトのポジション </param>
-	//void Update(VECTOR _EffectPos);
+	/// <summary>
+	/// エフェクトの更新
+	/// </summary>
+	/// <param name="_EffectPos">エフェクトのポジション </param>
+	void Update(const VECTOR _EffectPos,const VECTOR _dir);
 
 	/// <summary>
 	/// エフェクトの描画
