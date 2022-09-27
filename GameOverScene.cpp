@@ -10,6 +10,9 @@
 #include "ScoreUIController.h"
 #include "SkyDome.h"
 
+VECTOR tier1 = VGet(0.0f, 0.0f, 0.0f);
+VECTOR tier2 = VGet(10.0f, 0.0f, 0.0f);
+VECTOR tier3 = VGet(0.0f, 0.0f, 0.0f);
 GameOverScene::GameOverScene(const MODE& mode)
 	: Scene(mode)
 	, m_transition(Transition::START)
@@ -18,270 +21,72 @@ GameOverScene::GameOverScene(const MODE& mode)
 	auto T1 = Score::GetTeam1Score();
 	auto T2 = Score::GetTeam2Score();
 	auto T3 = Score::GetTeam3Score();
+	// ScoreUI
+	{
+		Object* object = nullptr;
+		for (int i = 0; i < 3; i++)
+		{
+			object = new Object;
+			object->AddComponent<Transform>()->position = VGet(100 * i + 570, 40.0f, 0.0f);
+			m_scoreUICon[i] = object->AddComponent<ScoreUIController>();
+			m_pObjectLists.push_back(object);
+		}
+	}
+	// ‡ˆÊ‚²‚Æ‚É•À‚×‚éˆ—(l‚ÆƒXƒRƒA)
 	if (T1 > T2)
 	{
+		m_scoreUICon[1]->CheckIsStart(0);
 		if (T1 > T3)
 		{
-			Object* obj = new Object;
-			auto pos = obj->AddComponent<Transform>();
-			pos->position = VGet(0.0f, 0.0f, 0.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			Object* ob = new Object;
-			auto proj = ob->AddComponent<StillProjector>();
-			proj->SetPlayerptr(pos);
-			m_pObjectLists.push_back(ob);
-
-			obj = new Object;
-			auto pos2 = obj->AddComponent<Transform>();
-			pos2->position = VGet(10.0f, 0.0f, 0.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
 			if (T2 > T3)
 			{
-				obj = new Object;
-				auto pos3 = obj->AddComponent<Transform>();
-				pos3->position = VGet(-40.0f, 0.0f, 10.0f);
-				obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
-				obj->AddComponent<StaticHuman>();
-				m_pObjectLists.push_back(obj);
-
-				obj = new Object;
-				auto pos4 = obj->AddComponent<Transform>();
-				pos4->position = VGet(-30.0f, 0.0f, 10.0f);
-				obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
-				obj->AddComponent<StaticHuman>();
-				m_pObjectLists.push_back(obj);
-
-				obj = new Object;
-				auto pos5 = obj->AddComponent<Transform>();
-				pos5->position = VGet(40.0f, 0.0f, 20.0f);
-				obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
-				obj->AddComponent<StaticHuman>();
-				m_pObjectLists.push_back(obj);
-
-				obj = new Object;
-				auto pos6 = obj->AddComponent<Transform>();
-				pos6->position = VGet(50.0f, 0.0f, 20.0f);
-				obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
-				obj->AddComponent<StaticHuman>();
-				m_pObjectLists.push_back(obj);
+				// ‡@¨‡A¨‡B
+				RankOrderInit(RankOrder::one);
+				m_scoreUICon[0]->CheckIsStart(1);
+				m_scoreUICon[2]->CheckIsStart(2);
 			}
 			else
 			{
-				obj = new Object;
-				auto pos3 = obj->AddComponent<Transform>();
-				pos3->position = VGet(-40.0f, 0.0f, 10.0f);
-				obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
-				obj->AddComponent<StaticHuman>();
-				m_pObjectLists.push_back(obj);
-
-				obj = new Object;
-				auto pos4 = obj->AddComponent<Transform>();
-				pos4->position = VGet(-30.0f, 0.0f, 10.0f);
-				obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
-				obj->AddComponent<StaticHuman>();
-				m_pObjectLists.push_back(obj);
-
-				obj = new Object;
-				auto pos5 = obj->AddComponent<Transform>();
-				pos5->position = VGet(40.0f, 0.0f, 20.0f);
-				obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
-				obj->AddComponent<StaticHuman>();
-				m_pObjectLists.push_back(obj);
-
-				obj = new Object;
-				auto pos6 = obj->AddComponent<Transform>();
-				pos6->position = VGet(50.0f, 0.0f, 20.0f);
-				obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
-				obj->AddComponent<StaticHuman>();
-				m_pObjectLists.push_back(obj);
+				// ‡@¨‡B¨‡A
+				RankOrderInit(RankOrder::two);
+				m_scoreUICon[0]->CheckIsStart(2);
+				m_scoreUICon[2]->CheckIsStart(1);
 			}
 		}
 		else
 		{
-			Object* obj = new Object;
-			auto pos = obj->AddComponent<Transform>();
-			pos->position = VGet(0.0f, 0.0f, 0.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			Object* ob = new Object;
-			auto proj = ob->AddComponent<StillProjector>();
-			proj->SetPlayerptr(pos);
-			m_pObjectLists.push_back(ob);
-
-			obj = new Object;
-			auto pos2 = obj->AddComponent<Transform>();
-			pos2->position = VGet(10.0f, 0.0f, 0.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			obj = new Object;
-			auto pos3 = obj->AddComponent<Transform>();
-			pos3->position = VGet(-40.0f, 0.0f, 10.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			obj = new Object;
-			auto pos4 = obj->AddComponent<Transform>();
-			pos4->position = VGet(-30.0f, 0.0f, 10.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			obj = new Object;
-			auto pos5 = obj->AddComponent<Transform>();
-			pos5->position = VGet(40.0f, 0.0f, 20.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			obj = new Object;
-			auto pos6 = obj->AddComponent<Transform>();
-			pos6->position = VGet(50.0f, 0.0f, 20.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
+			// ‡B¨‡@¨‡A
+			RankOrderInit(RankOrder::five);
+			m_scoreUICon[1]->CheckIsStart(2);
+			m_scoreUICon[0]->CheckIsStart(0);
+			m_scoreUICon[2]->CheckIsStart(1);
 		}
 	}
 	else if (T2 > T3)
 	{
-		Object* obj = new Object;
-		auto pos = obj->AddComponent<Transform>();
-		pos->position = VGet(0.0f, 0.0f, 0.0f);
-		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
-		obj->AddComponent<StaticHuman>();
-		m_pObjectLists.push_back(obj);
-
-		Object* ob = new Object;
-		auto proj = ob->AddComponent<StillProjector>();
-		proj->SetPlayerptr(pos);
-		m_pObjectLists.push_back(ob);
-
-		obj = new Object;
-		auto pos2 = obj->AddComponent<Transform>();
-		pos2->position = VGet(10.0f, 0.0f, 0.0f);
-		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
-		obj->AddComponent<StaticHuman>();
-		m_pObjectLists.push_back(obj);
-
+		m_scoreUICon[1]->CheckIsStart(1);
 		if (T1 > T3)
 		{
-			obj = new Object;
-			auto pos3 = obj->AddComponent<Transform>();
-			pos3->position = VGet(-40.0f, 0.0f, 10.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			obj = new Object;
-			auto pos4 = obj->AddComponent<Transform>();
-			pos4->position = VGet(-30.0f, 0.0f, 10.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			obj = new Object;
-			auto pos5 = obj->AddComponent<Transform>();
-			pos5->position = VGet(40.0f, 0.0f, 20.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			obj = new Object;
-			auto pos6 = obj->AddComponent<Transform>();
-			pos6->position = VGet(50.0f, 0.0f, 20.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
+			// ‡A¨‡@¨‡B
+			RankOrderInit(RankOrder::three);
+			m_scoreUICon[0]->CheckIsStart(0);
+			m_scoreUICon[2]->CheckIsStart(2);
 		}
 		else
 		{
-			obj = new Object;
-			auto pos3 = obj->AddComponent<Transform>();
-			pos3->position = VGet(-40.0f, 0.0f, 10.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			obj = new Object;
-			auto pos4 = obj->AddComponent<Transform>();
-			pos4->position = VGet(-30.0f, 0.0f, 10.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			obj = new Object;
-			auto pos5 = obj->AddComponent<Transform>();
-			pos5->position = VGet(40.0f, 0.0f, 20.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			obj = new Object;
-			auto pos6 = obj->AddComponent<Transform>();
-			pos6->position = VGet(50.0f, 0.0f, 20.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
+			// ‡A¨‡B¨‡@
+			RankOrderInit(RankOrder::four);
+			m_scoreUICon[0]->CheckIsStart(2);
+			m_scoreUICon[2]->CheckIsStart(0);
 		}
 	}
 	else
 	{
-			Object* obj = new Object;
-			auto pos = obj->AddComponent<Transform>();
-			pos->position = VGet(0.0f, 0.0f, 0.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			Object* ob = new Object;
-			auto proj = ob->AddComponent<StillProjector>();
-			proj->SetPlayerptr(pos);
-			m_pObjectLists.push_back(ob);
-
-			obj = new Object;
-			auto pos2 = obj->AddComponent<Transform>();
-			pos2->position = VGet(10.0f, 0.0f, 0.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			obj = new Object;
-			auto pos3 = obj->AddComponent<Transform>();
-			pos3->position = VGet(-40.0f, 0.0f, 10.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			obj = new Object;
-			auto pos4 = obj->AddComponent<Transform>();
-			pos4->position = VGet(-30.0f, 0.0f, 10.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			obj = new Object;
-			auto pos5 = obj->AddComponent<Transform>();
-			pos5->position = VGet(40.0f, 0.0f, 20.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
-
-			obj = new Object;
-			auto pos6 = obj->AddComponent<Transform>();
-			pos6->position = VGet(50.0f, 0.0f, 20.0f);
-			obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
-			obj->AddComponent<StaticHuman>();
-			m_pObjectLists.push_back(obj);
+		// ‡B¨‡A¨‡@
+		RankOrderInit(RankOrder::six);
+		m_scoreUICon[1]->CheckIsStart(2);
+		m_scoreUICon[0]->CheckIsStart(0);
+		m_scoreUICon[2]->CheckIsStart(1);
 	}
 	{
 		Object* obj = new Object;
@@ -303,60 +108,6 @@ GameOverScene::GameOverScene(const MODE& mode)
 		image->Init(VGet(870.0f, 500.0f, 0.0f), VGet(0.26f, 0.26f, 0.26f), 0.0f, "data/rank/ranking_3.png");
 		obj->AddComponent<Rank>();
 		m_pObjectLists.push_back(obj);
-	}
-	// ScoreUI
-	{
-		Object* object = nullptr;
-		for (int i = 0; i < 3; i++)
-		{
-			object = new Object;
-			object->AddComponent<Transform>()->position = VGet(100 * i + 570, 40.0f, 0.0f);
-			m_scoreUICon[i] = object->AddComponent<ScoreUIController>();
-			m_pObjectLists.push_back(object);
-		}
-	}
-	if (T1 > T2)
-	{
-		if (T1 > T3)
-		{
-			m_scoreUICon[1]->CheckIsStart(0);
-			if (T2 > T3)
-			{
-				m_scoreUICon[0]->CheckIsStart(1);
-				m_scoreUICon[2]->CheckIsStart(2);
-			}
-			else
-			{
-				m_scoreUICon[0]->CheckIsStart(2);
-				m_scoreUICon[2]->CheckIsStart(1);
-			}
-		}
-		else
-		{
-			m_scoreUICon[1]->CheckIsStart(2);
-			m_scoreUICon[0]->CheckIsStart(0);
-			m_scoreUICon[2]->CheckIsStart(1);
-		}
-	}
-	else if (T2 > T3)
-	{
-		m_scoreUICon[1]->CheckIsStart(1);
-		if (T1 > T3)
-		{
-			m_scoreUICon[0]->CheckIsStart(0);
-			m_scoreUICon[2]->CheckIsStart(2);
-		}
-		else
-		{
-			m_scoreUICon[0]->CheckIsStart(2);
-			m_scoreUICon[2]->CheckIsStart(0);
-		}
-	}
-	else
-	{
-		m_scoreUICon[1]->CheckIsStart(2);
-		m_scoreUICon[0]->CheckIsStart(0);
-		m_scoreUICon[2]->CheckIsStart(1);
 	}
 	// ƒgƒ‰ƒ“ƒWƒVƒ‡ƒ“‚Ìˆ—
 	{
@@ -454,4 +205,313 @@ void GameOverScene::UpdateTransitionPlay()
 
 void GameOverScene::UpdateTransitionEnd()
 {
+}
+
+void GameOverScene::RankOrderInit(RankOrder num)
+{
+	switch (num)
+	{
+	case GameOverScene::one:
+	{
+		Object* obj = new Object;
+		auto pos = obj->AddComponent<Transform>();
+		pos->position = VGet(0.0f, 0.0f, 0.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		Object* ob = new Object;
+		auto proj = ob->AddComponent<StillProjector>();
+		proj->SetPlayerptr(pos);
+		m_pObjectLists.push_back(ob);
+
+		obj = new Object;
+		auto pos2 = obj->AddComponent<Transform>();
+		pos2->position = VGet(10.0f, 0.0f, 0.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos3 = obj->AddComponent<Transform>();
+		pos3->position = VGet(-40.0f, 0.0f, 10.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos4 = obj->AddComponent<Transform>();
+		pos4->position = VGet(-30.0f, 0.0f, 10.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos5 = obj->AddComponent<Transform>();
+		pos5->position = VGet(40.0f, 0.0f, 20.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos6 = obj->AddComponent<Transform>();
+		pos6->position = VGet(50.0f, 0.0f, 20.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+	}
+		break;
+	case GameOverScene::two:
+	{
+		Object* obj = new Object;
+		auto pos = obj->AddComponent<Transform>();
+		pos->position = VGet(0.0f, 0.0f, 0.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		Object* ob = new Object;
+		auto proj = ob->AddComponent<StillProjector>();
+		proj->SetPlayerptr(pos);
+		m_pObjectLists.push_back(ob);
+
+		obj = new Object;
+		auto pos2 = obj->AddComponent<Transform>();
+		pos2->position = VGet(10.0f, 0.0f, 0.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos3 = obj->AddComponent<Transform>();
+		pos3->position = VGet(-40.0f, 0.0f, 10.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos4 = obj->AddComponent<Transform>();
+		pos4->position = VGet(-30.0f, 0.0f, 10.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos5 = obj->AddComponent<Transform>();
+		pos5->position = VGet(40.0f, 0.0f, 20.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos6 = obj->AddComponent<Transform>();
+		pos6->position = VGet(50.0f, 0.0f, 20.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+	}
+		break;
+	case GameOverScene::three:
+	{
+		Object* obj = new Object;
+		auto pos = obj->AddComponent<Transform>();
+		pos->position = VGet(0.0f, 0.0f, 0.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		Object* ob = new Object;
+		auto proj = ob->AddComponent<StillProjector>();
+		proj->SetPlayerptr(pos);
+		m_pObjectLists.push_back(ob);
+
+		obj = new Object;
+		auto pos2 = obj->AddComponent<Transform>();
+		pos2->position = VGet(10.0f, 0.0f, 0.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos3 = obj->AddComponent<Transform>();
+		pos3->position = VGet(-40.0f, 0.0f, 10.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos4 = obj->AddComponent<Transform>();
+		pos4->position = VGet(-30.0f, 0.0f, 10.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos5 = obj->AddComponent<Transform>();
+		pos5->position = VGet(40.0f, 0.0f, 20.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos6 = obj->AddComponent<Transform>();
+		pos6->position = VGet(50.0f, 0.0f, 20.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+	}
+		break;
+	case GameOverScene::four:
+	{
+		Object* obj = new Object;
+		auto pos = obj->AddComponent<Transform>();
+		pos->position = VGet(0.0f, 0.0f, 0.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		Object* ob = new Object;
+		auto proj = ob->AddComponent<StillProjector>();
+		proj->SetPlayerptr(pos);
+		m_pObjectLists.push_back(ob);
+
+		obj = new Object;
+		auto pos2 = obj->AddComponent<Transform>();
+		pos2->position = VGet(10.0f, 0.0f, 0.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos3 = obj->AddComponent<Transform>();
+		pos3->position = VGet(-40.0f, 0.0f, 10.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos4 = obj->AddComponent<Transform>();
+		pos4->position = VGet(-30.0f, 0.0f, 10.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos5 = obj->AddComponent<Transform>();
+		pos5->position = VGet(40.0f, 0.0f, 20.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos6 = obj->AddComponent<Transform>();
+		pos6->position = VGet(50.0f, 0.0f, 20.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+	}
+		break;
+	case GameOverScene::five:
+	{
+		Object* obj = new Object;
+		auto pos = obj->AddComponent<Transform>();
+		pos->position = VGet(0.0f, 0.0f, 0.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		Object* ob = new Object;
+		auto proj = ob->AddComponent<StillProjector>();
+		proj->SetPlayerptr(pos);
+		m_pObjectLists.push_back(ob);
+
+		obj = new Object;
+		auto pos2 = obj->AddComponent<Transform>();
+		pos2->position = VGet(10.0f, 0.0f, 0.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos3 = obj->AddComponent<Transform>();
+		pos3->position = VGet(-40.0f, 0.0f, 10.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos4 = obj->AddComponent<Transform>();
+		pos4->position = VGet(-30.0f, 0.0f, 10.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos5 = obj->AddComponent<Transform>();
+		pos5->position = VGet(40.0f, 0.0f, 20.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos6 = obj->AddComponent<Transform>();
+		pos6->position = VGet(50.0f, 0.0f, 20.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+	}
+		break;
+	case GameOverScene::six:
+	{
+		Object* obj = new Object;
+		auto pos = obj->AddComponent<Transform>();
+		pos->position = VGet(0.0f, 0.0f, 0.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		Object* ob = new Object;
+		auto proj = ob->AddComponent<StillProjector>();
+		proj->SetPlayerptr(pos);
+		m_pObjectLists.push_back(ob);
+
+		obj = new Object;
+		auto pos2 = obj->AddComponent<Transform>();
+		pos2->position = VGet(10.0f, 0.0f, 0.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos5 = obj->AddComponent<Transform>();
+		pos5->position = VGet(40.0f, 0.0f, 20.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos6 = obj->AddComponent<Transform>();
+		pos6->position = VGet(50.0f, 0.0f, 20.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos3 = obj->AddComponent<Transform>();
+		pos3->position = VGet(-40.0f, 0.0f, 10.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		auto pos4 = obj->AddComponent<Transform>();
+		pos4->position = VGet(-30.0f, 0.0f, 10.0f);
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
+		obj->AddComponent<StaticHuman>();
+		m_pObjectLists.push_back(obj);
+	}
+		break;
+	default:
+		break;
+	}
 }

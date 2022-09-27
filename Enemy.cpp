@@ -42,7 +42,7 @@ Enemy::Enemy()
 Enemy::~Enemy()
 {
 	MV1DeleteModel(m_modelHandle);
-
+	delete m_icon;
 	//for (int i = 0; i < m_tomatos.size(); i++)
 	//{
 	//	if (!m_tomatos[i])

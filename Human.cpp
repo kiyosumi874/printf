@@ -40,6 +40,7 @@ Human::Human()
 Human::~Human()
 {
 	MV1DeleteModel(m_modelHandle);
+	delete m_icon;
 }
 
 void Human::Start()
