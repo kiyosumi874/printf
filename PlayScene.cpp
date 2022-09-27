@@ -332,6 +332,7 @@ PlayScene::~PlayScene()
 	}
 	m_pObjectLists.clear();
 	m_pGameObjects.clear();
+	SetCameraScreenCenter(640.0f, 480.0f);
 }
 
 TAG_SCENE PlayScene::Update()
