@@ -41,4 +41,5 @@
 #include "HitEffect.h"
 
 #include "Sound.h"
-
+#include "AssetManager.h"
+#include "Logo.h"

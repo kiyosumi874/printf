@@ -1,14 +1,16 @@
 #include "pch.h"
 #include"SkyDome.h"
+#include "UIRenderer.h"
 
 TitleScene::TitleScene(const MODE& mode)
 	: Scene(mode)
 	, m_images()
 	, m_models()
+	, m_uiRenderer(new UIRenderer)
 {
 	InitModel(); // 3Dモデルの初期化
-	InitImage(); // 画像の初期化
-	
+	//InitImage(); // 画像の初期化
+	m_uiRenderer->Insert<class Logo>();
 	SetCameraPositionAndTarget_UpVecY(VGet(0.0f, 0.0f, 0.0f), VGet(0.0f, 0.0f, 1.0f)); // カメラの位置と向きをセット
 }
 
@@ -28,13 +30,15 @@ TitleScene::~TitleScene()
 	}
 	m_models.clear();
 
+	m_uiRenderer->Terminate();
+
 }
 
 TAG_SCENE TitleScene::Update()
 {
 	UpdateModel(); // 3Dモデルの更新
-	UpdateImage(); // 画像の更新
-	
+	//UpdateImage(); // 画像の更新
+	m_uiRenderer->Update();
 	// 次のシーンへ
 	if (Input::IsDown1P(BUTTON_ID_START))
 	{
@@ -58,7 +62,8 @@ void TitleScene::Draw()
 #endif // _DEBUG
 
 	DrawModel(); // 3Dモデルの描画
-	DrawImage(); // 画像の描画
+	//DrawImage(); // 画像の描画
+	m_uiRenderer->Draw();
 }
 
 void TitleScene::InitImage()

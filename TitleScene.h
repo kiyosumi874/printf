@@ -50,13 +50,15 @@ private:
 		TomatoWall3
 	};
 
-	void InitImage(); // 画像の初期化
+	void InitImage();   // 画像の初期化
 	void UpdateImage(); // 画像の更新
-	void DrawImage(); // 画像の描画
+	void DrawImage();   // 画像の描画
 	vector<ImageVar> m_images;
 
-	void InitModel(); // 3Dモデルの初期化
+	void InitModel();   // 3Dモデルの初期化
 	void UpdateModel(); // 3Dモデルの更新
-	void DrawModel(); // 3Dモデルの描画
+	void DrawModel();   // 3Dモデルの描画
 	vector<int> m_models;
+
+	class UIRenderer* m_uiRenderer;
 };

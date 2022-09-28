@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
@@ -178,6 +179,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Logo.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="pch.cpp">
@@ -207,6 +209,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Common.h" />
@@ -227,6 +230,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Logo.h" />
     <ClInclude Include="ModelManager.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectTag.h" />
@@ -252,6 +256,8 @@
     <ClInclude Include="TomatoUIContoroller.h" />
     <ClInclude Include="TomatoWall.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="UIBase.h" />
+    <ClInclude Include="UIRenderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

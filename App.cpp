@@ -16,6 +16,9 @@ App::App()
 
 	Sound::Load(Sound::Kind::Throw, "SE/Throw/Throw_0.mp3");
 	Sound::Load(Sound::Kind::CountDown, "SE/count.mp3");
+	AssetManager::LoadImage(AssetManager::ImageName::Logo, "data/logo.png");
+	AssetManager::LoadImage(AssetManager::ImageName::Gradation, "data/postUI.png");
+	AssetManager::LoadImage(AssetManager::ImageName::TransitionButton, "data/TransitionTitleUI.png");
 
 	m_sceneManager = new SceneManager();
 	m_sceneManager->SetNowScene(TAG_SCENE::TAG_TITLE);
@@ -30,6 +33,7 @@ App::App()
 App::~App()
 {
 	Sound::InitSound();
+	AssetManager::Terminate();
 	delete m_sceneManager;
 	m_sceneManager = 0;
 

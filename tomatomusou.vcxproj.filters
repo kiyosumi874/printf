@@ -3,8 +3,6 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
-
-    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Fps.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -13,7 +11,6 @@
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="Input.cpp" />
-
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TitleScene.cpp">
       <Filter>Scene</Filter>
@@ -69,7 +66,6 @@
     <ClCompile Include="Ground.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-
     <ClCompile Include="HitEffect.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
@@ -120,7 +116,12 @@
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Sound.cpp" />
-
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Logo.cpp">
+      <Filter>UI\Title</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -187,7 +188,6 @@
     <ClInclude Include="Ground.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-
     <ClInclude Include="EffectManager.h">
       <Filter>Effect</Filter>
     </ClInclude>
@@ -207,13 +207,23 @@
     <ClInclude Include="Object.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Icon.h">
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Sound.h" />
-
+    <ClInclude Include="AssetManager.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="UIBase.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIRenderer.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Logo.h">
+      <Filter>UI\Title</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -246,6 +256,21 @@
     <ClCompile Include="Rank.cpp" />
     <Filter Include="Component">
       <UniqueIdentifier>{69952f12-72b9-41e3-8f24-c99c7ff433bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset">
+      <UniqueIdentifier>{975caea0-fff1-40ab-aab4-fc7e9a934f8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{86e7fe69-278c-4a40-ac61-5f25179b332f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Title">
+      <UniqueIdentifier>{a9b7284c-fe6c-4f80-a4ff-1ec9bbd04728}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Play">
+      <UniqueIdentifier>{a86b9757-bfdf-48c5-a5a2-3752efbcebc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Result">
+      <UniqueIdentifier>{d4d8419e-ef50-4a02-8ea6-062b18ffef79}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
