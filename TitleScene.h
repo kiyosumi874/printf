@@ -29,6 +29,17 @@ private:
 		int width;
 		int height;
 		float alpha;
+
+		// メンバ変数の初期化
+		void InitImageVar(int modelHandle, int x, int y, int width, int height, float alpha)
+		{
+			this->modelHandle = modelHandle;
+			this->x = x;
+			this->y = y;
+			this->width = width;
+			this->height = height;
+			this->alpha = alpha;
+		}
 	};
 
 	enum ModelName
@@ -42,7 +53,7 @@ private:
 	void InitImage(); // 画像の初期化
 	void UpdateImage(); // 画像の更新
 	void DrawImage(); // 画像の描画
-	vector<int> m_images;
+	vector<ImageVar> m_images;
 
 	void InitModel(); // 3Dモデルの初期化
 	void UpdateModel(); // 3Dモデルの更新

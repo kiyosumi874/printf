@@ -6,42 +6,48 @@ TitleScene::TitleScene(const MODE& mode)
 	, m_images()
 	, m_models()
 {
-	InitImage();
-	InitModel();
+	InitModel(); // 3Dモデルの初期化
+	InitImage(); // 画像の初期化
 	
-	SetCameraPositionAndTarget_UpVecY(VGet(0.0f, 0.0f, 0.0f), VGet(0.0f, 0.0f, 1.0f));
+	SetCameraPositionAndTarget_UpVecY(VGet(0.0f, 0.0f, 0.0f), VGet(0.0f, 0.0f, 1.0f)); // カメラの位置と向きをセット
 }
 
 TitleScene::~TitleScene()
 {
-	for (auto it : m_images)
+	// 画像の終了処理
+	for (const auto& it : m_images)
 	{
-		DeleteGraph(it);
+		DeleteGraph(it.modelHandle);
 	}
+	m_images.clear();
+
+	// 3Dモデルの終了処理
 	for (int i = 0; i < ModelName::TomatoWall2; i++)
 	{
 		MV1DeleteModel(m_models[i]);
 	}
-	m_images.clear();
 	m_models.clear();
+
 }
 
 TAG_SCENE TitleScene::Update()
 {
-	UpdateModel();
-	UpdateImage();
+	UpdateModel(); // 3Dモデルの更新
+	UpdateImage(); // 画像の更新
 	
-
+	// 次のシーンへ
 	if (Input::IsDown1P(BUTTON_ID_START))
 	{
 		return TAG_SCENE::TAG_PLAY;
 	}
 
+	// 終了
 	if (Input::IsDown1P(BUTTON_ID_BACK))
 	{
 		return TAG_SCENE::TAG_END;
 	}
 
+	// 次のループもこのシーンを継続
 	return TAG_SCENE::TAG_NONE;
 }
 
@@ -51,55 +57,50 @@ void TitleScene::Draw()
 	printfDx("TitleScene\n");
 #endif // _DEBUG
 
-	DrawModel();
-	DrawImage();
-
-	
+	DrawModel(); // 3Dモデルの描画
+	DrawImage(); // 画像の描画
 }
 
 void TitleScene::InitImage()
 {
-	m_images.emplace_back(LoadGraph("data/logo.png"));
-	m_images.emplace_back(LoadGraph("data/TransitionTitleUI.png"));
-	m_images.emplace_back(LoadGraph("data/postUI.png"));
+	ImageVar var;
+	var.InitImageVar(LoadGraph("data/logo.png"), -60, -60, 1200 * 2 / 3, 844 * 2 / 3, 255.0f);
+	m_images.emplace_back(var);
+	var.InitImageVar(LoadGraph("data/TransitionTitleUI.png"), 450, 850, 799, 96, 100.0f);
+	m_images.emplace_back(var);
+	var.InitImageVar(LoadGraph("data/postUI.png"), 0, 0, 1920, 1080, 255.0f);
+	m_images.emplace_back(var);
 }
 
 void TitleScene::UpdateImage()
 {
-}
-
-void TitleScene::DrawImage()
-{
-	DrawGraph(0, 0, m_images[ImageName::Gradation], TRUE);
-	int posX = -100;
-	int posY = -100;
-	int sizeX = 1200 * 2 / 3;
-	int sizeY = 844 * 2 / 3;
-	DrawExtendGraph(posX + 40, posY + 40, posX + sizeX - 40, posY + sizeY - 40, m_images[ImageName::Logo], TRUE);
-	posX = 450;
-	posY = 850;
-	sizeX = 799;
-	sizeY = 96;
-	static float alpha = 100.0f;
 	static bool flag = false;
-	if (260.0f < alpha)
+	if (260.0f < m_images[ImageName::TransitionButton].alpha)
 	{
 		flag = true;
 	}
-	if (80.0f > alpha)
+	if (80.0f > m_images[ImageName::TransitionButton].alpha)
 	{
 		flag = false;
 	}
 	if (flag)
 	{
-		alpha -= 1.0f;
+		m_images[ImageName::TransitionButton].alpha -= 1.0f;
 	}
 	else
 	{
-		alpha += 1.0f;
+		m_images[ImageName::TransitionButton].alpha += 1.0f;
 	}
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
-	DrawExtendGraph(posX, posY, posX + sizeX, posY + sizeY, m_images[ImageName::TransitionButton], TRUE);
+}
+
+void TitleScene::DrawImage()
+{
+	DrawGraph(m_images[ImageName::Gradation].x, m_images[ImageName::Gradation].y, m_images[ImageName::Gradation].modelHandle, TRUE);
+
+	DrawExtendGraph(m_images[ImageName::Logo].x, m_images[ImageName::Logo].y, m_images[ImageName::Logo].x + m_images[ImageName::Logo].width, m_images[ImageName::Logo].y + m_images[ImageName::Logo].height, m_images[ImageName::Logo].modelHandle, TRUE);
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_images[ImageName::TransitionButton].alpha);
+	DrawExtendGraph(m_images[ImageName::TransitionButton].x, m_images[ImageName::TransitionButton].y, m_images[ImageName::TransitionButton].x + m_images[ImageName::TransitionButton].width, m_images[ImageName::TransitionButton].y + m_images[ImageName::TransitionButton].height, m_images[ImageName::TransitionButton].modelHandle, TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255.0f);
 }
 
