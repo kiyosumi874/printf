@@ -56,7 +56,7 @@ void Collider::CollisionCheck()
 			if (L_tag->tag == ObjectTag::tomato)	// 当たったのはトマトだった
 			{
 				auto tomato = obj->GetComponent<Tomato>();
-				tag = tomato->m_tag->tag;	// だれが投げたトマト？（当たった人のタグはいらないと思う。当たる人だけコライダーをコンポーネントさせる）
+				tag = tomato->m_tag->tag;	// だれが投げたトマト？（当たった人のタグはいらないと思う。当てた人だけコライダーをコンポーネントさせる）
 				if (selfTag->tag == tag)	// 自分が投げたトマトだったので無視
 				{
 					continue;
