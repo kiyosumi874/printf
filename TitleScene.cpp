@@ -1,28 +1,26 @@
 #include "pch.h"
 #include"SkyDome.h"
-#include "UIRenderer.h"
+#include "Object.h"
+#include "Logo.h"
+#include "TransitionButton.h"
+#include "Gradation.h"
+
+//-------------------------------------------
+//- Public ----------------------------------
+//-------------------------------------------
 
 TitleScene::TitleScene(const MODE& mode)
 	: Scene(mode)
-	, m_images()
 	, m_models()
-	, m_uiRenderer(new UIRenderer)
 {
 	InitModel(); // 3Dモデルの初期化
-	//InitImage(); // 画像の初期化
-	m_uiRenderer->Insert<class Logo>();
+	InitObject(); // オブジェクトの初期化
+
 	SetCameraPositionAndTarget_UpVecY(VGet(0.0f, 0.0f, 0.0f), VGet(0.0f, 0.0f, 1.0f)); // カメラの位置と向きをセット
 }
 
 TitleScene::~TitleScene()
 {
-	// 画像の終了処理
-	for (const auto& it : m_images)
-	{
-		DeleteGraph(it.modelHandle);
-	}
-	m_images.clear();
-
 	// 3Dモデルの終了処理
 	for (int i = 0; i < ModelName::TomatoWall2; i++)
 	{
@@ -30,15 +28,13 @@ TitleScene::~TitleScene()
 	}
 	m_models.clear();
 
-	m_uiRenderer->Terminate();
-
+	TermObject(); // オブジェクトの解放
 }
 
 TAG_SCENE TitleScene::Update()
 {
 	UpdateModel(); // 3Dモデルの更新
-	//UpdateImage(); // 画像の更新
-	m_uiRenderer->Update();
+	UpdateObject(); // オブジェクトの更新
 	// 次のシーンへ
 	if (Input::IsDown1P(BUTTON_ID_START))
 	{
@@ -60,53 +56,66 @@ void TitleScene::Draw()
 #ifdef _DEBUG
 	printfDx("TitleScene\n");
 #endif // _DEBUG
-
 	DrawModel(); // 3Dモデルの描画
-	//DrawImage(); // 画像の描画
-	m_uiRenderer->Draw();
+	DrawObject(); // オブジェクトの描画
 }
 
-void TitleScene::InitImage()
+//-------------------------------------------
+//- Private ---------------------------------
+//-------------------------------------------
+
+void TitleScene::InitObject()
 {
-	ImageVar var;
-	var.InitImageVar(LoadGraph("data/logo.png"), -60, -60, 1200 * 2 / 3, 844 * 2 / 3, 255.0f);
-	m_images.emplace_back(var);
-	var.InitImageVar(LoadGraph("data/TransitionTitleUI.png"), 450, 850, 799, 96, 100.0f);
-	m_images.emplace_back(var);
-	var.InitImageVar(LoadGraph("data/postUI.png"), 0, 0, 1920, 1080, 255.0f);
-	m_images.emplace_back(var);
+	InitGradation();
+	InitLogo();
+	InitTransitionButton();
 }
 
-void TitleScene::UpdateImage()
+void TitleScene::InitLogo()
 {
-	static bool flag = false;
-	if (260.0f < m_images[ImageName::TransitionButton].alpha)
+	Object* obj = new Object;
+	obj->AddComponent<Logo>();
+	m_pObjectLists.push_back(obj);
+}
+
+void TitleScene::InitTransitionButton()
+{
+	Object* obj = new Object;
+	obj->AddComponent<TransitionButton>();
+	m_pObjectLists.push_back(obj);
+}
+
+void TitleScene::InitGradation()
+{
+	Object* obj = new Object;
+	obj->AddComponent<Gradation>();
+	m_pObjectLists.push_back(obj);
+}
+
+void TitleScene::TermObject()
+{
+	// オブジェクトリストの解放
+	for (auto obj : m_pObjectLists)
 	{
-		flag = true;
+		delete obj;
 	}
-	if (80.0f > m_images[ImageName::TransitionButton].alpha)
+	m_pObjectLists.clear();
+}
+
+void TitleScene::UpdateObject()
+{
+	for (auto obj : m_pObjectLists)
 	{
-		flag = false;
-	}
-	if (flag)
-	{
-		m_images[ImageName::TransitionButton].alpha -= 1.0f;
-	}
-	else
-	{
-		m_images[ImageName::TransitionButton].alpha += 1.0f;
+		obj->Update();
 	}
 }
 
-void TitleScene::DrawImage()
+void TitleScene::DrawObject()
 {
-	DrawGraph(m_images[ImageName::Gradation].x, m_images[ImageName::Gradation].y, m_images[ImageName::Gradation].modelHandle, TRUE);
-
-	DrawExtendGraph(m_images[ImageName::Logo].x, m_images[ImageName::Logo].y, m_images[ImageName::Logo].x + m_images[ImageName::Logo].width, m_images[ImageName::Logo].y + m_images[ImageName::Logo].height, m_images[ImageName::Logo].modelHandle, TRUE);
-
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_images[ImageName::TransitionButton].alpha);
-	DrawExtendGraph(m_images[ImageName::TransitionButton].x, m_images[ImageName::TransitionButton].y, m_images[ImageName::TransitionButton].x + m_images[ImageName::TransitionButton].width, m_images[ImageName::TransitionButton].y + m_images[ImageName::TransitionButton].height, m_images[ImageName::TransitionButton].modelHandle, TRUE);
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255.0f);
+	for (auto obj : m_pObjectLists)
+	{
+		obj->Draw();
+	}
 }
 
 void TitleScene::InitModel()

@@ -2,11 +2,11 @@
 #include "UIBase.h"
 #include "Component.h"
 
-class Logo final : public UIBase, public Component
+class Gradation final : public UIBase, public Component
 {
 public:
-	Logo();
-	~Logo();
+	Gradation();
+	~Gradation();
 
 	void Start()override;
 	void Update()override;

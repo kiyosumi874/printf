@@ -14,33 +14,15 @@ public:
 	void Draw() override; // 描画
 
 private:
-	enum ImageName
-	{
-		Logo,
-		TransitionButton,
-		Gradation
-	};
+	// オブジェクトの初期化
+	void InitObject();
+	void InitLogo();
+	void InitTransitionButton();
+	void InitGradation();
 
-	struct ImageVar
-	{
-		int modelHandle;
-		int x;
-		int y;
-		int width;
-		int height;
-		float alpha;
-
-		// メンバ変数の初期化
-		void InitImageVar(int modelHandle, int x, int y, int width, int height, float alpha)
-		{
-			this->modelHandle = modelHandle;
-			this->x = x;
-			this->y = y;
-			this->width = width;
-			this->height = height;
-			this->alpha = alpha;
-		}
-	};
+	void TermObject(); // オブジェクトの解放
+	void UpdateObject(); // オブジェクトの更新
+	void DrawObject(); // オブジェクトの描画
 
 	enum ModelName
 	{
@@ -50,15 +32,8 @@ private:
 		TomatoWall3
 	};
 
-	void InitImage();   // 画像の初期化
-	void UpdateImage(); // 画像の更新
-	void DrawImage();   // 画像の描画
-	vector<ImageVar> m_images;
-
 	void InitModel();   // 3Dモデルの初期化
 	void UpdateModel(); // 3Dモデルの更新
 	void DrawModel();   // 3Dモデルの描画
 	vector<int> m_models;
-
-	class UIRenderer* m_uiRenderer;
 };

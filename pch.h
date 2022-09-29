@@ -40,6 +40,11 @@
 #include "EffectManager.h"
 #include "HitEffect.h"
 
+// Assets
 #include "Sound.h"
 #include "AssetManager.h"
+
+// UI
 #include "Logo.h"
+#include "TransitionButton.h"
+#include "Gradation.h"

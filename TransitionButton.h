@@ -2,13 +2,15 @@
 #include "UIBase.h"
 #include "Component.h"
 
-class Logo final : public UIBase, public Component
+class TransitionButton final : public UIBase, public Component
 {
 public:
-	Logo();
-	~Logo();
+	TransitionButton();
+	~TransitionButton();
 
 	void Start()override;
 	void Update()override;
 	void Draw()override;
+private:
+	bool m_alphaFlag;
 };
