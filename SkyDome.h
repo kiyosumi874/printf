@@ -4,6 +4,7 @@
 
 void InitSkyDome();
 
+void TermSkyDome();
 
 void DrawSkyDome();
 

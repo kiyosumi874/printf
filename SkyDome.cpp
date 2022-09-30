@@ -10,6 +10,11 @@ void InitSkyDome()
 	MV1SetPosition(g_skyDomeHandle, VGet(0.0f, 0.0f, 0.0f));
 }
 
+void TermSkyDome()
+{
+	MV1DeleteModel(g_skyDomeHandle);
+}
+
 void DrawSkyDome()
 {
 	MV1DrawModel(g_skyDomeHandle);

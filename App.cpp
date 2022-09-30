@@ -19,6 +19,8 @@ App::App()
 	AssetManager::LoadImage(AssetManager::ImageName::Logo, "data/logo.png");
 	AssetManager::LoadImage(AssetManager::ImageName::Gradation, "data/postUI.png");
 	AssetManager::LoadImage(AssetManager::ImageName::TransitionButton, "data/TransitionTitleUI.png");
+	AssetManager::LoadModel(AssetManager::ModelName::Ground, "data/Ground/Ground.mv1");
+	AssetManager::LoadModel(AssetManager::ModelName::TomatoWallFull, "data/Tomato/FullTomatoWall.mv1");
 
 	m_sceneManager = new SceneManager();
 	m_sceneManager->SetNowScene(TAG_SCENE::TAG_TITLE);

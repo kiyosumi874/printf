@@ -11,9 +11,7 @@
 
 TitleScene::TitleScene(const MODE& mode)
 	: Scene(mode)
-	, m_models()
 {
-	InitModel(); // 3Dモデルの初期化
 	InitObject(); // オブジェクトの初期化
 
 	SetCameraPositionAndTarget_UpVecY(VGet(0.0f, 0.0f, 0.0f), VGet(0.0f, 0.0f, 1.0f)); // カメラの位置と向きをセット
@@ -21,19 +19,19 @@ TitleScene::TitleScene(const MODE& mode)
 
 TitleScene::~TitleScene()
 {
-	// 3Dモデルの終了処理
-	for (int i = 0; i < ModelName::TomatoWall2; i++)
-	{
-		MV1DeleteModel(m_models[i]);
-	}
-	m_models.clear();
+	//// 3Dモデルの終了処理
+	//for (int i = 0; i < ModelName::TomatoWall2; i++)
+	//{
+	//	MV1DeleteModel(m_models[i]);
+	//}
+	//m_models.clear();
 
 	TermObject(); // オブジェクトの解放
 }
 
 TAG_SCENE TitleScene::Update()
 {
-	UpdateModel(); // 3Dモデルの更新
+	//UpdateModel(); // 3Dモデルの更新
 	UpdateObject(); // オブジェクトの更新
 	// 次のシーンへ
 	if (Input::IsDown1P(BUTTON_ID_START))
@@ -56,7 +54,7 @@ void TitleScene::Draw()
 #ifdef _DEBUG
 	printfDx("TitleScene\n");
 #endif // _DEBUG
-	DrawModel(); // 3Dモデルの描画
+	//DrawModel(); // 3Dモデルの描画
 	DrawObject(); // オブジェクトの描画
 }
 
@@ -66,26 +64,56 @@ void TitleScene::Draw()
 
 void TitleScene::InitObject()
 {
-	InitGradation();
-	InitLogo();
-	InitTransitionButton();
+	// Model
+	InitGroundModel();
+	InitTomatoWallModel();
+	// UI
+	InitGradationUI();
+	InitLogoUI();
+	InitTransitionButtonUI();
 }
 
-void TitleScene::InitLogo()
+void TitleScene::InitGroundModel()
+{
+	Object* obj = new Object;
+	obj->AddComponent<TitleGround>();
+	m_pObjectLists.push_back(obj);
+}
+
+void TitleScene::InitTomatoWallModel()
+{
+	{
+		Object* obj = new Object;
+		obj->AddComponent<TitleTomatoWall>()->Init(VGet(0.0f, -100.0f, 560.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.08f, 0.08f, 0.08f));
+		m_pObjectLists.push_back(obj);
+	}
+	{
+		Object* obj = new Object;
+		obj->AddComponent<TitleTomatoWall>()->Init(VGet(100.0f, -96.0f, 380.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.08f, 0.08f, 0.08f));
+		m_pObjectLists.push_back(obj);
+	}
+	{
+		Object* obj = new Object;
+		obj->AddComponent<TitleTomatoWall>()->Init(VGet(-100.0f, -96.0f, 380.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.08f, 0.08f, 0.08f));
+		m_pObjectLists.push_back(obj);
+	}
+}
+
+void TitleScene::InitLogoUI()
 {
 	Object* obj = new Object;
 	obj->AddComponent<Logo>();
 	m_pObjectLists.push_back(obj);
 }
 
-void TitleScene::InitTransitionButton()
+void TitleScene::InitTransitionButtonUI()
 {
 	Object* obj = new Object;
 	obj->AddComponent<TransitionButton>();
 	m_pObjectLists.push_back(obj);
 }
 
-void TitleScene::InitGradation()
+void TitleScene::InitGradationUI()
 {
 	Object* obj = new Object;
 	obj->AddComponent<Gradation>();
@@ -104,6 +132,7 @@ void TitleScene::TermObject()
 
 void TitleScene::UpdateObject()
 {
+	RotateSkyDome();
 	for (auto obj : m_pObjectLists)
 	{
 		obj->Update();
@@ -112,47 +141,9 @@ void TitleScene::UpdateObject()
 
 void TitleScene::DrawObject()
 {
+	DrawSkyDome();
 	for (auto obj : m_pObjectLists)
 	{
 		obj->Draw();
-	}
-}
-
-void TitleScene::InitModel()
-{
-	m_models.emplace_back(MV1LoadModel("data/Ground/Ground.mv1"));
-	MV1SetScale(m_models[ModelName::Ground], VGet(3.0f, 0.4f, 3.0f));
-	MV1SetPosition(m_models[ModelName::Ground], VGet(0.0f, -100.0f, 560.0f));
-
-	m_models.emplace_back(MV1LoadModel("data/Tomato/FullTomatoWall.mv1"));
-	MV1SetScale(m_models[ModelName::TomatoWall1], VGet(0.08f, 0.08f, 0.08f));
-	MV1SetPosition(m_models[ModelName::TomatoWall1], VGet(0.0f, -96.0f, 630.0f));
-
-	m_models.emplace_back(MV1DuplicateModel(m_models[ModelName::TomatoWall1]));
-	MV1SetScale(m_models[ModelName::TomatoWall2], VGet(0.08f, 0.08f, 0.08f));
-	MV1SetPosition(m_models[ModelName::TomatoWall2], VGet(100.0f, -96.0f, 380.0f));
-
-	m_models.emplace_back(MV1DuplicateModel(m_models[ModelName::TomatoWall1]));
-	MV1SetScale(m_models[ModelName::TomatoWall3], VGet(0.08f, 0.08f, 0.08f));
-	MV1SetPosition(m_models[ModelName::TomatoWall3], VGet(-100.0f, -96.0f, 380.0f));
-}
-
-void TitleScene::UpdateModel()
-{
-	RotateSkyDome();
-	static float rot = 0;
-	rot += 0.1;
-	MV1SetRotationXYZ(m_models[ModelName::Ground], VGet(0.0f, rot * DX_PI_F / 180.0f, 0.0f));
-	MV1SetRotationXYZ(m_models[ModelName::TomatoWall1], VGet(0.0f, -rot * DX_PI_F / 180.0f, 0.0f));
-	MV1SetRotationXYZ(m_models[ModelName::TomatoWall2], VGet(0.0f, -rot * DX_PI_F / 180.0f, 0.0f));
-	MV1SetRotationXYZ(m_models[ModelName::TomatoWall3], VGet(0.0f, -rot * DX_PI_F / 180.0f, 0.0f));
-}
-
-void TitleScene::DrawModel()
-{
-	DrawSkyDome();
-	for (auto it : m_models)
-	{
-		MV1DrawModel(it);
 	}
 }

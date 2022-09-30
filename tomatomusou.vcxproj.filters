@@ -125,6 +125,12 @@
     <ClCompile Include="Gradation.cpp">
       <Filter>UI\Title</Filter>
     </ClCompile>
+    <ClCompile Include="TitleTomatoWall.cpp">
+      <Filter>Model\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleGround.cpp">
+      <Filter>Model\Title</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -232,6 +238,12 @@
     </ClInclude>
     <ClInclude Include="ModelBase.h">
       <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleTomatoWall.h">
+      <Filter>Model\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleGround.h">
+      <Filter>Model\Title</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

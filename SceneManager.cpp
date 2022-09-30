@@ -18,6 +18,7 @@ SceneManager::~SceneManager()
 	Fps::Terminate();
 	Input::Terminate();
 	Score::Terminate();
+	TermSkyDome();
 }
 
 void SceneManager::GameLoop()
