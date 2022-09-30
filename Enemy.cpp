@@ -16,21 +16,23 @@ Enemy::Enemy()
 {
 
 	m_position = VGet(0.0f, 0.0f, 0.0f);
-	m_velocity = VGet(1.0f, 1.0f, 1.0f);
+
 	m_dir = VGet(0.0f, 0.0f, 0.0f);
 	m_tomatoDir = VGet(0.0f, 0.0f, 0.0f);
-	m_moveValue = VGet(0.0f, 0.0f, 0.0f);
+
+	m_velocity = VGet(0.0f, 0.0f, 0.0f);
+	m_randomVelocity = VGet(0.0f, 0.0f, 0.0f);
 	m_avoidVelocity = VGet(0.0f, 0.0f, 0.0f);
+
+	m_speed = VGet(1.0f, 0.0f, 1.0f);
+	m_adjustmentSpeed = VGet(m_speed.x / 2.0f, 0.0f, m_speed.z / 2.0f);
+	m_avoidSpeed = VGet(1.0f, 0.0f, 1.0f);
 
 	m_moveType = Type::SearchTarget;
 	m_aimTargetFlag = false;
 	m_moveTime = 0;
 
 	// アニメーション準備
-	m_animType = Anim::Idle;
-	m_beforeAnimType = Anim::Idle;
-	m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
-	m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
 	m_animTime = 0.0f;
 	m_animSpeed = 0.3f;
 	m_throwSpeed = 1.2f;
@@ -58,12 +60,19 @@ void Enemy::Start()
 {
 	// 3Dモデルの読み込み
 	auto tag = m_pParent->GetComponent<Tag>();
-	if (tag->tag == ObjectTag::Team1) { m_modelHandle = MV1LoadModel("data/character/man1.mv1"); }
-	if (tag->tag == ObjectTag::Team2) { m_modelHandle = MV1LoadModel("data/character/man3.mv1"); }
-	if (tag->tag == ObjectTag::Team3) { m_modelHandle = MV1LoadModel("data/character/woman2.mv1"); }
+	// AssetManagerからモデルデータを探してもらってくる
+	if (tag->tag == ObjectTag::Team1) { m_modelHandle = MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::Player)); }
+	if (tag->tag == ObjectTag::Team2) { m_modelHandle = MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::Player2)); }
+	if (tag->tag == ObjectTag::Team3) { m_modelHandle = MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::Player3)); }
 	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
 	m_position = m_pParent->GetComponent<Transform>()->position;
 	MV1SetPosition(m_modelHandle, m_position);
+
+	// アニメーション準備
+	m_animType = Anim::Idle;
+	m_beforeAnimType = Anim::Idle;
+	m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
+	m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
 
 	m_icon = new Icon(tag);
 	m_icon->Init(m_position);
@@ -164,6 +173,7 @@ void Enemy::RotateTowardTarget(VECTOR& aimTargetPos)
 	m_tomatoDir = VAdd(VGet(0.0f, 0.0f, 0.0f), VGet(sin(angle), 0, cos(angle)));
 }
 
+// @detail アニメーション処理
 void Enemy::Animation()
 {
 	// アニメーション処理
@@ -306,6 +316,7 @@ void Enemy::CheckTargetMovePattern()
 // @param object ターゲットのゲームオブジェクト
 void Enemy::Move1Target(class Object* player)
 {
+	m_velocity = VGet(0.0f, 0.0f, 0.0f);
 	VECTOR gPos = player->GetComponent<Transform>()->position;
 	double distance = GetDistance(gPos, m_position);
 
@@ -315,20 +326,20 @@ void Enemy::Move1Target(class Object* player)
 		{
 			if (gPos.x - m_position.x >= 0.0f)
 			{
-				m_position = VAdd(m_position, VGet(0.5f, 0.0f, 0.0f));
+				m_velocity = VAdd(m_velocity, VGet(m_adjustmentSpeed.x, 0.0f, 0.0f));
 			}
 			else
 			{
-				m_position = VAdd(m_position, VGet(-0.5f, 0.0f, 0.0f));
+				m_velocity = VAdd(m_velocity, VGet(-m_adjustmentSpeed.x, 0.0f, 0.0f));
 			}
 
 			if (gPos.z - m_position.z >= 0.0f)
 			{
-				m_position = VAdd(m_position, VGet(0.0f, 0.0f, 0.5f));
+				m_velocity = VAdd(m_velocity, VGet(0.0f, 0.0f, m_adjustmentSpeed.z));
 			}
 			else
 			{
-				m_position = VAdd(m_position, VGet(0.0f, 0.0f, -0.5f));
+				m_velocity = VAdd(m_velocity, VGet(0.0f, 0.0f, -m_adjustmentSpeed.z));
 			}
 
 			m_absolutelyMoveFlag = true;
@@ -337,23 +348,25 @@ void Enemy::Move1Target(class Object* player)
 		{
 			if (gPos.x - m_position.x >= 0.0f)
 			{
-				m_position = VAdd(m_position, VGet(-0.5f, 0.0f, 0.0f));
+				m_velocity = VAdd(m_velocity, VGet(-m_adjustmentSpeed.x, 0.0f, 0.0f));
 			}
 			else
 			{
-				m_position = VAdd(m_position, VGet(0.5f, 0.0f, 0.0f));
+				m_velocity = VAdd(m_velocity, VGet(m_adjustmentSpeed.x, 0.0f, 0.0f));
 			}
 
 			if (gPos.z - m_position.z >= 0.0f)
 			{
-				m_position = VAdd(m_position, VGet(0.0f, 0.0f, -0.5f));
+				m_velocity = VAdd(m_velocity, VGet(0.0f, 0.0f, -m_adjustmentSpeed.z));
 			}
 			else
 			{
-				m_position = VAdd(m_position, VGet(0.0f, 0.0f, 0.5f));
+				m_velocity = VAdd(m_velocity, VGet(0.0f, 0.0f, m_adjustmentSpeed.z));
 			}
 			m_absolutelyMoveFlag = true;
 		}
+
+		m_position = VAdd(m_position, m_velocity);
 
 		// 標的の方向に回転
 		RotateTowardTarget(gPos);
@@ -383,9 +396,9 @@ void Enemy::Move2Target(class Object* player)
 		case 0:  // 標的の方向に移動
 			m_aimTargetFlag = true;
 			break;
-		default:  // ランダムに移動
-			m_moveValue.x = rand() % 3 - 1;
-			m_moveValue.z = rand() % 3 - 1;
+		default:  // ランダムに移動(速度が-1～1の範囲)
+			m_randomVelocity.x = rand() % 3 - 1;
+			m_randomVelocity.z = rand() % 3 - 1;
 			break;
 		}
 	}
@@ -394,29 +407,30 @@ void Enemy::Move2Target(class Object* player)
 	if (m_aimTargetFlag)
 	{
 		VECTOR gPos = player->GetComponent<Transform>()->position;
-		VECTOR moveVector = VGet(m_position.x + m_moveValue.x, m_position.y, m_position.z + m_moveValue.z);
+		VECTOR moveVelocity = VGet(0.0f, 0.0f, 0.0f);
 
 		if (gPos.x > m_position.x)
 		{
-			moveVector.x += m_velocity.x;
+			moveVelocity.x += m_speed.x;
 		}
 		else if (gPos.x < m_position.x)
 		{
-			moveVector.x -= m_velocity.x;
+			moveVelocity.x -= m_speed.x;
 		}
 
 		if (gPos.z > m_position.z)
 		{
-			moveVector.z += m_velocity.z;
+			moveVelocity.z += m_speed.z;
 		}
 		else if (gPos.z < m_position.z)
 		{
-			moveVector.z -= m_velocity.z;
+			moveVelocity.z -= m_speed.z;
 		}
 
 		// 進んでいる方向を向く
-		RotateTowardTarget(moveVector);
-		m_position = moveVector;
+		VECTOR moveDirection = VGet(m_position.x + moveVelocity.x, m_position.y, m_position.z + moveVelocity.z);
+		RotateTowardTarget(moveDirection);
+		m_position = VAdd(m_position, moveVelocity);
 
 		// 時間経過で次の行動フェーズへ
 		m_moveTime++;
@@ -428,15 +442,16 @@ void Enemy::Move2Target(class Object* player)
 	}
 	else  // ランダムに移動
 	{
-		VECTOR moveVector = VGet(m_position.x + m_moveValue.x, m_position.y, m_position.z + m_moveValue.z);
+		VECTOR moveVelocity = VGet(m_randomVelocity.x, 0.0f, m_randomVelocity.z);
 
 		// 進んでいる方向を向く
-		if (moveVector.x != 0.0f && moveVector.z != 0.0f)
+		if (moveVelocity.x != 0.0f && moveVelocity.z != 0.0f)
 		{
-			RotateTowardTarget(moveVector);
+			VECTOR moveDirection = VGet(m_position.x + moveVelocity.x, m_position.y, m_position.z + moveVelocity.z);
+			RotateTowardTarget(moveDirection);
 		}
 
-		m_position = moveVector;
+		m_position = VAdd(m_position, moveVelocity);
 
 		// 時間経過で次の行動フェーズへ
 		m_moveTime++;
@@ -582,27 +597,27 @@ void Enemy::CheckTomatoWall()
 // @param object 一番近いトマトの壁オブジェクト
 void Enemy::CollectTomato(TomatoWall* object)
 {
-	VECTOR gPos = object->GetPosition();
+	VECTOR gPos = object->GetPosition();  // トマトの壁の位置
 	double distance = GetDistance(gPos, m_position);
 
 	if ((float)distance > object->GetWidthDistance() + 1)  // 標的が離れていたら近づく
 	{
 		if (gPos.x - m_position.x >= 0.0f)
 		{
-			m_position = VAdd(m_position, VGet(0.5f, 0.0f, 0.0f));
+			m_position = VAdd(m_position, VGet(m_adjustmentSpeed.x, 0.0f, 0.0f));
 		}
 		else
 		{
-			m_position = VAdd(m_position, VGet(-0.5f, 0.0f, 0.0f));
+			m_position = VAdd(m_position, VGet(-m_adjustmentSpeed.x, 0.0f, 0.0f));
 		}
 
 		if (gPos.z - m_position.z >= 0.0f)
 		{
-			m_position = VAdd(m_position, VGet(0.0f, 0.0f, 0.5f));
+			m_position = VAdd(m_position, VGet(0.0f, 0.0f, m_adjustmentSpeed.z));
 		}
 		else
 		{
-			m_position = VAdd(m_position, VGet(0.0f, 0.0f, -0.5f));
+			m_position = VAdd(m_position, VGet(0.0f, 0.0f, -m_adjustmentSpeed.z));
 		}
 
 		// 標的の方向に回転
@@ -610,14 +625,16 @@ void Enemy::CollectTomato(TomatoWall* object)
 	}
 	else
 	{
-		if (m_bulletNum == m_bulletCapacity)
+		if (m_bulletNum == m_bulletCapacity)  // 弾が満タンになったら、敵を探す
 		{
 			m_moveType = Type::SearchTarget;
 		}
-		else if(m_bulletNum < m_bulletCapacity)
+		else if(m_bulletNum < m_bulletCapacity)  // 弾が満タンじゃなかったら
 		{
+			// アニメーション中に一度も拾っていなかったら
 			if (!m_pickFlag)
 			{
+				// 現在のアニメーションが終わるまで拾わないように
 				m_pickFlag = true;
 				m_bulletNum++;
 				object->DecreaseAllTomatoNum();
@@ -631,57 +648,66 @@ void Enemy::CollectTomato(TomatoWall* object)
 // @detail トマトの壁を避ける処理
 void Enemy::AvoidTomatoWall(TomatoWall* object)
 {
-	VECTOR mPos = m_position;
-	VECTOR gPos = object->GetPosition();
+	VECTOR gPos = object->GetPosition();  // トマトの壁位置
 
 	double distance = GetDistance(gPos, m_position);
 
-	if ((float)distance < object->GetWidthDistance() && m_moveType == Type::TomatoCollect)  // 壁に近づきすぎ内容に処理
+	if ((float)distance < object->GetWidthDistance() && m_moveType == Type::TomatoCollect)  // トマトを集めている時、壁に近づきすぎたら処理
 	{
-		if (gPos.x - m_position.x >= 0.0f)
+		// x軸
+		if (gPos.x - m_position.x >= 0.0f)  // 自分より壁が右側にある
 		{
-			m_position = VAdd(m_position, VGet(-0.5f, 0.0f, 0.0f));
+			// 左に離れる
+			m_position = VAdd(m_position, VGet(-m_adjustmentSpeed.x, 0.0f, 0.0f));
 		}
-		else
+		else  // 自分より壁が左側にある
 		{
-			m_position = VAdd(m_position, VGet(0.5f, 0.0f, 0.0f));
+			// 右に離れる
+			m_position = VAdd(m_position, VGet(m_adjustmentSpeed.x, 0.0f, 0.0f));
 		}
 
-		if (gPos.z - m_position.z >= 0.0f)
+		// z軸
+		if (gPos.z - m_position.z >= 0.0f)  // 自分より壁が右側にある
 		{
-			m_position = VAdd(m_position, VGet(0.0f, 0.0f, -0.5f));
+			// 左に離れる
+			m_position = VAdd(m_position, VGet(0.0f, 0.0f, -m_adjustmentSpeed.z));
 		}
-		else
+		else  // 自分より壁が左側にある
 		{
-			m_position = VAdd(m_position, VGet(0.0f, 0.0f, 0.5f));
+			// 右に離れる
+			m_position = VAdd(m_position, VGet(0.0f, 0.0f, m_adjustmentSpeed.z));
 		}
 	}
-	else if((float)distance <= object->GetWidthDistance() &&
-		m_moveType != Type::TomatoCollect && !m_avoidWallFlag)  // 壁との距離が近づきすぎたら
+	else if((float)distance <= object->GetWidthDistance() &&    // トマトを集めていないとき
+		m_moveType != Type::TomatoCollect && !m_avoidWallFlag)  // 壁との距離が近づき過ぎたら
 	{
 		m_avoidWallFlag = true;
 
-		// 壁を避ける距離が小さい方に避ける
-		if (GetSize(gPos.x, m_position.x) < GetSize(gPos.z, m_position.z))
+		// 壁を避ける距離が小さい方に避ける(x軸,z軸どちら側に壁が近いのか)
+		if (GetSize(gPos.x, m_position.x) < GetSize(gPos.z, m_position.z))  // x軸方面のほうが距離が近い
 		{
-			if (gPos.x - m_position.x >= 0.0f)
+			if (gPos.x - m_position.x >= 0.0f)  // 自分より壁が右側にある
 			{
-				m_avoidVelocity = VAdd(m_avoidVelocity, VGet(-1.0f, 0.0f, 0.0f));
+				// 左によける
+				m_avoidVelocity = VAdd(m_avoidVelocity, VGet(-m_avoidSpeed.x, 0.0f, 0.0f));
 			}
-			else
+			else  // 自分より壁が左側にある
 			{
-				m_avoidVelocity = VAdd(m_avoidVelocity, VGet(1.0f, 0.0f, 0.0f));
+				// 右によける
+				m_avoidVelocity = VAdd(m_avoidVelocity, VGet(m_avoidSpeed.x, 0.0f, 0.0f));
 			}
 		}
-		else
+		else  // z軸方面のほうが距離が近い
 		{
-			if (gPos.z - m_position.z >= 0.0f)
+			if (gPos.z - m_position.z >= 0.0f)  // 自分より右側にある
 			{
-				m_avoidVelocity = VAdd(m_avoidVelocity, VGet(0.0f, 0.0f, -1.0f));
+				// 左によける
+				m_avoidVelocity = VAdd(m_avoidVelocity, VGet(0.0f, 0.0f, -m_avoidSpeed.z));
 			}
-			else
+			else  // 自分より左側にある
 			{
-				m_avoidVelocity = VAdd(m_avoidVelocity, VGet(0.0f, 0.0f, 1.0f));
+				// 右によける
+				m_avoidVelocity = VAdd(m_avoidVelocity, VGet(0.0f, 0.0f, m_avoidSpeed.z));
 			}
 		}
 	}
@@ -690,7 +716,7 @@ void Enemy::AvoidTomatoWall(TomatoWall* object)
 	if (m_avoidWallFlag)
 	{
 		m_position = VAdd(m_position, m_avoidVelocity);
-		distance = GetDistance(gPos, m_position);
+		distance = GetDistance(gPos, m_position);  // 避けた後の距離を測る
 
 		// 一定の距離が空いたら避けるのをやめる
 		if ((float)distance > object->GetWidthDistance() + 15)

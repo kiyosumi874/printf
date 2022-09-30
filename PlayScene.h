@@ -40,6 +40,8 @@ private:
 	void DrawTransitionOver();
 	void DrawTransitionEnd();
 
+	class ModelManager* m_modelManager;
+
 	class TimeCount* m_timeCount;
 	class Image* m_startNumber[4];
 	class Image* m_transitionImage[2];
@@ -48,7 +50,7 @@ private:
 
 	class TomatoUIController* m_tomatoUICon[2];
 	class ScoreUIController* m_scoreUICon[3];
-  
+
 	std::vector<class TomatoWall*>m_pGameObjects;
 	//std::list<class Object*>m_pObjectLists;
 

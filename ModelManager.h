@@ -8,8 +8,8 @@ public:
 	ModelManager();
 	~ModelManager();
 
-	const int GetModelData(int modelNum);
+	void LoadGameModel();  // ゲームシーンのモデルをAssetManagerにロードする
+	void LoadResultModel();  // リザルトシーンのモデルをAssetManagerにロードする
 private:
-	std::vector<const TCHAR*> m_modelName;
 };
 

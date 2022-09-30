@@ -27,4 +27,6 @@ private:
 	TAG_SCENE m_tagScene;
 	class Image* m_transitionImage[2];
 	class ScoreUIController* m_scoreUICon[3];
+
+	class ModelManager* m_modelManager;
 };

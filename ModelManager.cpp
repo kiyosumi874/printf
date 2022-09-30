@@ -3,24 +3,28 @@
 
 ModelManager::ModelManager()
 {
-	m_modelName.push_back("data/character/man1.mv1");
-	m_modelName.push_back("data/character/woman1.mv1");
-	m_modelName.push_back("data/character/man2.mv1");
-	m_modelName.push_back("data/character/woman2.mv1");
-	m_modelName.push_back("data/character/man3.mv1");
-	m_modelName.push_back("data/character/woman3.mv1");
 }
 
 ModelManager::~ModelManager()
 {
-	for (int i = 0; i < m_modelName.size(); i++)
-	{
-		m_modelName.erase(std::cbegin(m_modelName) + i);
-		m_modelName.shrink_to_fit();
-	}
 }
 
-const int ModelManager::GetModelData(int modelNum)
+void ModelManager::LoadGameModel()
 {
-	return MV1LoadModel(m_modelName[modelNum]);
+	AssetManager::LoadModel(AssetManager::ModelName::Player, "data/character/man1.mv1");
+	AssetManager::LoadModel(AssetManager::ModelName::Player2, "data/character/man3.mv1");
+	AssetManager::LoadModel(AssetManager::ModelName::Player3, "data/character/woman2.mv1");
+	AssetManager::LoadModel(AssetManager::ModelName::Tomato, "data/Tomato/Tomato.mv1");
+	AssetManager::LoadModel(AssetManager::ModelName::TomatoWallFull, "data/Tomato/FullTomatoWall.mv1");
+	AssetManager::LoadModel(AssetManager::ModelName::TomatoWallOne, "data/Tomato/TomatoWall_one.mv1");
+	AssetManager::LoadModel(AssetManager::ModelName::TomatoWallTwo, "data/Tomato/TomatoWall_two.mv1");
+	AssetManager::LoadModel(AssetManager::ModelName::TomatoWallThree, "data/Tomato/TomatoWall_three.mv1");
+	AssetManager::LoadModel(AssetManager::ModelName::TomatoWallFour, "data/Tomato/TomatoWall_four.mv1");
+}
+
+void ModelManager::LoadResultModel()
+{
+	AssetManager::LoadModel(AssetManager::ModelName::Player, "data/character/man1.mv1");
+	AssetManager::LoadModel(AssetManager::ModelName::Player2, "data/character/man3.mv1");
+	AssetManager::LoadModel(AssetManager::ModelName::Player3, "data/character/woman2.mv1");
 }

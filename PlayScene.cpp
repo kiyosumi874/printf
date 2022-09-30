@@ -17,6 +17,7 @@
 #include "TomatoUIContoroller.h"
 #include "ScoreUIController.h"
 #include "SkyDome.h"
+#include "ModelManager.h"
 
 
 // いたっんおいてる定数.いつの日かまとめる
@@ -47,6 +48,10 @@ PlayScene::PlayScene(const MODE& mode)
 	/*m_pCamera1P->SetPlayerptr(m_pPlayer1P);
 	m_pCamera2P->SetPlayerptr(m_pPlayer2P);*/
 
+	// Scene開始時に一度だけ呼ぶため
+	// ゲームに必要なモデルをロードする(人、トマト、トマトの壁)
+	m_modelManager = new ModelManager();
+	m_modelManager->LoadGameModel();
 
 	// トランジション用の画像初期化
 	for (int i = 0; i < 2; i++)
@@ -332,6 +337,9 @@ PlayScene::~PlayScene()
 	}
 	m_pObjectLists.clear();
 	m_pGameObjects.clear();
+
+	// モデルデータは消されない
+	delete m_modelManager;
 	SetCameraScreenCenter(640.0f, 480.0f);
 }
 

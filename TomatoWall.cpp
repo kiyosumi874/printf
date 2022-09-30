@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TomatoWall.h"
 
+// @detail コンストラクタ
 TomatoWall::TomatoWall(ObjectTag tag, VECTOR position)
 	: m_allTomatoNum(100)
 	, m_revivalTime(2000)
@@ -8,26 +9,33 @@ TomatoWall::TomatoWall(ObjectTag tag, VECTOR position)
 	, m_modelPatternIndex(0)
 	, m_modelChangeNum{99, 50, 30, 10}
 {
-	m_modelPatternHandle[0] = "data/Tomato/FullTomatoWall.mv1";
-	m_modelPatternHandle[1] = "data/Tomato/TomatoWall_one.mv1";
-	m_modelPatternHandle[2] = "data/Tomato/TomatoWall_two.mv1";
-	m_modelPatternHandle[3] = "data/Tomato/TomatoWall_three.mv1";
-	m_modelPatternHandle[4] = "data/Tomato/TomatoWall_four.mv1";
+	// AssetManagerからモデルデータをもらってくる
+	m_modelPatternHandle[0] = MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::TomatoWallFull));
+	m_modelPatternHandle[1] = MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::TomatoWallOne));
+	m_modelPatternHandle[2] = MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::TomatoWallTwo));
+	m_modelPatternHandle[3] = MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::TomatoWallThree));
+	m_modelPatternHandle[4] = MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::TomatoWallFour));
 
 	m_tag = tag;
 	m_position = position;
 	m_size = VGet(0.035f, 0.035f, 0.035f);
 
-	m_modelHandle = MV1LoadModel(m_modelPatternHandle[0].c_str());
+	m_modelHandle = m_modelPatternHandle[0];
 	MV1SetPosition(m_modelHandle, m_position);
 	MV1SetScale(m_modelHandle, m_size);
 }
 
+// @detail デストラクタ
 TomatoWall::~TomatoWall()
 {
 	MV1DeleteModel(m_modelHandle);
+	for (int i = 0; i < m_modelPattern; i++)
+	{
+		MV1DeleteModel(m_modelPatternHandle[i]);
+	}
 }
 
+// @detail 更新処理
 void TomatoWall::Update()
 {
 	// 個数がMAXか0ではなく、モデルが最終段階じゃなかったら
@@ -37,7 +45,7 @@ void TomatoWall::Update()
 	{
 		m_modelPatternIndex++;
 		MV1DeleteModel(m_modelHandle);
-		m_modelHandle = MV1LoadModel(m_modelPatternHandle[m_modelPatternIndex].c_str());
+		m_modelHandle = m_modelPatternHandle[m_modelPatternIndex];
 		MV1SetPosition(m_modelHandle, m_position);
 		MV1SetScale(m_modelHandle, m_size);
 	}
@@ -50,7 +58,7 @@ void TomatoWall::Update()
 		{
 			m_allTomatoNum = 100;
 			m_modelPatternIndex = 0;
-			m_modelHandle = MV1LoadModel(m_modelPatternHandle[m_modelPatternIndex].c_str());
+			m_modelHandle = m_modelPatternHandle[m_modelPatternIndex];
 			MV1SetPosition(m_modelHandle, m_position);
 			MV1SetScale(m_modelHandle, m_size);
 			m_time = 0;
@@ -58,6 +66,7 @@ void TomatoWall::Update()
 	}
 }
 
+// @detail 描画処理
 void TomatoWall::Draw()
 {
 	// 全部なくなったら描画しない

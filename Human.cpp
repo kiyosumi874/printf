@@ -25,9 +25,6 @@ Human::Human()
 	m_aimDir = m_dir;
 
 	// アニメーション準備
-	m_animType = Anim::Idle;
-	m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
-	m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
 	m_animTime = 0.0f;
 	m_animSpeed = 0.3f;
 	m_throwSpeed = 1.2f;
@@ -53,11 +50,16 @@ void Human::Start()
 		m_pTransform = m_pParent->GetComponent<Transform>();
 	}
 	// 3Dモデルの読み込み
-	if (m_pTag->tag == ObjectTag::Team1) { m_modelHandle = MV1LoadModel("data/character/man1.mv1"); }
-	if (m_pTag->tag == ObjectTag::Team2) { m_modelHandle = MV1LoadModel("data/character/man3.mv1"); }
+	if (m_pTag->tag == ObjectTag::Team1) { m_modelHandle = MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::Player)); }
+	if (m_pTag->tag == ObjectTag::Team2) { m_modelHandle = MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::Player2)); }
 	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
 	// 3Dモデルのポジション設定
 	MV1SetPosition(m_modelHandle, m_pTransform->position);
+
+	// アニメーション準備
+	m_animType = Anim::Idle;
+	m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
+	m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
 
 	// アイコンをセット
 	m_icon = new Icon(m_pTag);

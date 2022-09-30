@@ -9,12 +9,18 @@
 #include "Score.h"
 #include "ScoreUIController.h"
 #include "SkyDome.h"
+#include "ModelManager.h"
 
 GameOverScene::GameOverScene(const MODE& mode)
 	: Scene(mode)
 	, m_transition(Transition::START)
 	, m_tagScene(TAG_SCENE::TAG_NONE)
 {
+	// Scene開始時に一度だけ呼ぶため
+	// リザルトシーンに必要なモデルをAssetManagerにロードする
+	m_modelManager = new ModelManager();
+	m_modelManager->LoadResultModel();
+
 	auto T1 = Score::GetTeam1Score();
 	auto T2 = Score::GetTeam2Score();
 	auto T3 = Score::GetTeam3Score();
@@ -380,6 +386,9 @@ GameOverScene::~GameOverScene()
 		delete obj;
 	}
 	m_pObjectLists.clear();
+
+	// モデルデータは消されない
+	delete m_modelManager;
 }
 
 TAG_SCENE GameOverScene::Update()

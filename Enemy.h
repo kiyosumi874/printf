@@ -52,11 +52,18 @@ private:
 
 	// エネミーのパラメーター
 	VECTOR m_position;	// 位置座標
-	VECTOR m_velocity;  // 移動スピード
+
 	VECTOR m_dir;       // 向き
 	VECTOR m_tomatoDir;  // トマトを投げる向き
-	VECTOR m_moveValue;  // 乱数移動量
-	VECTOR m_avoidVelocity;
+
+	VECTOR m_velocity;  // 移動量
+	VECTOR m_randomVelocity;  // 乱数移動量
+	VECTOR m_avoidVelocity;  // 避ける量
+
+	VECTOR m_speed;  // 通常移動速度
+	VECTOR m_adjustmentSpeed;  // 加減スピード
+	VECTOR m_avoidSpeed;  // 避ける速度
+
 	int m_bulletNum;  // 球の所持弾数
 	const int m_bulletCapacity; // 球の限界所持数
 
