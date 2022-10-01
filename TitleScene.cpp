@@ -1,5 +1,4 @@
 #include "pch.h"
-#include"SkyDome.h"
 #include "Object.h"
 #include "Logo.h"
 #include "TransitionButton.h"
@@ -13,25 +12,16 @@ TitleScene::TitleScene(const MODE& mode)
 	: Scene(mode)
 {
 	InitObject(); // オブジェクトの初期化
-
 	SetCameraPositionAndTarget_UpVecY(VGet(0.0f, 0.0f, 0.0f), VGet(0.0f, 0.0f, 1.0f)); // カメラの位置と向きをセット
 }
 
 TitleScene::~TitleScene()
 {
-	//// 3Dモデルの終了処理
-	//for (int i = 0; i < ModelName::TomatoWall2; i++)
-	//{
-	//	MV1DeleteModel(m_models[i]);
-	//}
-	//m_models.clear();
-
 	TermObject(); // オブジェクトの解放
 }
 
 TAG_SCENE TitleScene::Update()
 {
-	//UpdateModel(); // 3Dモデルの更新
 	UpdateObject(); // オブジェクトの更新
 	// 次のシーンへ
 	if (Input::IsDown1P(BUTTON_ID_START))
@@ -54,7 +44,6 @@ void TitleScene::Draw()
 #ifdef _DEBUG
 	printfDx("TitleScene\n");
 #endif // _DEBUG
-	//DrawModel(); // 3Dモデルの描画
 	DrawObject(); // オブジェクトの描画
 }
 
@@ -65,12 +54,20 @@ void TitleScene::Draw()
 void TitleScene::InitObject()
 {
 	// Model
+	InitSkyDomeModel();
 	InitGroundModel();
 	InitTomatoWallModel();
 	// UI
 	InitGradationUI();
 	InitLogoUI();
 	InitTransitionButtonUI();
+}
+
+void TitleScene::InitSkyDomeModel()
+{
+	Object* obj = new Object;
+	obj->AddComponent<SkyDome>();
+	m_pObjectLists.push_back(obj);
 }
 
 void TitleScene::InitGroundModel()
@@ -132,7 +129,6 @@ void TitleScene::TermObject()
 
 void TitleScene::UpdateObject()
 {
-	RotateSkyDome();
 	for (auto obj : m_pObjectLists)
 	{
 		obj->Update();
@@ -141,7 +137,6 @@ void TitleScene::UpdateObject()
 
 void TitleScene::DrawObject()
 {
-	DrawSkyDome();
 	for (auto obj : m_pObjectLists)
 	{
 		obj->Draw();

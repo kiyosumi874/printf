@@ -26,7 +26,8 @@ public:
 		TomatoWallTwo,
 		TomatoWallThree,
 		TomatoWallFour,
-		Ground
+		Ground,
+		SkyDome
 	};
 
 	static void LoadImage(ImageName name, const char* str)

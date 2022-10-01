@@ -1,28 +1,32 @@
 #include "pch.h"
-#include "SkyDome.h"
 
-int g_skyDomeHandle = -1;
-
-void InitSkyDome()
+SkyDome::SkyDome()
+	: m_rotate(0.0f)
 {
-	g_skyDomeHandle = MV1LoadModel("data/Skydome_T2/Dome_T201.pmx");
-	MV1SetScale(g_skyDomeHandle, VGet(1.0f, 1.0f, 1.0f));
-	MV1SetPosition(g_skyDomeHandle, VGet(0.0f, 0.0f, 0.0f));
+	// èàóùñ≥Çµ
 }
 
-void TermSkyDome()
+SkyDome::~SkyDome()
 {
-	MV1DeleteModel(g_skyDomeHandle);
+	// èàóùñ≥Çµ
 }
 
-void DrawSkyDome()
+void SkyDome::Start()
 {
-	MV1DrawModel(g_skyDomeHandle);
+	m_var.Init(AssetManager::UseModel(AssetManager::ModelName::SkyDome), VGet(0.0f, 0.0f, 0.0f), VGet(0.0f, 0.0f, 0.0f), VGet(1.0f, 1.0f, 1.0f));
+	MV1SetScale(m_var.handle, m_var.scale);
+	MV1SetRotationXYZ(m_var.handle, m_var.rotate);
+	MV1SetPosition(m_var.handle, m_var.pos);
 }
 
-void RotateSkyDome()
+void SkyDome::Update()
 {
-	static float rot = 0;
-	rot += 0.0025f;
-	MV1SetRotationXYZ(g_skyDomeHandle, VGet(0.0f, rot * DX_PI_F / 180.0f, 0.0f));
+	m_rotate += 0.0025f;
+	m_var.rotate.y = m_rotate * DX_PI_F / 180.0f;
+	MV1SetRotationXYZ(m_var.handle, m_var.rotate);
+}
+
+void SkyDome::Draw()
+{
+	MV1DrawModel(m_var.handle);
 }

@@ -8,13 +8,21 @@
 #include "Rank.h"
 #include "Score.h"
 #include "ScoreUIController.h"
-#include "SkyDome.h"
 
 GameOverScene::GameOverScene(const MODE& mode)
 	: Scene(mode)
 	, m_transition(Transition::START)
 	, m_tagScene(TAG_SCENE::TAG_NONE)
 {
+
+	// skyDome
+	{
+		Object* obj = new Object;
+		obj->AddComponent<SkyDome>();
+		m_pObjectLists.push_back(obj);
+	}
+
+
 	auto T1 = Score::GetTeam1Score();
 	auto T2 = Score::GetTeam2Score();
 	auto T3 = Score::GetTeam3Score();
@@ -416,7 +424,6 @@ void GameOverScene::Draw()
 #ifdef _DEBUG
 	printfDx("GameOverScene\n");
 #endif // _DEBUG
-	DrawSkyDome();
 	for (auto obj : m_pObjectLists)
 	{
 		obj->Draw();

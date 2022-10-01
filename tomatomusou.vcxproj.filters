@@ -4,9 +4,7 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="Fps.cpp" />
-    <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="Human.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Ground.cpp" />
@@ -131,6 +129,15 @@
     <ClCompile Include="TitleGround.cpp">
       <Filter>Model\Title</Filter>
     </ClCompile>
+    <ClCompile Include="GameClearScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyDome.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -245,6 +252,9 @@
     <ClInclude Include="TitleGround.h">
       <Filter>Model\Title</Filter>
     </ClInclude>
+    <ClInclude Include="SkyDome.h">
+      <Filter>Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -272,7 +282,6 @@
     <ClCompile Include="TimeCount.cpp" />
     <ClCompile Include="TimeUIController.cpp" />
     <ClCompile Include="TomatoUIContoroller.cpp" />
-    <ClCompile Include="SkyDome.cpp" />
     <ClCompile Include="StillProjector.cpp" />
     <ClCompile Include="Rank.cpp" />
     <Filter Include="Component">
@@ -320,7 +329,6 @@
     <ClInclude Include="TimeUIController.h" />
     <ClInclude Include="TomatoUIContoroller.h" />
     <ClInclude Include="Transform.h" />
-    <ClInclude Include="SkyDome.h" />
     <ClInclude Include="StillProjector.h" />
     <ClInclude Include="Rank.h" />
   </ItemGroup>

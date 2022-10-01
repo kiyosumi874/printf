@@ -8,7 +8,6 @@ SceneManager::SceneManager()
 {
 	Input::GetInstance();
 	Fps::GetInstance();
-	InitSkyDome();
 	Score::GetInstance();
 }
 
@@ -18,7 +17,6 @@ SceneManager::~SceneManager()
 	Fps::Terminate();
 	Input::Terminate();
 	Score::Terminate();
-	TermSkyDome();
 }
 
 void SceneManager::GameLoop()

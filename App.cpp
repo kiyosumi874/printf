@@ -21,6 +21,7 @@ App::App()
 	AssetManager::LoadImage(AssetManager::ImageName::TransitionButton, "data/TransitionTitleUI.png");
 	AssetManager::LoadModel(AssetManager::ModelName::Ground, "data/Ground/Ground.mv1");
 	AssetManager::LoadModel(AssetManager::ModelName::TomatoWallFull, "data/Tomato/FullTomatoWall.mv1");
+	AssetManager::LoadModel(AssetManager::ModelName::SkyDome, "data/Skydome_T2/Dome_T201.pmx");
 
 	m_sceneManager = new SceneManager();
 	m_sceneManager->SetNowScene(TAG_SCENE::TAG_TITLE);

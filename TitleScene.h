@@ -16,6 +16,7 @@ public:
 private:
 	// オブジェクトの初期化
 	void InitObject();
+	void InitSkyDomeModel();
 	void InitGroundModel();
 	void InitTomatoWallModel();
 	void InitLogoUI();

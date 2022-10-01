@@ -53,3 +53,4 @@
 // Model
 #include "TitleTomatoWall.h"
 #include "TitleGround.h"
+#include "SkyDome.h"
