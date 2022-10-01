@@ -29,13 +29,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -48,7 +48,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -160,9 +160,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
+    <ClCompile Include="Gradation.cpp" />
     <ClCompile Include="HitEffect.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -178,6 +180,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Logo.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="pch.cpp">
@@ -200,18 +203,23 @@
     <ClCompile Include="StillProjector.cpp" />
     <ClCompile Include="TimeCount.cpp" />
     <ClCompile Include="TimeUIController.cpp" />
+    <ClCompile Include="TitleGround.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="TitleTomatoWall.cpp" />
     <ClCompile Include="Tomato.cpp" />
     <ClCompile Include="TomatoUIContoroller.cpp" />
     <ClCompile Include="TomatoWall.cpp" />
+    <ClCompile Include="TransitionButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="DebugDraw.h" />
+    <ClInclude Include="Gradation.h" />
     <ClInclude Include="HitEffect.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Enemy.h" />
@@ -227,6 +235,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Logo.h" />
+    <ClInclude Include="ModelBase.h" />
     <ClInclude Include="ModelManager.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectTag.h" />
@@ -247,11 +257,18 @@
     <ClInclude Include="Tag.h" />
     <ClInclude Include="TimeCount.h" />
     <ClInclude Include="TimeUIController.h" />
+    <ClInclude Include="TitleGround.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="TitleTomatoWall.h" />
     <ClInclude Include="Tomato.h" />
     <ClInclude Include="TomatoUIContoroller.h" />
     <ClInclude Include="TomatoWall.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TransitionButton.h" />
+    <ClInclude Include="UIBase.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

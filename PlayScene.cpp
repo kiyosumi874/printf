@@ -16,7 +16,6 @@
 #include "Score.h"
 #include "TomatoUIContoroller.h"
 #include "ScoreUIController.h"
-#include "SkyDome.h"
 
 
 // いたっんおいてる定数.いつの日かまとめる
@@ -53,6 +52,7 @@ PlayScene::PlayScene(const MODE& mode)
 	{
 		m_transitionImage[i] = nullptr;
 	}
+	
 
 	for (int i = 0; i < m_tomatoWallNum; i++)
 	{
@@ -182,6 +182,13 @@ PlayScene::PlayScene(const MODE& mode)
 			if (tag->tag != ObjectTag::Team2) { enemy4->SetPlayerPtr(ob); }
 			if (tag->tag != ObjectTag::Team3) { enemy1->SetPlayerPtr(ob); enemy2->SetPlayerPtr(ob); }
 		}
+	}
+
+	// skyDome
+	{
+		Object* obj = new Object;
+		obj->AddComponent<SkyDome>();
+		m_pObjectLists.push_back(obj);
 	}
 
 	// saito 床を生成
@@ -337,7 +344,6 @@ PlayScene::~PlayScene()
 
 TAG_SCENE PlayScene::Update()
 {
-	RotateSkyDome();
 	switch (m_transition)
 	{
 	case PlayScene::Transition::START:
@@ -671,7 +677,6 @@ void PlayScene::UpdateTransitionEnd()
 
 void PlayScene::DrawTransitionStart()
 {
-	DrawSkyDome();
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
@@ -699,7 +704,6 @@ void PlayScene::DrawTransitionPlay()
 {
 	SetDrawArea(0, 0, 640, 960);
 	SetCameraScreenCenter(320.0f, 480.0f);
-	DrawSkyDome();
 	Effekseer_Sync3DSetting();
 
 #ifdef _DEBUG
@@ -726,7 +730,6 @@ void PlayScene::DrawTransitionPlay()
 
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
-	DrawSkyDome();
 
 	Effekseer_Sync3DSetting();
 #ifdef _DEBUG
@@ -764,7 +767,6 @@ void PlayScene::DrawTransitionOver()
 {
 	SetDrawArea(0, 0, 640, 960);
 	SetCameraScreenCenter(320.0f, 480.0f);	
-	DrawSkyDome();
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
@@ -786,7 +788,6 @@ void PlayScene::DrawTransitionOver()
 	}
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
-	DrawSkyDome();
 #ifdef _DEBUG
 	printfDx("PlayScene\n");
 	
@@ -815,7 +816,6 @@ void PlayScene::DrawTransitionEnd()
 {
 	SetDrawArea(0, 0, 640, 960);
 	SetCameraScreenCenter(320.0f, 480.0f);
-	DrawSkyDome();
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
@@ -837,7 +837,6 @@ void PlayScene::DrawTransitionEnd()
 	}
 	SetDrawArea(640, 0, 1280, 960);
 	SetCameraScreenCenter(960.0f, 480.0f);
-	DrawSkyDome();
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG

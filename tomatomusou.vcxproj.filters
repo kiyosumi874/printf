@@ -3,17 +3,12 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
-
-    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Fps.cpp" />
-    <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="Human.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="Input.cpp" />
-
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TitleScene.cpp">
       <Filter>Scene</Filter>
@@ -60,16 +55,12 @@
     <ClCompile Include="Tomato.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Effect.cpp">
-      <Filter>Effect</Filter>
-    </ClCompile>
     <ClCompile Include="TomatoWall.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Ground.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-
     <ClCompile Include="HitEffect.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
@@ -120,7 +111,33 @@
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Sound.cpp" />
-
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Logo.cpp">
+      <Filter>UI\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="TransitionButton.cpp">
+      <Filter>UI\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Gradation.cpp">
+      <Filter>UI\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleTomatoWall.cpp">
+      <Filter>Model\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleGround.cpp">
+      <Filter>Model\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClearScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyDome.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -187,7 +204,6 @@
     <ClInclude Include="Ground.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-
     <ClInclude Include="EffectManager.h">
       <Filter>Effect</Filter>
     </ClInclude>
@@ -207,13 +223,38 @@
     <ClInclude Include="Object.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Icon.h">
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Sound.h" />
-
+    <ClInclude Include="AssetManager.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="UIBase.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Logo.h">
+      <Filter>UI\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="TransitionButton.h">
+      <Filter>UI\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Gradation.h">
+      <Filter>UI\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelBase.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleTomatoWall.h">
+      <Filter>Model\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleGround.h">
+      <Filter>Model\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyDome.h">
+      <Filter>Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -241,11 +282,37 @@
     <ClCompile Include="TimeCount.cpp" />
     <ClCompile Include="TimeUIController.cpp" />
     <ClCompile Include="TomatoUIContoroller.cpp" />
-    <ClCompile Include="SkyDome.cpp" />
     <ClCompile Include="StillProjector.cpp" />
     <ClCompile Include="Rank.cpp" />
     <Filter Include="Component">
       <UniqueIdentifier>{69952f12-72b9-41e3-8f24-c99c7ff433bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset">
+      <UniqueIdentifier>{975caea0-fff1-40ab-aab4-fc7e9a934f8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{86e7fe69-278c-4a40-ac61-5f25179b332f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Title">
+      <UniqueIdentifier>{a9b7284c-fe6c-4f80-a4ff-1ec9bbd04728}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Play">
+      <UniqueIdentifier>{a86b9757-bfdf-48c5-a5a2-3752efbcebc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Result">
+      <UniqueIdentifier>{d4d8419e-ef50-4a02-8ea6-062b18ffef79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{f72e68a2-2317-4b3a-8374-6762d141c38a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model\Play">
+      <UniqueIdentifier>{56b9dfd8-015c-4a37-a165-584bcd1975ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model\Result">
+      <UniqueIdentifier>{017235e4-c953-4dae-95cf-1c88075d368f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model\Title">
+      <UniqueIdentifier>{0e549514-8871-4ba0-8ebe-4f0e0d5789b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -262,8 +329,10 @@
     <ClInclude Include="TimeUIController.h" />
     <ClInclude Include="TomatoUIContoroller.h" />
     <ClInclude Include="Transform.h" />
-    <ClInclude Include="SkyDome.h" />
     <ClInclude Include="StillProjector.h" />
     <ClInclude Include="Rank.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

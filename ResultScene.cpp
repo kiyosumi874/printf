@@ -47,7 +47,6 @@ ResultScene::~ResultScene()
 
 TAG_SCENE ResultScene::Update()
 {
-	RotateSkyDome();
 	switch (m_transition)
 	{
 	case ResultScene::Transition::START:
@@ -120,7 +119,6 @@ void ResultScene::UpdateTransitionEnd()
 
 void ResultScene::DrawTransitionStart()
 {
-	DrawSkyDome();
 	for (auto obj : m_pObjectLists)
 	{
 		obj->Draw();
@@ -129,7 +127,6 @@ void ResultScene::DrawTransitionStart()
 
 void ResultScene::DrawTransitionPlay()
 {
-	DrawSkyDome();
 	for (auto obj : m_pObjectLists)
 	{
 		obj->Draw();
@@ -138,7 +135,6 @@ void ResultScene::DrawTransitionPlay()
 
 void ResultScene::DrawTransitionOver()
 {
-	DrawSkyDome();
 	for (auto obj : m_pObjectLists)
 	{
 		obj->Draw();
@@ -147,7 +143,6 @@ void ResultScene::DrawTransitionOver()
 
 void ResultScene::DrawTransitionEnd()
 {
-	DrawSkyDome();
 	for (auto obj : m_pObjectLists)
 	{
 		obj->Draw();

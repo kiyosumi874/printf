@@ -3,11 +3,11 @@
 #include "Component.h"
 #include "DxLib.h"
 
-class SkyDome final : public ModelBase, public Component
+class TitleGround final : public ModelBase, public Component
 {
 public:
-	SkyDome();
-	~SkyDome();
+	TitleGround();
+	~TitleGround();
 
 	void Start()override;
 	void Update()override;
