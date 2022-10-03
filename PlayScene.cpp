@@ -31,22 +31,6 @@ PlayScene::PlayScene(const MODE& mode)
 	, m_startBlendAdd(0.0f)
 	, m_graphHandleWhite(-1)
 {
-
-	//m_pGround = new Ground(ObjectTag::Ground, VGet(0.0f, -5.0f, 0.0f));
-	/*m_pTomatoWall[0] = new TomatoWall(ObjectTag::TomatoWall, VGet(50.0f, 0.0f, 50.0f));
-	m_pTomatoWall[1] = new TomatoWall(ObjectTag::TomatoWall, VGet(150.0f, 0.0f, 150.0f));
-	m_pPlayer1P = new Player(ObjectTag::Player1, VGet(0.0f, 0.0f, 0.0f));
-	m_pCamera1P = new Camera(ObjectTag::Camera1, VGet(0.0f, 20.0f, 0.0f));
-	m_pPlayer2P = new Player(ObjectTag::Player2, VGet(50.0f, 0.0f, 50.0f));
-	m_pCamera2P = new Camera(ObjectTag::Camera2, VGet(0.0f, 20.0f, 0.0f));
-	m_pEnemy1 = new Enemy(ObjectTag::Enemy, VGet(50.0f, 0.0f, -50.0f));
-	m_pEnemy2 = new Enemy(ObjectTag::Enemy, VGet(-50.0f, 0.0f, 50.0f));*/
-
-	// カメラ
-	/*m_pCamera1P->SetPlayerptr(m_pPlayer1P);
-	m_pCamera2P->SetPlayerptr(m_pPlayer2P);*/
-
-
 	// トランジション用の画像初期化
 	for (int i = 0; i < 2; i++)
 	{
@@ -58,39 +42,6 @@ PlayScene::PlayScene(const MODE& mode)
 	{
 		auto tomato = new TomatoWall(ObjectTag::TomatoWall, VGet(-300 + 100.0f * i, 0.0f, 0.0f));
 		m_pGameObjects.push_back(tomato);
-	}
-
-	// 以前の初期化
-	{
-	//m_pEnemy1 = new Enemy(ObjectTag::Enemy, VGet(50.0f, 0.0f, -50.0f));
-	//m_pEnemy2 = new Enemy(ObjectTag::Enemy, VGet(-50.0f, 0.0f, 50.0f));
-
-	// プレイヤー
-	//for (int i = 0; i < m_tomatoWallNum; i++)
-	//{
-	//	m_pPlayer1P->SetTomatoWallPtr(m_pTomatoWall[i]);
-	//	m_pPlayer2P->SetTomatoWallPtr(m_pTomatoWall[i]);
-	//}
-	// エネミー1
-	//m_pEnemy1->SetPlayerPtr(m_pPlayer2P);
-	//m_pEnemy1->SetPlayerPtr(m_pPlayer2P);
-	//for (int i = 0; i < m_tomatoWallNum; i++)
-	//{
-	//	m_pEnemy1->SetTomatoWallPtr(m_pTomatoWall[i]);
-	//}
-	// エネミー2
-	//m_pEnemy2->SetPlayerPtr(m_pPlayer2P);
-	//m_pEnemy2->SetPlayerPtr(m_pPlayer2P);
-	//for (int i = 0; i < m_tomatoWallNum; i++)
-	//{
-	//	m_pEnemy2->SetTomatoWallPtr(m_pTomatoWall[i]);
-	//}	
-	//m_pGameObjects.push_back(m_pEnemy1);
-	//m_pGameObjects.push_back(m_pEnemy2);
-	//m_pGameObjects.push_back(m_pPlayer1P);
-	//m_pGameObjects.push_back(m_pPlayer2P);
-	//m_pGameObjects.push_back(m_pCamera1P);
-	//m_pGameObjects.push_back(m_pCamera2P);
 	}
 
 	// iguchi
@@ -339,7 +290,7 @@ PlayScene::~PlayScene()
 	}
 	m_pObjectLists.clear();
 	m_pGameObjects.clear();
-	SetCameraScreenCenter(640.0f, 480.0f);
+	SetCameraScreenCenter(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 }
 
 TAG_SCENE PlayScene::Update()
@@ -702,8 +653,8 @@ void PlayScene::DrawTransitionStart()
 
 void PlayScene::DrawTransitionPlay()
 {
-	SetDrawArea(0, 0, 640, 960);
-	SetCameraScreenCenter(320.0f, 480.0f);
+	SetDrawArea(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
+	SetCameraScreenCenter(480.0f, 540.0f);
 	Effekseer_Sync3DSetting();
 
 #ifdef _DEBUG
@@ -728,8 +679,8 @@ void PlayScene::DrawTransitionPlay()
 
 	DrawEffekseer3D();
 
-	SetDrawArea(640, 0, 1280, 960);
-	SetCameraScreenCenter(960.0f, 480.0f);
+	SetDrawArea(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	SetCameraScreenCenter(1440.0f, 540.0f);
 
 	Effekseer_Sync3DSetting();
 #ifdef _DEBUG
@@ -765,8 +716,8 @@ void PlayScene::DrawTransitionPlay()
 
 void PlayScene::DrawTransitionOver()
 {
-	SetDrawArea(0, 0, 640, 960);
-	SetCameraScreenCenter(320.0f, 480.0f);	
+	SetDrawArea(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
+	SetCameraScreenCenter(480.0f, 540.0f);	
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
@@ -786,8 +737,8 @@ void PlayScene::DrawTransitionOver()
 			if (tag->tag != ObjectTag::Camera2) { obj->Draw(); }
 		}
 	}
-	SetDrawArea(640, 0, 1280, 960);
-	SetCameraScreenCenter(960.0f, 480.0f);
+	SetDrawArea(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	SetCameraScreenCenter(1440.0f, 540.0f);
 #ifdef _DEBUG
 	printfDx("PlayScene\n");
 	
@@ -814,8 +765,8 @@ void PlayScene::DrawTransitionOver()
 
 void PlayScene::DrawTransitionEnd()
 {
-	SetDrawArea(0, 0, 640, 960);
-	SetCameraScreenCenter(320.0f, 480.0f);
+	SetDrawArea(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
+	SetCameraScreenCenter(480.0f, 540.0f);
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
@@ -835,8 +786,8 @@ void PlayScene::DrawTransitionEnd()
 			if (tag->tag != ObjectTag::Camera2) { obj->Draw(); }
 		}
 	}
-	SetDrawArea(640, 0, 1280, 960);
-	SetCameraScreenCenter(960.0f, 480.0f);
+	SetDrawArea(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	SetCameraScreenCenter(1440.0f, 540.0f);
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG

@@ -22,6 +22,13 @@ GameOverScene::GameOverScene(const MODE& mode)
 	auto proj = ob->AddComponent<StillProjector>();
 	m_pObjectLists.push_back(ob);
 
+	// skyDome
+	{
+		Object* obj = new Object;
+		obj->AddComponent<SkyDome>();
+		m_pObjectLists.push_back(obj);
+	}
+
 	auto T1 = Score::GetTeam1Score();
 	auto T2 = Score::GetTeam2Score();
 	auto T3 = Score::GetTeam3Score();
@@ -113,6 +120,7 @@ GameOverScene::GameOverScene(const MODE& mode)
 		obj->AddComponent<Rank>();
 		m_pObjectLists.push_back(obj);
 	}
+
 	// ƒgƒ‰ƒ“ƒWƒVƒ‡ƒ“‚Ìˆ—
 	{
 		Object* obj = new Object;
@@ -171,7 +179,6 @@ void GameOverScene::Draw()
 #ifdef _DEBUG
 	printfDx("GameOverScene\n");
 #endif // _DEBUG
-	DrawSkyDome();
 	for (auto obj : m_pObjectLists)
 	{
 		obj->Draw();
