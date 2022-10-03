@@ -8,7 +8,6 @@ SceneManager::SceneManager()
 {
 	Input::GetInstance();
 	Fps::GetInstance();
-	InitSkyDome();
 	Score::GetInstance();
 }
 

@@ -1,22 +1,29 @@
 #pragma once
+#include <vector>
+
+using namespace std;
 
 class TitleScene : public Scene
 {
 public:
-	TitleScene() = delete;
-	TitleScene(const MODE& mode);
-	~TitleScene() override;
+	TitleScene() = delete; // デフォルトコンストラクタは使わない
+	TitleScene(const MODE& mode); // コンストラクタ
+	~TitleScene() override; // デストラクタ
 
-	TAG_SCENE Update() override;
-	void Draw() override;
+	TAG_SCENE Update() override; // 更新
+	void Draw() override; // 描画
 
 private:
-	int m_logoGraph;
-	int m_enterGraph;
-	int m_postUIGraph;
+	// オブジェクトの初期化
+	void InitObject();
+	void InitSkyDomeModel();
+	void InitGroundModel();
+	void InitTomatoWallModel();
+	void InitLogoUI();
+	void InitTransitionButtonUI();
+	void InitGradationUI();
 
-	int m_groundHandle;
-	int m_tomatoHandle;
-	int m_tomatoHandle2;
-	int m_tomatoHandle3;
+	void TermObject(); // オブジェクトの解放
+	void UpdateObject(); // オブジェクトの更新
+	void DrawObject(); // オブジェクトの描画
 };

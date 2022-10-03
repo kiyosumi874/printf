@@ -40,5 +40,17 @@
 #include "EffectManager.h"
 #include "HitEffect.h"
 
+// Assets
 #include "Sound.h"
+#include "AssetManager.h"
 
+// Title
+// UI
+#include "Logo.h"
+#include "TransitionButton.h"
+#include "Gradation.h"
+
+// Model
+#include "TitleTomatoWall.h"
+#include "TitleGround.h"
+#include "SkyDome.h"
