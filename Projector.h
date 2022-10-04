@@ -1,22 +1,22 @@
-#pragma once
+ï»¿#pragma once
 #include "Component.h"
 
 class Projector : public Component
 {
 public:
-	Projector();				// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	~Projector();				// ƒfƒXƒgƒ‰ƒNƒ^
+	Projector();				// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	~Projector();				// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
 	void Start();
-	void Update()override;	// XVˆ—.
+	void Update()override;	// æ›´æ–°å‡¦ç†.
 	void Draw();
 
-	// ‰‚ß‚Éˆê‰ñŒÄ‚ÔƒZƒbƒ^[
+	// åˆã‚ã«ä¸€å›å‘¼ã¶ã‚»ãƒƒã‚¿ãƒ¼
 	void SetPlayerptr(class Transform* ptr);
 private:
-	class Transform* m_pPlayerTransform;		// ƒvƒŒƒCƒ„[‚ğ•Û‚·‚é” 
+	class Transform* m_pPlayerTransform;		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ä¿æŒã™ã‚‹ç®±
 
-	VECTOR m_position;				// À•W
-	VECTOR m_viewPoint;				// ƒJƒƒ‰‚Ì’‹“_
-	VECTOR m_targetViewPoint;		// ƒJƒƒ‰‚Ì’‹“_–Ú•W
+	VECTOR m_position;				// åº§æ¨™
+	VECTOR m_viewPoint;				// ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹
+	VECTOR m_targetViewPoint;		// ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹ç›®æ¨™
 };

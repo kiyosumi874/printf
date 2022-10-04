@@ -1,64 +1,64 @@
-#pragma once
+ï»¿#pragma once
 #include "Component.h"
 
 class Image : public Component
 {
 public:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	Image();
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~Image();
 
-	/// <param name="pos">ƒOƒ[ƒoƒ‹À•W(x‚Æy‚¾‚¯)</param>
-    /// <param name="extendRate">Šg‘å—¦(x‚Æy‚¾‚¯)</param>
-    /// <param name="angle">Šp“x(“x”–@)</param>
-    /// <param name="fileName">‰æ‘œ‚ÌƒpƒX</param>
-    /// <param name="transFlag">‰æ‘œ‚Ì“§–¾“x‚ğ—LŒø‚É‚·‚é‚©‚Ç‚¤‚©</param>
-    /// <param name="turnFlagX">‰æ‘œ‚Ì¶‰E”½“]‚ğs‚¤‚©</param>
-    /// <param name="turnFlagY">‰æ‘œ‚Ìã‰º”½“]‚ğs‚¤‚©</param>
+	/// <param name="pos">ã‚°ãƒ­ãƒ¼ãƒãƒ«åº§æ¨™(xã¨yã ã‘)</param>
+    /// <param name="extendRate">æ‹¡å¤§ç‡(xã¨yã ã‘)</param>
+    /// <param name="angle">è§’åº¦(åº¦æ•°æ³•)</param>
+    /// <param name="fileName">ç”»åƒã®ãƒ‘ã‚¹</param>
+    /// <param name="transFlag">ç”»åƒã®é€æ˜åº¦ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹ã©ã†ã‹</param>
+    /// <param name="turnFlagX">ç”»åƒã®å·¦å³åè»¢ã‚’è¡Œã†ã‹</param>
+    /// <param name="turnFlagY">ç”»åƒã®ä¸Šä¸‹åè»¢ã‚’è¡Œã†ã‹</param>
 	void Init(const VECTOR& pos, const VECTOR& extendRate, double angle, const char* fileName, bool transFlag = true, bool turnFlagX = false, bool turnFlagY = false);
 
-	void Update()override;	// XVˆ—
-	void Draw()override;	// •`‰æˆ—
+	void Update()override;	// æ›´æ–°å‡¦ç†
+	void Draw()override;	// æç”»å‡¦ç†
 
 	/// <summary>
-	/// ©•ª‚ğ‰ñ‚·
+	/// è‡ªåˆ†ã‚’å›ã™
 	/// </summary> 
-	/// <param name="angle">Šp“x(“x”–@)</param>
-	/// ŠT—vFˆê‰ñŒÄ‚Ô‚¾‚¯‚Å‰ñ‚è‘±‚¯‚é‚æ,ˆø”‚É0.0‚ğ“ü‚ê‚é‚Æ~‚Ü‚é
-	/// —á  Fˆø”‚É1.0‚Æ“ü‚ê‚½ê‡1ƒ‹[ƒv‚É1.0“x‚¸‚Â‰ñ‚è‚Ü‚·B
+	/// <param name="angle">è§’åº¦(åº¦æ•°æ³•)</param>
+	/// æ¦‚è¦ï¼šä¸€å›å‘¼ã¶ã ã‘ã§å›ã‚Šç¶šã‘ã‚‹ã‚ˆ,å¼•æ•°ã«0.0ã‚’å…¥ã‚Œã‚‹ã¨æ­¢ã¾ã‚‹
+	/// ä¾‹  ï¼šå¼•æ•°ã«1.0ã¨å…¥ã‚ŒãŸå ´åˆ1ãƒ«ãƒ¼ãƒ—ã«1.0åº¦ãšã¤å›ã‚Šã¾ã™ã€‚
 	void Rotation(double angle)
 	{
 		m_addAngle = angle * DX_PI / 180.0;
 	}
 
 	/// <summary>
-	/// ©•ª‚ÌŠp“x‚ğİ’è
+	/// è‡ªåˆ†ã®è§’åº¦ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="angle">Šp“x(“x”–@)</param>
+	/// <param name="angle">è§’åº¦(åº¦æ•°æ³•)</param>
 	void SetAngle(double angle)
 	{
 		m_angle = angle * DX_PI / 180.0;
 	}
 
 	/// <summary>
-	/// ©•ª‚ÌƒOƒ[ƒoƒ‹À•W‚ğ•ÏX
+	/// è‡ªåˆ†ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«åº§æ¨™ã‚’å¤‰æ›´
 	/// </summary>
-	/// <param name="pos">À•W(x‚Æy‚¾‚¯)</param>
+	/// <param name="pos">åº§æ¨™(xã¨yã ã‘)</param>
 	void SetPos(const VECTOR& pos)
 	{
 		m_pos = pos;
 	}
 
-	// À•W‚ÌƒQƒbƒ^[
+	// åº§æ¨™ã®ã‚²ãƒƒã‚¿ãƒ¼
 	const VECTOR& GetPos() const
 	{
 		return m_pos;
 	}
 
-	// ‰æ‘œ‚ğ“®‚©‚·
+	// ç”»åƒã‚’å‹•ã‹ã™
 	void MovePos(const VECTOR& pos)
 	{
 		m_pos.x += pos.x;
@@ -67,15 +67,15 @@ public:
 	}
 
 	/// <summary>
-	/// ©•ª‚ÌŠg‘å—¦‚ğ•ÏX
+	/// è‡ªåˆ†ã®æ‹¡å¤§ç‡ã‚’å¤‰æ›´
 	/// </summary>
-	/// <param name="extendRate">Šg‘å—¦(x‚Æy‚¾‚¯)</param>
+	/// <param name="extendRate">æ‹¡å¤§ç‡(xã¨yã ã‘)</param>
 	void SetExtendRate(const VECTOR& extendRate)
 	{
 		m_extendRate = extendRate;
 	}
 
-	// •`‰æ‚·‚é‚©”Û‚©
+	// æç”»ã™ã‚‹ã‹å¦ã‹
 	void IsDraw(bool isDraw)
 	{
 		m_isDraw = isDraw;
@@ -87,14 +87,14 @@ public:
 	}
 
 private:
-	VECTOR m_pos;        // ƒOƒ[ƒoƒ‹À•W
-	VECTOR m_extendRate; // Šg‘å—¦
-	double m_angle;      // Šp“x(ŒÊ“x–@)
-	double m_addAngle;   // ‰ñ“]‚³‚¹‚éŠp“x(ŒÊ“x–@)
-	int m_graphHandle;   // ‰æ‘œƒnƒ“ƒhƒ‹
+	VECTOR m_pos;        // ã‚°ãƒ­ãƒ¼ãƒãƒ«åº§æ¨™
+	VECTOR m_extendRate; // æ‹¡å¤§ç‡
+	double m_angle;      // è§’åº¦(å¼§åº¦æ³•)
+	double m_addAngle;   // å›è»¢ã•ã›ã‚‹è§’åº¦(å¼§åº¦æ³•)
+	int m_graphHandle;   // ç”»åƒãƒãƒ³ãƒ‰ãƒ«
 	int m_alpha;
-	bool m_transFlag;    // ‰æ‘œ‚Ì“§–¾“x‚ğ—LŒø‚É‚·‚é‚©‚Ç‚¤‚©
-	bool m_turnFlagX;    // ‰æ‘œ‚Ì¶‰E”½“]‚ğs‚¤‚©
-	bool m_turnFlagY;    // ‰æ‘œ‚Ìã‰º”½“]‚ğs‚¤‚©
-	bool m_isDraw;       // •`‰æ‚·‚é‚©H
+	bool m_transFlag;    // ç”»åƒã®é€æ˜åº¦ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹ã©ã†ã‹
+	bool m_turnFlagX;    // ç”»åƒã®å·¦å³åè»¢ã‚’è¡Œã†ã‹
+	bool m_turnFlagY;    // ç”»åƒã®ä¸Šä¸‹åè»¢ã‚’è¡Œã†ã‹
+	bool m_isDraw;       // æç”»ã™ã‚‹ã‹ï¼Ÿ
 };

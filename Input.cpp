@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 Input* Input::m_input = nullptr;
 
@@ -75,18 +75,18 @@ Input::~Input()
 
 void Input::Update()
 {
-	// ƒRƒ“ƒgƒ[ƒ‰[‚ª‚Â‚È‚ª‚Á‚Ä‚¢‚é‚©H
+	// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ãŒã¤ãªãŒã£ã¦ã„ã‚‹ã‹ï¼Ÿ
 	if (m_input->m_joyPadNum > 0)
 	{
-		// ƒAƒiƒƒOƒXƒeƒBƒbƒN‚ÌƒAƒbƒvƒf[ƒg
+		// ã‚¢ãƒŠãƒ­ã‚°ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
 		GetJoypadAnalogInput(&m_input->m_analogStickX[0], &m_input->m_analogStickY[0], DX_INPUT_PAD1);
 		GetJoypadAnalogInput(&m_input->m_analogStickX[1], &m_input->m_analogStickY[1], DX_INPUT_PAD2);
 
 		for (int i = 0; i < BUTTON_ID_MAX; i++)
 		{
-			// ƒL[ƒ{[ƒh‚ÌƒAƒbƒvƒf[ƒg
-			// GetAsyncKeyState‚Í‰Ÿ‚µ‚Ä‚¢‚é‚Æ‚«ÅãˆÊƒrƒbƒg‚ª—§‚Â
-			if (GetAsyncKeyState(m_input->m_keys[i].keyCode[KEYBOARD]) & 0x8000) // 0x8000‚Íshort‚ÌÅãˆÊƒrƒbƒg‚ª—§‚Á‚Ä‚¢‚é‚±‚Æ‚ð•\‚·
+			// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
+			// GetAsyncKeyStateã¯æŠ¼ã—ã¦ã„ã‚‹ã¨ãæœ€ä¸Šä½ãƒ“ãƒƒãƒˆãŒç«‹ã¤
+			if (GetAsyncKeyState(m_input->m_keys[i].keyCode[KEYBOARD]) & 0x8000) // 0x8000ã¯shortã®æœ€ä¸Šä½ãƒ“ãƒƒãƒˆãŒç«‹ã£ã¦ã„ã‚‹ã“ã¨ã‚’è¡¨ã™
 			{
 				m_input->m_keys[i].pressCount[KEYBOARD] = max(++m_input->m_keys[i].pressCount[KEYBOARD], 1);
 			}
@@ -95,7 +95,7 @@ void Input::Update()
 				m_input->m_keys[i].pressCount[KEYBOARD] = min(--m_input->m_keys[i].pressCount[KEYBOARD], 0);
 			}
 
-			// ƒRƒ“ƒgƒ[ƒ‰[1P‚ÌƒAƒbƒvƒf[ƒg
+			// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼1Pã®ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
 			if (GetJoypadInputState(DX_INPUT_PAD1) & m_input->m_keys[i].keyCode[CONTROLLER_1P])
 			{
 				m_input->m_keys[i].pressCount[CONTROLLER_1P] = max(++m_input->m_keys[i].pressCount[CONTROLLER_1P], 1);
@@ -105,7 +105,7 @@ void Input::Update()
 				m_input->m_keys[i].pressCount[CONTROLLER_1P] = min(--m_input->m_keys[i].pressCount[CONTROLLER_1P], 0);
 			}
 
-			// ƒRƒ“ƒgƒ[ƒ‰[2P‚ÌƒAƒbƒvƒf[ƒg
+			// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼2Pã®ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
 			if (GetJoypadInputState(DX_INPUT_PAD2) & m_input->m_keys[i].keyCode[CONTROLLER_2P])
 			{
 				m_input->m_keys[i].pressCount[CONTROLLER_2P] = max(++m_input->m_keys[i].pressCount[CONTROLLER_2P], 1);
@@ -121,8 +121,8 @@ void Input::Update()
 	{
 		for (int i = 0; i < BUTTON_ID_MAX; i++)
 		{
-			// GetAsyncKeyState‚Í‰Ÿ‚µ‚Ä‚¢‚é‚Æ‚«ÅãˆÊƒrƒbƒg‚ª—§‚Â
-			if (GetAsyncKeyState(m_input->m_keys[i].keyCode[KEYBOARD]) & 0x8000) // 0x8000‚Íshort‚ÌÅãˆÊƒrƒbƒg‚ª—§‚Á‚Ä‚¢‚é‚±‚Æ‚ð•\‚·
+			// GetAsyncKeyStateã¯æŠ¼ã—ã¦ã„ã‚‹ã¨ãæœ€ä¸Šä½ãƒ“ãƒƒãƒˆãŒç«‹ã¤
+			if (GetAsyncKeyState(m_input->m_keys[i].keyCode[KEYBOARD]) & 0x8000) // 0x8000ã¯shortã®æœ€ä¸Šä½ãƒ“ãƒƒãƒˆãŒç«‹ã£ã¦ã„ã‚‹ã“ã¨ã‚’è¡¨ã™
 			{
 				m_input->m_keys[i].pressCount[KEYBOARD] = max(++m_input->m_keys[i].pressCount[KEYBOARD], 1);
 			}

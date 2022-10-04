@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "DxLib.h"
 
 class ModelBase
@@ -11,7 +11,7 @@ public:
 		VECTOR rotate;
 		VECTOR scale;
 
-		// ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
+		// ãƒ¡ãƒ³ãƒå¤‰æ•°ã®åˆæœŸåŒ–
 		void Init(int handle, const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
 		{
 			this->handle = handle;

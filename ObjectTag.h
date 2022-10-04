@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include <vector>
 
-// ƒQ[ƒ€ƒIƒuƒWƒFƒNƒgE“–‚½‚è”»’è‚Ìí—Ş•Êƒ^ƒO
-// •K—v‚È‚à‚Ì‚ÍBegin‚ÆEnd‚ÌŠÔ‚É255ŒÂ‚Ü‚Å’è‹`‚Å‚«‚é
+// ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ»å½“ãŸã‚Šåˆ¤å®šã®ç¨®é¡åˆ¥ã‚¿ã‚°
+// å¿…è¦ãªã‚‚ã®ã¯Beginã¨Endã®é–“ã«255å€‹ã¾ã§å®šç¾©ã§ãã‚‹
 enum class ObjectTag : unsigned char
 {
-	Begin,			// Tag‚ÌŠJnƒ}[ƒJ[iBegin‚æ‚èè‘O‚É’è‹`‚µ‚È‚¢‚±‚Æj
+	Begin,			// Tagã®é–‹å§‹ãƒãƒ¼ã‚«ãƒ¼ï¼ˆBeginã‚ˆã‚Šæ‰‹å‰ã«å®šç¾©ã—ãªã„ã“ã¨ï¼‰
 
 	Team1 = Begin,
 	Player1Bullet,
@@ -20,10 +20,10 @@ enum class ObjectTag : unsigned char
 	Camera2,
 	Effect,
 
-	End				// Tag‚ÌI—¹ƒ}[ƒJ[iEnd‚æ‚èŒã‚É’è‹`‚µ‚È‚¢‚±‚Æj
+	End				// Tagã®çµ‚äº†ãƒãƒ¼ã‚«ãƒ¼ï¼ˆEndã‚ˆã‚Šå¾Œã«å®šç¾©ã—ãªã„ã“ã¨ï¼‰
 };
 
-// for( ObjectTag &tag : ObjectTagAll )‚Å‘STag—v‘f‚Ìƒ‹[ƒv‚É‚Å‚«‚é
+// for( ObjectTag &tag : ObjectTagAll )ã§å…¨Tagè¦ç´ ã®ãƒ«ãƒ¼ãƒ—ã«ã§ãã‚‹
 constexpr static ObjectTag ObjectTagAll[] =
 {
 	ObjectTag::Team1,

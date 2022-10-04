@@ -1,32 +1,32 @@
-#pragma once
+ï»¿#pragma once
 
-// ƒvƒŒƒCƒV[ƒ“‚Ì°
+// ãƒ—ãƒ¬ã‚¤ã‚·ãƒ¼ãƒ³æ™‚ã®åºŠ
 class PlayGround :public ModelBase,public Component
 {
 public:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
-	/// <param name="_pos">ƒ|ƒWƒVƒ‡ƒ“</param>
+	/// <param name="_pos">ãƒã‚¸ã‚·ãƒ§ãƒ³</param>
 	PlayGround();
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~PlayGround();
 
 	void Start()override;
 
 	/// <summary>
-	/// XVˆ—
+	/// æ›´æ–°å‡¦ç†
 	/// </summary>
-	/// <param name="_deltaTime">ÅŒã‚ÌƒtƒŒ[ƒ€‚ğŠ®—¹‚·‚é‚Ì‚É—v‚µ‚½ŠÔ</param>
+	/// <param name="_deltaTime">æœ€å¾Œã®ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’å®Œäº†ã™ã‚‹ã®ã«è¦ã—ãŸæ™‚é–“</param>
 	void Update()override;
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw()override;
 
 private:
-	VECTOR m_Pos;   // ƒ|ƒWƒVƒ‡ƒ“
-	VECTOR m_Scale; // Šg‘å—¦
+	VECTOR m_Pos;   // ãƒã‚¸ã‚·ãƒ§ãƒ³
+	VECTOR m_Scale; // æ‹¡å¤§ç‡
 };
 
