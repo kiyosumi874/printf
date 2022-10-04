@@ -29,5 +29,5 @@ private:
 	int m_playingEffect; // 再生中のエフェクトデータ
 
 	VECTOR m_DrawPos;    // 描画ポジション
-	float m_Expansion;   // エフェクトの拡大率
+	float m_Scale;       // エフェクトの拡大率
 };

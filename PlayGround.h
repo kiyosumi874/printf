@@ -1,17 +1,16 @@
 #pragma once
-//#include "GameObject.h"
-#include "Component.h"
 
-class Ground :public Component
+// プレイシーン時の床
+class PlayGround :public ModelBase,public Component
 {
 public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_pos">ポジション</param>
-	Ground(/*ObjectTag tag, VECTOR position*/);
+	PlayGround();
 	// デストラクタ
-	~Ground();
+	~PlayGround();
 
 	void Start()override;
 
@@ -26,8 +25,8 @@ public:
 	/// </summary>
 	void Draw()override;
 
-
 private:
-	int m_modelHandle;
+	VECTOR m_Pos;   // ポジション
+	VECTOR m_Scale; // 拡大率
 };
 

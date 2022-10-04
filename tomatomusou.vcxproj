@@ -171,7 +171,7 @@
     <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
-    <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="PlayGround.cpp" />
     <ClCompile Include="Human.cpp" />
     <ClCompile Include="Icon.cpp" />
     <ClCompile Include="Image.cpp">
@@ -225,7 +225,7 @@
     <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameOverScene.h" />
-    <ClInclude Include="Ground.h" />
+    <ClInclude Include="PlayGround.h" />
     <ClInclude Include="Human.h" />
     <ClInclude Include="Icon.h" />
     <ClInclude Include="Image.h">

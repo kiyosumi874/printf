@@ -7,7 +7,7 @@ HitEffect::HitEffect()
 	: m_effectHandle(-1)
 	, m_playingEffect(-1)
 	, m_DrawPos(VGet(0.0f,0.0f,0.0f))
-	, m_Expansion(3.0f)
+	, m_Scale(3.0f)
 {
 	// エフェクトデータ
 	m_effectHandle = LoadEffekseerEffect("data/effect/hit/ToonHit.efkefc", 0.5f);
@@ -28,7 +28,7 @@ void HitEffect::Draw(const VECTOR _EffectPos, const VECTOR _dir)
 	// 再生中のエフェクトの角度を設定
 	SetRotationPlayingEffekseer3DEffect(m_playingEffect, _dir.x, _dir.y, _dir.z);
 	// 再生中のエフェクトの拡大率を設定
-	SetScalePlayingEffekseer3DEffect(m_playingEffect, m_Expansion, m_Expansion, m_Expansion);
+	SetScalePlayingEffekseer3DEffect(m_playingEffect, m_Scale, m_Scale, m_Scale);
 }
 
 //int HitEffect::GetNowPlaying3D()

@@ -145,13 +145,7 @@ PlayScene::PlayScene(const MODE& mode)
 	// saito 床を生成
 	{
 		Object* obj = new Object;
-		auto trs = obj->AddComponent<Transform>();
-		trs->position = VGet(0.0f, -10.0f, 0.0f);
-		auto tag = obj->AddComponent<Tag>();
-		tag->tag = ObjectTag::Ground;
-		auto collider = obj->AddComponent<Collider>();
-		collider->Init(&m_pObjectLists); collider->width = 0.0f;
-		auto p1 = obj->AddComponent<Ground>();
+		obj->AddComponent<PlayGround>();
 		m_pObjectLists.push_back(obj);
 	}
 
