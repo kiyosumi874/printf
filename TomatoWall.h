@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "GameObject.h"
 
 class TomatoWall : public ModelBase, public GameObject
@@ -10,11 +10,11 @@ public:
 	void Update() override;
 	void Draw() override;
 
-	// •K‚¸ŒÄ‚Ô‚±‚Æ
+	// å¿…ãšå‘¼ã¶ã“ã¨
 	void Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale);
 protected:
-	// Init‚ğŒp³‚µ‚½ƒNƒ‰ƒX‚ªg‚í‚È‚­‚Ä‚¢‚¢‚æ‚¤
-	// ƒ‚ƒfƒ‹‚Ì–¼‘O‚¾‚¯Œp³‚µ‚½ƒNƒ‰ƒX‚É“ü‚ê‚Ä‚à‚ç‚¤
+	// Initã‚’ç¶™æ‰¿ã—ãŸã‚¯ãƒ©ã‚¹ãŒä½¿ã‚ãªãã¦ã„ã„ã‚ˆã†
+	// ãƒ¢ãƒ‡ãƒ«ã®åå‰ã ã‘ç¶™æ‰¿ã—ãŸã‚¯ãƒ©ã‚¹ã«å…¥ã‚Œã¦ã‚‚ã‚‰ã†
 	AssetManager::ModelName m_modelName;
 };
 

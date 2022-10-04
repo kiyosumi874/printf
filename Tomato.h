@@ -1,37 +1,37 @@
-#pragma once
+ï»¿#pragma once
 #include "Component.h"
 
 class Tomato : public ModelBase, public Component
 {
 public:
-	Tomato();   // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	~Tomato();  // ƒfƒXƒgƒ‰ƒNƒ^
+	Tomato();   // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	~Tomato();  // ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
 	void Start();
-	void Update();  // XVˆ—
-	void Draw();  // •`‰æˆ—
+	void Update();  // æ›´æ–°å‡¦ç†
+	void Draw();  // æç”»å‡¦ç†
 
-	// •K‚¸ŒÄ‚Ô‚±‚Æ
+	// å¿…ãšå‘¼ã¶ã“ã¨
 	void Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale);
-	void ShotTomato(const VECTOR& pos, const VECTOR& dir, class Tag* tag) { m_dir = dir; m_tag = tag; }  // ƒgƒ}ƒg‚ğ”ò‚Î‚·•ûŒü
+	void ShotTomato(const VECTOR& pos, const VECTOR& dir, class Tag* tag) { m_dir = dir; m_tag = tag; }  // ãƒˆãƒãƒˆã‚’é£›ã°ã™æ–¹å‘
 
-	float GetTime();  // ƒgƒ}ƒg‚ğ“Š‚°‚Ä‚©‚ç‚ÌŠÔ‚ğ•Ô‚·
+	float GetTime();  // ãƒˆãƒãƒˆã‚’æŠ•ã’ã¦ã‹ã‚‰ã®æ™‚é–“ã‚’è¿”ã™
 	VECTOR GetPosition() { return m_var.pos; }
 	VECTOR GetDir() { return m_dir; }
 
 	class Tag* GetTag() { return m_tag; }
 private:
-	void Move();  // “Š‚°‚ç‚ê‚½Œã‚Ìˆ—
+	void Move();  // æŠ•ã’ã‚‰ã‚ŒãŸå¾Œã®å‡¦ç†
 
 	class Transform* m_pTransform;
 	class Tag* m_tag;
-	VECTOR m_velocity;  // ‘¬“x
-	VECTOR m_startVelocity;  // ‰‘¬
-	VECTOR m_dir;  // “Š‚°‚é•ûŒü
+	VECTOR m_velocity;  // é€Ÿåº¦
+	VECTOR m_startVelocity;  // åˆé€Ÿ
+	VECTOR m_dir;  // æŠ•ã’ã‚‹æ–¹å‘
 
-	float m_time;     // “Š‚°‚½Œã‚ÌŒo‰ßŠÔ 
-	float m_gravity;  // d—Í
-	float m_deg;      // ‰½“x‚©
-	float m_rad;      // ƒ‰ƒWƒAƒ“
+	float m_time;     // æŠ•ã’ãŸå¾Œã®çµŒéæ™‚é–“ 
+	float m_gravity;  // é‡åŠ›
+	float m_deg;      // ä½•åº¦ã‹
+	float m_rad;      // ãƒ©ã‚¸ã‚¢ãƒ³
 };
 

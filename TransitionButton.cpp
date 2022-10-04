@@ -1,14 +1,14 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 TransitionButton::TransitionButton()
 	: m_alphaFlag(false)
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 TransitionButton::~TransitionButton()
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 void TransitionButton::Start()

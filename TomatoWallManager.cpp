@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "TomatoWallManager.h"
 #include "TomatoWall.h"
 #include "TomatoWallFull.h"
@@ -49,15 +49,15 @@ void TomatoWallManager::Init(const VECTOR& pos, const VECTOR& rotate, const VECT
 
 void TomatoWallManager::Update()
 {
-	// ŒÂ”‚ªMAX‚©0‚Å‚Í‚È‚­Aƒ‚ƒfƒ‹‚ªÅI’iŠK‚¶‚á‚È‚©‚Á‚½‚ç
-	// w’è‚ÌŒÂ”‚É—ˆ‚½ƒ‚ƒfƒ‹‚ğ•Ï‚¦‚é
+	// å€‹æ•°ãŒMAXã‹0ã§ã¯ãªãã€ãƒ¢ãƒ‡ãƒ«ãŒæœ€çµ‚æ®µéšã˜ã‚ƒãªã‹ã£ãŸã‚‰
+	// æŒ‡å®šã®å€‹æ•°ã«æ¥ãŸæ™‚ãƒ¢ãƒ‡ãƒ«ã‚’å¤‰ãˆã‚‹
 	if (m_allTomatoNum != 100 && m_allTomatoNum != 0 && m_modelPatternIndex < 4 &&
 		m_allTomatoNum <= m_modelChangeNum[m_modelPatternIndex])
 	{
 		m_modelPatternIndex++;
 	}
 
-	// ‚·‚×‚Ä‚Ìƒgƒ}ƒg‚ª‚È‚­‚È‚Á‚½‚çAŠÔ‚ª—ˆ‚½‚ç•œŒ³
+	// ã™ã¹ã¦ã®ãƒˆãƒãƒˆãŒãªããªã£ãŸã‚‰ã€æ™‚é–“ãŒæ¥ãŸã‚‰å¾©å…ƒ
 	if (m_allTomatoNum == 0)
 	{
 		m_time++;
@@ -72,7 +72,7 @@ void TomatoWallManager::Update()
 
 void TomatoWallManager::Draw()
 {
-	// ‘S•”‚È‚­‚È‚Á‚½‚ç•`‰æ‚µ‚È‚¢
+	// å…¨éƒ¨ãªããªã£ãŸã‚‰æç”»ã—ãªã„
 	if (m_allTomatoNum != 0)
 	{
 		m_tomatoWall[m_modelPatternIndex]->Draw();

@@ -1,26 +1,26 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Tomato.h"
 #include "Object.h"
 #include "Transform.h"
 #include "Tag.h"
 
-// @detail ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-// @param position ƒgƒ}ƒg‚ğ“Š‚°‚él‚ÌˆÊ’u
-// @param dir “Š‚°‚él‚ÌŒü‚«
+// @detail ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+// @param position ãƒˆãƒãƒˆã‚’æŠ•ã’ã‚‹äººã®ä½ç½®
+// @param dir æŠ•ã’ã‚‹äººã®å‘ã
 Tomato::Tomato()
 {
-	m_velocity = VGet(0.0f, 0.0f, 0.0f);  // ‘¬‚³‚Í‚Ü‚¾0
+	m_velocity = VGet(0.0f, 0.0f, 0.0f);  // é€Ÿã•ã¯ã¾ã 0
 	m_startVelocity = VGet(20.0f, 1.0f, 20.0f);
 
 	m_time = 0.0f;
-	m_gravity = 9.80665f;  // •½‹Ïd—Í
+	m_gravity = 9.80665f;  // å¹³å‡é‡åŠ›
 	m_deg = 30.0f;
 	m_rad = m_deg * (DX_PI_F / 180.0f);
 
 	m_dir = VGet(0.0f, 0.0f, 0.0f);
 }
 
-// @detail ƒfƒXƒgƒ‰ƒNƒ^
+// @detail ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Tomato::~Tomato()
 {
 }
@@ -37,7 +37,7 @@ void Tomato::Start()
 	}
 }
 
-// @detail XVˆ—
+// @detail æ›´æ–°å‡¦ç†
 void Tomato::Update()
 {
 	Move();
@@ -46,7 +46,7 @@ void Tomato::Update()
 	MV1SetPosition(m_var.handle, m_var.pos);
 }
 
-// @detail •`‰æˆ—
+// @detail æç”»å‡¦ç†
 void Tomato::Draw()
 {
 	MV1DrawModel(m_var.handle);
@@ -57,7 +57,7 @@ void Tomato::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
 	VECTOR tmp = VAdd(pos, VGet(0.0f, 15.0f, 0.0f));
 	m_var.Init(MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::Tomato)), tmp, rotate, scale);
 
-	// 3Dƒ‚ƒfƒ‹İ’è
+	// 3Dãƒ¢ãƒ‡ãƒ«è¨­å®š
 	MV1SetScale(m_var.handle, m_var.scale);
 	MV1SetRotationXYZ(m_var.handle, m_var.rotate);
 	MV1SetPosition(m_var.handle, m_var.pos);
@@ -67,14 +67,14 @@ void Tomato::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
 	m_pTransform->scale = m_var.scale;
 }
 
-// @detailƒgƒ}ƒg‚ğ“Š‚°‚Ä‚©‚ç‚ÌŠÔ‚ğ•Ô‚·
-// @return m_time ƒgƒ}ƒg‚ğ“Š‚°‚Ä‚©‚ç‚ÌŠÔ
+// @detailãƒˆãƒãƒˆã‚’æŠ•ã’ã¦ã‹ã‚‰ã®æ™‚é–“ã‚’è¿”ã™
+// @return m_time ãƒˆãƒãƒˆã‚’æŠ•ã’ã¦ã‹ã‚‰ã®æ™‚é–“
 float Tomato::GetTime()
 {
 	return m_time;
 }
 
-// @detail “Š‚°‚ç‚ê‚½Œã‚Ìˆ—
+// @detail æŠ•ã’ã‚‰ã‚ŒãŸå¾Œã®å‡¦ç†
 void Tomato::Move()
 {
 	m_time += 0.01f;

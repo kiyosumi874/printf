@@ -1,19 +1,19 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 TitleTomatoWall::TitleTomatoWall()
 	: m_rotate(0.0f)
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 TitleTomatoWall::~TitleTomatoWall()
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 void TitleTomatoWall::Start()
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 void TitleTomatoWall::Update()
@@ -30,7 +30,7 @@ void TitleTomatoWall::Draw()
 
 void TitleTomatoWall::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
 {
-	// •¡”¶¬‚·‚éƒ‚ƒfƒ‹‚ÍDuplicate‚·‚é
+	// è¤‡æ•°ç”Ÿæˆã™ã‚‹ãƒ¢ãƒ‡ãƒ«ã¯Duplicateã™ã‚‹
 	m_var.Init(MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::TomatoWallFull)), pos, rotate, scale);
 	MV1SetScale(m_var.handle, m_var.scale);
 	MV1SetRotationXYZ(m_var.handle, m_var.rotate);

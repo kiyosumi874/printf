@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "TomatoWall.h"
 
 class TomatoWallFour : public TomatoWall
@@ -7,7 +7,7 @@ public:
     TomatoWallFour(ObjectTag tag);
     ~TomatoWallFour();
 
-    // •K‚¸ŒÄ‚Ô‚±‚Æ
+    // å¿…ãšå‘¼ã¶ã“ã¨
     void Draw() override;
 };
 

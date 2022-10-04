@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "ModelBase.h"
 #include "Component.h"
 #include "DxLib.h"
@@ -13,7 +13,7 @@ public:
 	void Update()override;
 	void Draw()override;
 
-	// •K‚¸ŒÄ‚Ô‚±‚Æ
+	// å¿…ãšå‘¼ã¶ã“ã¨
 	void Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale);
 private:
 	float m_rotate;

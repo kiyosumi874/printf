@@ -1,33 +1,33 @@
-//----------------------------------------
+ï»¿//----------------------------------------
 // @file TomatoUIController.h
-// @brief c’i”‚ÌUI
+// @brief æ®‹æ®µæ•°ã®UI
 // @author shiihara_kiyosumi
 // @date 2022_09_08
 //----------------------------------------
 
-// ‘½dƒCƒ“ƒNƒ‹[ƒh–h~
+// å¤šé‡ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰é˜²æ­¢
 #pragma once
 
-// ƒwƒbƒ_[ƒtƒ@ƒCƒ‹‚ÌƒCƒ“ƒNƒ‹[ƒh
+// ãƒ˜ãƒƒãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
 #include "Component.h"
 
-// ’è”
+// å®šæ•°
 const int cTomatoMax = 10;
 
 class TomatoUIController : public Component
 {
 public:
 
-	// Å‰‚Éˆê‰ñ’Ê‚é‚â‚Â
+	// æœ€åˆã«ä¸€å›é€šã‚‹ã‚„ã¤
 	void Start()override;
 
-	// XV
+	// æ›´æ–°
 	void Update()override;
 
-	// •`‰æ
+	// æç”»
 	void Draw()override;
 
-	// UI‚ğ‰æ–Ê‚ÉˆÚ“®‚³‚¹‚¾‚·
+	// UIã‚’ç”»é¢ã«ç§»å‹•ã•ã›ã ã™
 	void CheckIsStart(const int index)
 	{
 		m_isStart = true;
@@ -42,5 +42,5 @@ private:
 	class Transform* m_transform;
 
 	bool m_isStart;
-	int m_index; // 1 or 0 (1‚¾‚Á‚½‚ç1P,0‚¾‚Á‚½‚ç2P‚ÌUI‚Æ‚¢‚¤‚±‚Æ)
+	int m_index; // 1 or 0 (1ã ã£ãŸã‚‰1P,0ã ã£ãŸã‚‰2Pã®UIã¨ã„ã†ã“ã¨)
 };

@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "TomatoUIContoroller.h"
 #include "Object.h"
 #include "Image.h"
@@ -18,7 +18,7 @@ void TomatoUIController::Start()
 	}
 }
 
-// XV
+// æ›´æ–°
 void TomatoUIController::Update()
 {
 	if (m_isStart)
@@ -45,14 +45,14 @@ void TomatoUIController::Update()
 	AdjustTomato(m_index);
 }
 
-// •`‰æ
+// æç”»
 void TomatoUIController::Draw()
 {
 }
 
 void TomatoUIController::AdjustTomato(const int index)
 {
-	// 1P‚ÌŽc’i”
+	// 1Pã®æ®‹æ®µæ•°
 	if (index == 1)
 	{
 
@@ -77,7 +77,7 @@ void TomatoUIController::AdjustTomato(const int index)
 		
 	}
 
-	// 2P‚ÌŽc’i”
+	// 2Pã®æ®‹æ®µæ•°
 	if (index == 0)
 	{
 		if (cTomatoMax >= Score::Get2pBulletNum())

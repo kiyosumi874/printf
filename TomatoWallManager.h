@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "GameObject.h"
 
 class TomatoWallFull;
@@ -40,6 +40,6 @@ private:
 	int m_time;
 	const int m_revivalTime;
 
-	const float m_width = 20.0f;  // ©•ª‚Ì•
+	const float m_width = 20.0f;  // è‡ªåˆ†ã®å¹…
 };
 

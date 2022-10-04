@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 class UIBase
 {
@@ -12,7 +12,7 @@ public:
 		int height;
 		float alpha;
 
-		// ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
+		// ãƒ¡ãƒ³ãƒå¤‰æ•°ã®åˆæœŸåŒ–
 		void Init(int handle, int x, int y, int width, int height, float alpha)
 		{
 			this->handle = handle;
