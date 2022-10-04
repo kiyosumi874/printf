@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Human.h"
 
 class Tomato;
@@ -8,74 +8,74 @@ class ModelManager;
 class Enemy : public Human
 {
 public:
-	Enemy();				// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	~Enemy() override;				// ƒfƒXƒgƒ‰ƒNƒ^
+	Enemy();				// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	~Enemy() override;				// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
-	void Start() override;	// ƒRƒ“ƒ|[ƒlƒ“ƒg‰Šú‰»ˆ—.
-	void Update() override;	// XVˆ—.
-	void Draw() override;	// •`‰æˆ—.
+	void Start() override;	// ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆåˆæœŸåŒ–å‡¦ç†.
+	void Update() override;	// æ›´æ–°å‡¦ç†.
+	void Draw() override;	// æç”»å‡¦ç†.
 
-	void SetAimTargetPtr(class Object* target);  // Enemy‚É‘_‚í‚¹‚½‚¢Target‚ğƒZƒbƒg
+	void SetAimTargetPtr(class Object* target);  // Enemyã«ç‹™ã‚ã›ãŸã„Targetã‚’ã‚»ãƒƒãƒˆ
 private:
 	void ProcessTomato();
 
 	enum Type
 	{
-		SearchTarget,   // ƒ^[ƒQƒbƒg‚ğ’T‚·
-		AimTarget,      // ƒ^[ƒQƒbƒg‚ğ‘_‚¤
-		EscapeTarget,   // ƒ^[ƒQƒbƒg‚©‚ç“¦‚°‚é
-		TomatoCollect,  // ƒgƒ}ƒg‚ğ‰ñû‚µ‚És‚­
+		SearchTarget,   // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’æ¢ã™
+		AimTarget,      // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ç‹™ã†
+		EscapeTarget,   // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‹ã‚‰é€ƒã’ã‚‹
+		TomatoCollect,  // ãƒˆãƒãƒˆã‚’å›åã—ã«è¡Œã
 	};
 
-	// ƒGƒlƒ~[‚Ìƒpƒ‰ƒ[ƒ^[
-	VECTOR m_velocity;  // ˆÚ“®ƒXƒs[ƒh
-	VECTOR m_dir;       // Œü‚«
-	VECTOR m_tomatoDir;  // ƒgƒ}ƒg‚ğ“Š‚°‚éŒü‚«
-	VECTOR m_moveValue;  // —”ˆÚ“®—Ê
+	// ã‚¨ãƒãƒŸãƒ¼ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼
+	VECTOR m_velocity;  // ç§»å‹•ã‚¹ãƒ”ãƒ¼ãƒ‰
+	VECTOR m_dir;       // å‘ã
+	VECTOR m_tomatoDir;  // ãƒˆãƒãƒˆã‚’æŠ•ã’ã‚‹å‘ã
+	VECTOR m_moveValue;  // ä¹±æ•°ç§»å‹•é‡
 	VECTOR m_avoidVelocity;
 
-	// “®ìŠÔ
-	int m_moveTime;  // —”s“®ŠÔ
-	const int m_movePhaseTime;  // Ÿ‚Ìs“®‚ÉˆÚ‚éŠÔ
-	float m_shotTime;   // “Š‚°‚éŠÔ
-	const float m_shotPhaseTime;  // “Š‚°‚½Œã‚ÌƒN[ƒ‹ŠÔ
+	// å‹•ä½œæ™‚é–“
+	int m_moveTime;  // ä¹±æ•°è¡Œå‹•æ™‚é–“
+	const int m_movePhaseTime;  // æ¬¡ã®è¡Œå‹•ã«ç§»ã‚‹æ™‚é–“
+	float m_shotTime;   // æŠ•ã’ã‚‹æ™‚é–“
+	const float m_shotPhaseTime;  // æŠ•ã’ãŸå¾Œã®ã‚¯ãƒ¼ãƒ«æ™‚é–“
 
-	// ƒtƒ‰ƒO•Ï”
-	int m_moveType;  // ¡‚Ìs“®
-	bool m_moveFlag;  // “®‚¢‚Ä‚¢‚é‚©
-	bool m_pickFlag;  // ƒgƒ}ƒg‚ğE‚Á‚½‚©
-	bool m_aimTargetFlag;  // •W“I‚ÉŒü‚¯‚ÄˆÚ“®‚·‚é‚©
-	bool m_avoidWallFlag;  // •Ç‚ğ”ğ‚¯‚é
-	bool m_absolutelyMoveFlag;  // â‘Î‚ÉˆÚ“®‚³‚¹‚éƒtƒ‰ƒO
+	// ãƒ•ãƒ©ã‚°å¤‰æ•°
+	int m_moveType;  // ä»Šã®è¡Œå‹•
+	bool m_moveFlag;  // å‹•ã„ã¦ã„ã‚‹ã‹
+	bool m_pickFlag;  // ãƒˆãƒãƒˆã‚’æ‹¾ã£ãŸã‹
+	bool m_aimTargetFlag;  // æ¨™çš„ã«å‘ã‘ã¦ç§»å‹•ã™ã‚‹ã‹
+	bool m_avoidWallFlag;  // å£ã‚’é¿ã‘ã‚‹
+	bool m_absolutelyMoveFlag;  // çµ¶å¯¾ã«ç§»å‹•ã•ã›ã‚‹ãƒ•ãƒ©ã‚°
 
-	// ”ÍˆÍw’è•Ï”
-	const float m_targetRangeMin = 0.0f;        // ƒ^[ƒQƒbƒg‚ğŠ´’m‚·‚én‚Ü‚è’l
-	const float m_targetRangeMax = 150.0f;      // ƒ^[ƒQƒbƒg‚ğŠ´’m‚·‚éÅI”ÍˆÍ’l
-	const float m_targetMoveRangeMin = 60.0f;   // ƒ^[ƒQƒbƒg‚É‘Î‚·‚és“®‚Ì•Ï‰»Å¬’l
-	const float m_targetMoveRangeMax = 100.0f;  // ƒ^[ƒQƒbƒg‚É‘Î‚·‚és“®‚Ì•Ï‰»Å‘å’l
-	const float m_targetEscapeRange = 200.0f;   // ƒ^[ƒQƒbƒg‚©‚ç“¦‚°‚é”ÍˆÍ
+	// ç¯„å›²æŒ‡å®šå¤‰æ•°
+	const float m_targetRangeMin = 0.0f;        // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’æ„ŸçŸ¥ã™ã‚‹å§‹ã¾ã‚Šå€¤
+	const float m_targetRangeMax = 150.0f;      // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’æ„ŸçŸ¥ã™ã‚‹æœ€çµ‚ç¯„å›²å€¤
+	const float m_targetMoveRangeMin = 60.0f;   // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«å¯¾ã™ã‚‹è¡Œå‹•ã®å¤‰åŒ–æœ€å°å€¤
+	const float m_targetMoveRangeMax = 100.0f;  // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«å¯¾ã™ã‚‹è¡Œå‹•ã®å¤‰åŒ–æœ€å¤§å€¤
+	const float m_targetEscapeRange = 200.0f;   // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‹ã‚‰é€ƒã’ã‚‹ç¯„å›²
 
-	// ƒ|ƒCƒ“ƒ^
-	std::vector<class Object*> m_target;  // ƒGƒlƒ~[ƒNƒ‰ƒX‚É‚Éî•ñ‚ğ“n‚µ‚½‚¢ƒvƒŒƒCƒ„[
+	// ãƒã‚¤ãƒ³ã‚¿
+	std::vector<class Object*> m_target;  // ã‚¨ãƒãƒŸãƒ¼ã‚¯ãƒ©ã‚¹ã«ã«æƒ…å ±ã‚’æ¸¡ã—ãŸã„ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 
-	// ŠÖ”
-	void CheckMovePattern();  // s“®ƒpƒ^[ƒ“‚ğƒ`ƒFƒbƒN‚µ‚ÄÀs‚·‚é
+	// é–¢æ•°
+	void CheckMovePattern();  // è¡Œå‹•ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’ãƒã‚§ãƒƒã‚¯ã—ã¦å®Ÿè¡Œã™ã‚‹
 
-	void CheckTargetMovePattern();  // ƒ^[ƒQƒbƒg‚É‘Î‚µ‚Ä‚Ìs“®ƒpƒ^[ƒ“‚ğÀs‚·‚é
-	void Move1Target(class Object* player);  // •W“I‚É‡‚í‚¹‚Ä“®‚­ˆ—
-	void Move2Target(class Object* player);  // •W“I‚ª‚¢‚È‚¢‚Æ‚«‚Ìˆ—
-	void Move3Target(class Object* player);  // •W“I‚©‚ç“¦‚°‚éˆ—
+	void CheckTargetMovePattern();  // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«å¯¾ã—ã¦ã®è¡Œå‹•ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’å®Ÿè¡Œã™ã‚‹
+	void Move1Target(class Object* player);  // æ¨™çš„ã«åˆã‚ã›ã¦å‹•ãå‡¦ç†
+	void Move2Target(class Object* player);  // æ¨™çš„ãŒã„ãªã„ã¨ãã®å‡¦ç†
+	void Move3Target(class Object* player);  // æ¨™çš„ã‹ã‚‰é€ƒã’ã‚‹å‡¦ç†
 
-	void CheckTomatoWall();  // ƒgƒ}ƒg‚ğ‰ñû‚·‚és“®ƒpƒ^[ƒ“‚ğÀs‚·‚é
-	void CollectTomato(TomatoWallManager* object);  // ƒgƒ}ƒg‚ğ‰ñû‚µ‚És‚­ˆ—
-	void AvoidTomatoWall(TomatoWallManager* object);    // ƒgƒ}ƒg‚Ì•Ç‚ğ”ğ‚¯‚éˆ—
+	void CheckTomatoWall();  // ãƒˆãƒãƒˆã‚’å›åã™ã‚‹è¡Œå‹•ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’å®Ÿè¡Œã™ã‚‹
+	void CollectTomato(TomatoWallManager* object);  // ãƒˆãƒãƒˆã‚’å›åã—ã«è¡Œãå‡¦ç†
+	void AvoidTomatoWall(TomatoWallManager* object);    // ãƒˆãƒãƒˆã®å£ã‚’é¿ã‘ã‚‹å‡¦ç†
 
-	void RotateTowardTarget(VECTOR& aimTargetPos);  // •W“I‚ª‚¢‚é•ûŒü‚É³–Ê‚ğŒü‚¯‚é
+	void RotateTowardTarget(VECTOR& aimTargetPos);  // æ¨™çš„ãŒã„ã‚‹æ–¹å‘ã«æ­£é¢ã‚’å‘ã‘ã‚‹
 
-	void Animation();  // ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—ŠÖ”
-	void ChangeAnimation();  // ƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•ÏX‚·‚éŠÖ”
+	void Animation();  // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†é–¢æ•°
+	void ChangeAnimation();  // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¤‰æ›´ã™ã‚‹é–¢æ•°
 
-	double GetDistance(VECTOR& pos1, VECTOR& pos2);  // ©g‚Æ‘¼‚ÌƒIƒuƒWƒFƒNƒg‚Ì‹——£‚ğo‚·
+	double GetDistance(VECTOR& pos1, VECTOR& pos2);  // è‡ªèº«ã¨ä»–ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è·é›¢ã‚’å‡ºã™
 	float GetSize(float v1, float v2);
 };
 

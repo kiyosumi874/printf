@@ -1,6 +1,6 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
-// Ã“Iƒƒ“ƒo•Ï”‚Ì‰Šú‰»
+// é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°ã®åˆæœŸåŒ–
 bool HitEffect::m_DrawFlag = false;
 
 HitEffect::HitEffect()
@@ -9,30 +9,30 @@ HitEffect::HitEffect()
 	, m_DrawPos(VGet(0.0f,0.0f,0.0f))
 	, m_Scale(3.0f)
 {
-	// ƒGƒtƒFƒNƒgƒf[ƒ^
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿
 	m_effectHandle = LoadEffekseerEffect("data/effect/hit/ToonHit.efkefc", 0.5f);
 }
 
 HitEffect::~HitEffect()
 {
-	// íœ
+	// å‰Šé™¤
 	DeleteEffekseerEffect(m_effectHandle);
 }
 
 void HitEffect::Draw(const VECTOR _EffectPos, const VECTOR _dir)
 {
-	// ƒGƒtƒFƒNƒg‚ğÄ¶‚³‚¹A‚»‚Ìƒf[ƒ^‚ğm_playingEffect‚É‘ã“ü
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’å†ç”Ÿã•ã›ã€ãã®ãƒ‡ãƒ¼ã‚¿ã‚’m_playingEffectã«ä»£å…¥
 	m_playingEffect = PlayEffekseer3DEffect(m_effectHandle);
-	// Ä¶’†‚ÌƒGƒtƒFƒNƒg‚ÌˆÊ’u‚ğİ’è
+	// å†ç”Ÿä¸­ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ä½ç½®ã‚’è¨­å®š
 	SetPosPlayingEffekseer3DEffect(m_playingEffect, _EffectPos.x, _EffectPos.y, _EffectPos.z);
-	// Ä¶’†‚ÌƒGƒtƒFƒNƒg‚ÌŠp“x‚ğİ’è
+	// å†ç”Ÿä¸­ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®è§’åº¦ã‚’è¨­å®š
 	SetRotationPlayingEffekseer3DEffect(m_playingEffect, _dir.x, _dir.y, _dir.z);
-	// Ä¶’†‚ÌƒGƒtƒFƒNƒg‚ÌŠg‘å—¦‚ğİ’è
+	// å†ç”Ÿä¸­ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®æ‹¡å¤§ç‡ã‚’è¨­å®š
 	SetScalePlayingEffekseer3DEffect(m_playingEffect, m_Scale, m_Scale, m_Scale);
 }
 
 //int HitEffect::GetNowPlaying3D()
 //{
-//	 ƒGƒtƒFƒNƒg‚ªÄ¶’†‚©‚Ç‚¤‚©‚ğæ“¾‚·‚éi-1:Ä¶‚³‚ê‚Ä‚È‚¢j
+//	 ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãŒå†ç”Ÿä¸­ã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹ï¼ˆ-1:å†ç”Ÿã•ã‚Œã¦ãªã„ï¼‰
 //	return IsEffekseer3DEffectPlaying(m_playingEffect);
 //}

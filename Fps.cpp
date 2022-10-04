@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 Fps* Fps::m_this = nullptr;
 
 Fps::Fps()
@@ -10,7 +10,7 @@ Fps::Fps()
 	memset(&m_timeEnd, 0x00, sizeof(m_timeEnd));
 	memset(&m_timeFreq, 0x00, sizeof(m_timeFreq));
 
-	// ‰‰ñŒvZ—p
+	// åˆå›è¨ˆç®—ç”¨
 	QueryPerformanceCounter(&m_timeStart);
 	QueryPerformanceFrequency(&m_timeFreq);
 }
@@ -28,27 +28,27 @@ void Fps::Update()
 	auto& fps = m_this->m_fps;
 
 	m_this->m_flag ^= true;
-	// ¡‚ÌŠÔ‚ğæ“¾
+	// ä»Šã®æ™‚é–“ã‚’å–å¾—
 	QueryPerformanceCounter(&timeEnd);
-	// (¡‚ÌŠÔ - ‘OƒtƒŒ[ƒ€‚ÌŠÔ) / ü”g” = Œo‰ßŠÔ(•b’PˆÊ)
+	// (ä»Šã®æ™‚é–“ - å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã®æ™‚é–“) / å‘¨æ³¢æ•° = çµŒéæ™‚é–“(ç§’å˜ä½)
 	frameTime = static_cast<float>(timeEnd.QuadPart - timeStart.QuadPart) / static_cast<float>(timeFreq.QuadPart);
 
-	if (frameTime < MIN_FRAME_TIME) { // ŠÔ‚É—]—T‚ª‚ ‚é
-		// ƒ~ƒŠ•b‚É•ÏŠ·
+	if (frameTime < MIN_FRAME_TIME) { // æ™‚é–“ã«ä½™è£•ãŒã‚ã‚‹
+		// ãƒŸãƒªç§’ã«å¤‰æ›
 		DWORD sleepTime = static_cast<DWORD>((MIN_FRAME_TIME - frameTime) * 1000);
 
-		timeBeginPeriod(1); // •ª‰ğ”\‚ğã‚°‚é(‚±‚¤‚µ‚È‚¢‚ÆSleep‚Ì¸“x‚ÍƒKƒ^ƒKƒ^)
-		Sleep(sleepTime);   // Q‚é
-		timeEndPeriod(1);   // –ß‚·
+		timeBeginPeriod(1); // åˆ†è§£èƒ½ã‚’ä¸Šã’ã‚‹(ã“ã†ã—ãªã„ã¨Sleepã®ç²¾åº¦ã¯ã‚¬ã‚¿ã‚¬ã‚¿)
+		Sleep(sleepTime);   // å¯ã‚‹
+		timeEndPeriod(1);   // æˆ»ã™
 
-		// ŸT‚É‚¿‰z‚µ(‚±‚¤‚µ‚È‚¢‚Æfps‚ª•Ï‚É‚È‚é?)
+		// æ¬¡é€±ã«æŒã¡è¶Šã—(ã“ã†ã—ãªã„ã¨fpsãŒå¤‰ã«ãªã‚‹?)
 		return;
 	}
 
-	// Œo‰ßŠÔ‚ª0‚æ‚è‘å‚«‚¢(‚±‚¤‚µ‚È‚¢‚Æ‰º‚ÌŒvZ‚Åƒ[ƒœZ‚É‚È‚é‚Æv‚í‚ê)
+	// çµŒéæ™‚é–“ãŒ0ã‚ˆã‚Šå¤§ãã„(ã“ã†ã—ãªã„ã¨ä¸‹ã®è¨ˆç®—ã§ã‚¼ãƒ­é™¤ç®—ã«ãªã‚‹ã¨æ€ã‚ã‚Œ)
 	if (frameTime > 0.0f) 
 	{ 
-		fps = (fps * 0.99f) + (0.01f / frameTime); // •½‹Ïfps‚ğŒvZ
+		fps = (fps * 0.99f) + (0.01f / frameTime); // å¹³å‡fpsã‚’è¨ˆç®—
 	}
 
 	timeStart = timeEnd;

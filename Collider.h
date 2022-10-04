@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <list>
 #include "Object.h"
 #include "Tag.h"
@@ -24,15 +24,15 @@ private:
 	class HitEffect* m_HitEffect;
 };
 
-// Õ“Ëî•ñ
+// è¡çªæƒ…å ±
 struct CollisionInfo
 {
-	VECTOR m_collisionPoint;	// Õ“Ë“_
-	VECTOR m_fixVec;			// ‰Ÿ‚µ–ß‚µƒxƒNƒgƒ‹
-	VECTOR m_hitNormal;			// Õ“Ë“_‚Å‚Ì–@ü
+	VECTOR m_collisionPoint;	// è¡çªç‚¹
+	VECTOR m_fixVec;			// æŠ¼ã—æˆ»ã—ãƒ™ã‚¯ãƒˆãƒ«
+	VECTOR m_hitNormal;			// è¡çªç‚¹ã§ã®æ³•ç·š
 };
 
-// ‹…‘Ì
+// çƒä½“
 struct Sphere
 {
 	Sphere(const VECTOR& center, float radius);
@@ -42,7 +42,7 @@ struct Sphere
 	float m_radius;
 };
 
-// ü•ª
+// ç·šåˆ†
 struct Line
 {
 	Line();
@@ -55,13 +55,13 @@ struct Line
 	bool   m_rotaTable;
 };
 
-// ²•Àsƒ{ƒbƒNƒX
+// è»¸ä¸¦è¡Œãƒœãƒƒã‚¯ã‚¹
 struct AABB
 {
 	AABB();
 	AABB(const VECTOR& min, const VECTOR& max);
 
-	// ƒ{ƒbƒNƒX‚Ì8’¸“_‚ğÄŒvZ‚·‚éŠÖ”
+	// ãƒœãƒƒã‚¯ã‚¹ã®8é ‚ç‚¹ã‚’å†è¨ˆç®—ã™ã‚‹é–¢æ•°
 
 	VECTOR m_min;
 	VECTOR m_max;

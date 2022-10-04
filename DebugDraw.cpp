@@ -1,18 +1,18 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "DebugDraw.h"
 
-// ƒ[ƒ‹ƒhŒ´“_‚ğ’†S‚ÉAc‰¡groundSize‚Ì‘å‚«‚³
-// divideNum•ªŠ„‚³‚ê‚½ƒOƒŠƒbƒhü‚ğ•`‰æ‚·‚é
+// ãƒ¯ãƒ¼ãƒ«ãƒ‰åŸç‚¹ã‚’ä¸­å¿ƒã«ã€ç¸¦æ¨ªgroundSizeã®å¤§ãã•
+// divideNumåˆ†å‰²ã•ã‚ŒãŸã‚°ãƒªãƒƒãƒ‰ç·šã‚’æç”»ã™ã‚‹
 void DrawGrid(float groundSize, int divideNum)
 {
-	VECTOR L_start, L_end;						// ü•ª‚Ìn‚Ü‚è‚ÆI‚í‚è‚ÌÀ•W
-	int L_lineColor = GetColor(0, 128, 0);		// ‰©—ÎF
-	L_start = L_end = VGet(0.0f, 0.0f, 0.0f);	// ‰Šú‰»
+	VECTOR L_start, L_end;						// ç·šåˆ†ã®å§‹ã¾ã‚Šã¨çµ‚ã‚ã‚Šã®åº§æ¨™
+	int L_lineColor = GetColor(0, 128, 0);		// é»„ç·‘è‰²
+	L_start = L_end = VGet(0.0f, 0.0f, 0.0f);	// åˆæœŸåŒ–
 
-	float L_halfWidth = groundSize * 0.5f;				// ƒOƒŠƒbƒhü‚ğˆø‚­”¼•ª‚Ì•
-	float L_addWidth = groundSize / (float)divideNum;	// ƒOƒŠƒbƒhü‚ğˆø‚­•
+	float L_halfWidth = groundSize * 0.5f;				// ã‚°ãƒªãƒƒãƒ‰ç·šã‚’å¼•ãåŠåˆ†ã®å¹…
+	float L_addWidth = groundSize / (float)divideNum;	// ã‚°ãƒªãƒƒãƒ‰ç·šã‚’å¼•ãå¹…
 
-	// cü‚ğˆø‚­
+	// ç¸¦ç·šã‚’å¼•ã
 	L_start.z = -L_halfWidth;
 	L_end.z = L_halfWidth;
 	for (auto ix = 0; ix < divideNum + 1; ix++)
@@ -21,7 +21,7 @@ void DrawGrid(float groundSize, int divideNum)
 		DrawLine3D(L_start, L_end, L_lineColor);
 	}
 
-	// ‰¡ü‚ğˆø‚­
+	// æ¨ªç·šã‚’å¼•ã
 	L_start.x = -L_halfWidth;
 	L_end.x = L_halfWidth;
 	for (auto iz = 0; iz < divideNum + 1; iz++)

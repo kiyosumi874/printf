@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Camera.h"
 #include "Player1.h"
 #include <math.h>
@@ -27,21 +27,21 @@ void Camera::Update()
 
 void Camera::Draw()
 {
-	// ƒvƒŒƒCƒ„[‚ÌÀ•W‚ğ–Ú•W‹“_‚É‘ã“ü
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åº§æ¨™ã‚’ç›®æ¨™è¦–ç‚¹ã«ä»£å…¥
 	/*m_targetViewPoint = m_pPlayer->GetPosition();*/
 	/*auto angle = m_pPlayer->GetAngle();*/
 
 	/*m_position.x = m_targetViewPoint.x + sinf(angle) * r;
 	m_position.z = m_targetViewPoint.z + cosf(angle) * r;*/
 
-	// ƒJƒƒ‰‚Ì’‹“_‚ğƒZƒbƒg
+	// ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹ã‚’ã‚»ãƒƒãƒˆ
 	m_targetViewPoint.y = m_targetViewPoint.y + 8.0f;
 	m_targetCameraPosition = VAdd(m_targetViewPoint, m_cameraOffSet);
 
-	// ƒJƒƒ‰ˆÊ’u‚©‚ç–Ú•W“_‚ÉŒü‚©‚¤ƒxƒNƒgƒ‹‚ğŒvZ
+	// ã‚«ãƒ¡ãƒ©ä½ç½®ã‹ã‚‰ç›®æ¨™ç‚¹ã«å‘ã‹ã†ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—
 	VECTOR L_lookMoveDir = VSub(m_targetViewPoint, m_viewPoint);
 
-	// ’‹“_‚ÆƒJƒƒ‰ˆÊ’u‚ğ™X‚É–Ú•W“_‚É‹ß‚Ã‚¯‚é
+	// æ³¨è¦–ç‚¹ã¨ã‚«ãƒ¡ãƒ©ä½ç½®ã‚’å¾ã€…ã«ç›®æ¨™ç‚¹ã«è¿‘ã¥ã‘ã‚‹
 	m_viewPoint = VAdd(m_viewPoint, L_lookMoveDir);
 
 	SetCameraPositionAndTarget_UpVecY(m_position, m_viewPoint);

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ObjectTag.h"
 
 // 3Dモデルの基底クラス

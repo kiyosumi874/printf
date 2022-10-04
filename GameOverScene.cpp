@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Object.h"
 #include "Image.h"
 #include "StaticHuman.h"
@@ -43,7 +43,7 @@ GameOverScene::GameOverScene(const MODE& mode)
 			m_pObjectLists.push_back(object);
 		}
 	}
-	// ‡ˆÊ‚²‚Æ‚É•À‚×‚éˆ—(l‚ÆƒXƒRƒA)
+	// é †ä½ã”ã¨ã«ä¸¦ã¹ã‚‹å‡¦ç†(äººã¨ã‚¹ã‚³ã‚¢)
 	if (T1 > T2)
 	{
 		m_scoreUICon[1]->CheckIsStart(0);
@@ -51,14 +51,14 @@ GameOverScene::GameOverScene(const MODE& mode)
 		{
 			if (T2 > T3)
 			{
-				// ‡@¨‡A¨‡B
+				// â‘ â†’â‘¡â†’â‘¢
 				RankOrderInit(RankOrder::one);
 				m_scoreUICon[0]->CheckIsStart(1);
 				m_scoreUICon[2]->CheckIsStart(2);
 			}
 			else
 			{
-				// ‡@¨‡B¨‡A
+				// â‘ â†’â‘¢â†’â‘¡
 				RankOrderInit(RankOrder::two);
 				m_scoreUICon[0]->CheckIsStart(2);
 				m_scoreUICon[2]->CheckIsStart(1);
@@ -66,7 +66,7 @@ GameOverScene::GameOverScene(const MODE& mode)
 		}
 		else
 		{
-			// ‡B¨‡@¨‡A
+			// â‘¢â†’â‘ â†’â‘¡
 			RankOrderInit(RankOrder::five);
 			m_scoreUICon[1]->CheckIsStart(2);
 			m_scoreUICon[0]->CheckIsStart(0);
@@ -78,14 +78,14 @@ GameOverScene::GameOverScene(const MODE& mode)
 		m_scoreUICon[1]->CheckIsStart(1);
 		if (T1 > T3)
 		{
-			// ‡A¨‡@¨‡B
+			// â‘¡â†’â‘ â†’â‘¢
 			RankOrderInit(RankOrder::three);
 			m_scoreUICon[0]->CheckIsStart(0);
 			m_scoreUICon[2]->CheckIsStart(2);
 		}
 		else
 		{
-			// ‡A¨‡B¨‡@
+			// â‘¡â†’â‘¢â†’â‘ 
 			RankOrderInit(RankOrder::four);
 			m_scoreUICon[0]->CheckIsStart(2);
 			m_scoreUICon[2]->CheckIsStart(0);
@@ -93,7 +93,7 @@ GameOverScene::GameOverScene(const MODE& mode)
 	}
 	else
 	{
-		// ‡B¨‡A¨‡@
+		// â‘¢â†’â‘¡â†’â‘ 
 		RankOrderInit(RankOrder::six);
 		m_scoreUICon[1]->CheckIsStart(2);
 		m_scoreUICon[0]->CheckIsStart(0);
@@ -121,7 +121,7 @@ GameOverScene::GameOverScene(const MODE& mode)
 		m_pObjectLists.push_back(obj);
 	}
 
-	// ƒgƒ‰ƒ“ƒWƒVƒ‡ƒ“‚Ìˆ—
+	// ãƒˆãƒ©ãƒ³ã‚¸ã‚·ãƒ§ãƒ³ã®å‡¦ç†
 	{
 		Object* obj = new Object;
 		m_transitionImage[0] = obj->AddComponent<Image>();

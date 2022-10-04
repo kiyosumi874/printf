@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "pch.h"
 const float MIN_FRAME_TIME = 1.0f / 60.0f;
 
@@ -6,7 +6,7 @@ const int SCREEN_WIDTH = 1920;
 const int SCREEN_HEIGHT = 1080;
 const int COLOR_BIT_DEPTH = 16;
 
-// VisualStadio‚Ìo—ÍƒEƒBƒ“ƒhƒE‚É“®“I‚È’l‚È‚Ç‚ğo—Í‚·‚é‚Æ‚«‚Ég‚¤ƒ}ƒNƒ
+// VisualStadioã®å‡ºåŠ›ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«å‹•çš„ãªå€¤ãªã©ã‚’å‡ºåŠ›ã™ã‚‹ã¨ãã«ä½¿ã†ãƒã‚¯ãƒ­
 #ifdef _DEBUG
 #   define MyOutputDebugString( ... ) \
       { \
@@ -15,7 +15,7 @@ const int COLOR_BIT_DEPTH = 16;
         OutputDebugString( c ); \
       }
 #else
-#    define MyOutputDebugString( str, ... ) // ‹óÀ‘•
+#    define MyOutputDebugString( str, ... ) // ç©ºå®Ÿè£…
 #endif
 
 struct Pos

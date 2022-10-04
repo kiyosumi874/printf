@@ -1,33 +1,33 @@
-#pragma once
+﻿#pragma once
 
-/* Hit�����Ƃ��̃t�F�N�g�̕`����s���N���X */
+/* Hitしたときのフェクトの描画を行うクラス */
 class HitEffect
 {
 public:
-	// �R���X�g���N�^
+	// コンストラクタ
 	HitEffect();
-	// �f�X�g���N�^
+	// デストラクタ
 	~HitEffect();
 
 	/// <summary>
-	/// �G�t�F�N�g�̕`��
+	/// エフェクトの描画
 	/// </summary>
-	/// <param name="_EffectPos">�G�t�F�N�g��`�悷��|�W�V����</param>
-	/// <param name="_dir">�G�t�F�N�g��`�悷�����</param>
+	/// <param name="_EffectPos">エフェクトを描画するポジション</param>
+	/// <param name="_dir">エフェクトを描画する向き</param>
 	void Draw(const VECTOR _EffectPos,const VECTOR _dir);
 
 	/// <summary>
-	/// �G�t�F�N�g���Đ������ǂ���
+	/// エフェクトが再生中かどうか
 	/// </summary>
-	/// <returns>0:�Đ����A-1:�Đ�����Ă��Ȃ��A�������͍Đ��I��</returns>
+	/// <returns>0:再生中、-1:再生されていない、もしくは再生終了</returns>
 	//int GetNowPlaying3D();
 
-	static bool m_DrawFlag;     // �`�悷�邩���Ȃ���
+	static bool m_DrawFlag;     // 描画するかしないか
 
 private:
-	int m_effectHandle;  // �G�t�F�N�g�̃n���h��
-	int m_playingEffect; // �Đ����̃G�t�F�N�g�f�[�^
+	int m_effectHandle;  // エフェクトのハンドル
+	int m_playingEffect; // 再生中のエフェクトデータ
 
-	VECTOR m_DrawPos;    // �`��|�W�V����
-	float m_Scale;       // �G�t�F�N�g�̊g�嗦
+	VECTOR m_DrawPos;    // 描画ポジション
+	float m_Scale;       // エフェクトの拡大率
 };

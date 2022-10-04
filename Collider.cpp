@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Collider.h"
 #include "Object.h"
 #include "Transform.h"
@@ -11,13 +11,13 @@ Collider::Collider()
 	, tag(ObjectTag::End)
 	, width(0.0f)
 {
-	// ƒGƒtƒFƒNƒg‚Ì¶¬
+	// ?G?t?F?N?g?Ì???
 	m_HitEffect = new HitEffect();
 }
 
 Collider::~Collider()
 {
-	// ƒGƒtƒFƒNƒg‚Ìíœ
+	// ?G?t?F?N?g?Ìíœ
 	delete m_HitEffect;
 }
 
@@ -65,7 +65,7 @@ void Collider::CollisionCheck()
 				else if (tag == ObjectTag::Team2) { Score::AddTeam2Score(); }
 				else if (tag == ObjectTag::Team3) { Score::AddTeam3Score(); }
 
-				// ƒGƒtƒFƒNƒg‚ð•`‰æ‚·‚é
+				// ?G?t?F?N?g?î”`?æ‚·?ãƒ»
 				m_HitEffect->Draw(tomato->GetPosition(), tomato->GetDir());
 
 				/*if (!m_HitEffect->m_DrawFlag)

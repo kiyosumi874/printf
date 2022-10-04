@@ -1,22 +1,22 @@
-#pragma once
+ï»¿#pragma once
 #include "GameObject.h"
 
 class Camera : public GameObject
 {
 public:
-	Camera(ObjectTag tag, VECTOR position);				// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	~Camera();				// ƒfƒXƒgƒ‰ƒNƒ^
+	Camera(ObjectTag tag, VECTOR position);				// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	~Camera();				// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
-	void Update()override;	// XVˆ—.
-	void Draw()override;	// •`‰æˆ—.
+	void Update()override;	// æ›´æ–°å‡¦ç†.
+	void Draw()override;	// æç”»å‡¦ç†.
 
-	// ‰‚ß‚Éˆê‰ñŒÄ‚ÔƒZƒbƒ^[
+	// åˆã‚ã«ä¸€å›å‘¼ã¶ã‚»ãƒƒã‚¿ãƒ¼
 	void SetPlayerptr(class Player1* ptr);
 private:
-	class Player1* m_pPlayer;		// ƒvƒŒƒCƒ„[‚ğ•Û‚·‚é” 
+	class Player1* m_pPlayer;		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ä¿æŒã™ã‚‹ç®±
 
-	VECTOR m_viewPoint;				// ƒJƒƒ‰‚Ì’‹“_
-	VECTOR m_cameraOffSet;			// ƒvƒŒƒCƒ„[‚©‚ç‚Ì‘Š‘ÎˆÊ’u
-	VECTOR m_targetCameraPosition;	// ƒJƒƒ‰–Ú•WˆÊ’u
-	VECTOR m_targetViewPoint;		// ƒJƒƒ‰‚Ì’‹“_–Ú•W
+	VECTOR m_viewPoint;				// ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹
+	VECTOR m_cameraOffSet;			// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰ã®ç›¸å¯¾ä½ç½®
+	VECTOR m_targetCameraPosition;	// ã‚«ãƒ¡ãƒ©ç›®æ¨™ä½ç½®
+	VECTOR m_targetViewPoint;		// ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹ç›®æ¨™
 };

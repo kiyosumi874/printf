@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "GameObject.h"
 
 GameObject::GameObject()
@@ -8,14 +8,14 @@ GameObject::GameObject()
 {
 }
 
-// ‰Šú‰»
+// åˆæœŸåŒ–
 GameObject::GameObject(ObjectTag tag)
 	: m_position()
 	, m_tag(tag)
 	, m_modelHandle(-1)
 {
 }
-// ‰Šú‰»
+// åˆæœŸåŒ–
 GameObject::GameObject(ObjectTag tag, VECTOR position)
 	: m_position(position)
 	, m_tag(tag)
@@ -50,14 +50,14 @@ float GameObject::CalcRotationDirectionYAxis(const VECTOR& nowVec, const VECTOR&
 
 VECTOR GameObject::RotateForAimVecYAxis(const VECTOR& nowVec, const VECTOR& aimVec, float degreeVelocity)
 {
-	// Šp‘¬“xi“x”j‚ğƒ‰ƒWƒAƒ“Šp‚É•ÏŠ·A‰E‰ñ‚è‚©¶‰ñ‚è‚©‚ğ’²‚×‚é
+	// è§’é€Ÿåº¦ï¼ˆåº¦æ•°ï¼‰ã‚’ãƒ©ã‚¸ã‚¢ãƒ³è§’ã«å¤‰æ›ã€å³å›ã‚Šã‹å·¦å›ã‚Šã‹ã‚’èª¿ã¹ã‚‹
 	float rotRadian = (DX_PI_F * degreeVelocity / 180.0f);
 	rotRadian *= CalcRotationDirectionYAxis(nowVec, aimVec);
 
-	// Y²‰ñ“]s—ñ‚ğì¬‚·‚é
+	// Yè»¸å›è»¢è¡Œåˆ—ã‚’ä½œæˆã™ã‚‹
 	MATRIX yRotMat = MGetRotY(rotRadian);
 
-	// Y²‰ñ“]‚·‚é
+	// Yè»¸å›è»¢ã™ã‚‹
 	VECTOR rotVec;
 	rotVec = VTransform(nowVec, yRotMat);
 	return rotVec;

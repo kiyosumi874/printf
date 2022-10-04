@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 class GameOverScene : public Scene
 {
@@ -17,17 +17,17 @@ private:
 
 	enum RankOrder
 	{
-		one,	// ‡@¨‡A¨‡B
-		two,	// ‡@¨‡B¨‡A
-		three,	// ‡A¨‡@¨‡B
-		four,	// ‡A¨‡B¨‡@
-		five,	// ‡B¨‡@¨‡A
-		six		// ‡B¨‡A¨‡@
+		one,	// â‘ â†’â‘¡â†’â‘¢
+		two,	// â‘ â†’â‘¢â†’â‘¡
+		three,	// â‘¡â†’â‘ â†’â‘¢
+		four,	// â‘¡â†’â‘¢â†’â‘ 
+		five,	// â‘¢â†’â‘ â†’â‘¡
+		six		// â‘¢â†’â‘¡â†’â‘ 
 	};
 
 	void RankOrderInit(RankOrder num);
 
-	// ƒV[ƒ““à‚Ìó‘Ô‘JˆÚ‚ğ•\‚·
+	// ã‚·ãƒ¼ãƒ³å†…ã®çŠ¶æ…‹é·ç§»ã‚’è¡¨ã™
 	enum class Transition
 	{
 		START,
