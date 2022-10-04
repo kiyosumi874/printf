@@ -11,11 +11,13 @@ Collider::Collider()
 	, tag(ObjectTag::End)
 	, width(0.0f)
 {
+	// エフェクトの生成
 	m_HitEffect = new HitEffect();
 }
 
 Collider::~Collider()
 {
+	// エフェクトの削除
 	delete m_HitEffect;
 }
 
@@ -63,11 +65,14 @@ void Collider::CollisionCheck()
 				else if (tag == ObjectTag::Team2) { Score::AddTeam2Score(); }
 				else if (tag == ObjectTag::Team3) { Score::AddTeam3Score(); }
 
-				if (!m_HitEffect->m_DrawFlag)
+				// エフェクトを描画する
+				m_HitEffect->Draw(tomato->GetPosition(), tomato->GetDir());
+
+				/*if (!m_HitEffect->m_DrawFlag)
 				{
 					m_HitEffect->m_DrawFlag = true;
 					m_HitEffect->Update(tomato->GetPosition(),tomato->GetDir());
-				}
+				}*/
 			}
 			flag = true;
 			break;

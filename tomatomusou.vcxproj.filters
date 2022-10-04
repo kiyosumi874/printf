@@ -4,9 +4,8 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="Fps.cpp" />
-    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Human.cpp" />
     <ClCompile Include="Image.cpp" />
-    <ClCompile Include="Ground.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TitleScene.cpp">
@@ -51,13 +50,7 @@
     <ClCompile Include="TomatoWall.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Ground.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="HitEffect.cpp">
-      <Filter>Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="EffectManager.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
     <ClCompile Include="Collider.cpp">
@@ -125,6 +118,11 @@
     <ClCompile Include="SkyDome.cpp">
       <Filter>Model</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayGround.cpp">
+      <Filter>Model\Play</Filter>
     <ClCompile Include="TomatoWallFull.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
@@ -221,12 +219,6 @@
     <ClInclude Include="TomatoWall.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Ground.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="EffectManager.h">
-      <Filter>Effect</Filter>
-    </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>Collider</Filter>
     </ClInclude>
@@ -287,6 +279,8 @@
     <ClInclude Include="SkyDome.h">
       <Filter>Model</Filter>
     </ClInclude>
+    <ClInclude Include="PlayGround.h">
+      <Filter>Model\Play</Filter>
     <ClInclude Include="Enemy.h">
       <Filter>Component</Filter>
     </ClInclude>

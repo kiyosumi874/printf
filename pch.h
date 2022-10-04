@@ -32,12 +32,7 @@
 #include "GameOverScene.h"
 #include "SceneManager.h"
 
-/* Ground */
-#include "Ground.h"
-
 /* Effect */
-
-#include "EffectManager.h"
 #include "HitEffect.h"
 
 // Object
@@ -54,6 +49,9 @@
 #include "Gradation.h"
 
 // Model
+/* title */
 #include "TitleTomatoWall.h"
 #include "TitleGround.h"
 #include "SkyDome.h"
+/* play */
+#include "PlayGround.h"
