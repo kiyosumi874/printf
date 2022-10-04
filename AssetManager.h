@@ -17,15 +17,18 @@ public:
 
 	enum ModelName
 	{
-		Player,
-		Player2,
-		Player3,
+		Team1,
+		Team2,
+		Team3,
 		Tomato,
 		TomatoWallFull,
 		TomatoWallOne,
 		TomatoWallTwo,
 		TomatoWallThree,
 		TomatoWallFour,
+		Icon1,
+		Icon2,
+		Icon3,
 		Ground,
 		SkyDome
 	};

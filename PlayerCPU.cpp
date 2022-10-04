@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Enemy.h"
+#include "PlayerCPU.h"
 #include "Tomato.h"
 #include "TomatoWallManager.h"
 #include "Object.h"
@@ -7,13 +7,11 @@
 #include "Collider.h"
 #include "Icon.h"
 
-Enemy::Enemy()
+PlayerCPU::PlayerCPU()
 	: Human()
 	, m_movePhaseTime(50)
 	, m_shotPhaseTime(200.0f)
 {
-	m_modelName = AssetManager::ModelName::Team3;
-
 	m_velocity = VGet(1.0f, 1.0f, 1.0f);
 	m_dir = VGet(0.0f, 0.0f, 0.0f);
 	m_tomatoDir = VGet(0.0f, 0.0f, 0.0f);
@@ -34,11 +32,11 @@ Enemy::Enemy()
 	m_pickFlag = true;
 }
 
-Enemy::~Enemy()
+PlayerCPU::~PlayerCPU()
 {
 }
 
-void Enemy::Start()
+void PlayerCPU::Start()
 {
 	if (m_pTransform == nullptr)
 	{
@@ -48,9 +46,18 @@ void Enemy::Start()
 	{
 		m_pTag = m_pParent->GetComponent<Tag>();
 	}
+
+	if (m_pTag->tag == ObjectTag::Team1)
+	{
+		m_modelName = AssetManager::ModelName::Team1;
+	}
+	if (m_pTag->tag == ObjectTag::Team2)
+	{
+		m_modelName = AssetManager::ModelName::Team2;
+	}
 }
 
-void Enemy::Update()
+void PlayerCPU::Update()
 {
 	// エネミーの行動パターンを調べる
 	CheckMovePattern();
@@ -72,7 +79,7 @@ void Enemy::Update()
 	m_pIcon->Update(m_var.pos);
 }
 
-void Enemy::Draw()
+void PlayerCPU::Draw()
 {
 	SetUseLighting(false);
 	// 3Dモデルの描画
@@ -81,13 +88,13 @@ void Enemy::Draw()
 	SetUseLighting(true);
 }
 
-void Enemy::SetAimTargetPtr(class Object* target)
+void PlayerCPU::SetAimTargetPtr(class Object* target)
 {
 	m_target.push_back(target);
 }
 
 // @detail トマトの処理関連をまとめたもの
-void Enemy::ProcessTomato()
+void PlayerCPU::ProcessTomato()
 {
 	// トマトを投げる
 	m_shotTime++;
@@ -99,7 +106,7 @@ void Enemy::ProcessTomato()
 		m_moveFlag = false;
 		if (m_animTime == 0.0f)
 		{
-			/*m_pParent->GetComponent<Collider>()->Shot( m_pTransform->position,m_tomatoDir, m_pTag);*/
+			/*m_pParent->GetComponent<Collider>()->Shot(m_pTransform->position, m_tomatoDir, m_pTag);*/
 			m_bulletNum--;
 			m_shotTime = 0.0f;
 		}
@@ -108,7 +115,7 @@ void Enemy::ProcessTomato()
 
 // @detail 標的がいる方向に正面を向ける
 // @param aimTargetPos
-void Enemy::RotateTowardTarget(VECTOR& aimTargetPos)
+void PlayerCPU::RotateTowardTarget(VECTOR& aimTargetPos)
 {
 	VECTOR subVector = VSub(aimTargetPos, m_pTransform->position);
 	double angle = atan2(subVector.x, subVector.z);
@@ -117,7 +124,7 @@ void Enemy::RotateTowardTarget(VECTOR& aimTargetPos)
 	m_tomatoDir = VAdd(VGet(0.0f, 0.0f, 0.0f), VGet(sin(angle), 0, cos(angle)));
 }
 
-void Enemy::Animation()
+void PlayerCPU::Animation()
 {
 	// アニメーション処理
 	if (m_animType == Anim::Throw)
@@ -152,7 +159,7 @@ void Enemy::Animation()
 }
 
 // @detail アニメーションを変更する関数
-void Enemy::ChangeAnimation()
+void PlayerCPU::ChangeAnimation()
 {
 	// 移動できるアニメーションなら
 	// 今動いているのか、止まっているのかを判断
@@ -183,7 +190,7 @@ void Enemy::ChangeAnimation()
 }
 
 // @detail 行動パターンをチェックして実行する
-void Enemy::CheckMovePattern()
+void PlayerCPU::CheckMovePattern()
 {
 	m_absolutelyMoveFlag = false;
 	// 球がなかったら、集めに行く
@@ -203,7 +210,7 @@ void Enemy::CheckMovePattern()
 }
 
 // @detail ターゲットに対する行動パターンの処理
-void Enemy::CheckTargetMovePattern()
+void PlayerCPU::CheckTargetMovePattern()
 {
 	int objectNum = 0;
 	float distance = 0;
@@ -257,7 +264,7 @@ void Enemy::CheckTargetMovePattern()
 
 // @detail ターゲットに合わせて動く処理
 // @param object ターゲットのゲームオブジェクト
-void Enemy::Move1Target(class Object* player)
+void PlayerCPU::Move1Target(class Object* player)
 {
 	VECTOR gPos = player->GetComponent<Transform>()->position;
 	double distance = GetDistance(gPos, m_pTransform->position);
@@ -323,7 +330,7 @@ void Enemy::Move1Target(class Object* player)
 
 // @detail ターゲットが見つからないときの処理
 // @param object ターゲットのゲームオブジェクト
-void Enemy::Move2Target(class Object* player)
+void PlayerCPU::Move2Target(class Object* player)
 {
 	// 標的の方向に移動するか乱数決定
 	if (!m_aimTargetFlag && m_moveTime == 0)
@@ -401,10 +408,10 @@ void Enemy::Move2Target(class Object* player)
 }
 
 // @detail ターゲットから逃げる処理
-void Enemy::Move3Target(class Object* player)
+void PlayerCPU::Move3Target(class Object* player)
 {
 	VECTOR gPos = player->GetComponent<Transform>()->position;
-	
+
 	int objectNum = 0;
 	float distance = 0;
 	float tmp = 0;
@@ -424,7 +431,7 @@ void Enemy::Move3Target(class Object* player)
 				tmp = tmp * -1.0f;
 			}
 
-			
+
 			// 距離が一番近いオブジェクト番号を保存する
 			if (distance > tmp || distance == 0.0f)
 			{
@@ -484,7 +491,7 @@ void Enemy::Move3Target(class Object* player)
 }
 
 // @detail トマトを回収する行動パターンを実行する
-void Enemy::CheckTomatoWall()
+void PlayerCPU::CheckTomatoWall()
 {
 	int objectNum = 0;
 	float distance = 0;
@@ -523,7 +530,7 @@ void Enemy::CheckTomatoWall()
 	{
 		m_moveType = Type::EscapeTarget;
 	}
-	else if(m_moveType == Type::TomatoCollect)
+	else if (m_moveType == Type::TomatoCollect)
 	{
 		CollectTomato(m_pTomatoWall[objectNum]);
 	}
@@ -533,7 +540,7 @@ void Enemy::CheckTomatoWall()
 
 // @detail トマトを回収しに行く処理
 // @param object 一番近いトマトの壁オブジェクト
-void Enemy::CollectTomato(TomatoWallManager* object)
+void PlayerCPU::CollectTomato(TomatoWallManager* object)
 {
 	VECTOR gPos = object->GetPosition();
 	double distance = GetDistance(gPos, m_pTransform->position);
@@ -567,7 +574,7 @@ void Enemy::CollectTomato(TomatoWallManager* object)
 		{
 			m_moveType = Type::SearchTarget;
 		}
-		else if(m_bulletNum < m_bulletCapacity)
+		else if (m_bulletNum < m_bulletCapacity)
 		{
 			if (!m_pickFlag)
 			{
@@ -582,7 +589,7 @@ void Enemy::CollectTomato(TomatoWallManager* object)
 }
 
 // @detail トマトの壁を避ける処理
-void Enemy::AvoidTomatoWall(TomatoWallManager* object)
+void PlayerCPU::AvoidTomatoWall(TomatoWallManager* object)
 {
 	VECTOR mPos = m_pTransform->position;
 	VECTOR gPos = object->GetPosition();
@@ -609,7 +616,7 @@ void Enemy::AvoidTomatoWall(TomatoWallManager* object)
 			m_pTransform->position = VAdd(m_pTransform->position, VGet(0.0f, 0.0f, 0.5f));
 		}
 	}
-	else if((float)distance <= object->GetWidthDistance() &&
+	else if ((float)distance <= object->GetWidthDistance() &&
 		m_moveType != Type::TomatoCollect && !m_avoidWallFlag)  // 壁との距離が近づきすぎたら
 	{
 		m_avoidWallFlag = true;
@@ -649,25 +656,7 @@ void Enemy::AvoidTomatoWall(TomatoWallManager* object)
 		if ((float)distance > object->GetWidthDistance() + 15)
 		{
 			m_avoidWallFlag = false;
-			m_avoidVelocity = VGet(0.0f,0.0f,0.0f);
+			m_avoidVelocity = VGet(0.0f, 0.0f, 0.0f);
 		}
 	}
-}
-
-// @detail 自身と他のオブジェクトの距離を出す
-double Enemy::GetDistance(VECTOR& pos1, VECTOR& pos2)
-{
-	double tmp1 = pos1.x - pos2.x;
-	double tmp2 = pos1.z - pos2.z;
-	return sqrt(tmp1 * tmp1 + tmp2 * tmp2);
-}
-
-float Enemy::GetSize(float v1, float v2)
-{
-	float value = v1 - v2;
-	if (value < 0)
-	{
-		value = value * -1.0f;
-	}
-	return value;
 }

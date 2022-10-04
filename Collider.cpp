@@ -19,11 +19,6 @@ Collider::~Collider()
 	delete m_HitEffect;
 }
 
-void Collider::Init(std::list<Object*>* objectLists)
-{
-	copyObjectList = objectLists;
-}
-
 void Collider::Update()
 {
 	CollisionCheck();
@@ -34,7 +29,7 @@ void Collider::CollisionCheck()
 	auto self = m_pParent;
 	auto selfPosition = self->GetComponent<Transform>()->position;
 	auto selfTag = self->GetComponent<Tag>();
-	for (auto obj : *copyObjectList)
+	for (auto obj : m_pObjectLists)
 	{
 		if (self == obj) { continue; }	// 自分以外のオブジェクトと判定するため
 		Transform* trans = nullptr;
@@ -56,7 +51,7 @@ void Collider::CollisionCheck()
 			if (L_tag->tag == ObjectTag::tomato)	// 当たったのはトマトだった
 			{
 				auto tomato = obj->GetComponent<Tomato>();
-				tag = tomato->m_tag->tag;	// だれが投げたトマト？（当たった人のタグはいらないと思う。当たる人だけコライダーをコンポーネントさせる）
+				tag = tomato->GetTag()->tag;	// だれが投げたトマト？（当たった人のタグはいらないと思う。当たる人だけコライダーをコンポーネントさせる）
 				if (selfTag->tag == tag)	// 自分が投げたトマトだったので無視
 				{
 					continue;
@@ -79,14 +74,9 @@ void Collider::CollisionCheck()
 	}
 }
 
-void Collider::Shot(VECTOR position, VECTOR dir, Tag* tag)
+void Collider::SetBulletObject(Object* obj)
 {
-	Object* obj = new Object;
-	obj->AddComponent<Transform>();
-	auto L_tag = obj->AddComponent<Tag>();
-	L_tag->tag = ObjectTag::tomato;
-	obj->AddComponent<Tomato>()->Init(position, dir, tag);
-	copyObjectList->push_front(obj);
+	copyObjectList.push_front(obj);
 }
 
 double Collider::GetDistance(VECTOR& pos1, VECTOR& pos2)

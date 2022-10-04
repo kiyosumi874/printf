@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Camera.h"
-#include "Player.h"
+#include "Player1.h"
 #include <math.h>
 
 const float r = -30.0f;
@@ -28,11 +28,11 @@ void Camera::Update()
 void Camera::Draw()
 {
 	// プレイヤーの座標を目標視点に代入
-	m_targetViewPoint = m_pPlayer->GetPosition();
-	auto angle = m_pPlayer->GetAngle();
+	/*m_targetViewPoint = m_pPlayer->GetPosition();*/
+	/*auto angle = m_pPlayer->GetAngle();*/
 
-	m_position.x = m_targetViewPoint.x + sinf(angle) * r;
-	m_position.z = m_targetViewPoint.z + cosf(angle) * r;
+	/*m_position.x = m_targetViewPoint.x + sinf(angle) * r;
+	m_position.z = m_targetViewPoint.z + cosf(angle) * r;*/
 
 	// カメラの注視点をセット
 	m_targetViewPoint.y = m_targetViewPoint.y + 8.0f;
@@ -47,7 +47,7 @@ void Camera::Draw()
 	SetCameraPositionAndTarget_UpVecY(m_position, m_viewPoint);
 }
 
-void Camera::SetPlayerptr(Player* ptr)
+void Camera::SetPlayerptr(Player1* ptr)
 {
 	m_pPlayer = ptr;
 }

@@ -49,7 +49,7 @@ private:
 	class TomatoUIController* m_tomatoUICon[2];
 	class ScoreUIController* m_scoreUICon[3];
   
-	std::vector<class TomatoWall*>m_pGameObjects;
+	std::vector<class TomatoWallManager*>m_pGameObjects;
 	//std::list<class Object*>m_pObjectLists;
 
 	class Ground* m_pGround;

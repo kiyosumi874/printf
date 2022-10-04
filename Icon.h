@@ -1,24 +1,25 @@
 #pragma once
+#include "ModelBase.h"
 #include "Component.h"
 
-class Tag;
-
-class Icon : public Component
+class Icon : public ModelBase, public Component
 {
 public:
-	Icon(Tag* tag);   // コンストラクタ
+	Icon(class Tag* tag);   // コンストラクタ
 	~Icon();  // デストラクタ
 
-	void Init(VECTOR& position);  // 位置と目標方向
 	void Update(VECTOR& position);  // 更新処理
 	void Draw();  // 描画処理
 
+	// 必ず呼ぶこと
+	void Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale);
+
 	void Animation();
 
-private:
-	int m_modelHandle;  // アイコンのモデル
 
+private:
 	VECTOR m_correctionVector;  // 位置の補正用
+	class Tag* m_pTag;
 
 	int m_animIndex;  // 現在のアニメーションを記録
 	float m_animTime;  // アニメーションの経過時間

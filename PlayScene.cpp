@@ -1,11 +1,12 @@
 #include "pch.h"
-#include "TomatoWall.h"
-#include "Player.h"
+#include "TomatoWallManager.h"
+#include "Player1.h"
+#include "Player2.h"
+#include "PlayerCPU.h"
 #include "Enemy.h"
 #include "Camera.h"
 #include "DebugDraw.h"
 #include "Object.h"
-#include "Human.h"
 #include "Collider.h"
 #include "Projector.h"
 #include "Transform.h"
@@ -31,66 +32,18 @@ PlayScene::PlayScene(const MODE& mode)
 	, m_startBlendAdd(0.0f)
 	, m_graphHandleWhite(-1)
 {
-
-	//m_pGround = new Ground(ObjectTag::Ground, VGet(0.0f, -5.0f, 0.0f));
-	/*m_pTomatoWall[0] = new TomatoWall(ObjectTag::TomatoWall, VGet(50.0f, 0.0f, 50.0f));
-	m_pTomatoWall[1] = new TomatoWall(ObjectTag::TomatoWall, VGet(150.0f, 0.0f, 150.0f));
-	m_pPlayer1P = new Player(ObjectTag::Player1, VGet(0.0f, 0.0f, 0.0f));
-	m_pCamera1P = new Camera(ObjectTag::Camera1, VGet(0.0f, 20.0f, 0.0f));
-	m_pPlayer2P = new Player(ObjectTag::Player2, VGet(50.0f, 0.0f, 50.0f));
-	m_pCamera2P = new Camera(ObjectTag::Camera2, VGet(0.0f, 20.0f, 0.0f));
-	m_pEnemy1 = new Enemy(ObjectTag::Enemy, VGet(50.0f, 0.0f, -50.0f));
-	m_pEnemy2 = new Enemy(ObjectTag::Enemy, VGet(-50.0f, 0.0f, 50.0f));*/
-
-	// カメラ
-	/*m_pCamera1P->SetPlayerptr(m_pPlayer1P);
-	m_pCamera2P->SetPlayerptr(m_pPlayer2P);*/
-
-
 	// トランジション用の画像初期化
 	for (int i = 0; i < 2; i++)
 	{
 		m_transitionImage[i] = nullptr;
 	}
 	
-
+	// トマトの山生成
 	for (int i = 0; i < m_tomatoWallNum; i++)
 	{
-		auto tomato = new TomatoWall(ObjectTag::TomatoWall, VGet(-300 + 100.0f * i, 0.0f, 0.0f));
+		auto tomato = new TomatoWallManager(ObjectTag::TomatoWall);
+		tomato->Init(VGet(-300 + 100.0f * i, 0.0f, 0.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.035f, 0.035f, 0.035f));
 		m_pGameObjects.push_back(tomato);
-	}
-
-	// 以前の初期化
-	{
-	//m_pEnemy1 = new Enemy(ObjectTag::Enemy, VGet(50.0f, 0.0f, -50.0f));
-	//m_pEnemy2 = new Enemy(ObjectTag::Enemy, VGet(-50.0f, 0.0f, 50.0f));
-
-	// プレイヤー
-	//for (int i = 0; i < m_tomatoWallNum; i++)
-	//{
-	//	m_pPlayer1P->SetTomatoWallPtr(m_pTomatoWall[i]);
-	//	m_pPlayer2P->SetTomatoWallPtr(m_pTomatoWall[i]);
-	//}
-	// エネミー1
-	//m_pEnemy1->SetPlayerPtr(m_pPlayer2P);
-	//m_pEnemy1->SetPlayerPtr(m_pPlayer2P);
-	//for (int i = 0; i < m_tomatoWallNum; i++)
-	//{
-	//	m_pEnemy1->SetTomatoWallPtr(m_pTomatoWall[i]);
-	//}
-	// エネミー2
-	//m_pEnemy2->SetPlayerPtr(m_pPlayer2P);
-	//m_pEnemy2->SetPlayerPtr(m_pPlayer2P);
-	//for (int i = 0; i < m_tomatoWallNum; i++)
-	//{
-	//	m_pEnemy2->SetTomatoWallPtr(m_pTomatoWall[i]);
-	//}	
-	//m_pGameObjects.push_back(m_pEnemy1);
-	//m_pGameObjects.push_back(m_pEnemy2);
-	//m_pGameObjects.push_back(m_pPlayer1P);
-	//m_pGameObjects.push_back(m_pPlayer2P);
-	//m_pGameObjects.push_back(m_pCamera1P);
-	//m_pGameObjects.push_back(m_pCamera2P);
 	}
 
 	// iguchi
@@ -98,89 +51,81 @@ PlayScene::PlayScene(const MODE& mode)
 	{
 		{
 			Object* obj = new Object;
-			auto trs = obj->AddComponent<Transform>();
-			trs->position = VGet(50.0f, 0.0f, -50.0f);
+			obj->AddComponent<Transform>();
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Team1;
 			auto collider = obj->AddComponent<Collider>();
-			collider->Init(&m_pObjectLists); collider->width = 3.0f;
-			auto p1 = obj->AddComponent<Human>();
-			p1->SetTomatoWallPtr(&m_pGameObjects);
+			collider->width = 3.0f;
+			auto p1 = obj->AddComponent<Player1>();
+			p1->Init(VGet(50.0f, 0.0f, -50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
+			p1->SetTomatoWallPtr(m_pGameObjects);
 			m_pObjectLists.push_back(obj);
 		}
 		{
 			Object* obj = new Object;
-			auto trs = obj->AddComponent<Transform>();
-			trs->position = VGet(-50.0f, 0.0f, -50.0f);
+			obj->AddComponent<Transform>();
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Team2;
 			auto collider = obj->AddComponent<Collider>();
-			collider->Init(&m_pObjectLists); collider->width = 3.0f;
-			auto p2 = obj->AddComponent<Human>();
-			p2->SetTomatoWallPtr(&m_pGameObjects);
+			collider->width = 3.0f;
+			auto p2 = obj->AddComponent<Player2>();
+			p2->Init(VGet(-50.0f, 0.0f, -50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
+			p2->SetTomatoWallPtr(m_pGameObjects);
 			m_pObjectLists.push_back(obj);
 		}
 	}
-	// enemyを生成
+
+	// playerCPU&enemyを生成
 	{
+		// PlayerCPU
 		Object* obj = new Object;
 		auto collider = obj->AddComponent<Collider>();
-		collider->Init(&m_pObjectLists); collider->width = 3.0f;
-		auto pos = obj->AddComponent<Transform>();
-		pos->position.x = -10; pos->position.z = 50.0f;
+		collider->width = 3.0f;
+		obj->AddComponent<Transform>();
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
+		auto playerCPU1 = obj->AddComponent<PlayerCPU>();
+		playerCPU1->Init(VGet(60.0f, 0.0f, -50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
+		playerCPU1->SetTomatoWallPtr(m_pGameObjects);
+		m_pObjectLists.push_back(obj);
+
+		obj = new Object;
+		collider = obj->AddComponent<Collider>();
+		collider->width = 3.0f;
+		obj->AddComponent<Transform>();
+		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
+		auto playerCPU2 = obj->AddComponent<PlayerCPU>();
+		playerCPU2->Init(VGet(-60.0f, 0.0f, -50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
+		playerCPU2->SetTomatoWallPtr(m_pGameObjects);
+		m_pObjectLists.push_back(obj);
+
+		// Enemy
+		obj = new Object;
+		collider = obj->AddComponent<Collider>();
+		collider->width = 3.0f;
+		obj->AddComponent<Transform>();
 		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
 		auto enemy1 = obj->AddComponent<Enemy>();
-		for (int i = 0; i < m_pGameObjects.size(); i++)
-		{
-			enemy1->SetTomatoWallPtr(m_pGameObjects[i]);
-		}
-
+		enemy1->Init(VGet(-10.0f, 0.0f, 50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
+		enemy1->SetTomatoWallPtr(m_pGameObjects);
 		m_pObjectLists.push_back(obj);
+
 		obj = new Object;
-		auto collider2 = obj->AddComponent<Collider>();
-		collider2->Init(&m_pObjectLists); collider2->width = 3.0f;
-		auto pos2 = obj->AddComponent<Transform>();
-		pos2->position.x = 10; pos2->position.z = 50.0f;
+		collider = obj->AddComponent<Collider>();
+		collider->width = 3.0f;
+		obj->AddComponent<Transform>();
 		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
 		auto enemy2 = obj->AddComponent<Enemy>();
-		for (int i = 0; i < m_pGameObjects.size(); i++)
-		{
-			enemy2->SetTomatoWallPtr(m_pGameObjects[i]);
-		}
+		enemy2->Init(VGet(10.0f, 0.0f, 50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
+		enemy2->SetTomatoWallPtr(m_pGameObjects);
 		m_pObjectLists.push_back(obj);
 
-		obj = new Object;
-		auto collider3 = obj->AddComponent<Collider>();
-		collider3->Init(&m_pObjectLists); collider3->width = 3.0f;
-		auto pos3 = obj->AddComponent<Transform>();
-		pos3->position = VGet(60.0f, 0.0f, -50.0f);
-		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
-		auto enemy3 = obj->AddComponent<Enemy>();
-		for (int i = 0; i < m_pGameObjects.size(); i++)
-		{
-			enemy3->SetTomatoWallPtr(m_pGameObjects[i]);
-		}
-		m_pObjectLists.push_back(obj);
-
-		obj = new Object;
-		auto collider4 = obj->AddComponent<Collider>();
-		collider4->Init(&m_pObjectLists); collider4->width = 3.0f;
-		auto pos4 = obj->AddComponent<Transform>();
-		pos4->position = VGet(-60.0f, 0.0f, -50.0f);
-		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
-		auto enemy4 = obj->AddComponent<Enemy>();
-		for (int i = 0; i < m_pGameObjects.size(); i++)
-		{
-			enemy4->SetTomatoWallPtr(m_pGameObjects[i]);
-		}
-		m_pObjectLists.push_back(obj);
-
+		// 自身と同じチーム以外の人物を狙う対象に
 		for (auto ob : m_pObjectLists)
 		{
 			auto tag = ob->GetComponent<Tag>();
-			if (tag->tag != ObjectTag::Team1) { enemy3->SetPlayerPtr(ob); }
-			if (tag->tag != ObjectTag::Team2) { enemy4->SetPlayerPtr(ob); }
-			if (tag->tag != ObjectTag::Team3) { enemy1->SetPlayerPtr(ob); enemy2->SetPlayerPtr(ob); }
+			if (tag->tag != ObjectTag::Team1) { playerCPU1->SetAimTargetPtr(ob); }
+			if (tag->tag != ObjectTag::Team2) { playerCPU2->SetAimTargetPtr(ob); }
+			if (tag->tag != ObjectTag::Team3) { enemy1->SetAimTargetPtr(ob); enemy2->SetAimTargetPtr(ob); }
 		}
 	}
 
@@ -199,7 +144,7 @@ PlayScene::PlayScene(const MODE& mode)
 		auto tag = obj->AddComponent<Tag>();
 		tag->tag = ObjectTag::Ground;
 		auto collider = obj->AddComponent<Collider>();
-		collider->Init(&m_pObjectLists); collider->width = 0.0f;
+		collider->width = 0.0f;
 		auto p1 = obj->AddComponent<Ground>();
 		m_pObjectLists.push_back(obj);
 	}
