@@ -40,6 +40,9 @@
 #include "EffectManager.h"
 #include "HitEffect.h"
 
+// Object
+#include "Object.h"
+
 // Assets
 #include "Sound.h"
 #include "AssetManager.h"

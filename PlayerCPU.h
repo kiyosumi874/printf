@@ -1,21 +1,18 @@
 #pragma once
 #include "Human.h"
 
-class Tomato;
-class TomatoWallManager;
-class ModelManager;
-
-class Enemy : public Human
+class PlayerCPU : public Human
 {
 public:
-	Enemy();				// コンストラクタ
-	~Enemy() override;				// デストラクタ
+    PlayerCPU();
+    ~PlayerCPU() override;
 
 	void Start() override;	// コンポーネント初期化処理.
 	void Update() override;	// 更新処理.
 	void Draw() override;	// 描画処理.
 
-	void SetAimTargetPtr(class Object* target);  // Enemyに狙わせたいTargetをセット
+	void SetAimTargetPtr(class Object* target);  // PlayerCPUに狙わせたいTargetをセット
+
 private:
 	void ProcessTomato();
 
@@ -42,8 +39,6 @@ private:
 
 	// フラグ変数
 	int m_moveType;  // 今の行動
-	bool m_moveFlag;  // 動いているか
-	bool m_pickFlag;  // トマトを拾ったか
 	bool m_aimTargetFlag;  // 標的に向けて移動するか
 	bool m_avoidWallFlag;  // 壁を避ける
 	bool m_absolutelyMoveFlag;  // 絶対に移動させるフラグ
@@ -56,7 +51,7 @@ private:
 	const float m_targetEscapeRange = 200.0f;   // ターゲットから逃げる範囲
 
 	// ポインタ
-	std::vector<class Object*> m_target;  // エネミークラスにに情報を渡したいプレイヤー
+	std::vector<class Object*> m_target;  // PlayerCPUに情報を渡したターゲット
 
 	// 関数
 	void CheckMovePattern();  // 行動パターンをチェックして実行する
@@ -72,10 +67,7 @@ private:
 
 	void RotateTowardTarget(VECTOR& aimTargetPos);  // 標的がいる方向に正面を向ける
 
-	void Animation();  // アニメーション処理関数
-	void ChangeAnimation();  // アニメーションを変更する関数
-
-	double GetDistance(VECTOR& pos1, VECTOR& pos2);  // 自身と他のオブジェクトの距離を出す
-	float GetSize(float v1, float v2);
+	void Animation() override;  // アニメーション処理関数
+	void ChangeAnimation() override;  // アニメーションを変更する関数
 };
 

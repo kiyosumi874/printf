@@ -5,7 +5,6 @@
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="Fps.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="Human.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -41,12 +40,6 @@
       <Filter>Image</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
@@ -95,9 +88,6 @@
     <ClCompile Include="Human.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="ModelManager.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>System</Filter>
     </ClCompile>
@@ -105,9 +95,6 @@
       <Filter>Image</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Icon.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Sound.cpp" />
@@ -137,6 +124,45 @@
     </ClCompile>
     <ClCompile Include="SkyDome.cpp">
       <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="TomatoWallFull.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="TomatoWallOne.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="TomatoWallFour.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="TomatoWallThree.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="TomatoWallTwo.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="TomatoWallManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Human.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Player1.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Player2.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerCPU.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Icon.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -180,12 +206,6 @@
     <ClInclude Include="Camera.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>GameObject</Filter>
     </ClInclude>
@@ -217,16 +237,10 @@
     <ClInclude Include="Human.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="ModelManager.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h" />
-    <ClInclude Include="Icon.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Sound.h" />
     <ClInclude Include="AssetManager.h">
       <Filter>Asset</Filter>
@@ -252,8 +266,41 @@
     <ClInclude Include="TitleGround.h">
       <Filter>Model\Title</Filter>
     </ClInclude>
+    <ClInclude Include="TomatoWallFull.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="TomatoWallOne.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="TomatoWallFour.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="TomatoWallThree.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="TomatoWallTwo.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="TomatoWallManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
     <ClInclude Include="SkyDome.h">
       <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Player1.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Player2.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerCPU.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Icon.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -314,11 +361,13 @@
     <Filter Include="Model\Title">
       <UniqueIdentifier>{0e549514-8871-4ba0-8ebe-4f0e0d5789b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{18dd5bcd-ed2a-4c38-a72c-7f25eddcb6c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Common.h" />
-    <ClInclude Include="ModelManager.h" />
     <ClInclude Include="Projector.h" />
     <ClInclude Include="ResultScene.h" />
     <ClInclude Include="Scene.h" />

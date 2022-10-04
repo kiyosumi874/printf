@@ -2,6 +2,7 @@
 #include <list>
 #include "Component.h"
 
+
 class Object
 {
 public:
@@ -58,4 +59,4 @@ public:
 	}
 };
 
-static std::list<Object*>m_pObjectLists;
+extern std::list<Object*>m_pObjectLists;

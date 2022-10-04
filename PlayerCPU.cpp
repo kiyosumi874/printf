@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Enemy.h"
+#include "PlayerCPU.h"
 #include "Tomato.h"
 #include "TomatoWallManager.h"
 #include "Object.h"
@@ -7,13 +7,11 @@
 #include "Collider.h"
 #include "Icon.h"
 
-Enemy::Enemy()
+PlayerCPU::PlayerCPU()
 	: Human()
 	, m_movePhaseTime(50)
 	, m_shotPhaseTime(200.0f)
 {
-	m_modelName = AssetManager::ModelName::Team3;
-
 	m_velocity = VGet(1.0f, 1.0f, 1.0f);
 	m_dir = VGet(0.0f, 0.0f, 0.0f);
 	m_tomatoDir = VGet(0.0f, 0.0f, 0.0f);
@@ -24,7 +22,7 @@ Enemy::Enemy()
 	m_aimTargetFlag = false;
 	m_moveTime = 0;
 
-	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æº–å‚™
+	// ƒAƒjƒ[ƒVƒ‡ƒ“€”õ
 	m_beforeAnimType = Anim::Idle;
 	m_animTime = 0.0f;
 	m_animSpeed = 0.3f;
@@ -34,11 +32,11 @@ Enemy::Enemy()
 	m_pickFlag = true;
 }
 
-Enemy::~Enemy()
+PlayerCPU::~PlayerCPU()
 {
 }
 
-void Enemy::Start()
+void PlayerCPU::Start()
 {
 	if (m_pTransform == nullptr)
 	{
@@ -48,50 +46,59 @@ void Enemy::Start()
 	{
 		m_pTag = m_pParent->GetComponent<Tag>();
 	}
+
+	if (m_pTag->tag == ObjectTag::Team1)
+	{
+		m_modelName = AssetManager::ModelName::Team1;
+	}
+	if (m_pTag->tag == ObjectTag::Team2)
+	{
+		m_modelName = AssetManager::ModelName::Team2;
+	}
 }
 
-void Enemy::Update()
+void PlayerCPU::Update()
 {
-	// ã‚¨ãƒãƒŸãƒ¼ã®è¡Œå‹•ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’èª¿ã¹ã‚‹
+	// ƒGƒlƒ~[‚Ìs“®ƒpƒ^[ƒ“‚ğ’²‚×‚é
 	CheckMovePattern();
 
-	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å‡¦ç†
+	// ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìˆ—
 	Animation();
 
-	// ãƒˆãƒãƒˆã®å‡¦ç†
+	// ƒgƒ}ƒg‚Ìˆ—
 	ProcessTomato();
 
 	m_var.rotate = m_dir;
-	// 3Dãƒ¢ãƒ‡ãƒ«ã®å›è»¢è¨­å®š
+	// 3Dƒ‚ƒfƒ‹‚Ì‰ñ“]İ’è
 	MV1SetRotationXYZ(m_var.handle, m_var.rotate);
 
-	// 3Dãƒ¢ãƒ‡ãƒ«ã®ãƒã‚¸ã‚·ãƒ§ãƒ³è¨­å®š
+	// 3Dƒ‚ƒfƒ‹‚Ìƒ|ƒWƒVƒ‡ƒ“İ’è
 	m_var.pos = m_pTransform->position;
 	MV1SetPosition(m_var.handle, m_var.pos);
 
 	m_pIcon->Update(m_var.pos);
 }
 
-void Enemy::Draw()
+void PlayerCPU::Draw()
 {
 	SetUseLighting(false);
-	// 3Dãƒ¢ãƒ‡ãƒ«ã®æç”»
+	// 3Dƒ‚ƒfƒ‹‚Ì•`‰æ
 	MV1DrawModel(m_var.handle);
 	m_pIcon->Draw();
 	SetUseLighting(true);
 }
 
-void Enemy::SetAimTargetPtr(class Object* target)
+void PlayerCPU::SetAimTargetPtr(class Object* target)
 {
 	m_target.push_back(target);
 }
 
-// @detail ãƒˆãƒãƒˆã®å‡¦ç†é–¢é€£ã‚’ã¾ã¨ã‚ãŸã‚‚ã®
-void Enemy::ProcessTomato()
+// @detail ƒgƒ}ƒg‚Ìˆ—ŠÖ˜A‚ğ‚Ü‚Æ‚ß‚½‚à‚Ì
+void PlayerCPU::ProcessTomato()
 {
-	// ãƒˆãƒãƒˆã‚’æŠ•ã’ã‚‹
+	// ƒgƒ}ƒg‚ğ“Š‚°‚é
 	m_shotTime++;
-	// æ•µãŒè¿‘ã¥ã„ã¦ã„ãŸã‚Šã€é›¢ã‚Œã¦ã„ãŸã‚‰æŠ•ã’ã‚‹ã®ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã™ã‚‹
+	// “G‚ª‹ß‚Ã‚¢‚Ä‚¢‚½‚èA—£‚ê‚Ä‚¢‚½‚ç“Š‚°‚é‚Ì‚ğƒLƒƒƒ“ƒZƒ‹‚·‚é
 	if (m_shotTime > m_shotPhaseTime && m_moveType == Type::AimTarget && m_bulletNum > 0 && !m_absolutelyMoveFlag)
 	{
 		//m_tomatos.push_back(new Tomato(m_pTransform->position, m_tomatoDir));
@@ -99,27 +106,27 @@ void Enemy::ProcessTomato()
 		m_moveFlag = false;
 		if (m_animTime == 0.0f)
 		{
-			/*m_pParent->GetComponent<Collider>()->Shot( m_pTransform->position,m_tomatoDir, m_pTag);*/
+			/*m_pParent->GetComponent<Collider>()->Shot(m_pTransform->position, m_tomatoDir, m_pTag);*/
 			m_bulletNum--;
 			m_shotTime = 0.0f;
 		}
 	}
 }
 
-// @detail æ¨™çš„ãŒã„ã‚‹æ–¹å‘ã«æ­£é¢ã‚’å‘ã‘ã‚‹
+// @detail •W“I‚ª‚¢‚é•ûŒü‚É³–Ê‚ğŒü‚¯‚é
 // @param aimTargetPos
-void Enemy::RotateTowardTarget(VECTOR& aimTargetPos)
+void PlayerCPU::RotateTowardTarget(VECTOR& aimTargetPos)
 {
 	VECTOR subVector = VSub(aimTargetPos, m_pTransform->position);
 	double angle = atan2(subVector.x, subVector.z);
 	m_dir = VGet(0.0f, angle + DX_PI_F, 0.0f);
-	// ãƒˆãƒãƒˆã‚’è‡ªåˆ†ã®å‘ãã«åˆã‚ã›ã¦ç™ºå°„
+	// ƒgƒ}ƒg‚ğ©•ª‚ÌŒü‚«‚É‡‚í‚¹‚Ä”­Ë
 	m_tomatoDir = VAdd(VGet(0.0f, 0.0f, 0.0f), VGet(sin(angle), 0, cos(angle)));
 }
 
-void Enemy::Animation()
+void PlayerCPU::Animation()
 {
-	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†
+	// ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
 	if (m_animType == Anim::Throw)
 	{
 		m_animTime += m_throwSpeed;
@@ -151,11 +158,11 @@ void Enemy::Animation()
 	MV1SetAttachAnimTime(m_var.handle, m_animIndex, m_animTime);
 }
 
-// @detail ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¤‰æ›´ã™ã‚‹é–¢æ•°
-void Enemy::ChangeAnimation()
+// @detail ƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•ÏX‚·‚éŠÖ”
+void PlayerCPU::ChangeAnimation()
 {
-	// ç§»å‹•ã§ãã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãªã‚‰
-	// ä»Šå‹•ã„ã¦ã„ã‚‹ã®ã‹ã€æ­¢ã¾ã£ã¦ã„ã‚‹ã®ã‹ã‚’åˆ¤æ–­
+	// ˆÚ“®‚Å‚«‚éƒAƒjƒ[ƒVƒ‡ƒ“‚È‚ç
+	// ¡“®‚¢‚Ä‚¢‚é‚Ì‚©A~‚Ü‚Á‚Ä‚¢‚é‚Ì‚©‚ğ”»’f
 	if (m_moveFlag)
 	{
 		VECTOR nowPosition = MV1GetPosition(m_var.handle);
@@ -171,7 +178,7 @@ void Enemy::ChangeAnimation()
 		}
 	}
 
-	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†
+	// ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
 	if (m_animType != m_beforeAnimType)
 	{
 		MV1DetachAnim(m_var.handle, m_animIndex);
@@ -182,28 +189,28 @@ void Enemy::ChangeAnimation()
 	}
 }
 
-// @detail è¡Œå‹•ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’ãƒã‚§ãƒƒã‚¯ã—ã¦å®Ÿè¡Œã™ã‚‹
-void Enemy::CheckMovePattern()
+// @detail s“®ƒpƒ^[ƒ“‚ğƒ`ƒFƒbƒN‚µ‚ÄÀs‚·‚é
+void PlayerCPU::CheckMovePattern()
 {
 	m_absolutelyMoveFlag = false;
-	// çƒãŒãªã‹ã£ãŸã‚‰ã€é›†ã‚ã«è¡Œã
+	// ‹…‚ª‚È‚©‚Á‚½‚çAW‚ß‚És‚­
 	if (m_bulletNum <= 0 && m_moveType != Type::EscapeTarget)
 	{
 		m_moveType = Type::TomatoCollect;
 	}
 
-	// æ•µã‚’æ¢ã—ã¦ã„ã‚‹ã‹ã€ç‹™ã£ã¦ã„ã‚‹ã¨ã
+	// “G‚ğ’T‚µ‚Ä‚¢‚é‚©A‘_‚Á‚Ä‚¢‚é‚Æ‚«
 	if (m_moveType == Type::SearchTarget || m_moveType == Type::AimTarget ||
 		m_moveType == Type::EscapeTarget)
 	{
 		CheckTargetMovePattern();
 	}
-	// ãƒˆãƒãƒˆã®å£å‡¦ç†
+	// ƒgƒ}ƒg‚Ì•Çˆ—
 	CheckTomatoWall();
 }
 
-// @detail ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«å¯¾ã™ã‚‹è¡Œå‹•ãƒ‘ã‚¿ãƒ¼ãƒ³ã®å‡¦ç†
-void Enemy::CheckTargetMovePattern()
+// @detail ƒ^[ƒQƒbƒg‚É‘Î‚·‚és“®ƒpƒ^[ƒ“‚Ìˆ—
+void PlayerCPU::CheckTargetMovePattern()
 {
 	int objectNum = 0;
 	float distance = 0;
@@ -211,17 +218,17 @@ void Enemy::CheckTargetMovePattern()
 	int i = 0;
 	for (auto target : m_target)
 	{
-		// ã©ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒä¸€ç•ªè¿‘ã„ã‹ã‚’èª¿ã¹ã‚‹
+		// ‚Ç‚ÌƒLƒƒƒ‰ƒNƒ^[‚ªˆê”Ô‹ß‚¢‚©‚ğ’²‚×‚é
 		VECTOR gPos = target->GetComponent<Transform>()->position;
 		tmp = GetDistance(gPos, m_pTransform->position);
 
-		// tmpãŒè² ã®å€¤ãªã‚‰æ­£ã®å€¤ã«å¤‰ãˆã‚‹
+		// tmp‚ª•‰‚Ì’l‚È‚ç³‚Ì’l‚É•Ï‚¦‚é
 		if (tmp < 0.0f)
 		{
 			tmp = tmp * -1.0f;
 		}
 
-		// è·é›¢ãŒä¸€ç•ªè¿‘ã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç•ªå·ã‚’ä¿å­˜ã™ã‚‹
+		// ‹——£‚ªˆê”Ô‹ß‚¢ƒIƒuƒWƒFƒNƒg”Ô†‚ğ•Û‘¶‚·‚é
 		if (distance > tmp || distance == 0.0f)
 		{
 			distance = tmp;
@@ -232,7 +239,7 @@ void Enemy::CheckTargetMovePattern()
 				m_moveType = Type::AimTarget;
 			}
 
-			// tmpãŒ0ã ã£ãŸã‚‰ä¸€ç•ªè¿‘ã„ã®ã§foræ–‡ã‚’æŠœã‘ã‚‹
+			// tmp‚ª0‚¾‚Á‚½‚çˆê”Ô‹ß‚¢‚Ì‚Åfor•¶‚ğ”²‚¯‚é
 			if (tmp == 0.0f)
 			{
 				break;
@@ -242,29 +249,29 @@ void Enemy::CheckTargetMovePattern()
 	}
 	if (m_moveType != Type::EscapeTarget)
 	{
-		// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«åˆã‚ã›ã¦è¡Œå‹•ã™ã‚‹
+		// ƒ^[ƒQƒbƒg‚É‡‚í‚¹‚Äs“®‚·‚é
 		Move1Target(m_target[objectNum]);
 		if (m_moveType == Type::SearchTarget)
 		{
 			Move2Target(m_target[objectNum]);
 		}
 	}
-	else  // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‹ã‚‰é€ƒã’ã‚‹å‡¦ç†
+	else  // ƒ^[ƒQƒbƒg‚©‚ç“¦‚°‚éˆ—
 	{
 		Move3Target(m_target[objectNum]);
 	}
 }
 
-// @detail ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«åˆã‚ã›ã¦å‹•ãå‡¦ç†
-// @param object ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
-void Enemy::Move1Target(class Object* player)
+// @detail ƒ^[ƒQƒbƒg‚É‡‚í‚¹‚Ä“®‚­ˆ—
+// @param object ƒ^[ƒQƒbƒg‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg
+void PlayerCPU::Move1Target(class Object* player)
 {
 	VECTOR gPos = player->GetComponent<Transform>()->position;
 	double distance = GetDistance(gPos, m_pTransform->position);
 
-	if (distance >= m_targetRangeMin && distance < m_targetRangeMax)  // ã“ã®ç¯„å›²ã«æ¨™çš„ãŒã„ãŸã‚‰è¡Œå‹•
+	if (distance >= m_targetRangeMin && distance < m_targetRangeMax)  // ‚±‚Ì”ÍˆÍ‚É•W“I‚ª‚¢‚½‚çs“®
 	{
-		if (distance > m_targetMoveRangeMax)  // æ¨™çš„ãŒé›¢ã‚Œã¦ã„ãŸã‚‰è¿‘ã¥ã
+		if (distance > m_targetMoveRangeMax)  // •W“I‚ª—£‚ê‚Ä‚¢‚½‚ç‹ß‚Ã‚­
 		{
 			if (gPos.x - m_pTransform->position.x >= 0.0f)
 			{
@@ -286,7 +293,7 @@ void Enemy::Move1Target(class Object* player)
 
 			m_absolutelyMoveFlag = true;
 		}
-		else if (distance < m_targetMoveRangeMin)  // æ¨™çš„ãŒè¿‘ã¥ã„ã¦ããŸã‚‰é›¢ã‚Œã‚‹
+		else if (distance < m_targetMoveRangeMin)  // •W“I‚ª‹ß‚Ã‚¢‚Ä‚«‚½‚ç—£‚ê‚é
 		{
 			if (gPos.x - m_pTransform->position.x >= 0.0f)
 			{
@@ -308,9 +315,9 @@ void Enemy::Move1Target(class Object* player)
 			m_absolutelyMoveFlag = true;
 		}
 
-		// æ¨™çš„ã®æ–¹å‘ã«å›è»¢
+		// •W“I‚Ì•ûŒü‚É‰ñ“]
 		RotateTowardTarget(gPos);
-		// æ¨™çš„ã‚’ç™ºè¦‹
+		// •W“I‚ğ”­Œ©
 		m_moveType = Type::AimTarget;
 		m_aimTargetFlag = false;
 		m_moveTime = 0;
@@ -321,11 +328,11 @@ void Enemy::Move1Target(class Object* player)
 	}
 }
 
-// @detail ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„ã¨ãã®å‡¦ç†
-// @param object ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
-void Enemy::Move2Target(class Object* player)
+// @detail ƒ^[ƒQƒbƒg‚ªŒ©‚Â‚©‚ç‚È‚¢‚Æ‚«‚Ìˆ—
+// @param object ƒ^[ƒQƒbƒg‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg
+void PlayerCPU::Move2Target(class Object* player)
 {
-	// æ¨™çš„ã®æ–¹å‘ã«ç§»å‹•ã™ã‚‹ã‹ä¹±æ•°æ±ºå®š
+	// •W“I‚Ì•ûŒü‚ÉˆÚ“®‚·‚é‚©—”Œˆ’è
 	if (!m_aimTargetFlag && m_moveTime == 0)
 	{
 		srand(rand() % 100);
@@ -333,17 +340,17 @@ void Enemy::Move2Target(class Object* player)
 
 		switch (tmp)
 		{
-		case 0:  // æ¨™çš„ã®æ–¹å‘ã«ç§»å‹•
+		case 0:  // •W“I‚Ì•ûŒü‚ÉˆÚ“®
 			m_aimTargetFlag = true;
 			break;
-		default:  // ãƒ©ãƒ³ãƒ€ãƒ ã«ç§»å‹•
+		default:  // ƒ‰ƒ“ƒ_ƒ€‚ÉˆÚ“®
 			m_moveValue.x = rand() % 3 - 1;
 			m_moveValue.z = rand() % 3 - 1;
 			break;
 		}
 	}
 
-	// æ¨™çš„ã«è¿‘ã¥ã
+	// •W“I‚É‹ß‚Ã‚­
 	if (m_aimTargetFlag)
 	{
 		VECTOR gPos = player->GetComponent<Transform>()->position;
@@ -367,11 +374,11 @@ void Enemy::Move2Target(class Object* player)
 			moveVector.z -= m_velocity.z;
 		}
 
-		// é€²ã‚“ã§ã„ã‚‹æ–¹å‘ã‚’å‘ã
+		// i‚ñ‚Å‚¢‚é•ûŒü‚ğŒü‚­
 		RotateTowardTarget(moveVector);
 		m_pTransform->position = moveVector;
 
-		// æ™‚é–“çµŒéã§æ¬¡ã®è¡Œå‹•ãƒ•ã‚§ãƒ¼ã‚ºã¸
+		// ŠÔŒo‰ß‚ÅŸ‚Ìs“®ƒtƒF[ƒY‚Ö
 		m_moveTime++;
 		if (m_moveTime > m_movePhaseTime)
 		{
@@ -379,11 +386,11 @@ void Enemy::Move2Target(class Object* player)
 			m_moveTime = 0;
 		}
 	}
-	else  // ãƒ©ãƒ³ãƒ€ãƒ ã«ç§»å‹•
+	else  // ƒ‰ƒ“ƒ_ƒ€‚ÉˆÚ“®
 	{
 		VECTOR moveVector = VGet(m_pTransform->position.x + m_moveValue.x, m_pTransform->position.y, m_pTransform->position.z + m_moveValue.z);
 
-		// é€²ã‚“ã§ã„ã‚‹æ–¹å‘ã‚’å‘ã
+		// i‚ñ‚Å‚¢‚é•ûŒü‚ğŒü‚­
 		if (moveVector.x != 0.0f && moveVector.z != 0.0f)
 		{
 			RotateTowardTarget(moveVector);
@@ -391,7 +398,7 @@ void Enemy::Move2Target(class Object* player)
 
 		m_pTransform->position = moveVector;
 
-		// æ™‚é–“çµŒéã§æ¬¡ã®è¡Œå‹•ãƒ•ã‚§ãƒ¼ã‚ºã¸
+		// ŠÔŒo‰ß‚ÅŸ‚Ìs“®ƒtƒF[ƒY‚Ö
 		m_moveTime++;
 		if (m_moveTime > m_movePhaseTime)
 		{
@@ -400,41 +407,41 @@ void Enemy::Move2Target(class Object* player)
 	}
 }
 
-// @detail ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‹ã‚‰é€ƒã’ã‚‹å‡¦ç†
-void Enemy::Move3Target(class Object* player)
+// @detail ƒ^[ƒQƒbƒg‚©‚ç“¦‚°‚éˆ—
+void PlayerCPU::Move3Target(class Object* player)
 {
 	VECTOR gPos = player->GetComponent<Transform>()->position;
-	
+
 	int objectNum = 0;
 	float distance = 0;
 	float tmp = 0;
-	// ãƒˆãƒãƒˆã®å£ãŒãªã„ã®ã‹æ¢ã™
+	// ƒgƒ}ƒg‚Ì•Ç‚ª‚È‚¢‚Ì‚©’T‚·
 	for (int i = 0; i < m_pTomatoWall.size(); i++)
 	{
-		// ãã®ãƒˆãƒãƒˆã®å£ã«ãƒˆãƒãƒˆã¯ã‚ã‚‹ã®ã‹
+		// ‚»‚Ìƒgƒ}ƒg‚Ì•Ç‚Éƒgƒ}ƒg‚Í‚ ‚é‚Ì‚©
 		if (m_pTomatoWall[i]->GetAllTomatoNum() != 0)
 		{
-			// ã©ã®ãƒˆãƒãƒˆã®å£ãŒä¸€ç•ªè¿‘ã„ã‹ã‚’èª¿ã¹ã‚‹
+			// ‚Ç‚Ìƒgƒ}ƒg‚Ì•Ç‚ªˆê”Ô‹ß‚¢‚©‚ğ’²‚×‚é
 			VECTOR gPos = m_pTomatoWall[i]->GetPosition();
 			tmp = GetDistance(gPos, m_pTransform->position);
 
-			// tmpãŒè² ã®å€¤ãªã‚‰æ­£ã®å€¤ã«å¤‰ãˆã‚‹
+			// tmp‚ª•‰‚Ì’l‚È‚ç³‚Ì’l‚É•Ï‚¦‚é
 			if (tmp < 0.0f)
 			{
 				tmp = tmp * -1.0f;
 			}
 
-			
-			// è·é›¢ãŒä¸€ç•ªè¿‘ã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç•ªå·ã‚’ä¿å­˜ã™ã‚‹
+
+			// ‹——£‚ªˆê”Ô‹ß‚¢ƒIƒuƒWƒFƒNƒg”Ô†‚ğ•Û‘¶‚·‚é
 			if (distance > tmp || distance == 0.0f)
 			{
 				distance = tmp;
 				objectNum = i;
 
-				// ãƒˆãƒãƒˆã®å£ãŒã‚ã£ãŸã‚‰è¡Œå‹•ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’å¤‰ãˆã‚‹
+				// ƒgƒ}ƒg‚Ì•Ç‚ª‚ ‚Á‚½‚çs“®ƒpƒ^[ƒ“‚ğ•Ï‚¦‚é
 				m_moveType = Type::TomatoCollect;
 
-				// tmpãŒ0ã ã£ãŸã‚‰ä¸€ç•ªè¿‘ã„ã®ã§foræ–‡ã‚’æŠœã‘ã‚‹
+				// tmp‚ª0‚¾‚Á‚½‚çˆê”Ô‹ß‚¢‚Ì‚Åfor•¶‚ğ”²‚¯‚é
 				if (tmp == 0.0f)
 				{
 					break;
@@ -442,16 +449,16 @@ void Enemy::Move3Target(class Object* player)
 			}
 		}
 	}
-	if (m_moveType == Type::TomatoCollect)  // ãƒˆãƒãƒˆã‚’å›åã—ã«è¡Œã
+	if (m_moveType == Type::TomatoCollect)  // ƒgƒ}ƒg‚ğ‰ñû‚µ‚És‚­
 	{
 		CollectTomato(m_pTomatoWall[objectNum]);
 	}
-	else  // ãƒˆãƒãƒˆã®å£ãŒãªã„é–“ã¯é€ƒã’ã‚‹
+	else  // ƒgƒ}ƒg‚Ì•Ç‚ª‚È‚¢ŠÔ‚Í“¦‚°‚é
 	{
 		VECTOR moveVector = VGet(m_pTransform->position.x, m_pTransform->position.y, m_pTransform->position.z);
 		double distance = GetDistance(gPos, m_pTransform->position);
 
-		// æŒ‡å®šã®ç¯„å›²ã¾ã§é€ƒã’åˆ‡ã‚‹
+		// w’è‚Ì”ÍˆÍ‚Ü‚Å“¦‚°Ø‚é
 		if (distance < m_targetEscapeRange)
 		{
 			if (gPos.x - m_pTransform->position.x >= 0.0f)
@@ -472,45 +479,45 @@ void Enemy::Move3Target(class Object* player)
 				moveVector.z += m_velocity.z;
 			}
 
-			// é€²ã‚“ã§ã„ã‚‹æ–¹å‘ã‚’å‘ã
+			// i‚ñ‚Å‚¢‚é•ûŒü‚ğŒü‚­
 			RotateTowardTarget(moveVector);
 			m_pTransform->position = moveVector;
 		}
-		else  // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‹ã‚‰é€ƒã’ã‚‹ç¯„å›²ã‚’å‡ºãŸã‚‰ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ã»ã†ã‚’å‘ã
+		else  // ƒ^[ƒQƒbƒg‚©‚ç“¦‚°‚é”ÍˆÍ‚ğo‚½‚çƒ^[ƒQƒbƒg‚Ì‚Ù‚¤‚ğŒü‚­
 		{
 			RotateTowardTarget(gPos);
 		}
 	}
 }
 
-// @detail ãƒˆãƒãƒˆã‚’å›åã™ã‚‹è¡Œå‹•ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’å®Ÿè¡Œã™ã‚‹
-void Enemy::CheckTomatoWall()
+// @detail ƒgƒ}ƒg‚ğ‰ñû‚·‚és“®ƒpƒ^[ƒ“‚ğÀs‚·‚é
+void PlayerCPU::CheckTomatoWall()
 {
 	int objectNum = 0;
 	float distance = 0;
 	float tmp = 0;
 	for (int i = 0; i < m_pTomatoWall.size(); i++)
 	{
-		// ãã®ãƒˆãƒãƒˆã®å£ã«ãƒˆãƒãƒˆã¯ã‚ã‚‹ã®ã‹
+		// ‚»‚Ìƒgƒ}ƒg‚Ì•Ç‚Éƒgƒ}ƒg‚Í‚ ‚é‚Ì‚©
 		if (m_pTomatoWall[i]->GetAllTomatoNum() != 0)
 		{
-			// ã©ã®ãƒˆãƒãƒˆã®å£ãŒä¸€ç•ªè¿‘ã„ã‹ã‚’èª¿ã¹ã‚‹
+			// ‚Ç‚Ìƒgƒ}ƒg‚Ì•Ç‚ªˆê”Ô‹ß‚¢‚©‚ğ’²‚×‚é
 			VECTOR gPos = m_pTomatoWall[i]->GetPosition();
 			tmp = GetDistance(gPos, m_pTransform->position);
 
-			// tmpãŒè² ã®å€¤ãªã‚‰æ­£ã®å€¤ã«å¤‰ãˆã‚‹
+			// tmp‚ª•‰‚Ì’l‚È‚ç³‚Ì’l‚É•Ï‚¦‚é
 			if (tmp < 0.0f)
 			{
 				tmp = tmp * -1.0f;
 			}
 
-			// è·é›¢ãŒä¸€ç•ªè¿‘ã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç•ªå·ã‚’ä¿å­˜ã™ã‚‹
+			// ‹——£‚ªˆê”Ô‹ß‚¢ƒIƒuƒWƒFƒNƒg”Ô†‚ğ•Û‘¶‚·‚é
 			if (distance > tmp || distance == 0.0f)
 			{
 				distance = tmp;
 				objectNum = i;
 
-				// tmpãŒ0ã ã£ãŸã‚‰ä¸€ç•ªè¿‘ã„ã®ã§foræ–‡ã‚’æŠœã‘ã‚‹
+				// tmp‚ª0‚¾‚Á‚½‚çˆê”Ô‹ß‚¢‚Ì‚Åfor•¶‚ğ”²‚¯‚é
 				if (tmp == 0.0f)
 				{
 					break;
@@ -518,12 +525,12 @@ void Enemy::CheckTomatoWall()
 			}
 		}
 	}
-	// ã™ã¹ã¦ã®ãƒˆãƒãƒˆã®å£ãŒãªã‹ã£ãŸã‚‰æ•µã‹ã‚‰é€ƒã’ã‚‹å‡¦ç†ã«å¤‰ãˆã‚‹
+	// ‚·‚×‚Ä‚Ìƒgƒ}ƒg‚Ì•Ç‚ª‚È‚©‚Á‚½‚ç“G‚©‚ç“¦‚°‚éˆ—‚É•Ï‚¦‚é
 	if (m_pTomatoWall[objectNum]->GetAllTomatoNum() == 0)
 	{
 		m_moveType = Type::EscapeTarget;
 	}
-	else if(m_moveType == Type::TomatoCollect)
+	else if (m_moveType == Type::TomatoCollect)
 	{
 		CollectTomato(m_pTomatoWall[objectNum]);
 	}
@@ -531,14 +538,14 @@ void Enemy::CheckTomatoWall()
 	AvoidTomatoWall(m_pTomatoWall[objectNum]);
 }
 
-// @detail ãƒˆãƒãƒˆã‚’å›åã—ã«è¡Œãå‡¦ç†
-// @param object ä¸€ç•ªè¿‘ã„ãƒˆãƒãƒˆã®å£ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
-void Enemy::CollectTomato(TomatoWallManager* object)
+// @detail ƒgƒ}ƒg‚ğ‰ñû‚µ‚És‚­ˆ—
+// @param object ˆê”Ô‹ß‚¢ƒgƒ}ƒg‚Ì•ÇƒIƒuƒWƒFƒNƒg
+void PlayerCPU::CollectTomato(TomatoWallManager* object)
 {
 	VECTOR gPos = object->GetPosition();
 	double distance = GetDistance(gPos, m_pTransform->position);
 
-	if ((float)distance > object->GetWidthDistance() + 1)  // æ¨™çš„ãŒé›¢ã‚Œã¦ã„ãŸã‚‰è¿‘ã¥ã
+	if ((float)distance > object->GetWidthDistance() + 1)  // •W“I‚ª—£‚ê‚Ä‚¢‚½‚ç‹ß‚Ã‚­
 	{
 		if (gPos.x - m_pTransform->position.x >= 0.0f)
 		{
@@ -558,7 +565,7 @@ void Enemy::CollectTomato(TomatoWallManager* object)
 			m_pTransform->position = VAdd(m_pTransform->position, VGet(0.0f, 0.0f, -0.5f));
 		}
 
-		// æ¨™çš„ã®æ–¹å‘ã«å›è»¢
+		// •W“I‚Ì•ûŒü‚É‰ñ“]
 		RotateTowardTarget(gPos);
 	}
 	else
@@ -567,7 +574,7 @@ void Enemy::CollectTomato(TomatoWallManager* object)
 		{
 			m_moveType = Type::SearchTarget;
 		}
-		else if(m_bulletNum < m_bulletCapacity)
+		else if (m_bulletNum < m_bulletCapacity)
 		{
 			if (!m_pickFlag)
 			{
@@ -581,15 +588,15 @@ void Enemy::CollectTomato(TomatoWallManager* object)
 	}
 }
 
-// @detail ãƒˆãƒãƒˆã®å£ã‚’é¿ã‘ã‚‹å‡¦ç†
-void Enemy::AvoidTomatoWall(TomatoWallManager* object)
+// @detail ƒgƒ}ƒg‚Ì•Ç‚ğ”ğ‚¯‚éˆ—
+void PlayerCPU::AvoidTomatoWall(TomatoWallManager* object)
 {
 	VECTOR mPos = m_pTransform->position;
 	VECTOR gPos = object->GetPosition();
 
 	double distance = GetDistance(gPos, m_pTransform->position);
 
-	if ((float)distance < object->GetWidthDistance() && m_moveType == Type::TomatoCollect)  // å£ã«è¿‘ã¥ãã™ãå†…å®¹ã«å‡¦ç†
+	if ((float)distance < object->GetWidthDistance() && m_moveType == Type::TomatoCollect)  // •Ç‚É‹ß‚Ã‚«‚·‚¬“à—e‚Éˆ—
 	{
 		if (gPos.x - m_pTransform->position.x >= 0.0f)
 		{
@@ -609,12 +616,12 @@ void Enemy::AvoidTomatoWall(TomatoWallManager* object)
 			m_pTransform->position = VAdd(m_pTransform->position, VGet(0.0f, 0.0f, 0.5f));
 		}
 	}
-	else if((float)distance <= object->GetWidthDistance() &&
-		m_moveType != Type::TomatoCollect && !m_avoidWallFlag)  // å£ã¨ã®è·é›¢ãŒè¿‘ã¥ãã™ããŸã‚‰
+	else if ((float)distance <= object->GetWidthDistance() &&
+		m_moveType != Type::TomatoCollect && !m_avoidWallFlag)  // •Ç‚Æ‚Ì‹——£‚ª‹ß‚Ã‚«‚·‚¬‚½‚ç
 	{
 		m_avoidWallFlag = true;
 
-		// å£ã‚’é¿ã‘ã‚‹è·é›¢ãŒå°ã•ã„æ–¹ã«é¿ã‘ã‚‹
+		// •Ç‚ğ”ğ‚¯‚é‹——£‚ª¬‚³‚¢•û‚É”ğ‚¯‚é
 		if (GetSize(gPos.x, m_pTransform->position.x) < GetSize(gPos.z, m_pTransform->position.z))
 		{
 			if (gPos.x - m_pTransform->position.x >= 0.0f)
@@ -639,35 +646,17 @@ void Enemy::AvoidTomatoWall(TomatoWallManager* object)
 		}
 	}
 
-	// é¿ã‘ã‚‹ãƒ•ãƒ©ã‚°ãŒãŸã£ãŸã‚‰ã€é¿ã‘ã‚‹
+	// ”ğ‚¯‚éƒtƒ‰ƒO‚ª‚½‚Á‚½‚çA”ğ‚¯‚é
 	if (m_avoidWallFlag)
 	{
 		m_pTransform->position = VAdd(m_pTransform->position, m_avoidVelocity);
 		distance = GetDistance(gPos, m_pTransform->position);
 
-		// ä¸€å®šã®è·é›¢ãŒç©ºã„ãŸã‚‰é¿ã‘ã‚‹ã®ã‚’ã‚„ã‚ã‚‹
+		// ˆê’è‚Ì‹——£‚ª‹ó‚¢‚½‚ç”ğ‚¯‚é‚Ì‚ğ‚â‚ß‚é
 		if ((float)distance > object->GetWidthDistance() + 15)
 		{
 			m_avoidWallFlag = false;
-			m_avoidVelocity = VGet(0.0f,0.0f,0.0f);
+			m_avoidVelocity = VGet(0.0f, 0.0f, 0.0f);
 		}
 	}
-}
-
-// @detail è‡ªèº«ã¨ä»–ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è·é›¢ã‚’å‡ºã™
-double Enemy::GetDistance(VECTOR& pos1, VECTOR& pos2)
-{
-	double tmp1 = pos1.x - pos2.x;
-	double tmp2 = pos1.z - pos2.z;
-	return sqrt(tmp1 * tmp1 + tmp2 * tmp2);
-}
-
-float Enemy::GetSize(float v1, float v2)
-{
-	float value = v1 - v2;
-	if (value < 0)
-	{
-		value = value * -1.0f;
-	}
-	return value;
 }
