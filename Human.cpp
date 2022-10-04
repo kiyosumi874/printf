@@ -15,10 +15,6 @@ Human::Human()
 	m_pTag = nullptr;
 }
 
-Human::~Human()
-{
-}
-
 void Human::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
 {
 	// 3Dモデルの読み込み
