@@ -1,14 +1,14 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 SkyDome::SkyDome()
 	: m_rotate(0.0f)
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 SkyDome::~SkyDome()
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 void SkyDome::Start()

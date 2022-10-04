@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 class ResultScene : public Scene
 {
@@ -11,7 +11,7 @@ public:
 	void Draw() override;
 
 private:
-	// ƒV[ƒ““à‚Ìó‘Ô‘JˆÚ‚ğ•\‚·
+	// ã‚·ãƒ¼ãƒ³å†…ã®çŠ¶æ…‹é·ç§»ã‚’è¡¨ã™
 	enum class Transition
 	{
 		START,

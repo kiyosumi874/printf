@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "StillProjector.h"
 #include "Transform.h"
 #include "Input.h"
@@ -29,34 +29,34 @@ void StillProjector::Update()
 void StillProjector::Draw()
 {
 
-	//// ƒJƒƒ‰ˆÊ’u‚©‚ç–Ú•W“_‚ÉŒü‚©‚¤ƒxƒNƒgƒ‹‚ğŒvZ
+	//// ã‚«ãƒ¡ãƒ©ä½ç½®ã‹ã‚‰ç›®æ¨™ç‚¹ã«å‘ã‹ã†ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—
 	//VECTOR L_lookMoveDir = VSub(m_targetViewPoint, m_targetViewPoint);
 
-	// ‘OŒã¶‰E
+	// å‰å¾Œå·¦å³
 	VECTOR front = { 0.0f,0.0f,1.0f };
 	VECTOR rear = { 0.0f,0.0f,-1.0f };
 	VECTOR left = { 1.0f,0.0f,0.0f };
 	VECTOR right = { -1.0f,0.0f,0.0f };
 
-	// ‘O‚Éi‚Ş
+	// å‰ã«é€²ã‚€
 	if (Input::IsPress1P(BUTTON_ID_UP))
 	{
 		m_position = VAdd(front, m_position);
 	}
 
-	// Œã‚ë‚Éi‚Ş
+	// å¾Œã‚ã«é€²ã‚€
 	if (Input::IsPress1P(BUTTON_ID_DOWN))
 	{
 		m_position = VAdd(rear, m_position);
 	}
 
-	// ‰E‚Éi‚Ş
+	// å³ã«é€²ã‚€
 	if (Input::IsPress1P(BUTTON_ID_LEFT))
 	{
 		m_position = VAdd(right, m_position);
 	}
 
-	// ¶‚Éi‚Ş
+	// å·¦ã«é€²ã‚€
 	if (Input::IsPress1P(BUTTON_ID_RIGHT))
 	{
 		m_position = VAdd(left, m_position);

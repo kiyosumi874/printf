@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ModelBase.h"
 #include "Component.h"
 #include "DxLib.h"

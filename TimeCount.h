@@ -1,44 +1,44 @@
-//----------------------------------------
+ï»¿//----------------------------------------
 // @file TimeCount.h
-// @brief ŠÔ‚ğŒv‘ª‚·‚é
+// @brief æ™‚é–“ã‚’è¨ˆæ¸¬ã™ã‚‹
 // @author shiihara_kiyosumi
 // @date 2022_09_01
 //----------------------------------------
 
-// ‘½dƒCƒ“ƒNƒ‹[ƒh–h~
+// å¤šé‡ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰é˜²æ­¢
 #pragma once
-// ƒwƒbƒ_[ƒtƒ@ƒCƒ‹‚ÌƒCƒ“ƒNƒ‹[ƒh
+// ãƒ˜ãƒƒãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
 #include "Component.h"
 #include <chrono>
 
-// usingéŒ¾
+// usingå®£è¨€
 using std::chrono::system_clock;
 
 class TimeCount : public Component
 {
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	TimeCount();
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~TimeCount();
 
-	// XV
+	// æ›´æ–°
 	void Update() override;
 
-	// ƒJƒEƒ“ƒg‚ğŠJn‚·‚é
+	// ã‚«ã‚¦ãƒ³ãƒˆã‚’é–‹å§‹ã™ã‚‹
 	void StartCount();
 
-	// ‹xŒe
+	// ä¼‘æ†©
 	void RestCount();
 
 	bool CheckIsCount();
 
-	// ƒJƒEƒ“ƒg‚ğŠm”F‚·‚é
+	// ã‚«ã‚¦ãƒ³ãƒˆã‚’ç¢ºèªã™ã‚‹
 	double CheckCount();
 
 private:
-	system_clock::time_point m_start; // ƒJƒEƒ“ƒg‚ğŠJn‚µ‚½ŠÔ
-	system_clock::time_point m_end; // ¡‚ÌƒJƒEƒ“ƒgŠÔ
+	system_clock::time_point m_start; // ã‚«ã‚¦ãƒ³ãƒˆã‚’é–‹å§‹ã—ãŸæ™‚é–“
+	system_clock::time_point m_end; // ä»Šã®ã‚«ã‚¦ãƒ³ãƒˆæ™‚é–“
 
-	bool m_isCount; // ƒJƒEƒ“ƒg‚ğ‚·‚é‚©”Û‚©
+	bool m_isCount; // ã‚«ã‚¦ãƒ³ãƒˆã‚’ã™ã‚‹ã‹å¦ã‹
 };

@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "TimeUIController.h"
 #include "Object.h"
 #include "TimeCount.h"
@@ -6,12 +6,12 @@
 
 TimeUIController::TimeUIController()
 {
-	// –¢ŽÀ‘•
+	// æœªå®Ÿè£…
 }
 
 TimeUIController::~TimeUIController()
 {
-	// –¢ŽÀ‘•
+	// æœªå®Ÿè£…
 }
 
 void TimeUIController::Init(int digit, int number)

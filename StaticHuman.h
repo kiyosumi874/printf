@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Component.h"
 
 class StaticHuman : public Component
@@ -12,13 +12,13 @@ public:
 	void Draw();
 
 private:
-	class Icon* m_icon;  // ƒAƒCƒRƒ“ƒNƒ‰ƒX
+	class Icon* m_icon;  // ã‚¢ã‚¤ã‚³ãƒ³ã‚¯ãƒ©ã‚¹
 
-	VECTOR m_dir;			// Œü‚«
-	VECTOR m_aimDir;		// –Ú•WŒü‚«
-	VECTOR m_velocity;		// ‘¬“x
+	VECTOR m_dir;			// å‘ã
+	VECTOR m_aimDir;		// ç›®æ¨™å‘ã
+	VECTOR m_velocity;		// é€Ÿåº¦
 
-	int m_modelHandle;		// ƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹
+	int m_modelHandle;		// ãƒ¢ãƒ‡ãƒ«ãƒãƒ³ãƒ‰ãƒ«
 
 	enum Anim
 	{
@@ -26,8 +26,8 @@ private:
 		Run,
 	};
 
-	int m_animType;  // Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ª‰½‚©
-	int m_animIndex;  // Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğ‹L˜^
-	float m_animTime;  // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŒo‰ßŠÔ
-	float m_animTotalTime;  // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì‘ŠÔ
+	int m_animType;  // ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒä½•ã‹
+	int m_animIndex;  // ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¨˜éŒ²
+	float m_animTime;  // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®çµŒéæ™‚é–“
+	float m_animTotalTime;  // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ç·æ™‚é–“
 };
