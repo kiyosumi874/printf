@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include <unordered_map>
 #include "DxLib.h"
-#undef LoadImage() // windows‚ÌLoadImage‚ğ”j‰ó‚·‚é‚½‚ß
-#pragma warning(disable:26812) // enum‚ÌŒx‚ğÁ‚·
+#undef LoadImage() // windowsã®LoadImageã‚’ç ´å£Šã™ã‚‹ãŸã‚
+#pragma warning(disable:26812) // enumã®è­¦å‘Šã‚’æ¶ˆã™
 using namespace std;
 
 class AssetManager

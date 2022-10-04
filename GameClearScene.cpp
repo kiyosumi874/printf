@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 GameClearScene::GameClearScene(const MODE& mode)
 	: Scene(mode)

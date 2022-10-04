@@ -1,13 +1,13 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 Gradation::Gradation()
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 Gradation::~Gradation()
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 void Gradation::Start()
@@ -17,7 +17,7 @@ void Gradation::Start()
 
 void Gradation::Update()
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 void Gradation::Draw()

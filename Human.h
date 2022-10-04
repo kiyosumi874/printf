@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Component.h"
 
 class Human : public ModelBase, public Component
@@ -11,7 +11,7 @@ public:
 	virtual void Update() {};
 	virtual void Draw() {};
 
-	// •K‚¸ŒÄ‚Ô‚±‚Æ
+	// å¿…ãšå‘¼ã¶ã“ã¨
 	void Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale);
 
 	void SetTomatoWallPtr(std::vector<class TomatoWallManager*> tomatoWall);
@@ -24,36 +24,36 @@ protected:
 	class Transform* m_pTransform = nullptr;
 	class Tag* m_pTag = nullptr;
 	std::vector<class TomatoWallManager*> m_pTomatoWall;
-	class Icon* m_pIcon = nullptr;  // ƒAƒCƒRƒ“ƒNƒ‰ƒX
+	class Icon* m_pIcon = nullptr;  // ã‚¢ã‚¤ã‚³ãƒ³ã‚¯ãƒ©ã‚¹
 	class std::list<Object*> m_pTomato;
 
-	const int m_bulletCapacity = 10; // ‹…‚ÌŒÀŠEŠ”
-	int m_bulletNum = m_bulletCapacity;        // ‹…‚ÌŠ”
+	const int m_bulletCapacity = 10; // çƒã®é™ç•Œæ‰€æŒæ•°
+	int m_bulletNum = m_bulletCapacity;        // çƒã®æ‰€æŒæ•°
 
 	enum Anim
 	{
-		None = -1,  // ‰½‚à‚µ‚È‚¢
-		Idle,  // ~‚Ü‚é
-		Run,   // ‘–‚é
-		Throw,  // “Š‚°‚é
-		Pick,  // E‚¤
+		None = -1,  // ä½•ã‚‚ã—ãªã„
+		Idle,  // æ­¢ã¾ã‚‹
+		Run,   // èµ°ã‚‹
+		Throw,  // æŠ•ã’ã‚‹
+		Pick,  // æ‹¾ã†
 	};
 
-	int m_animType;  // Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ª‰½‚©
-	int m_beforeAnimType;  // ‘O‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
-	int m_animIndex;  // Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğ‹L˜^
-	float m_animTime;  // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŒo‰ßŠÔ
-	float m_animTotalTime;  // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì‘ŠÔ
-	float m_animSpeed;  // Šî€‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ƒXƒs[ƒh
-	float m_throwSpeed;  // “Š‚°‚éƒXƒs[ƒh(•â³‚ğ‚©‚¯‚é)
-	float m_pickSpeed;  // E‚¤ƒXƒs[ƒh(•â³‚ğ‚©‚¯‚é)
+	int m_animType;  // ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒä½•ã‹
+	int m_beforeAnimType;  // å‰ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
+	int m_animIndex;  // ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¨˜éŒ²
+	float m_animTime;  // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®çµŒéæ™‚é–“
+	float m_animTotalTime;  // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ç·æ™‚é–“
+	float m_animSpeed;  // åŸºæº–ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ”ãƒ¼ãƒ‰
+	float m_throwSpeed;  // æŠ•ã’ã‚‹ã‚¹ãƒ”ãƒ¼ãƒ‰(è£œæ­£ã‚’ã‹ã‘ã‚‹)
+	float m_pickSpeed;  // æ‹¾ã†ã‚¹ãƒ”ãƒ¼ãƒ‰(è£œæ­£ã‚’ã‹ã‘ã‚‹)
 
-	bool m_moveFlag;  // “®‚¢‚Ä‚¢‚é‚©
-	bool m_throwFlag;  // ƒgƒ}ƒg‚ğ“Š‚°‚½‚©
-	bool m_pickFlag;  // ƒgƒ}ƒg‚ğE‚Á‚½‚©
+	bool m_moveFlag;  // å‹•ã„ã¦ã„ã‚‹ã‹
+	bool m_throwFlag;  // ãƒˆãƒãƒˆã‚’æŠ•ã’ãŸã‹
+	bool m_pickFlag;  // ãƒˆãƒãƒˆã‚’æ‹¾ã£ãŸã‹
 
-	virtual void Animation() {};  // ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
-	virtual void ChangeAnimation() {};  // ƒAƒjƒ[ƒVƒ‡ƒ“•ÏXˆ—
+	virtual void Animation() {};  // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†
+	virtual void ChangeAnimation() {};  // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å¤‰æ›´å‡¦ç†
 
 	double GetDistance(VECTOR& pos1, VECTOR& pos2);
 	float GetSize(float v1, float v2);

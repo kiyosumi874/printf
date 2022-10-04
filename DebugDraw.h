@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
-// ƒOƒŠƒbƒhü‚Ì•`‰æ
+// ã‚°ãƒªãƒƒãƒ‰ç·šã®æç”»
 void DrawGrid(float groundSize, int divideNum);
