@@ -1,12 +1,12 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Image.h"
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Image::Image()
 {
 }
 
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Image::~Image()
 {
 	DeleteGraph(m_graphHandle);
@@ -26,13 +26,13 @@ void Image::Init(const VECTOR& pos, const VECTOR& extendRate, double angle, cons
 	m_isDraw = true;
 }
 
-// XVˆ—
+// æ›´æ–°å‡¦ç†
 void Image::Update()
 {
 	if (m_isDraw) { m_angle += m_addAngle; }
 }
 
-// •`‰æˆ—
+// æç”»å‡¦ç†
 void Image::Draw()
 {
 	if (m_isDraw)

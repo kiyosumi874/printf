@@ -1,29 +1,29 @@
-#pragma once
+ï»¿#pragma once
 #include "ModelBase.h"
 #include "Component.h"
 
 class Icon : public ModelBase, public Component
 {
 public:
-	Icon(class Tag* tag);   // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	~Icon();  // ƒfƒXƒgƒ‰ƒNƒ^
+	Icon(class Tag* tag);   // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	~Icon();  // ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
-	void Update(VECTOR& position);  // XVˆ—
-	void Draw();  // •`‰æˆ—
+	void Update(VECTOR& position);  // æ›´æ–°å‡¦ç†
+	void Draw();  // æç”»å‡¦ç†
 
-	// •K‚¸ŒÄ‚Ô‚±‚Æ
+	// å¿…ãšå‘¼ã¶ã“ã¨
 	void Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale);
 
 	void Animation();
 
 
 private:
-	VECTOR m_correctionVector;  // ˆÊ’u‚Ì•â³—p
+	VECTOR m_correctionVector;  // ä½ç½®ã®è£œæ­£ç”¨
 	class Tag* m_pTag;
 
-	int m_animIndex;  // Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğ‹L˜^
-	float m_animTime;  // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŒo‰ßŠÔ
-	float m_animTotalTime;  // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì‘ŠÔ
-	float m_animSpeed;  // Šî€‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ƒXƒs[ƒh
+	int m_animIndex;  // ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¨˜éŒ²
+	float m_animTime;  // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®çµŒéæ™‚é–“
+	float m_animTotalTime;  // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ç·æ™‚é–“
+	float m_animSpeed;  // åŸºæº–ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ”ãƒ¼ãƒ‰
 };
 

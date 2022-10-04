@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "Player1.h"
 #include "Object.h"
 #include "Transform.h"
@@ -20,7 +20,7 @@ Player1::Player1()
 	m_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_aimDir = m_dir;
 
-	// �A�j���[�V��������
+	// アニメーション準備
 	m_animTime = 0.0f;
 	m_animSpeed = 0.3f;
 	m_throwSpeed = 1.2f;
@@ -48,27 +48,27 @@ void Player1::Start()
 
 void Player1::Update()
 {
-	Rotate();	// ��]
-	Input();	// ����
-	// �A�j���[�V��������
+	Rotate();	// 回転
+	Input();	// 入力
+	// アニメーション処理
 	Animation();
 
 	m_var.pos = m_pTransform->position;
-	// �ړ�����
+	// 移動処理
 	if (m_moveFlag)
 	{
 		m_pTransform->position = VAdd(m_pTransform->position, m_velocity);
 		m_var.pos = m_pTransform->position;
 
-		// 3D���f���̃|�W�V�����ݒ�
+		// 3Dモデルのポジション設定
 		MV1SetPosition(m_var.handle, m_var.pos);
 	}
 
-	// �����ɍ��킹�ă��f������]
+	// 向きに合わせてモデルを回転
 	MATRIX rotYMat = MGetRotY(180.0f * DX_PI_F / 180.0f);
 	VECTOR negativeVec = VTransform(m_dir, rotYMat);
 
-	// ���f���ɉ�]���Z�b�g����
+	// モデルに回転をセットする
 	MV1SetRotationZYAxis(m_var.handle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
 
 	m_pIcon->Update(m_var.pos);
@@ -76,7 +76,7 @@ void Player1::Update()
 
 void Player1::Draw()
 {
-	// 3D���f���̕`��
+	// 3Dモデルの描画
 	SetUseLighting(false);
 	MV1DrawModel(m_var.handle);
 	m_pIcon->Draw();
@@ -85,22 +85,22 @@ void Player1::Draw()
 
 void Player1::Input()
 {
-	m_inputVector = VGet(0.0f, 0.0f, 0.0f); // ���������v���W�擾�p�ϐ�
-	// �O�㍶�E
+	m_inputVector = VGet(0.0f, 0.0f, 0.0f); // 押した合計座標取得用変数
+	// 前後左右
 	VECTOR front = { 0.0f,0.0f,1.0f };
 	VECTOR rear = { 0.0f,0.0f,-1.0f };
 	VECTOR left = { 1.0f,0.0f,0.0f };
 	VECTOR right = { -1.0f,0.0f,0.0f };
 
-	float addRad = 1.58f;	// ���Z����p�x
-	bool input = false;		// ���͂���������p
+	float addRad = 1.58f;	// 加算する角度
+	bool input = false;		// 入力したか判定用
 
 	XINPUT_STATE inputState;
 
-	// 1P�̑���
+	// 1Pの操作
 	if (m_pTag->tag == ObjectTag::Team1)
 	{
-		// ���͏�Ԃ��擾
+		// 入力状態を取得
 		GetJoypadXInputState(DX_INPUT_PAD2, &inputState);
 
 		if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
@@ -112,7 +112,7 @@ void Player1::Input()
 			m_pTransform->rotate.y -= 0.02f;
 		}
 
-		// �O�ɐi��
+		// 前に進む
 		if (Input::IsPress2P(BUTTON_ID_UP))
 		{
 			front.x = sinf(m_pTransform->rotate.y);
@@ -121,7 +121,7 @@ void Player1::Input()
 			input = true;
 		}
 
-		// ���ɐi��
+		// 後ろに進む
 		if (Input::IsPress2P(BUTTON_ID_DOWN))
 		{
 			rear.x = sinf(m_pTransform->rotate.y) * -1.0f;
@@ -130,7 +130,7 @@ void Player1::Input()
 			input = true;
 		}
 
-		// �E�ɐi��
+		// 右に進む
 		if (Input::IsPress2P(BUTTON_ID_LEFT))
 		{
 			right.x = sinf(m_pTransform->rotate.y - addRad);
@@ -139,7 +139,7 @@ void Player1::Input()
 			input = true;
 		}
 
-		// ���ɐi��
+		// 左に進む
 		if (Input::IsPress2P(BUTTON_ID_RIGHT))
 		{
 			left.x = sinf(m_pTransform->rotate.y + addRad);
@@ -148,7 +148,7 @@ void Player1::Input()
 			input = true;
 		}
 
-		// �g�}�g����(Player�̉�]�������I������㐶��(�ゾ�ƃv���C���[�̌����ɂȂ炸���������))
+		// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
 		if (Input::IsDown2P(BUTTON_ID_R) && m_bulletNum > 0 && !m_throwFlag)
 		{
 			m_throwFlag = true;
@@ -158,13 +158,13 @@ void Player1::Input()
 			dir.x = m_pTransform->position.x + sinf(m_pTransform->rotate.y) * -30.0f;
 			dir.z = m_pTransform->position.z + cosf(m_pTransform->rotate.y) * -30.0f;
 			dir = VSub(m_pTransform->position, dir);
-			// �����𐳋K��
+			// 方向を正規化
 			dir = VNorm(dir);
 			
 			//m_effect->PlayEffect(m_position);
 		}
 
-		// �g�}�g�����E�܂Ŏ����Ă��Ȃ��Ƃ��A�g�}�g�̕ǂ���g�}�g�����
+		// トマトを限界まで持っていないとき、トマトの壁からトマトを回収
 		if (Input::IsDown2P(BUTTON_ID_B) && m_bulletNum < m_bulletCapacity)
 		{
 			TomatoCollect();
@@ -173,19 +173,19 @@ void Player1::Input()
 		Score::Set1PBulletNum(m_bulletNum);
 	}
 
-	// ���͗L�i�����j�E���͖��i�����j
+	// 入力有（加速）・入力無（減速）
 	if (input)
 	{
-		// ���E�E�O�㓯�������Ȃǂœ��̓x�N�g����0�̎��͖���
+		// 左右・前後同時押しなどで入力ベクトルが0の時は無視
 		if (VSquareSize(m_inputVector) < 0.5f)
 		{
 			return;
 		}
 
-		// �����𐳋K��
+		// 方向を正規化
 		m_inputVector = VNorm(m_inputVector);
 
-		// ���͕����͌��݌����Ă�������ƈقȂ邩
+		// 入力方向は現在向いている向きと異なるか
 		if (IsNearAngle(m_inputVector, m_dir))
 		{
 			m_dir = m_inputVector;
@@ -215,7 +215,7 @@ void Player1::Rotate()
 {
 	if (m_rotateNow)
 	{
-		// ��]���ڕW�p�x�ɓ��B����Ή�]���[�h�I��
+		// 回転が目標角度に到達すれば回転モード終了
 		if (IsNearAngle(m_aimDir, m_dir))
 		{
 			m_dir = m_aimDir;
@@ -223,22 +223,22 @@ void Player1::Rotate()
 		}
 		else
 		{
-			// ��]
+			// 回転
 			VECTOR interPolateDir;
 			interPolateDir = RotateForAimVecYAxis(m_dir, m_aimDir, 10.0f);
 
-			// ��]���ڕW�p�x�𒴂��Ă��Ȃ���
+			// 回転が目標角度を超えていないか
 			VECTOR cross1, cross2;
 			cross1 = VCross(m_dir, m_aimDir);
 			cross2 = VCross(interPolateDir, m_aimDir);
 
-			// �ڕW�p�x�𒴂�����I��
+			// 目標角度を超えたら終了
 			if (cross1.y * cross2.y < 0.0f)
 			{
 				interPolateDir = m_aimDir;
 				m_rotateNow = false;
 			}
-			// �ڕW�x�N�g����10�x�����߂Â����p�x
+			// 目標ベクトルに10度だけ近づえた角度
 			m_dir = interPolateDir;
 		}
 	}
@@ -246,7 +246,7 @@ void Player1::Rotate()
 
 void Player1::Animation()
 {
-	// �A�j���[�V��������
+	// アニメーション処理
 	if (m_animType == Anim::Throw)
 	{
 		m_animTime += m_throwSpeed;
@@ -283,8 +283,8 @@ void Player1::Animation()
 
 void Player1::ChangeAnimation()
 {
-	// �ړ��ł���A�j���[�V�����Ȃ�
-	// �������Ă���̂��A�~�܂��Ă���̂��𔻒f
+	// 移動できるアニメーションなら
+	// 今動いているのか、止まっているのかを判断
 	if (m_moveFlag)
 	{
 		VECTOR nowPosition = MV1GetPosition(m_var.handle);
@@ -300,7 +300,7 @@ void Player1::ChangeAnimation()
 		}
 	}
 
-	// �A�j���[�V��������
+	// アニメーション処理
 	if (m_animType != m_beforeAnimType)
 	{
 		MV1DetachAnim(m_var.handle, m_animIndex);
@@ -319,21 +319,21 @@ void Player1::TomatoCollect()
 	auto pos = m_pTransform->position;
 	for (auto tomatowall : m_pTomatoWall)
 	{
-		// ���̕ǂɃg�}�g�͂���̂�
+		// その壁にトマトはあるのか
 		if (tomatowall[i].GetAllTomatoNum() != 0)
 		{
-			// �ǂ̃g�}�g�̕ǂ��𒲂ׂ�
+			// どのトマトの壁かを調べる
 			VECTOR gPos = tomatowall[i].GetPosition();
 			distance = GetDistance(gPos, pos);
 
-			// ���������̒l�Ȃ琳�̒l�ɕς���
+			// 距離が負の値なら正の値に変える
 			if (distance < 0.0f)
 			{
 				distance = distance * -1.0f;
 			}
 		}
 
-		// �͈͂ɓ����Ă���g�}�g�̕ǂ���g�}�g�����
+		// 範囲に入っているトマトの壁からトマトを回収
 		if (distance < tomatowall[i].GetWidthDistance() && !m_pickFlag)
 		{
 			m_pickFlag = true;
@@ -369,14 +369,14 @@ float Player1::CalcRotationDirectionYAxis(const VECTOR& nowVec, const VECTOR& di
 
 VECTOR Player1::RotateForAimVecYAxis(const VECTOR& nowVec, const VECTOR& aimVec, float degreeVelocity)
 {
-	// �p���x�i�x���j�����W�A���p�ɕϊ��A�E��肩����肩�𒲂ׂ�
+	// 角速度（度数）をラジアン角に変換、右回りか左回りかを調べる
 	float rotRadian = (DX_PI_F * degreeVelocity / 180.0f);
 	rotRadian *= CalcRotationDirectionYAxis(nowVec, aimVec);
 
-	// Y����]�s����쐬����
+	// Y軸回転行列を作成する
 	MATRIX yRotMat = MGetRotY(rotRadian);
 
-	// Y����]����
+	// Y軸回転する
 	VECTOR rotVec;
 	rotVec = VTransform(nowVec, yRotMat);
 	return rotVec;

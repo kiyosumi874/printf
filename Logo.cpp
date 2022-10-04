@@ -1,13 +1,13 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 Logo::Logo()
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 Logo::~Logo()
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 void Logo::Start()
@@ -17,7 +17,7 @@ void Logo::Start()
 
 void Logo::Update()
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 void Logo::Draw()

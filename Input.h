@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 
 enum ButtonID
 {
-    BUTTON_ID_DOWN,     // \ŽšƒL[
+    BUTTON_ID_DOWN,     // åå­—ã‚­ãƒ¼
     BUTTON_ID_LEFT,
     BUTTON_ID_RIGHT,
     BUTTON_ID_UP,
@@ -20,18 +20,18 @@ enum ButtonID
 
 enum PAD_ID
 {
-    PAD_ID_DOWN = (0x0001),// «ƒ`ƒFƒbƒNƒ}ƒXƒN
-    PAD_ID_LEFT = (0x0002),// ©ƒ`ƒFƒbƒNƒ}ƒXƒN
-    PAD_ID_RIGHT = (0x0004),// ¨ƒ`ƒFƒbƒNƒ}ƒXƒN
-    PAD_ID_UP = (0x0008),// ªƒ`ƒFƒbƒNƒ}ƒXƒN
-    PAD_ID_A = (0x0010),// ‚`ƒ{ƒ^ƒ“ƒ`ƒFƒbƒNƒ}ƒXƒN
-    PAD_ID_B = (0x0020),// ‚aƒ{ƒ^ƒ“ƒ`ƒFƒbƒNƒ}ƒXƒN
-    PAD_ID_X = (0x0040),// ‚wƒ{ƒ^ƒ“ƒ`ƒFƒbƒNƒ}ƒXƒN
-    PAD_ID_Y = (0x0080),// ‚xƒ{ƒ^ƒ“ƒ`ƒFƒbƒNƒ}ƒXƒN
-    PAD_ID_L = (0x0100),// ‚kƒ{ƒ^ƒ“ƒ`ƒFƒbƒNƒ}ƒXƒN
-    PAD_ID_R = (0x0200),// ‚qƒ{ƒ^ƒ“ƒ`ƒFƒbƒNƒ}ƒXƒN
+    PAD_ID_DOWN = (0x0001),// â†“ãƒã‚§ãƒƒã‚¯ãƒžã‚¹ã‚¯
+    PAD_ID_LEFT = (0x0002),// â†ãƒã‚§ãƒƒã‚¯ãƒžã‚¹ã‚¯
+    PAD_ID_RIGHT = (0x0004),// â†’ãƒã‚§ãƒƒã‚¯ãƒžã‚¹ã‚¯
+    PAD_ID_UP = (0x0008),// â†‘ãƒã‚§ãƒƒã‚¯ãƒžã‚¹ã‚¯
+    PAD_ID_A = (0x0010),// ï¼¡ãƒœã‚¿ãƒ³ãƒã‚§ãƒƒã‚¯ãƒžã‚¹ã‚¯
+    PAD_ID_B = (0x0020),// ï¼¢ãƒœã‚¿ãƒ³ãƒã‚§ãƒƒã‚¯ãƒžã‚¹ã‚¯
+    PAD_ID_X = (0x0040),// ï¼¸ãƒœã‚¿ãƒ³ãƒã‚§ãƒƒã‚¯ãƒžã‚¹ã‚¯
+    PAD_ID_Y = (0x0080),// ï¼¹ãƒœã‚¿ãƒ³ãƒã‚§ãƒƒã‚¯ãƒžã‚¹ã‚¯
+    PAD_ID_L = (0x0100),// ï¼¬ãƒœã‚¿ãƒ³ãƒã‚§ãƒƒã‚¯ãƒžã‚¹ã‚¯
+    PAD_ID_R = (0x0200),// ï¼²ãƒœã‚¿ãƒ³ãƒã‚§ãƒƒã‚¯ãƒžã‚¹ã‚¯
     PAD_ID_BACK = (0x0400),// BACK
-    PAD_ID_START = (0x0800)	 // ‚r‚s‚`‚q‚sƒ{ƒ^ƒ“ƒ`ƒFƒbƒNƒ}ƒXƒN
+    PAD_ID_START = (0x0800)	 // ï¼³ï¼´ï¼¡ï¼²ï¼´ãƒœã‚¿ãƒ³ãƒã‚§ãƒƒã‚¯ãƒžã‚¹ã‚¯
 
 };
 const int KEYBOARD = 0;
@@ -44,8 +44,8 @@ private:
     static Input* m_input;
     struct KeyInformation
     {
-        int keyCode[3]; // VK_SHIFT‚Æ‚©'A'‚Ì‚â‚Âh
-        int pressCount[3]; // ó‘Ô
+        int keyCode[3]; // VK_SHIFTã¨ã‹'A'ã®ã‚„ã¤h
+        int pressCount[3]; // çŠ¶æ…‹
     };
     KeyInformation m_keys[BUTTON_ID_MAX];
     int m_analogStickX[2];
@@ -57,10 +57,10 @@ private:
 
 
 public:
-    Input(const Input&) = delete; // ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ð delete Žw’èB
-    Input& operator=(const Input&) = delete; // ƒRƒs[‘ã“ü‰‰ŽZŽq‚à delete Žw’èB
-    Input(Input&&) = delete; // ƒ€[ƒuƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ð delete Žw’èB
-    Input& operator=(Input&&) = delete; // ƒ€[ƒu‘ã“ü‰‰ŽZŽq‚à delete Žw’èB
+    Input(const Input&) = delete; // ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’ delete æŒ‡å®šã€‚
+    Input& operator=(const Input&) = delete; // ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­ã‚‚ delete æŒ‡å®šã€‚
+    Input(Input&&) = delete; // ãƒ ãƒ¼ãƒ–ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’ delete æŒ‡å®šã€‚
+    Input& operator=(Input&&) = delete; // ãƒ ãƒ¼ãƒ–ä»£å…¥æ¼”ç®—å­ã‚‚ delete æŒ‡å®šã€‚
 
     static void GetInstance()
     {
@@ -81,9 +81,9 @@ public:
     }
 
     /// <summary>
-    /// ƒXƒeƒBƒbƒN‚Ì–³Œø”ÍˆÍ‚ðÝ’è‚·‚é
+    /// ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®ç„¡åŠ¹ç¯„å›²ã‚’è¨­å®šã™ã‚‹
     /// </summary>
-    /// <param name="deadZone">0.0`1.0(ƒfƒtƒHƒ‹ƒg‚Í0.35)</param>
+    /// <param name="deadZone">0.0ï½ž1.0(ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯0.35)</param>
     static void SetStickDeadZone(const double deadZone)
     {
         SetJoypadDeadZone(DX_INPUT_PAD1, deadZone);
@@ -91,51 +91,51 @@ public:
     }
 
     /// <summary>
-    /// 1PƒRƒ“ƒgƒ[ƒ‰[‚ðU“®‚³‚¹‚é
+    /// 1Pã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã‚’æŒ¯å‹•ã•ã›ã‚‹
     /// </summary>
-    /// <param name="power">U“®‚Ì‹­‚³(0`1000)</param>
-    /// <param name="time">U“®‚·‚éŽžŠÔ(-1‚ÅStopVibration1P‚ªŒÄ‚Î‚ê‚é‚Ü‚ÅU“®‚·‚é)</param>
-    /// <param name="effectIndex">U“®‚³‚¹‚éƒ‚[ƒ^[”Ô†(‹C‚É‚¹‚ñ‚Å‚à‚¦‚¦)</param>
+    /// <param name="power">æŒ¯å‹•ã®å¼·ã•(0ï½ž1000)</param>
+    /// <param name="time">æŒ¯å‹•ã™ã‚‹æ™‚é–“(-1ã§StopVibration1PãŒå‘¼ã°ã‚Œã‚‹ã¾ã§æŒ¯å‹•ã™ã‚‹)</param>
+    /// <param name="effectIndex">æŒ¯å‹•ã•ã›ã‚‹ãƒ¢ãƒ¼ã‚¿ãƒ¼ç•ªå·(æ°—ã«ã›ã‚“ã§ã‚‚ãˆãˆ)</param>
     static void StartVibration1P(const int power, const int time, int effectIndex = -1)
     {
         StartJoypadVibration(DX_INPUT_PAD1, power, time, effectIndex);
     }
 
     /// <summary>
-    /// 2PƒRƒ“ƒgƒ[ƒ‰[‚ðU“®‚³‚¹‚é
+    /// 2Pã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã‚’æŒ¯å‹•ã•ã›ã‚‹
     /// </summary>
-    /// <param name="power">U“®‚Ì‹­‚³(0`1000)</param>
-    /// <param name="time">U“®‚·‚éŽžŠÔ(-1‚ÅStopVibration2P‚ªŒÄ‚Î‚ê‚é‚Ü‚ÅU“®‚·‚é)</param>
-    /// <param name="effectIndex">U“®‚³‚¹‚éƒ‚[ƒ^[”Ô†(‹C‚É‚¹‚ñ‚Å‚à‚¦‚¦)</param>
+    /// <param name="power">æŒ¯å‹•ã®å¼·ã•(0ï½ž1000)</param>
+    /// <param name="time">æŒ¯å‹•ã™ã‚‹æ™‚é–“(-1ã§StopVibration2PãŒå‘¼ã°ã‚Œã‚‹ã¾ã§æŒ¯å‹•ã™ã‚‹)</param>
+    /// <param name="effectIndex">æŒ¯å‹•ã•ã›ã‚‹ãƒ¢ãƒ¼ã‚¿ãƒ¼ç•ªå·(æ°—ã«ã›ã‚“ã§ã‚‚ãˆãˆ)</param>
     static void StartVibration2P(const int power, const int time, int effectIndex = -1)
     {
         StartJoypadVibration(DX_INPUT_PAD2, power, time, effectIndex);
     }
 
     /// <summary>
-    /// 1PƒRƒ“ƒgƒ[ƒ‰[‚ÌU“®‚ðŽ~‚ß‚é
+    /// 1Pã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®æŒ¯å‹•ã‚’æ­¢ã‚ã‚‹
     /// </summary>
-    /// <param name="effectIndex">U“®‚ðŽ~‚ß‚éƒ‚[ƒ^[”Ô†(StartVibration1P‚ÅŽw’è‚µ‚½’l‚ð“ü‚ê‚é)</param>
+    /// <param name="effectIndex">æŒ¯å‹•ã‚’æ­¢ã‚ã‚‹ãƒ¢ãƒ¼ã‚¿ãƒ¼ç•ªå·(StartVibration1Pã§æŒ‡å®šã—ãŸå€¤ã‚’å…¥ã‚Œã‚‹)</param>
     static void StopVibration1P(int effectIndex = -1)
     {
         StopJoypadVibration(DX_INPUT_PAD1, effectIndex);
     }
 
     /// <summary>
-    /// 2PƒRƒ“ƒgƒ[ƒ‰[‚ÌU“®‚ðŽ~‚ß‚é
+    /// 2Pã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®æŒ¯å‹•ã‚’æ­¢ã‚ã‚‹
     /// </summary>
-    /// <param name="effectIndex">U“®‚ðŽ~‚ß‚éƒ‚[ƒ^[”Ô†(StartVibration2P‚ÅŽw’è‚µ‚½’l‚ð“ü‚ê‚é)</param>
+    /// <param name="effectIndex">æŒ¯å‹•ã‚’æ­¢ã‚ã‚‹ãƒ¢ãƒ¼ã‚¿ãƒ¼ç•ªå·(StartVibration2Pã§æŒ‡å®šã—ãŸå€¤ã‚’å…¥ã‚Œã‚‹)</param>
     static void StopVibration2P(int effectIndex = -1)
     {
         StopJoypadVibration(DX_INPUT_PAD2, effectIndex);
     }
 
     /// <summary>
-    /// 1PƒRƒ“ƒgƒ[ƒ‰[‚ÌƒXƒeƒBƒbƒN‚Ìó‘Ô‚ðŽæ“¾
+    /// 1Pã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®çŠ¶æ…‹ã‚’å–å¾—
     /// </summary>
-    /// <param name="x">ˆø”‚ðŽQÆ‚µ‚Äx‚ðŽæ“¾‚µ‚Ü‚·(1000`-1000)</param>
-    /// <param name="y">ˆø”‚ðŽQÆ‚µ‚Äy‚ðŽæ“¾‚µ‚Ü‚·(1000`-1000)</param>
-    /// Ž©•ª‚Å³‹K‰»‚µ‚Ä‚¯‚ë(VNorm(VGet(x,y,1))‚Ä‚·‚é‚Æ‚¤‚Ü‚­‚¢‚­‹C‚ª‚·‚é‚¼)
+    /// <param name="x">å¼•æ•°ã‚’å‚ç…§ã—ã¦xã‚’å–å¾—ã—ã¾ã™(1000ï½ž-1000)</param>
+    /// <param name="y">å¼•æ•°ã‚’å‚ç…§ã—ã¦yã‚’å–å¾—ã—ã¾ã™(1000ï½ž-1000)</param>
+    /// è‡ªåˆ†ã§æ­£è¦åŒ–ã—ã¦ã‘ã‚(VNorm(VGet(x,y,1))ã¦ã™ã‚‹ã¨ã†ã¾ãã„ãæ°—ãŒã™ã‚‹ãž)
     static void GetAnalogStick1P(int& x, int& y)
     {
         x = m_input->m_analogStickX[0];
@@ -143,11 +143,11 @@ public:
     }
 
     /// <summary>
-    /// 2PƒRƒ“ƒgƒ[ƒ‰[‚ÌƒXƒeƒBƒbƒN‚Ìó‘Ô‚ðŽæ“¾
+    /// 2Pã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®çŠ¶æ…‹ã‚’å–å¾—
     /// </summary>
-    /// <param name="x">ˆø”‚ðŽQÆ‚µ‚Äx‚ðŽæ“¾‚µ‚Ü‚·(1000`-1000)</param>
-    /// <param name="y">ˆø”‚ðŽQÆ‚µ‚Äy‚ðŽæ“¾‚µ‚Ü‚·(1000`-1000)</param>
-    /// Ž©•ª‚Å³‹K‰»‚µ‚Ä‚¯‚ë(VNorm(VGet(x,y,1))‚Ä‚·‚é‚Æ‚¤‚Ü‚­‚¢‚­‹C‚ª‚·‚é‚¼)
+    /// <param name="x">å¼•æ•°ã‚’å‚ç…§ã—ã¦xã‚’å–å¾—ã—ã¾ã™(1000ï½ž-1000)</param>
+    /// <param name="y">å¼•æ•°ã‚’å‚ç…§ã—ã¦yã‚’å–å¾—ã—ã¾ã™(1000ï½ž-1000)</param>
+    /// è‡ªåˆ†ã§æ­£è¦åŒ–ã—ã¦ã‘ã‚(VNorm(VGet(x,y,1))ã¦ã™ã‚‹ã¨ã†ã¾ãã„ãæ°—ãŒã™ã‚‹ãž)
     static void GetAnalogStick2P(int& x, int& y)
     {
         x = m_input->m_analogStickX[1];
@@ -155,22 +155,22 @@ public:
     }
 
     static void Update();
-    // 1P‚ª‰Ÿ‚µ‚½uŠÔ
+    // 1PãŒæŠ¼ã—ãŸçž¬é–“
     static bool IsDown1P(int buttonID) { return ((m_input->m_keys[buttonID].pressCount[KEYBOARD] == 1) || (m_input->m_keys[buttonID].pressCount[CONTROLLER_1P] == 1)); }
-    // 1P‚ª‰Ÿ‚µ‚Ä‚¢‚é‚Æ‚«
+    // 1PãŒæŠ¼ã—ã¦ã„ã‚‹ã¨ã
     static bool IsPress1P(int buttonID) { return m_input->m_keys[buttonID].pressCount[KEYBOARD] > 1 || m_input->m_keys[buttonID].pressCount[CONTROLLER_1P] > 1; }
-    // 1P‚ª—£‚µ‚½uŠÔ
+    // 1PãŒé›¢ã—ãŸçž¬é–“
     static bool IsUp1P(int buttonID) { return m_input->m_keys[buttonID].pressCount[KEYBOARD] == 0 || m_input->m_keys[buttonID].pressCount[CONTROLLER_1P] == 0; }
-    // 1P‚ª—£‚µ‚Ä‚¢‚é‚Æ‚«
+    // 1PãŒé›¢ã—ã¦ã„ã‚‹ã¨ã
     static bool IsRelease1P(int buttonID) { return m_input->m_keys[buttonID].pressCount[KEYBOARD] < 0 || m_input->m_keys[buttonID].pressCount[CONTROLLER_1P] < 0; }
 
 
-    // 2P‚ª‰Ÿ‚µ‚½uŠÔ
+    // 2PãŒæŠ¼ã—ãŸçž¬é–“
     static bool IsDown2P(int buttonID) { return m_input->m_keys[buttonID].pressCount[CONTROLLER_2P] == 1; }
-    // 2P‚ª‰Ÿ‚µ‚Ä‚¢‚é‚Æ‚«
+    // 2PãŒæŠ¼ã—ã¦ã„ã‚‹ã¨ã
     static bool IsPress2P(int buttonID) { return m_input->m_keys[buttonID].pressCount[CONTROLLER_2P] > 1; }
-    // 2P‚ª—£‚µ‚½uŠÔ
+    // 2PãŒé›¢ã—ãŸçž¬é–“
     static bool IsUp2P(int buttonID) { return m_input->m_keys[buttonID].pressCount[CONTROLLER_2P] == 0; }
-    // 2P‚ª—£‚µ‚Ä‚¢‚é‚Æ‚«
+    // 2PãŒé›¢ã—ã¦ã„ã‚‹ã¨ã
     static bool IsRelease2P(int buttonID) { return m_input->m_keys[buttonID].pressCount[CONTROLLER_2P] < 0; }
 };

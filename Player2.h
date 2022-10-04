@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Human.h"
 
 class Player2 : public Human
@@ -13,21 +13,21 @@ public:
 private:
 	void Input();
 	void Rotate();
-	void Animation() override;  // ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
-	void ChangeAnimation() override;	// ƒAƒjƒ[ƒVƒ‡ƒ“•ÏXˆ—
-	void TomatoCollect();	// ƒgƒ}ƒg‰ñûˆ—
+	void Animation() override;  // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†
+	void ChangeAnimation() override;	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å¤‰æ›´å‡¦ç†
+	void TomatoCollect();	// ãƒˆãƒãƒˆå›åå‡¦ç†
 
-	// “ñ‚Â‚ÌƒxƒNƒgƒ‹‚ÌŠp“x‚ª“¯‚¶‚©
+	// äºŒã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã®è§’åº¦ãŒåŒã˜ã‹
 	bool IsNearAngle(const VECTOR& v1, const VECTOR& v2);
-	// nowVec‚©‚çdirVec‚ÌÅ’Z‚Ì‰ñ“]•ûŒü‚ğ’²‚×‚é(Y²)
+	// nowVecã‹ã‚‰dirVecã®æœ€çŸ­ã®å›è»¢æ–¹å‘ã‚’èª¿ã¹ã‚‹(Yè»¸)
 	float CalcRotationDirectionYAxis(const VECTOR& nowVec, const VECTOR& dirVec);
-	// nowVec‚©‚çaimVec‚ÉŒü‚©‚Á‚ÄdegreeVelocity‚Ì‘¬“x‚ÅY²‰ñ“]‚·‚é
+	// nowVecã‹ã‚‰aimVecã«å‘ã‹ã£ã¦degreeVelocityã®é€Ÿåº¦ã§Yè»¸å›è»¢ã™ã‚‹
 	VECTOR RotateForAimVecYAxis(const VECTOR& nowVec, const VECTOR& aimVec, float degreeVelocity);
 
-	VECTOR m_dir;			// Œü‚«
-	VECTOR m_aimDir;		// –Ú•WŒü‚«
-	VECTOR m_velocity;		// ‘¬“x
-	VECTOR m_inputVector;  // ‰Ÿ‚µ‚½‡ŒvÀ•Wæ“¾—p•Ï”
+	VECTOR m_dir;			// å‘ã
+	VECTOR m_aimDir;		// ç›®æ¨™å‘ã
+	VECTOR m_velocity;		// é€Ÿåº¦
+	VECTOR m_inputVector;  // æŠ¼ã—ãŸåˆè¨ˆåº§æ¨™å–å¾—ç”¨å¤‰æ•°
 
-	bool m_rotateNow;		// ‰ñ“]’†‚©”»’è—p
+	bool m_rotateNow;		// å›è»¢ä¸­ã‹åˆ¤å®šç”¨
 };

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <list>
 #include "Component.h"
 
@@ -32,7 +32,7 @@ public:
 		}
 	}
 
-	// ƒIƒuƒWƒFƒNƒg‚ª‚Á‚Ä‚¢‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìæ“¾
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒæŒã£ã¦ã„ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å–å¾—
 	template<class T>
 	T* GetComponent()
 	{
@@ -47,7 +47,7 @@ public:
 		return nullptr;
 	}
 
-	// ƒIƒuƒWƒFƒNƒg‚ª‚Á‚Ä‚¢‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ’Ç‰Á
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒæŒã£ã¦ã„ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’è¿½åŠ 
 	template<class T>
 	T* AddComponent()
 	{

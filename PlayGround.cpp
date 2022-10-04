@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "ModelBase.h"
 #include "Component.h"
 
@@ -6,30 +6,30 @@ PlayGround::PlayGround()
 	: m_Pos(VGet(0.0f, -10.0f, 0.0f))
 	, m_Scale(VGet(5.0f, 1.0f, 5.0f))
 {
-	// ‰Šú‰»ig‚¤ƒ‚ƒfƒ‹Aƒ|ƒWƒVƒ‡ƒ“A‰ñ“]—¦AŠg‘å—¦j
+	// åˆæœŸåŒ–ï¼ˆä½¿ã†ãƒ¢ãƒ‡ãƒ«ã€ãƒã‚¸ã‚·ãƒ§ãƒ³ã€å›è»¢ç‡ã€æ‹¡å¤§ç‡ï¼‰
 	m_var.Init(AssetManager::UseModel(AssetManager::ModelName::Ground), m_Pos, VGet(0.0f, 0.0f, 0.0f), m_Scale);
-	MV1SetScale(m_var.handle, m_var.scale);         // Šg‘å—¦
-	MV1SetRotationXYZ(m_var.handle, m_var.rotate);  // ‰ñ“]—¦
-	MV1SetPosition(m_var.handle, m_var.pos);        // ƒ|ƒWƒVƒ‡ƒ“
+	MV1SetScale(m_var.handle, m_var.scale);         // æ‹¡å¤§ç‡
+	MV1SetRotationXYZ(m_var.handle, m_var.rotate);  // å›è»¢ç‡
+	MV1SetPosition(m_var.handle, m_var.pos);        // ãƒã‚¸ã‚·ãƒ§ãƒ³
 }
 
 PlayGround::~PlayGround()
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 void PlayGround::Start()
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 void PlayGround::Update()
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 void PlayGround::Draw()
 {
-	// °‚Ì•`‰æ
+	// åºŠã®æç”»
 	MV1DrawModel(m_var.handle);
 }
