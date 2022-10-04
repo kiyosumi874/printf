@@ -11,8 +11,6 @@ Tomato::Tomato()
 {
 	m_velocity = VGet(0.0f, 0.0f, 0.0f);  // 速さはまだ0
 	m_startVelocity = VGet(20.0f, 1.0f, 20.0f);
-	m_modelHandle = MV1LoadModel("data/Tomato/Tomato.mv1");
-	m_position = VGet(0.0f,0.0f,0.0f);
 
 	m_time = 0.0f;
 	m_gravity = 9.80665f;  // 平均重力
@@ -20,43 +18,53 @@ Tomato::Tomato()
 	m_rad = m_deg * (DX_PI_F / 180.0f);
 
 	m_dir = VGet(0.0f, 0.0f, 0.0f);
-
-	// サイズ調整
-	MV1SetScale(m_modelHandle, VGet(0.02f,0.02f,0.02f));
 }
 
 // @detail デストラクタ
 Tomato::~Tomato()
 {
-	MV1DeleteModel(m_modelHandle);
 }
 
-//void Tomato::Init(VECTOR position, VECTOR dir)
-//{
-//}
-
-void Tomato::Init(VECTOR position, VECTOR dir, Tag* tag)
+void Tomato::Start()
 {
-	m_position = position;
-	m_position = VAdd(m_position, VGet(0.0f, 15.0f, 0.0f));
-	m_dir = dir;
-	m_tag = tag;
+	if (m_tag == nullptr)
+	{
+		m_tag = m_pParent->GetComponent<Tag>();
+	}
+	if (m_pTransform == nullptr)
+	{
+		m_pTransform = m_pParent->GetComponent<Transform>();
+	}
 }
 
 // @detail 更新処理
 void Tomato::Update()
 {
 	Move();
-	m_position = VAdd(m_position, m_velocity);
-	MV1SetPosition(m_modelHandle, m_position);
-	auto pos = m_pParent->GetComponent<Transform>();
-	pos->position = m_position;
+	m_pTransform->position = VAdd(m_pTransform->position, m_velocity);
+	m_var.pos = m_pTransform->position;
+	MV1SetPosition(m_var.handle, m_var.pos);
 }
 
 // @detail 描画処理
 void Tomato::Draw()
 {
-	int result = MV1DrawModel(m_modelHandle);
+	MV1DrawModel(m_var.handle);
+}
+
+void Tomato::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
+{
+	VECTOR tmp = VAdd(pos, VGet(0.0f, 15.0f, 0.0f));
+	m_var.Init(MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::Tomato)), tmp, rotate, scale);
+
+	// 3Dモデル設定
+	MV1SetScale(m_var.handle, m_var.scale);
+	MV1SetRotationXYZ(m_var.handle, m_var.rotate);
+	MV1SetPosition(m_var.handle, m_var.pos);
+
+	m_pTransform->position = m_var.pos;
+	m_pTransform->rotate = m_var.rotate;
+	m_pTransform->scale = m_var.scale;
 }
 
 // @detailトマトを投げてからの時間を返す

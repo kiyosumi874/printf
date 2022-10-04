@@ -20,8 +20,19 @@ App::App()
 	AssetManager::LoadImage(AssetManager::ImageName::Gradation, "data/postUI.png");
 	AssetManager::LoadImage(AssetManager::ImageName::TransitionButton, "data/TransitionTitleUI.png");
 	AssetManager::LoadModel(AssetManager::ModelName::Ground, "data/Ground/Ground.mv1");
-	AssetManager::LoadModel(AssetManager::ModelName::TomatoWallFull, "data/Tomato/FullTomatoWall.mv1");
 	AssetManager::LoadModel(AssetManager::ModelName::SkyDome, "data/Skydome_T2/Dome_T201.pmx");
+	AssetManager::LoadModel(AssetManager::ModelName::Team1, "data/character/man1.mv1");             // 人モデル(男1)
+	AssetManager::LoadModel(AssetManager::ModelName::Team2, "data/character/man3.mv1");             // 人モデル(男3)
+	AssetManager::LoadModel(AssetManager::ModelName::Team3, "data/character/woman2.mv1");           // 人モデル(女2)
+	AssetManager::LoadModel(AssetManager::ModelName::Tomato, "data/Tomato/Tomato.mv1");             // トマトモデル
+	AssetManager::LoadModel(AssetManager::ModelName::TomatoWallFull, "data/Tomato/FullTomatoWall.mv1");    // トマトの山モデル(満タン)
+	AssetManager::LoadModel(AssetManager::ModelName::TomatoWallOne,"data/Tomato/TomatoWall_one.mv1");      // トマトの山モデル(一段階目)
+	AssetManager::LoadModel(AssetManager::ModelName::TomatoWallTwo,"data/Tomato/TomatoWall_two.mv1");      // トマトの山モデル(二段階目)
+	AssetManager::LoadModel(AssetManager::ModelName::TomatoWallThree,"data/Tomato/TomatoWall_three.mv1");  // トマトの山モデル(三段階目)
+	AssetManager::LoadModel(AssetManager::ModelName::TomatoWallFour,"data/Tomato/TomatoWall_four.mv1");    // トマトの山モデル(四段階目)
+	AssetManager::LoadModel(AssetManager::ModelName::Icon1, "data/Icon/Red.mv1");     // アイコンモデル(赤色)
+	AssetManager::LoadModel(AssetManager::ModelName::Icon2, "data/Icon/Blue.mv1");    // アイコンモデル(青色)
+	AssetManager::LoadModel(AssetManager::ModelName::Icon3, "data/Icon/Green.mv1");   // アイコンモデル(緑色)
 
 	m_sceneManager = new SceneManager();
 	m_sceneManager->SetNowScene(TAG_SCENE::TAG_TITLE);

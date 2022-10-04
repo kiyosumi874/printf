@@ -11,9 +11,9 @@ public:
 	void Draw()override;	// 描画処理.
 
 	// 初めに一回呼ぶセッター
-	void SetPlayerptr(class Player* ptr);
+	void SetPlayerptr(class Player1* ptr);
 private:
-	class Player* m_pPlayer;		// プレイヤーを保持する箱
+	class Player1* m_pPlayer;		// プレイヤーを保持する箱
 
 	VECTOR m_viewPoint;				// カメラの注視点
 	VECTOR m_cameraOffSet;			// プレイヤーからの相対位置

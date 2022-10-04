@@ -21,11 +21,6 @@ Collider::~Collider()
 	delete m_HitEffect;
 }
 
-void Collider::Init(std::list<Object*>* objectLists)
-{
-	copyObjectList = objectLists;
-}
-
 void Collider::Update()
 {
 	CollisionCheck();
@@ -36,18 +31,18 @@ void Collider::CollisionCheck()
 	auto self = m_pParent;
 	auto selfPosition = self->GetComponent<Transform>()->position;
 	auto selfTag = self->GetComponent<Tag>();
-	for (auto obj : *copyObjectList)
+	for (auto obj : m_pObjectLists)
 	{
-		if (self == obj) { continue; }	// ©•ªˆÈŠO‚ÌƒIƒuƒWƒFƒNƒg‚Æ”»’è‚·‚é‚½‚ß
+		if (self == obj) { continue; }	// è‡ªåˆ†ä»¥å¤–ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨åˆ¤å®šã™ã‚‹ãŸã‚
 		Transform* trans = nullptr;
 		trans = obj->GetComponent<Transform>();
-		if (trans == nullptr) { continue; }	// Transform‚ğƒRƒ“ƒ|[ƒlƒ“ƒg‚µ‚Ä‚¢‚È‚¢‚à‚Ì‚Æ”»’è‚Í‚µ‚È‚¢
+		if (trans == nullptr) { continue; }	// Transformã‚’ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã—ã¦ã„ãªã„ã‚‚ã®ã¨åˆ¤å®šã¯ã—ãªã„
 		auto L_tag = obj->GetComponent<Tag>();
-		if (L_tag == nullptr) { continue; } // Tag‚ğƒRƒ“ƒ|[ƒlƒ“ƒg‚µ‚Ä‚¢‚È‚¢‚à‚Ì‚Æ”»’è‚µ‚È‚¢
+		if (L_tag == nullptr) { continue; } // Tagã‚’ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã—ã¦ã„ãªã„ã‚‚ã®ã¨åˆ¤å®šã—ãªã„
 		float distance = 0.0f;
 		distance = GetDistance(selfPosition, trans->position);
 
-		// ‹——£‚ª•‰‚Ì’l‚È‚ç³‚Ì’l‚É•Ï‚¦‚é
+		// è·é›¢ãŒè² ã®å€¤ãªã‚‰æ­£ã®å€¤ã«å¤‰ãˆã‚‹
 		if (distance < 0.0f)
 		{
 			distance = distance * -1.0f;
@@ -55,15 +50,17 @@ void Collider::CollisionCheck()
 
 		if (distance < width)
 		{
-			if (L_tag->tag == ObjectTag::tomato)	// “–‚½‚Á‚½‚Ì‚Íƒgƒ}ƒg‚¾‚Á‚½
+			if (L_tag->tag == ObjectTag::tomato)	// å½“ãŸã£ãŸã®ã¯ãƒˆãƒãƒˆã ã£ãŸ
 			{
 				auto tomato = obj->GetComponent<Tomato>();
-				tag = tomato->m_tag->tag;	// ‚¾‚ê‚ª“Š‚°‚½ƒgƒ}ƒgHi“–‚½‚Á‚½l‚Ìƒ^ƒO‚Í‚¢‚ç‚È‚¢‚Æv‚¤B“–‚Ä‚½l‚¾‚¯ƒRƒ‰ƒCƒ_[‚ğƒRƒ“ƒ|[ƒlƒ“ƒg‚³‚¹‚éj
-				if (selfTag->tag == tag)	// ©•ª‚ª“Š‚°‚½ƒgƒ}ƒg‚¾‚Á‚½‚Ì‚Å–³‹
+
+				tag = tomato->GetTag()->tag;	// ã ã‚ŒãŒæŠ•ã’ãŸãƒˆãƒãƒˆï¼Ÿï¼ˆå½“ãŸã£ãŸäººã®ã‚¿ã‚°ã¯ã„ã‚‰ãªã„ã¨æ€ã†ã€‚å½“ã¦ãŸäººã ã‘ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã•ã›ã‚‹ï¼‰
+
+				if (selfTag->tag == tag)	// è‡ªåˆ†ãŒæŠ•ã’ãŸãƒˆãƒãƒˆã ã£ãŸã®ã§ç„¡è¦–
 				{
 					continue;
 				}
-				// ‚±‚±‚ÉƒJƒvƒZƒ‹‰»‚µ‚½ƒXƒRƒAŠÇ—ƒNƒ‰ƒX‚ğŒÄ‚×‚Î‚¢‚¢‚Æv‚¤
+				// ã“ã“ã«ã‚«ãƒ—ã‚»ãƒ«åŒ–ã—ãŸã‚¹ã‚³ã‚¢ç®¡ç†ã‚¯ãƒ©ã‚¹ã‚’å‘¼ã¹ã°ã„ã„ã¨æ€ã†
 				if (tag == ObjectTag::Team1) { Score::AddTeam1Score(); }
 				else if (tag == ObjectTag::Team2) { Score::AddTeam2Score(); }
 				else if (tag == ObjectTag::Team3) { Score::AddTeam3Score(); }
@@ -84,14 +81,9 @@ void Collider::CollisionCheck()
 	}
 }
 
-void Collider::Shot(VECTOR position, VECTOR dir, Tag* tag)
+void Collider::SetBulletObject(Object* obj)
 {
-	Object* obj = new Object;
-	obj->AddComponent<Transform>();
-	auto L_tag = obj->AddComponent<Tag>();
-	L_tag->tag = ObjectTag::tomato;
-	obj->AddComponent<Tomato>()->Init(position, dir, tag);
-	copyObjectList->push_front(obj);
+	copyObjectList.push_front(obj);
 }
 
 double Collider::GetDistance(VECTOR& pos1, VECTOR& pos2)

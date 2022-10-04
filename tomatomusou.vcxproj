@@ -181,14 +181,16 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ModelManager.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Player1.cpp" />
+    <ClCompile Include="Player2.cpp" />
+    <ClCompile Include="PlayerCPU.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Projector.cpp" />
     <ClCompile Include="Rank.cpp" />
@@ -208,6 +210,12 @@
     <ClCompile Include="Tomato.cpp" />
     <ClCompile Include="TomatoUIContoroller.cpp" />
     <ClCompile Include="TomatoWall.cpp" />
+    <ClCompile Include="TomatoWallFour.cpp" />
+    <ClCompile Include="TomatoWallFull.cpp" />
+    <ClCompile Include="TomatoWallManager.cpp" />
+    <ClCompile Include="TomatoWallOne.cpp" />
+    <ClCompile Include="TomatoWallThree.cpp" />
+    <ClCompile Include="TomatoWallTwo.cpp" />
     <ClCompile Include="TransitionButton.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -235,11 +243,12 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="ModelBase.h" />
-    <ClInclude Include="ModelManager.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectTag.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="Player1.h" />
+    <ClInclude Include="Player2.h" />
+    <ClInclude Include="PlayerCPU.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Projector.h" />
     <ClInclude Include="Rank.h" />
@@ -261,6 +270,12 @@
     <ClInclude Include="Tomato.h" />
     <ClInclude Include="TomatoUIContoroller.h" />
     <ClInclude Include="TomatoWall.h" />
+    <ClInclude Include="TomatoWallFour.h" />
+    <ClInclude Include="TomatoWallFull.h" />
+    <ClInclude Include="TomatoWallManager.h" />
+    <ClInclude Include="TomatoWallOne.h" />
+    <ClInclude Include="TomatoWallThree.h" />
+    <ClInclude Include="TomatoWallTwo.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TransitionButton.h" />
     <ClInclude Include="UIBase.h" />

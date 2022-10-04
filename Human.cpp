@@ -4,456 +4,60 @@
 #include "Transform.h"
 #include "Tag.h"
 #include "Collider.h"
-#include "ModelManager.h"
 #include "Tomato.h"
-#include "TomatoWall.h"
+#include "TomatoWallManager.h"
 #include "Score.h"
 #include "Icon.h"
 
 Human::Human()
-	: m_rotateNow(false)
-	, m_moveFlag(false)
-	, m_bulletNum(10)
-	, m_bulletCapacity(10)
 {
 	m_pTransform = nullptr;
 	m_pTag = nullptr;
+}
 
-	m_velocity = VGet(0.0f, 0.0f, 0.0f);
+void Human::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
+{
+	// 3Dãƒ¢ãƒ‡ãƒ«ã®èª­ã¿è¾¼ã¿
+	if (m_pTag->tag == ObjectTag::Team1) { m_var.Init(MV1DuplicateModel(AssetManager::UseModel(m_modelName)), pos, rotate, scale); }
+	if (m_pTag->tag == ObjectTag::Team2) { m_var.Init(MV1DuplicateModel(AssetManager::UseModel(m_modelName)), pos, rotate, scale); }
+	if (m_pTag->tag == ObjectTag::Team3) { m_var.Init(MV1DuplicateModel(AssetManager::UseModel(m_modelName)), pos, rotate, scale); }
 
-	m_dir = VGet(0.0f, 0.0f, 1.0f);
-	m_aimDir = m_dir;
+	// Transformã®å€¤ã«ä½ç½®ãªã©ã®æƒ…å ±ã‚’ä»£å…¥
+	m_pTransform->position = m_var.pos;
+	m_pTransform->rotate = m_var.rotate;
+	m_pTransform->scale = m_var.scale;
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“€”õ
+	// 3Dãƒ¢ãƒ‡ãƒ«è¨­å®š
+	MV1SetScale(m_var.handle, m_var.scale);
+	MV1SetRotationXYZ(m_var.handle, m_var.rotate);
+	MV1SetPosition(m_var.handle, m_var.pos);
+
 	m_animType = Anim::Idle;
-	m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
-	m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
-	m_animTime = 0.0f;
-	m_animSpeed = 0.3f;
-	m_throwSpeed = 1.2f;
-	m_pickSpeed = 1.2f;
-	m_moveFlag = true;
-	m_throwFlag = false;
-	m_pickFlag = false;
-}
+	m_animIndex = MV1AttachAnim(m_var.handle, m_animType);
+	m_animTotalTime = MV1GetAnimTotalTime(m_var.handle, m_animType);
 
-Human::~Human()
-{
-	MV1DeleteModel(m_modelHandle);
-	delete m_icon;
-}
+	// ã‚¢ã‚¤ã‚³ãƒ³ã‚’ã‚»ãƒƒãƒˆ
+	m_pIcon = new Icon(m_pTag);
+	m_pIcon->Init(m_var.pos, VGet(0.0f, 0.0f, 0.0f), VGet(0.7f, 0.7f, 0.7f));
 
-void Human::Start()
-{
-	if (m_pTag == nullptr)
+	// æœ€åˆã«3ã¤ãƒˆãƒãƒˆã‚’ä½œæˆã—ã¦ãŠã(ãƒ¡ãƒ¢ãƒªå®¹é‡ã®ãŸã‚3ã¤ã«é™å®š)
+	auto collider = m_pParent->GetComponent<Collider>();
+	for (int i = 0; i < 3; i++)
 	{
-		m_pTag = m_pParent->GetComponent<Tag>();
-	}
-	if (m_pTransform == nullptr)
-	{
-		m_pTransform = m_pParent->GetComponent<Transform>();
-	}
-	// 3Dƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
-	if (m_pTag->tag == ObjectTag::Team1) { m_modelHandle = MV1LoadModel("data/character/man1.mv1"); }
-	if (m_pTag->tag == ObjectTag::Team2) { m_modelHandle = MV1LoadModel("data/character/man3.mv1"); }
-	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
-	// 3Dƒ‚ƒfƒ‹‚Ìƒ|ƒWƒVƒ‡ƒ“İ’è
-	MV1SetPosition(m_modelHandle, m_pTransform->position);
-
-	// ƒAƒCƒRƒ“‚ğƒZƒbƒg
-	m_icon = new Icon(m_pTag);
-	m_icon->Init(m_pTransform->position);
-}
-
-void Human::Update()
-{
-	if (m_pTag == nullptr)
-	{
-		m_pTag = m_pParent->GetComponent<Tag>();
-	}
-	if(m_pTransform == nullptr)
-	{
-		m_pTransform = m_pParent->GetComponent<Transform>();
-	}
-	Rotate();	// ‰ñ“]
-	Input();	// “ü—Í
-	// ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
-	Animation();
-
-	// ˆÚ“®ˆ—
-	if (m_moveFlag)
-	{
-		m_pTransform->position;
-		m_pTransform->position = VAdd(m_pTransform->position, m_velocity);
-
-		// 3Dƒ‚ƒfƒ‹‚Ìƒ|ƒWƒVƒ‡ƒ“İ’è
-		MV1SetPosition(m_modelHandle, m_pTransform->position);
-	}
-	
-	// Œü‚«‚É‡‚í‚¹‚Äƒ‚ƒfƒ‹‚ğ‰ñ“]
-	MATRIX rotYMat = MGetRotY(180.0f * DX_PI_F / 180.0f);
-	VECTOR negativeVec = VTransform(m_dir, rotYMat);
-
-	// ƒ‚ƒfƒ‹‚É‰ñ“]‚ğƒZƒbƒg‚·‚é
-	MV1SetRotationZYAxis(m_modelHandle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
-
-	m_icon->Update(m_pTransform->position);
-}
-
-void Human::Draw()
-{
-	// 3Dƒ‚ƒfƒ‹‚Ì•`‰æ
-	SetUseLighting(false);
-	MV1DrawModel(m_modelHandle);
-	m_icon->Draw();
-	SetUseLighting(true);
-}
-
-void Human::SetTomatoWallPtr(std::vector<TomatoWall*>* tomatoWall)
-{
-	m_tomatoWall = tomatoWall;
-}
-
-void Human::Input()
-{
-	m_inputVector = VGet(0.0f, 0.0f, 0.0f); // ‰Ÿ‚µ‚½‡ŒvÀ•Wæ“¾—p•Ï”
-	// ‘OŒã¶‰E
-	VECTOR front = { 0.0f,0.0f,1.0f };
-	VECTOR rear = { 0.0f,0.0f,-1.0f };
-	VECTOR left = { 1.0f,0.0f,0.0f };
-	VECTOR right = { -1.0f,0.0f,0.0f };
-
-	float addRad = 1.58f;	// ‰ÁZ‚·‚éŠp“x
-	bool input = false;		// “ü—Í‚µ‚½‚©”»’è—p
-
-	XINPUT_STATE inputState;
-
-	// 1P‚Ì‘€ì
-	if (m_pTag->tag == ObjectTag::Team1)
-	{
-		// “ü—Íó‘Ô‚ğæ“¾
-		GetJoypadXInputState(DX_INPUT_PAD2, &inputState);
-
-		if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
-		{
-			m_pTransform->rotate.y += 0.02f;
-		}
-		if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
-		{
-			m_pTransform->rotate.y -= 0.02f;
-		}
-
-		// ‘O‚Éi‚Ş
-		if (Input::IsPress2P(BUTTON_ID_UP))
-		{
-			front.x = sinf(m_pTransform->rotate.y);
-			front.z = cosf(m_pTransform->rotate.y);
-			m_inputVector = VAdd(front, m_inputVector);
-			input = true;
-		}
-
-		// Œã‚ë‚Éi‚Ş
-		if (Input::IsPress2P(BUTTON_ID_DOWN))
-		{
-			rear.x = sinf(m_pTransform->rotate.y) * -1.0f;
-			rear.z = cosf(m_pTransform->rotate.y) * -1.0f;
-			m_inputVector = VAdd(rear, m_inputVector);
-			input = true;
-		}
-
-		// ‰E‚Éi‚Ş
-		if (Input::IsPress2P(BUTTON_ID_LEFT))
-		{
-			right.x = sinf(m_pTransform->rotate.y - addRad);
-			right.z = cosf(m_pTransform->rotate.y - addRad);
-			m_inputVector = VAdd(right, m_inputVector);
-			input = true;
-		}
-
-		// ¶‚Éi‚Ş
-		if (Input::IsPress2P(BUTTON_ID_RIGHT))
-		{
-			left.x = sinf(m_pTransform->rotate.y + addRad);
-			left.z = cosf(m_pTransform->rotate.y + addRad);
-			m_inputVector = VAdd(left, m_inputVector);
-			input = true;
-		}
-
-		// ƒgƒ}ƒg¶¬(Player‚Ì‰ñ“]ˆ—‚ªI‚í‚Á‚½Œã¶¬(ã‚¾‚ÆƒvƒŒƒCƒ„[‚ÌŒü‚«‚É‚È‚ç‚¸­‚µ‚¸‚ê‚é))
-		if (Input::IsDown2P(BUTTON_ID_R) && m_bulletNum > 0 && !m_throwFlag)
-		{
-			m_throwFlag = true;
-			m_animType = Anim::Throw;
-			m_bulletNum--;
-			auto pos = m_pParent->GetComponent<Transform>();
-			VECTOR position = VGet(0.0f, 0.0f, 0.0f);
-			position.x = pos->position.x + sinf(pos->rotate.y) * -30.0f;
-			position.z = pos->position.z + cosf(pos->rotate.y) * -30.0f;
-			position = VSub(pos->position, position);
-			// •ûŒü‚ğ³‹K‰»
-			position = VNorm(position);
-			m_pParent->GetComponent<Collider>()->Shot(pos->position, position, m_pParent->GetComponent<Tag>());
-			//m_effect->PlayEffect(m_position);
-		}
-
-		// ƒgƒ}ƒg‚ğŒÀŠE‚Ü‚Å‚Á‚Ä‚¢‚È‚¢‚Æ‚«Aƒgƒ}ƒg‚Ì•Ç‚©‚çƒgƒ}ƒg‚ğ‰ñû
-		if (Input::IsDown2P(BUTTON_ID_B) && m_bulletNum < m_bulletCapacity)
-		{
-			TomatoCollect();
-		}
-
-		Score::Set1PBulletNum(m_bulletNum);
-	}
-
-	// 2P‚Ì‘€ì
-	if (m_pTag->tag == ObjectTag::Team2)
-	{
-		// “ü—Íó‘Ô‚ğæ“¾
-		GetJoypadXInputState(DX_INPUT_PAD1, &inputState);
-
-		if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
-		{
-			m_pTransform->rotate.y += 0.02f;
-		}
-		if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
-		{
-			m_pTransform->rotate.y -= 0.02f;
-		}
-
-		// ‘O‚Éi‚Ş
-		if (Input::IsPress1P(BUTTON_ID_UP))
-		{
-			front.x = sinf(m_pTransform->rotate.y);
-			front.z = cosf(m_pTransform->rotate.y);
-			m_inputVector = VAdd(front, m_inputVector);
-			input = true;
-		}
-
-		// Œã‚ë‚Éi‚Ş
-		if (Input::IsPress1P(BUTTON_ID_DOWN))
-		{
-			rear.x = sinf(m_pTransform->rotate.y) * -1.0f;
-			rear.z = cosf(m_pTransform->rotate.y) * -1.0f;
-			m_inputVector = VAdd(rear, m_inputVector);
-			input = true;
-		}
-
-		// ‰E‚Éi‚Ş
-		if (Input::IsPress1P(BUTTON_ID_LEFT))
-		{
-			right.x = sinf(m_pTransform->rotate.y - addRad);
-			right.z = cosf(m_pTransform->rotate.y - addRad);
-			m_inputVector = VAdd(right, m_inputVector);
-			input = true;
-		}
-
-		// ¶‚Éi‚Ş
-		if (Input::IsPress1P(BUTTON_ID_RIGHT))
-		{
-			left.x = sinf(m_pTransform->rotate.y + addRad);
-			left.z = cosf(m_pTransform->rotate.y + addRad);
-			m_inputVector = VAdd(left, m_inputVector);
-			input = true;
-		}
-
-		// ƒgƒ}ƒg¶¬(Player‚Ì‰ñ“]ˆ—‚ªI‚í‚Á‚½Œã¶¬(ã‚¾‚ÆƒvƒŒƒCƒ„[‚ÌŒü‚«‚É‚È‚ç‚¸­‚µ‚¸‚ê‚é))
-		if (Input::IsDown1P(BUTTON_ID_R) && m_bulletNum > 0 && !m_throwFlag)
-		{
-			m_throwFlag = true;
-			m_animType = Anim::Throw;
-			m_moveFlag = false;
-			m_bulletNum--;
-			auto pos = m_pParent->GetComponent<Transform>();
-			VECTOR position = VGet(0.0f, 0.0f, 0.0f);
-			position.x = pos->position.x + sinf(pos->rotate.y) * -30.0f;
-			position.z = pos->position.z + cosf(pos->rotate.y) * -30.0f;
-			position = VSub(pos->position, position);
-			// •ûŒü‚ğ³‹K‰»
-			position = VNorm(position);
-			m_pParent->GetComponent<Collider>()->Shot(pos->position, position, m_pParent->GetComponent<Tag>());
-			//m_effect->PlayEffect(m_position);
-		}
-
-		// ƒgƒ}ƒg‚ğŒÀŠE‚Ü‚Å‚Á‚Ä‚¢‚È‚¢‚Æ‚«Aƒgƒ}ƒg‚Ì•Ç‚©‚çƒgƒ}ƒg‚ğ‰ñû
-		if (Input::IsDown1P(BUTTON_ID_B) && m_bulletNum < m_bulletCapacity)
-		{
-			TomatoCollect();
-		}
-
-		Score::Set2PBulletNum(m_bulletNum);
-	}
-
-	// “ü—Í—Li‰Á‘¬jE“ü—Í–³iŒ¸‘¬j
-	if (input)
-	{
-		// ¶‰EE‘OŒã“¯‰Ÿ‚µ‚È‚Ç‚Å“ü—ÍƒxƒNƒgƒ‹‚ª0‚Ì‚Í–³‹
-		if (VSquareSize(m_inputVector) < 0.5f)
-		{
-			return;
-		}
-
-		// •ûŒü‚ğ³‹K‰»
-		m_inputVector = VNorm(m_inputVector);
-
-		// “ü—Í•ûŒü‚ÍŒ»İŒü‚¢‚Ä‚¢‚éŒü‚«‚ÆˆÙ‚È‚é‚©
-		if (IsNearAngle(m_inputVector, m_dir))
-		{
-			m_dir = m_inputVector;
-		}
-		else
-		{
-			m_rotateNow = true;
-			m_aimDir = m_inputVector;
-		}
-
-		m_velocity = m_inputVector;
-	}
-	else
-	{
-		m_velocity.x = m_velocity.x * 0.9f;
-		m_velocity.z = m_velocity.z * 0.9f;
-	}
-
-	if (m_pParent->GetComponent<Collider>()->flag)
-	{
-		//m_pTransform->position = VSub(m_pTransform->position, VScale(inputVec, 2.5f));
-		//m_velocity = VGet(0.0f, 0.0f, 0.0f);
+		Object* obj = new Object;
+		obj->AddComponent<Transform>();
+		auto tag = obj->AddComponent<Tag>();
+		tag->tag = ObjectTag::tomato;
+		auto coll = obj->AddComponent<Collider>();
+		Tomato* t = obj->AddComponent<Tomato>();
+		t->Init(VGet(0.0f, 0.0f, 0.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.02f, 0.02f, 0.02f));
+		coll->SetBulletObject(obj);
 	}
 }
 
-void Human::Rotate()
+void Human::SetTomatoWallPtr(std::vector<class TomatoWallManager*> tomatoWall)
 {
-	if (m_rotateNow)
-	{
-		// ‰ñ“]‚ª–Ú•WŠp“x‚É“’B‚·‚ê‚Î‰ñ“]ƒ‚[ƒhI—¹
-		if (IsNearAngle(m_aimDir, m_dir))
-		{
-			m_dir = m_aimDir;
-			m_rotateNow = false;
-		}
-		else
-		{
-			// ‰ñ“]
-			VECTOR interPolateDir;
-			interPolateDir = RotateForAimVecYAxis(m_dir, m_aimDir, 10.0f);
-
-			// ‰ñ“]‚ª–Ú•WŠp“x‚ğ’´‚¦‚Ä‚¢‚È‚¢‚©
-			VECTOR cross1, cross2;
-			cross1 = VCross(m_dir, m_aimDir);
-			cross2 = VCross(interPolateDir, m_aimDir);
-
-			// –Ú•WŠp“x‚ğ’´‚¦‚½‚çI—¹
-			if (cross1.y * cross2.y < 0.0f)
-			{
-				interPolateDir = m_aimDir;
-				m_rotateNow = false;
-			}
-			// –Ú•WƒxƒNƒgƒ‹‚É10“x‚¾‚¯‹ß‚Ã‚¦‚½Šp“x
-			m_dir = interPolateDir;
-		}
-	}
-}
-
-void Human::Animation()
-{
-	// ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
-	if (m_animType == Anim::Throw)
-	{
-		m_animTime += m_throwSpeed;
-	}
-	else if (m_animType == Anim::Pick)
-	{
-		m_animTime += m_pickSpeed;
-	}
-	else
-	{
-		m_animTime += m_animSpeed;
-	}
-
-	if (m_animTime > m_animTotalTime)
-	{
-		m_animTime = 0.0f;
-		if (m_pickFlag)
-		{
-			m_pickFlag = false;
-			m_animType = Anim::None;
-			m_moveFlag = true;
-		}
-		if (m_throwFlag)
-		{
-			m_throwFlag = false;
-			m_animType = Anim::None;
-			m_moveFlag = true;
-		}
-	}
-	ChangeAnimation();
-
-	MV1SetAttachAnimTime(m_modelHandle, m_animIndex, m_animTime);
-}
-
-void Human::ChangeAnimation()
-{
-	// ˆÚ“®‚Å‚«‚éƒAƒjƒ[ƒVƒ‡ƒ“‚È‚ç
-	// ¡“®‚¢‚Ä‚¢‚é‚Ì‚©A~‚Ü‚Á‚Ä‚¢‚é‚Ì‚©‚ğ”»’f
-	if (m_moveFlag)
-	{
-		VECTOR nowPosition = MV1GetPosition(m_modelHandle);
-		if (m_inputVector.x == 0.0f &&
-			m_inputVector.y == 0.0f &&
-			m_inputVector.z == 0.0f)
-		{
-			m_animType = Anim::Idle;
-		}
-		else
-		{
-			m_animType = Anim::Run;
-		}
-	}
-
-	// ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
-	if (m_animType != m_beforeAnimType)
-	{
-		MV1DetachAnim(m_modelHandle, m_animIndex);
-		m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
-		m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
-		m_animTime = 0.0f;
-		m_beforeAnimType = m_animType;
-	}
-}
-
-void Human::TomatoCollect()
-{
-	int objectNum = 0;
-	float distance = 0;
-	int i = 0;
-	auto pos = m_pParent->GetComponent<Transform>()->position;
-	for (auto tomatowall : *m_tomatoWall)
-	{
-		// ‚»‚Ì•Ç‚Éƒgƒ}ƒg‚Í‚ ‚é‚Ì‚©
-		if (tomatowall[i].GetAllTomatoNum() != 0)
-		{
-			// ‚Ç‚Ìƒgƒ}ƒg‚Ì•Ç‚©‚ğ’²‚×‚é
-			VECTOR gPos = tomatowall[i].GetPosition();
-			distance = GetDistance(gPos, pos);
-
-			// ‹——£‚ª•‰‚Ì’l‚È‚ç³‚Ì’l‚É•Ï‚¦‚é
-			if (distance < 0.0f)
-			{
-				distance = distance * -1.0f;
-			}
-		}
-
-		// ”ÍˆÍ‚É“ü‚Á‚Ä‚¢‚éƒgƒ}ƒg‚Ì•Ç‚©‚çƒgƒ}ƒg‚ğ‰ñû
-		if (distance < tomatowall[i].GetWidthDistance() && !m_pickFlag)
-		{
-			m_pickFlag = true;
-			m_moveFlag = false;
-			m_animType = Anim::Pick;
-			m_bulletNum++;
-			tomatowall[i].DecreaseAllTomatoNum();
-			break;
-		}
-	}
+	m_pTomatoWall = tomatoWall;
 }
 
 double Human::GetDistance(VECTOR& pos1, VECTOR& pos2)
@@ -463,38 +67,12 @@ double Human::GetDistance(VECTOR& pos1, VECTOR& pos2)
 	return sqrt(tmp1 * tmp1 + tmp2 * tmp2);
 }
 
-bool Human::IsNearAngle(const VECTOR& v1, const VECTOR& v2)
+float Human::GetSize(float v1, float v2)
 {
-	float dot = VDot(v1, v2);
-	if (dot < 0.99f)
+	float value = v1 - v2;
+	if (value < 0)
 	{
-		return true;
+		value = value * -1.0f;
 	}
-	return false;
-}
-
-float Human::CalcRotationDirectionYAxis(const VECTOR& nowVec, const VECTOR& dirVec)
-{
-	VECTOR axis;
-	axis = VCross(nowVec, dirVec);
-	if (axis.y < 0.0f)
-	{
-		return -1.0f;
-	}
-	return 1.0f;
-}
-
-VECTOR Human::RotateForAimVecYAxis(const VECTOR& nowVec, const VECTOR& aimVec, float degreeVelocity)
-{
-	// Šp‘¬“xi“x”j‚ğƒ‰ƒWƒAƒ“Šp‚É•ÏŠ·A‰E‰ñ‚è‚©¶‰ñ‚è‚©‚ğ’²‚×‚é
-	float rotRadian = (DX_PI_F * degreeVelocity / 180.0f);
-	rotRadian *= CalcRotationDirectionYAxis(nowVec, aimVec);
-
-	// Y²‰ñ“]s—ñ‚ğì¬‚·‚é
-	MATRIX yRotMat = MGetRotY(rotRadian);
-
-	// Y²‰ñ“]‚·‚é
-	VECTOR rotVec;
-	rotVec = VTransform(nowVec, yRotMat);
-	return rotVec;
+	return value;
 }
