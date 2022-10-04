@@ -4,7 +4,6 @@
 
 Icon::Icon(Tag* tag)
 {
-	m_noIconFlag = false;
 	m_pTag = tag;
 }
 
@@ -14,21 +13,15 @@ Icon::~Icon()
 
 void Icon::Update(VECTOR& position)
 {
-	if (!m_noIconFlag)
-	{
-		m_var.pos = VAdd(position, m_correctionVector);
-		MV1SetPosition(m_var.handle, m_var.pos);
+	m_var.pos = VAdd(position, m_correctionVector);
+	MV1SetPosition(m_var.handle, m_var.pos);
 
-		Animation();
-	}
+	Animation();
 }
 
 void Icon::Draw()
 {
-	if (!m_noIconFlag)
-	{
-		MV1DrawModel(m_var.handle);
-	}
+	MV1DrawModel(m_var.handle);
 }
 
 void Icon::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
@@ -45,24 +38,17 @@ void Icon::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
 	{
 		m_var.Init(MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::Icon3)), pos, rotate, scale);
 	}
-	else  // Ç«ÇÍÇ…Ç‡ìñÇƒÇÕÇ‹ÇÁÇ»Ç¢Ç»ÇÁÅAÇ±ÇÍà»ç~ÇÃèàóùÇçsÇÌÇ»Ç¢ÇÊÇ§Ç…Ç∑ÇÈ
-	{
-		m_noIconFlag = true;
-	}
 
-	if (!m_noIconFlag)
-	{
-		m_animIndex = MV1AttachAnim(m_var.handle, 0);
-		m_animTotalTime = MV1GetAnimTotalTime(m_var.handle, m_animIndex);
-		m_animSpeed = 0.5f;
-		m_animTime = 0.0f;
+	m_animIndex = MV1AttachAnim(m_var.handle, 0);
+	m_animTotalTime = MV1GetAnimTotalTime(m_var.handle, m_animIndex);
+	m_animSpeed = 0.5f;
+	m_animTime = 0.0f;
 
-		m_correctionVector = VGet(0.0f, 20.0f, 0.0f);
-		MV1SetScale(m_var.handle, m_var.scale);
+	m_correctionVector = VGet(0.0f, 20.0f, 0.0f);
+	MV1SetScale(m_var.handle, m_var.scale);
 
-		m_var.pos = VAdd(m_var.pos, m_correctionVector);
-		MV1SetPosition(m_var.handle, m_var.pos);
-	}
+	m_var.pos = VAdd(m_var.pos, m_correctionVector);
+	MV1SetPosition(m_var.handle, m_var.pos);
 }
 
 void Icon::Animation()
