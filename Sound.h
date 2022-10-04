@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <unordered_map>
 #include <DxLib.h>
 
@@ -21,7 +21,7 @@ public:
 		PlaySoundMem(itr->second, DX_PLAYTYPE_BACK);
 	}
 
-	// ‰¹‘S‰ð•ú
+	// éŸ³å…¨è§£æ”¾
 	static void InitSound()
 	{
 		InitSoundMem();

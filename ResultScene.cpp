@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "ResultScene.h"
 #include "Object.h"
 #include "Image.h"
@@ -10,7 +10,7 @@ ResultScene::ResultScene(const MODE& mode)
 	: m_transition(Transition::START)
 	, m_tagScene(TAG_SCENE::TAG_NONE)
 {
-	// ƒgƒ‰ƒ“ƒWƒVƒ‡ƒ“‚Ìˆ—
+	// ãƒˆãƒ©ãƒ³ã‚¸ã‚·ãƒ§ãƒ³ã®å‡¦ç†
 	{
 		Object* obj = new Object;
 		m_transitionImage[0] = obj->AddComponent<Image>();

@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "ScoreUIController.h"
 #include "Object.h"
 #include "Image.h"
@@ -83,7 +83,7 @@ void ScoreUIController::AdjustScore()
 		}
 	}
 
-	// ƒ`[ƒ€1
+	// ãƒãƒ¼ãƒ 1
 	if (m_index == 0)
 	{
 		int num = Score::GetTeam1Score();
@@ -94,7 +94,7 @@ void ScoreUIController::AdjustScore()
 		
 	}
 
-	// ƒ`[ƒ€2
+	// ãƒãƒ¼ãƒ 2
 	if (m_index == 1)
 	{
 		int num = Score::GetTeam2Score();
@@ -104,7 +104,7 @@ void ScoreUIController::AdjustScore()
 		m_scoreUI[0][num % 10000 / 1000]->IsDraw(true);
 	}
 
-	// ƒ`[ƒ€3
+	// ãƒãƒ¼ãƒ 3
 	if (m_index == 2)
 	{
 		int num = Score::GetTeam3Score();

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <vector>
 
 using namespace std;
@@ -6,15 +6,15 @@ using namespace std;
 class TitleScene : public Scene
 {
 public:
-	TitleScene() = delete; // ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Íg‚í‚È‚¢
-	TitleScene(const MODE& mode); // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	~TitleScene() override; // ƒfƒXƒgƒ‰ƒNƒ^
+	TitleScene() = delete; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯ä½¿ã‚ãªã„
+	TitleScene(const MODE& mode); // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	~TitleScene() override; // ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
-	TAG_SCENE Update() override; // XV
-	void Draw() override; // •`‰æ
+	TAG_SCENE Update() override; // æ›´æ–°
+	void Draw() override; // æç”»
 
 private:
-	// ƒIƒuƒWƒFƒNƒg‚Ì‰Šú‰»
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åˆæœŸåŒ–
 	void InitObject();
 	void InitSkyDomeModel();
 	void InitGroundModel();
@@ -23,7 +23,7 @@ private:
 	void InitTransitionButtonUI();
 	void InitGradationUI();
 
-	void TermObject(); // ƒIƒuƒWƒFƒNƒg‚Ì‰ğ•ú
-	void UpdateObject(); // ƒIƒuƒWƒFƒNƒg‚ÌXV
-	void DrawObject(); // ƒIƒuƒWƒFƒNƒg‚Ì•`‰æ
+	void TermObject(); // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§£æ”¾
+	void UpdateObject(); // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ›´æ–°
+	void DrawObject(); // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»
 };

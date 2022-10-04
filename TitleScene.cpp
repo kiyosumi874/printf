@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Object.h"
 #include "Logo.h"
 #include "TransitionButton.h"
@@ -11,31 +11,31 @@
 TitleScene::TitleScene(const MODE& mode)
 	: Scene(mode)
 {
-	InitObject(); // ƒIƒuƒWƒFƒNƒg‚Ì‰Šú‰»
-	SetCameraPositionAndTarget_UpVecY(VGet(0.0f, 0.0f, 0.0f), VGet(0.0f, 0.0f, 1.0f)); // ƒJƒƒ‰‚ÌˆÊ’u‚ÆŒü‚«‚ğƒZƒbƒg
+	InitObject(); // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åˆæœŸåŒ–
+	SetCameraPositionAndTarget_UpVecY(VGet(0.0f, 0.0f, 0.0f), VGet(0.0f, 0.0f, 1.0f)); // ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã¨å‘ãã‚’ã‚»ãƒƒãƒˆ
 }
 
 TitleScene::~TitleScene()
 {
-	TermObject(); // ƒIƒuƒWƒFƒNƒg‚Ì‰ğ•ú
+	TermObject(); // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§£æ”¾
 }
 
 TAG_SCENE TitleScene::Update()
 {
-	UpdateObject(); // ƒIƒuƒWƒFƒNƒg‚ÌXV
-	// Ÿ‚ÌƒV[ƒ“‚Ö
+	UpdateObject(); // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ›´æ–°
+	// æ¬¡ã®ã‚·ãƒ¼ãƒ³ã¸
 	if (Input::IsDown1P(BUTTON_ID_START))
 	{
 		return TAG_SCENE::TAG_PLAY;
 	}
 
-	// I—¹
+	// çµ‚äº†
 	if (Input::IsDown1P(BUTTON_ID_BACK))
 	{
 		return TAG_SCENE::TAG_END;
 	}
 
-	// Ÿ‚Ìƒ‹[ƒv‚à‚±‚ÌƒV[ƒ“‚ğŒp‘±
+	// æ¬¡ã®ãƒ«ãƒ¼ãƒ—ã‚‚ã“ã®ã‚·ãƒ¼ãƒ³ã‚’ç¶™ç¶š
 	return TAG_SCENE::TAG_NONE;
 }
 
@@ -44,7 +44,7 @@ void TitleScene::Draw()
 #ifdef _DEBUG
 	printfDx("TitleScene\n");
 #endif // _DEBUG
-	DrawObject(); // ƒIƒuƒWƒFƒNƒg‚Ì•`‰æ
+	DrawObject(); // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»
 }
 
 //-------------------------------------------
@@ -119,7 +119,7 @@ void TitleScene::InitGradationUI()
 
 void TitleScene::TermObject()
 {
-	// ƒIƒuƒWƒFƒNƒgƒŠƒXƒg‚Ì‰ğ•ú
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒªã‚¹ãƒˆã®è§£æ”¾
 	for (auto obj : m_pObjectLists)
 	{
 		delete obj;

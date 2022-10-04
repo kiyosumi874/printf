@@ -1,14 +1,14 @@
-//----------------------------------------
+ï»¿//----------------------------------------
 // @file TimeUIController.h
-// @brief Œv‚ÌUI
+// @brief æ™‚è¨ˆã®UI
 // @author shiihara_kiyosumi
 // @date 2022_09_02
 //----------------------------------------
 
-// ‘½dƒCƒ“ƒNƒ‹[ƒh–h~
+// å¤šé‡ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰é˜²æ­¢
 #pragma once
 
-// ƒwƒbƒ_[ƒtƒ@ƒCƒ‹‚ÌƒCƒ“ƒNƒ‹[ƒh
+// ãƒ˜ãƒƒãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
 #include "Component.h"
 
 class TimeUIController : public Component

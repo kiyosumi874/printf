@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "Score.h"
 
 Score* Score::m_score = nullptr;

@@ -1,32 +1,32 @@
-//----------------------------------------
+ï»¿//----------------------------------------
 // @file TimeCount.cpp
-// @brief ŠÔ‚ğŒv‘ª‚·‚é
+// @brief æ™‚é–“ã‚’è¨ˆæ¸¬ã™ã‚‹
 // @author shiihara_kiyosumi
 // @date 2022_09_01
 //----------------------------------------
 
-// ƒwƒbƒ_[ƒtƒ@ƒCƒ‹‚ÌƒCƒ“ƒNƒ‹[ƒh
+// ãƒ˜ãƒƒãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
 #include "pch.h"
 #include "TimeCount.h"
 
-// usingéŒ¾
+// usingå®£è¨€
 using std::chrono::duration_cast;
 using std::chrono::microseconds;
 using std::chrono::system_clock;
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 TimeCount::TimeCount()
 {
 	m_isCount = false;
 	m_start = m_end = system_clock::now();
 }
 
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 TimeCount::~TimeCount()
 {
 }
 
-// XV
+// æ›´æ–°
 void TimeCount::Update()
 {
 	if (m_isCount)
@@ -35,7 +35,7 @@ void TimeCount::Update()
 	}
 }
 
-// ƒJƒEƒ“ƒg‚ğŠJn‚·‚é
+// ã‚«ã‚¦ãƒ³ãƒˆã‚’é–‹å§‹ã™ã‚‹
 void TimeCount::StartCount()
 {
 	m_start = m_end = system_clock::now();
@@ -53,10 +53,10 @@ bool TimeCount::CheckIsCount()
 }
 
 
-// ƒJƒEƒ“ƒg‚ğŠm”F‚·‚é
+// ã‚«ã‚¦ãƒ³ãƒˆã‚’ç¢ºèªã™ã‚‹
 double TimeCount::CheckCount()
 {
-	// ƒJƒEƒ“ƒg‚ğŠJn‚µ‚Ä‚¢‚È‚¢‚Æ‚«ŒvZ‚µ‚È‚¢‚æ‚¤‚É‚·‚é
+	// ã‚«ã‚¦ãƒ³ãƒˆã‚’é–‹å§‹ã—ã¦ã„ãªã„ã¨ãè¨ˆç®—ã—ãªã„ã‚ˆã†ã«ã™ã‚‹
 	if (!m_isCount) { return -1.0; }
 
 	double time = static_cast<double>(duration_cast<microseconds>(m_end - m_start).count() / 1000000.0);

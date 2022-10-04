@@ -1,25 +1,25 @@
-#pragma once
+ï»¿#pragma once
 
 class Score
 {
 private:
 	static Score* m_score;
-	int m_team1;		// ƒ`[ƒ€1‚ÌƒXƒRƒA
-	int m_team2;		// ƒ`[ƒ€2‚ÌƒXƒRƒA
-	int m_team3;		// ƒ`[ƒ€3‚ÌƒXƒRƒA
-	int m_1PBulletNum;	// 1P‚Ì’e”
-	int m_2PBulletNum;	// 2P‚Ì’e”
+	int m_team1;		// ãƒãƒ¼ãƒ 1ã®ã‚¹ã‚³ã‚¢
+	int m_team2;		// ãƒãƒ¼ãƒ 2ã®ã‚¹ã‚³ã‚¢
+	int m_team3;		// ãƒãƒ¼ãƒ 3ã®ã‚¹ã‚³ã‚¢
+	int m_1PBulletNum;	// 1Pã®å¼¾æ•°
+	int m_2PBulletNum;	// 2Pã®å¼¾æ•°
 
 	Score();
 	~Score();
 
 public:
-	Score(const Score&) = delete;				// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ðdeleteŽw’è
-	Score& operator=(const Score&) = delete;	// ƒRƒs[‘ã“ü‰‰ŽZŽq‚à@deleteŽw’è
-	Score(Score&&) = delete;					// ƒ€[ƒuƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ð deleteŽw’è
-	Score& operator=(Score&&) = delete;			// ƒ€[ƒu‘ã“ü‰‰ŽZŽq‚à deleteŽw’è
+	Score(const Score&) = delete;				// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’deleteæŒ‡å®š
+	Score& operator=(const Score&) = delete;	// ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­ã‚‚ã€€deleteæŒ‡å®š
+	Score(Score&&) = delete;					// ãƒ ãƒ¼ãƒ–ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’ deleteæŒ‡å®š
+	Score& operator=(Score&&) = delete;			// ãƒ ãƒ¼ãƒ–ä»£å…¥æ¼”ç®—å­ã‚‚ deleteæŒ‡å®š
 
-	static void GetInstance()	// ¶¬
+	static void GetInstance()	// ç”Ÿæˆ
 	{
 		if (!m_score)
 		{
@@ -27,7 +27,7 @@ public:
 		}
 	}
 
-	static void Terminate()		// ‰ð•ú
+	static void Terminate()		// è§£æ”¾
 	{
 		if (m_score)
 		{
@@ -36,52 +36,52 @@ public:
 		}
 	}
 
-	static void AddTeam1Score()	// ƒ`[ƒ€1‚ÌƒXƒRƒA‰ÁŽZ
+	static void AddTeam1Score()	// ãƒãƒ¼ãƒ 1ã®ã‚¹ã‚³ã‚¢åŠ ç®—
 	{
 		m_score->m_team1 += 5;
 	}
 
-	static void AddTeam2Score()	// ƒ`[ƒ€2‚ÌƒXƒRƒA‰ÁŽZ
+	static void AddTeam2Score()	// ãƒãƒ¼ãƒ 2ã®ã‚¹ã‚³ã‚¢åŠ ç®—
 	{
 		m_score->m_team2 += 5;
 	}
 
-	static void AddTeam3Score()	// ƒ`[ƒ€3‚ÌƒXƒRƒA‰ÁŽZ
+	static void AddTeam3Score()	// ãƒãƒ¼ãƒ 3ã®ã‚¹ã‚³ã‚¢åŠ ç®—
 	{
 		m_score->m_team3 += 5;
 	}
 
-	static const int GetTeam1Score()	// ƒ`[ƒ€1‚ÌƒXƒRƒA
+	static const int GetTeam1Score()	// ãƒãƒ¼ãƒ 1ã®ã‚¹ã‚³ã‚¢
 	{
 		return m_score->m_team1;
 	}
 
-	static const int GetTeam2Score()	// ƒ`[ƒ€2‚ÌƒXƒRƒA‰ÁŽZ
+	static const int GetTeam2Score()	// ãƒãƒ¼ãƒ 2ã®ã‚¹ã‚³ã‚¢åŠ ç®—
 	{
 		return m_score->m_team2;
 	}
 
-	static const int GetTeam3Score()	// ƒ`[ƒ€3‚ÌƒXƒRƒA‰ÁŽZ
+	static const int GetTeam3Score()	// ãƒãƒ¼ãƒ 3ã®ã‚¹ã‚³ã‚¢åŠ ç®—
 	{
 		return m_score->m_team3;
 	}
 
-	static const int Get1PBulletNum()	// 1P‚Ì’e”‚ðŽæ“¾
+	static const int Get1PBulletNum()	// 1Pã®å¼¾æ•°ã‚’å–å¾—
 	{
 		return m_score->m_1PBulletNum;
 	}
 
-	static const int Get2pBulletNum()	// 2P‚Ì’e”‚ðŽæ“¾
+	static const int Get2pBulletNum()	// 2Pã®å¼¾æ•°ã‚’å–å¾—
 	{
 		return m_score->m_2PBulletNum;
 	}
 	
-	static void Set1PBulletNum(const int bulletNum)	// 1P‚Ì’e”‚ðƒZƒbƒg
+	static void Set1PBulletNum(const int bulletNum)	// 1Pã®å¼¾æ•°ã‚’ã‚»ãƒƒãƒˆ
 	{
 		m_score->m_1PBulletNum = bulletNum;
 	}
 
-	static void Set2PBulletNum(const int bulletNum)	// 2P‚Ì’e”‚ðƒZƒbƒg
+	static void Set2PBulletNum(const int bulletNum)	// 2Pã®å¼¾æ•°ã‚’ã‚»ãƒƒãƒˆ
 	{
 		m_score->m_2PBulletNum = bulletNum;
 	}

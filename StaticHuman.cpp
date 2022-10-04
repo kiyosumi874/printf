@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "StaticHuman.h"
 #include "Object.h"
 #include "Transform.h"
@@ -12,7 +12,7 @@ StaticHuman::StaticHuman()
 	m_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_aimDir = m_dir;
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“€”õ
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æº–å‚™
 	m_animType = Anim::Idle;
 	m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
 	m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
@@ -27,28 +27,28 @@ StaticHuman::~StaticHuman()
 
 void StaticHuman::Start()
 {
-	// 3Dƒ‚ƒfƒ‹‚Ì“Ç‚Ýž‚Ý
+	// 3Dãƒ¢ãƒ‡ãƒ«ã®èª­ã¿è¾¼ã¿
 	auto tag = m_pParent->GetComponent<Tag>();
 	if (tag->tag == ObjectTag::Team1) { m_modelHandle = MV1LoadModel("data/character/man1.mv1"); }
 	if (tag->tag == ObjectTag::Team2) { m_modelHandle = MV1LoadModel("data/character/man3.mv1"); }
 	if (tag->tag == ObjectTag::Team3) { m_modelHandle = MV1LoadModel("data/character/woman2.mv1"); }
 	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
-	// 3Dƒ‚ƒfƒ‹‚Ìƒ|ƒWƒVƒ‡ƒ“Ý’è
+	// 3Dãƒ¢ãƒ‡ãƒ«ã®ãƒã‚¸ã‚·ãƒ§ãƒ³è¨­å®š
 	auto pos = m_pParent->GetComponent<Transform>();
 	MV1SetPosition(m_modelHandle, pos->position);
 
-	//// ƒAƒCƒRƒ“‚ðƒZƒbƒg
+	//// ã‚¢ã‚¤ã‚³ãƒ³ã‚’ã‚»ãƒƒãƒˆ
 	//m_icon = new Icon(tag);
 	//m_icon->Init(pos->position);
 }
 
 void StaticHuman::Update()
 {
-	// 3Dƒ‚ƒfƒ‹‚Ìƒ|ƒWƒVƒ‡ƒ“Ý’è
+	// 3Dãƒ¢ãƒ‡ãƒ«ã®ãƒã‚¸ã‚·ãƒ§ãƒ³è¨­å®š
 	auto pos = m_pParent->GetComponent<Transform>();
 	MV1SetPosition(m_modelHandle, pos->position);
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†
 	m_animTime += 0.3f;
 	if (m_animTime > m_animTotalTime)
 	{
@@ -61,7 +61,7 @@ void StaticHuman::Update()
 
 void StaticHuman::Draw()
 {
-	// 3Dƒ‚ƒfƒ‹‚Ì•`‰æ
+	// 3Dãƒ¢ãƒ‡ãƒ«ã®æç”»
 	SetUseLighting(false);
 	MV1DrawModel(m_modelHandle);
 	m_icon->Draw();

@@ -1,14 +1,14 @@
-//----------------------------------------
+ï»¿//----------------------------------------
 // @file ScoreUIController.h
-// @brief ƒXƒRƒA‚ÌUI
+// @brief ã‚¹ã‚³ã‚¢ã®UI
 // @author shiihara_kiyosumi
 // @date 2022_09_10
 //----------------------------------------
 
-// ‘½dƒCƒ“ƒNƒ‹[ƒh–h~
+// å¤šé‡ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰é˜²æ­¢
 #pragma once
 
-// ƒwƒbƒ_[ƒtƒ@ƒCƒ‹‚ÌƒCƒ“ƒNƒ‹[ƒh
+// ãƒ˜ãƒƒãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
 #include "Component.h"
 
 
@@ -16,16 +16,16 @@ class ScoreUIController : public Component
 {
 public:
 
-	// Å‰‚Éˆê‰ñ’Ê‚é‚â‚Â
+	// æœ€åˆã«ä¸€å›é€šã‚‹ã‚„ã¤
 	void Start()override;
 
-	// XV
+	// æ›´æ–°
 	void Update()override;
 
-	// •`‰æ
+	// æç”»
 	void Draw()override;
 
-	// UI‚ğ‰æ–Ê‚ÉˆÚ“®‚³‚¹‚¾‚·
+	// UIã‚’ç”»é¢ã«ç§»å‹•ã•ã›ã ã™
 	void CheckIsStart(const int index)
 	{
 		m_isStart = true;
@@ -36,11 +36,11 @@ private:
 
 	void AdjustScore();
 
-	class Image* m_scoreUI[4][10]; // 4Œ… 0‚©‚ç9
+	class Image* m_scoreUI[4][10]; // 4æ¡ 0ã‹ã‚‰9
 	class Image* m_scoreBack;
 	class Transform* m_transform;
 
 	bool m_isStart;
-	int m_index; // 0 or 1 or 2 (0‚¾‚Á‚½‚ç1P,1‚¾‚Á‚½‚ç2P‚ÌUI‚Æ‚¢‚¤‚±‚Æ)
+	int m_index; // 0 or 1 or 2 (0ã ã£ãŸã‚‰1P,1ã ã£ãŸã‚‰2Pã®UIã¨ã„ã†ã“ã¨)
 	float m_alpha;
 };

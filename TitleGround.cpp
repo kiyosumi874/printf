@@ -1,14 +1,14 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 TitleGround::TitleGround()
 	: m_rotate(0.0f)
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 TitleGround::~TitleGround()
 {
-	// ˆ—–³‚µ
+	// å‡¦ç†ç„¡ã—
 }
 
 void TitleGround::Start()
