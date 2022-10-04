@@ -37,9 +37,9 @@ void StaticHuman::Start()
 	auto pos = m_pParent->GetComponent<Transform>();
 	MV1SetPosition(m_modelHandle, pos->position);
 
-	// アイコンをセット
-	m_icon = new Icon(tag);
-	m_icon->Init(pos->position);
+	//// アイコンをセット
+	//m_icon = new Icon(tag);
+	//m_icon->Init(pos->position);
 }
 
 void StaticHuman::Update()
