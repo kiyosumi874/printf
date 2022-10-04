@@ -36,8 +36,6 @@
 #include "Ground.h"
 
 /* Effect */
-
-#include "EffectManager.h"
 #include "HitEffect.h"
 
 // Assets

@@ -166,7 +166,6 @@
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="Gradation.cpp" />
     <ClCompile Include="HitEffect.cpp" />
-    <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fps.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
@@ -221,7 +220,6 @@
     <ClInclude Include="DebugDraw.h" />
     <ClInclude Include="Gradation.h" />
     <ClInclude Include="HitEffect.h" />
-    <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fps.h" />
     <ClInclude Include="GameClearScene.h" />

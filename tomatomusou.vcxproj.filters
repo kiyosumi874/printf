@@ -64,9 +64,6 @@
     <ClCompile Include="HitEffect.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
-    <ClCompile Include="EffectManager.cpp">
-      <Filter>Effect</Filter>
-    </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>Collider</Filter>
     </ClCompile>
@@ -203,9 +200,6 @@
     </ClInclude>
     <ClInclude Include="Ground.h">
       <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="EffectManager.h">
-      <Filter>Effect</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>Collider</Filter>
