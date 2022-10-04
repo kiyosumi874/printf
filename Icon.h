@@ -25,7 +25,5 @@ private:
 	float m_animTime;  // アニメーションの経過時間
 	float m_animTotalTime;  // アニメーションの総時間
 	float m_animSpeed;  // 基準のアニメーションスピード
-
-	bool m_noIconFlag;  // アイコンが必要ないオブジェクトが来てバグらないように
 };
 
