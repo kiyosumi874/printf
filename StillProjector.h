@@ -10,9 +10,6 @@ public:
 	void Start();
 	void Update()override;	// 更新処理.
 	void Draw();
-
-	// 初めに一回呼ぶセッター
-	void SetPlayerptr(class Transform* ptr);
 private:
 	class Transform* m_pPlayerTransform;		// プレイヤーを保持する箱
 

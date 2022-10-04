@@ -3,6 +3,7 @@
 #include "Object.h"
 #include "Transform.h"
 #include "Tag.h"
+#include "Icon.h"
 
 StaticHuman::StaticHuman()
 {
@@ -21,6 +22,7 @@ StaticHuman::StaticHuman()
 StaticHuman::~StaticHuman()
 {
 	MV1DeleteModel(m_modelHandle);
+	delete m_icon;
 }
 
 void StaticHuman::Start()
@@ -34,6 +36,10 @@ void StaticHuman::Start()
 	// 3Dモデルのポジション設定
 	auto pos = m_pParent->GetComponent<Transform>();
 	MV1SetPosition(m_modelHandle, pos->position);
+
+	// アイコンをセット
+	m_icon = new Icon(tag);
+	m_icon->Init(pos->position);
 }
 
 void StaticHuman::Update()
@@ -49,6 +55,8 @@ void StaticHuman::Update()
 		m_animTime = 0.0f;
 	}
 	MV1SetAttachAnimTime(m_modelHandle, m_animIndex, m_animTime);
+
+	m_icon->Update(pos->position);
 }
 
 void StaticHuman::Draw()
@@ -56,5 +64,6 @@ void StaticHuman::Draw()
 	// 3Dモデルの描画
 	SetUseLighting(false);
 	MV1DrawModel(m_modelHandle);
+	m_icon->Draw();
 	SetUseLighting(true);
 }

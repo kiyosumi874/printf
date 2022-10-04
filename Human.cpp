@@ -15,19 +15,23 @@ Human::Human()
 	m_pTag = nullptr;
 }
 
+Human::~Human()
+{
+}
+
 void Human::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
 {
-	// 3Dƒ‚ƒfƒ‹‚Ì“Ç‚Ýž‚Ý
+	// 3Dãƒ¢ãƒ‡ãƒ«ã®èª­ã¿è¾¼ã¿
 	if (m_pTag->tag == ObjectTag::Team1) { m_var.Init(MV1DuplicateModel(AssetManager::UseModel(m_modelName)), pos, rotate, scale); }
 	if (m_pTag->tag == ObjectTag::Team2) { m_var.Init(MV1DuplicateModel(AssetManager::UseModel(m_modelName)), pos, rotate, scale); }
 	if (m_pTag->tag == ObjectTag::Team3) { m_var.Init(MV1DuplicateModel(AssetManager::UseModel(m_modelName)), pos, rotate, scale); }
 
-	// Transform‚Ì’l‚ÉˆÊ’u‚È‚Ç‚Ìî•ñ‚ð‘ã“ü
+	// Transformã®å€¤ã«ä½ç½®ãªã©ã®æƒ…å ±ã‚’ä»£å…¥
 	m_pTransform->position = m_var.pos;
 	m_pTransform->rotate = m_var.rotate;
 	m_pTransform->scale = m_var.scale;
 
-	// 3Dƒ‚ƒfƒ‹Ý’è
+	// 3Dãƒ¢ãƒ‡ãƒ«è¨­å®š
 	MV1SetScale(m_var.handle, m_var.scale);
 	MV1SetRotationXYZ(m_var.handle, m_var.rotate);
 	MV1SetPosition(m_var.handle, m_var.pos);
@@ -36,11 +40,11 @@ void Human::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
 	m_animIndex = MV1AttachAnim(m_var.handle, m_animType);
 	m_animTotalTime = MV1GetAnimTotalTime(m_var.handle, m_animType);
 
-	// ƒAƒCƒRƒ“‚ðƒZƒbƒg
+	// ã‚¢ã‚¤ã‚³ãƒ³ã‚’ã‚»ãƒƒãƒˆ
 	m_pIcon = new Icon(m_pTag);
 	m_pIcon->Init(m_var.pos, VGet(0.0f, 0.0f, 0.0f), VGet(0.7f, 0.7f, 0.7f));
 
-	// Å‰‚É3‚Âƒgƒ}ƒg‚ðì¬‚µ‚Ä‚¨‚­(ƒƒ‚ƒŠ—e—Ê‚Ì‚½‚ß3‚Â‚ÉŒÀ’è)
+	// æœ€åˆã«3ã¤ãƒˆãƒžãƒˆã‚’ä½œæˆã—ã¦ãŠã(ãƒ¡ãƒ¢ãƒªå®¹é‡ã®ãŸã‚3ã¤ã«é™å®š)
 	auto collider = m_pParent->GetComponent<Collider>();
 	for (int i = 0; i < 3; i++)
 	{

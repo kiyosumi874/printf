@@ -284,7 +284,7 @@ PlayScene::~PlayScene()
 	}
 	m_pObjectLists.clear();
 	m_pGameObjects.clear();
-	SetCameraScreenCenter(640.0f, 480.0f);
+	SetCameraScreenCenter(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 }
 
 TAG_SCENE PlayScene::Update()
@@ -647,8 +647,8 @@ void PlayScene::DrawTransitionStart()
 
 void PlayScene::DrawTransitionPlay()
 {
-	SetDrawArea(0, 0, 640, 960);
-	SetCameraScreenCenter(320.0f, 480.0f);
+	SetDrawArea(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
+	SetCameraScreenCenter(480.0f, 540.0f);
 	Effekseer_Sync3DSetting();
 
 #ifdef _DEBUG
@@ -673,8 +673,8 @@ void PlayScene::DrawTransitionPlay()
 
 	DrawEffekseer3D();
 
-	SetDrawArea(640, 0, 1280, 960);
-	SetCameraScreenCenter(960.0f, 480.0f);
+	SetDrawArea(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	SetCameraScreenCenter(1440.0f, 540.0f);
 
 	Effekseer_Sync3DSetting();
 #ifdef _DEBUG
@@ -710,8 +710,8 @@ void PlayScene::DrawTransitionPlay()
 
 void PlayScene::DrawTransitionOver()
 {
-	SetDrawArea(0, 0, 640, 960);
-	SetCameraScreenCenter(320.0f, 480.0f);	
+	SetDrawArea(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
+	SetCameraScreenCenter(480.0f, 540.0f);	
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
@@ -731,8 +731,8 @@ void PlayScene::DrawTransitionOver()
 			if (tag->tag != ObjectTag::Camera2) { obj->Draw(); }
 		}
 	}
-	SetDrawArea(640, 0, 1280, 960);
-	SetCameraScreenCenter(960.0f, 480.0f);
+	SetDrawArea(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	SetCameraScreenCenter(1440.0f, 540.0f);
 #ifdef _DEBUG
 	printfDx("PlayScene\n");
 	
@@ -759,8 +759,8 @@ void PlayScene::DrawTransitionOver()
 
 void PlayScene::DrawTransitionEnd()
 {
-	SetDrawArea(0, 0, 640, 960);
-	SetCameraScreenCenter(320.0f, 480.0f);
+	SetDrawArea(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
+	SetCameraScreenCenter(480.0f, 540.0f);
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
@@ -780,8 +780,8 @@ void PlayScene::DrawTransitionEnd()
 			if (tag->tag != ObjectTag::Camera2) { obj->Draw(); }
 		}
 	}
-	SetDrawArea(640, 0, 1280, 960);
-	SetCameraScreenCenter(960.0f, 480.0f);
+	SetDrawArea(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	SetCameraScreenCenter(1440.0f, 540.0f);
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG

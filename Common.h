@@ -2,8 +2,8 @@
 #include "pch.h"
 const float MIN_FRAME_TIME = 1.0f / 60.0f;
 
-const int SCREEN_WIDTH = 1280;
-const int SCREEN_HEIGHT = 960;
+const int SCREEN_WIDTH = 1920;
+const int SCREEN_HEIGHT = 1080;
 const int COLOR_BIT_DEPTH = 16;
 
 // VisualStadioの出力ウィンドウに動的な値などを出力するときに使うマクロ

@@ -12,6 +12,7 @@ public:
 	void Draw();
 
 private:
+	class Icon* m_icon;  // アイコンクラス
 
 	VECTOR m_dir;			// 向き
 	VECTOR m_aimDir;		// 目標向き

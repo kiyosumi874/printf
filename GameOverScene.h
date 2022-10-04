@@ -14,6 +14,19 @@ private:
 	void UpdateTransitionStart();
 	void UpdateTransitionPlay();
 	void UpdateTransitionEnd();
+
+	enum RankOrder
+	{
+		one,	// ‡@¨‡A¨‡B
+		two,	// ‡@¨‡B¨‡A
+		three,	// ‡A¨‡@¨‡B
+		four,	// ‡A¨‡B¨‡@
+		five,	// ‡B¨‡@¨‡A
+		six		// ‡B¨‡A¨‡@
+	};
+
+	void RankOrderInit(RankOrder num);
+
 	// ƒV[ƒ““à‚Ìó‘Ô‘JˆÚ‚ğ•\‚·
 	enum class Transition
 	{
