@@ -13,7 +13,7 @@ TransitionButton::~TransitionButton()
 
 void TransitionButton::Start()
 {
-	m_var.Init(AssetManager::UseImage(AssetManager::ImageName::TransitionButton), 450, 850, 799, 96, 100.0f);
+	m_var.Init(AssetManager::UseImage(AssetManager::ImageName::TransitionButton), SCREEN_WIDTH - 830, 950, 799, 96, 100.0f);
 }
 
 void TransitionButton::Update()

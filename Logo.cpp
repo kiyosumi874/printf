@@ -12,7 +12,7 @@ Logo::~Logo()
 
 void Logo::Start()
 {
-	m_var.Init(AssetManager::UseImage(AssetManager::ImageName::Logo), -60, -60, 1200 * 2 / 3, 844 * 2 / 3, 255.0f);
+	m_var.Init(AssetManager::UseImage(AssetManager::ImageName::Logo), -20, -40, 1200 * 2 / 3, 844 * 2 / 3, 255.0f);
 }
 
 void Logo::Update()
