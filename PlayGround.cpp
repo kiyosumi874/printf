@@ -3,8 +3,8 @@
 #include "Component.h"
 
 PlayGround::PlayGround()
-	: m_Pos(VGet(0.0f, -10.0f, 0.0f))
-	, m_Scale(VGet(5.0f, 1.0f, 5.0f))
+	: m_Pos(VGet(0.0f, -1.0f, 0.0f))
+	, m_Scale(VGet(1.0f, 1.0f, 1.0f))
 {
 	// 初期化（使うモデル、ポジション、回転率、拡大率）
 	m_var.Init(AssetManager::UseModel(AssetManager::ModelName::Ground), m_Pos, VGet(0.0f, 0.0f, 0.0f), m_Scale);
