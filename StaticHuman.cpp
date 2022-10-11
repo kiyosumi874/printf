@@ -22,7 +22,6 @@ StaticHuman::StaticHuman()
 StaticHuman::~StaticHuman()
 {
 	MV1DeleteModel(m_modelHandle);
-	delete m_icon;
 }
 
 void StaticHuman::Start()
@@ -55,8 +54,6 @@ void StaticHuman::Update()
 		m_animTime = 0.0f;
 	}
 	MV1SetAttachAnimTime(m_modelHandle, m_animIndex, m_animTime);
-
-	m_icon->Update(pos->position);
 }
 
 void StaticHuman::Draw()
@@ -64,6 +61,5 @@ void StaticHuman::Draw()
 	// 3Dモデルの描画
 	SetUseLighting(false);
 	MV1DrawModel(m_modelHandle);
-	m_icon->Draw();
 	SetUseLighting(true);
 }

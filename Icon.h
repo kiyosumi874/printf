@@ -5,21 +5,24 @@
 class Icon : public ModelBase, public Component
 {
 public:
-	Icon(class Tag* tag);   // コンストラクタ
+	Icon();   // コンストラクタ
 	~Icon();  // デストラクタ
 
-	void Update(VECTOR& position);  // 更新処理
+	void Update();  // 更新処理
 	void Draw();  // 描画処理
 
 	// 必ず呼ぶこと
 	void Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale);
+
+	void SetOwnerTag(class Tag* tag) { m_pOwnerTag = tag; }
+	void SetOwnerPosition(VECTOR& position);  // 自分を管理しているオブジェクトの位置に自分の位置を補正
 
 	void Animation();
 
 
 private:
 	VECTOR m_correctionVector;  // 位置の補正用
-	class Tag* m_pTag;
+	class Tag* m_pOwnerTag;
 
 	int m_animIndex;  // 現在のアニメーションを記録
 	float m_animTime;  // アニメーションの経過時間

@@ -2,18 +2,16 @@
 #include "Icon.h"
 #include "Tag.h"
 
-Icon::Icon(Tag* tag)
+Icon::Icon()
 {
-	m_pTag = tag;
 }
 
 Icon::~Icon()
 {
 }
 
-void Icon::Update(VECTOR& position)
+void Icon::Update()
 {
-	m_var.pos = VAdd(position, m_correctionVector);
 	MV1SetPosition(m_var.handle, m_var.pos);
 
 	Animation();
@@ -26,15 +24,15 @@ void Icon::Draw()
 
 void Icon::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
 {
-	if (m_pTag->tag == ObjectTag::Team1)
+	if (m_pOwnerTag->tag == ObjectTag::Team1)
 	{
 		m_var.Init(MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::Icon1)), pos, rotate, scale);
 	}
-	else if (m_pTag->tag == ObjectTag::Team2)
+	else if (m_pOwnerTag->tag == ObjectTag::Team2)
 	{
 		m_var.Init(MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::Icon2)), pos, rotate, scale);
 	}
-	else if (m_pTag->tag == ObjectTag::Team3)
+	else if (m_pOwnerTag->tag == ObjectTag::Team3)
 	{
 		m_var.Init(MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::Icon3)), pos, rotate, scale);
 	}
@@ -49,6 +47,11 @@ void Icon::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
 
 	m_var.pos = VAdd(m_var.pos, m_correctionVector);
 	MV1SetPosition(m_var.handle, m_var.pos);
+}
+
+void Icon::SetOwnerPosition(VECTOR& position)
+{
+	m_var.pos = VAdd(position, m_correctionVector);
 }
 
 void Icon::Animation()
