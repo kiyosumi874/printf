@@ -13,6 +13,7 @@ Human::Human()
 {
 	m_pTransform = nullptr;
 	m_pTag = nullptr;
+	m_pIcon = nullptr;
 }
 
 void Human::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
@@ -37,7 +38,9 @@ void Human::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
 	m_animTotalTime = MV1GetAnimTotalTime(m_var.handle, m_animType);
 
 	// アイコンをセット
-	m_pIcon = new Icon(m_pTag);
+	m_pIcon = m_pParent->GetComponent<Icon>();
+	m_pIcon->SetOwnerTag(m_pTag);
+	m_pIcon->SetOwnerPosition(m_pTransform->position);
 	m_pIcon->Init(m_var.pos, VGet(0.0f, 0.0f, 0.0f), VGet(0.7f, 0.7f, 0.7f));
 
 	// 最初に3つトマトを作成しておく(メモリ容量のため3つに限定)

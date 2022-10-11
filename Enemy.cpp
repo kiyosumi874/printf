@@ -69,7 +69,7 @@ void Enemy::Update()
 	m_var.pos = m_pTransform->position;
 	MV1SetPosition(m_var.handle, m_var.pos);
 
-	m_pIcon->Update(m_var.pos);
+	m_pIcon->SetOwnerPosition(m_var.pos);
 }
 
 void Enemy::Draw()

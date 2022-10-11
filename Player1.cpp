@@ -71,7 +71,7 @@ void Player1::Update()
 	// モデルに回転をセットする
 	MV1SetRotationZYAxis(m_var.handle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
 
-	m_pIcon->Update(m_var.pos);
+	m_pIcon->SetOwnerPosition(m_var.pos);
 }
 
 void Player1::Draw()
