@@ -14,38 +14,49 @@ StaticHuman::StaticHuman()
 
 	// アニメーション準備
 	m_animType = Anim::Idle;
-	m_animIndex = MV1AttachAnim(m_modelHandle, m_animType);
-	m_animTotalTime = MV1GetAnimTotalTime(m_modelHandle, m_animType);
+	m_animIndex = MV1AttachAnim(m_var.handle, m_animType);
+	m_animTotalTime = MV1GetAnimTotalTime(m_var.handle, m_animType);
 	m_animTime = 0.0f;
 }
 
 StaticHuman::~StaticHuman()
 {
-	MV1DeleteModel(m_modelHandle);
+	MV1DeleteModel(m_var.handle);
 }
 
 void StaticHuman::Start()
 {
-	// 3Dモデルの読み込み
 	auto tag = m_pParent->GetComponent<Tag>();
-	if (tag->tag == ObjectTag::Team1) { m_modelHandle = MV1LoadModel("data/character/man1.mv1"); }
-	if (tag->tag == ObjectTag::Team2) { m_modelHandle = MV1LoadModel("data/character/man3.mv1"); }
-	if (tag->tag == ObjectTag::Team3) { m_modelHandle = MV1LoadModel("data/character/woman2.mv1"); }
-	MV1SetScale(m_modelHandle, VGet(0.1f, 0.1f, 0.1f));
-	// 3Dモデルのポジション設定
+	// 3Dモデルのポジションを取得
 	auto pos = m_pParent->GetComponent<Transform>();
-	MV1SetPosition(m_modelHandle, pos->position);
 
-	//// アイコンをセット
-	//m_icon = new Icon(tag);
-	//m_icon->Init(pos->position);
+	// Transformの値に位置などの情報を代入
+	m_var.pos = pos->position;
+	m_var.rotate = pos->rotate;
+	m_var.scale = pos->scale;
+
+	// 3Dモデルの読み込み
+	if (tag->tag == ObjectTag::Team1) { m_var.Init(MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::Team1)), m_var.pos, m_var.rotate, m_var.scale); }
+	if (tag->tag == ObjectTag::Team2) { m_var.Init(MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::Team2)), m_var.pos, m_var.rotate, m_var.scale); }
+	if (tag->tag == ObjectTag::Team3) { m_var.Init(MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::Team3)), m_var.pos, m_var.rotate, m_var.scale); }
+
+	// 3Dモデル設定
+	MV1SetScale(m_var.handle, VGet(0.1f, 0.1f, 0.1f));
+	MV1SetRotationXYZ(m_var.handle, m_var.rotate);
+	MV1SetPosition(m_var.handle, m_var.pos);
+
+	// アイコンをセット
+	auto m_pIcon = m_pParent->AddComponent<Icon>();
+	m_pIcon->SetOwnerTag(tag);
+	m_pIcon->SetOwnerPosition(pos->position);
+	m_pIcon->Init(m_var.pos, VGet(0.0f, 0.0f, 0.0f), VGet(0.7f, 0.7f, 0.7f));
 }
 
 void StaticHuman::Update()
 {
 	// 3Dモデルのポジション設定
 	auto pos = m_pParent->GetComponent<Transform>();
-	MV1SetPosition(m_modelHandle, pos->position);
+	MV1SetPosition(m_var.handle, pos->position);
 
 	// アニメーション処理
 	m_animTime += 0.3f;
@@ -53,13 +64,13 @@ void StaticHuman::Update()
 	{
 		m_animTime = 0.0f;
 	}
-	MV1SetAttachAnimTime(m_modelHandle, m_animIndex, m_animTime);
+	MV1SetAttachAnimTime(m_var.handle, m_animIndex, m_animTime);
 }
 
 void StaticHuman::Draw()
 {
 	// 3Dモデルの描画
 	SetUseLighting(false);
-	MV1DrawModel(m_modelHandle);
+	MV1DrawModel(m_var.handle);
 	SetUseLighting(true);
 }
