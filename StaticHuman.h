@@ -1,29 +1,32 @@
 ﻿#pragma once
 #include "Component.h"
 
-class StaticHuman : public Component
+class StaticHuman : public ModelBase,public Component
 {
 public:
 	StaticHuman();
-	~StaticHuman();
+	~StaticHuman() override;
 
-	void Start();
-	void Update();
-	void Draw();
+	void Start() override;
+	void Update() override;
+	void Draw() override;
 
 private:
 	class Icon* m_icon;  // アイコンクラス
+
+	AssetManager::ModelName m_modelName;
 
 	VECTOR m_dir;			// 向き
 	VECTOR m_aimDir;		// 目標向き
 	VECTOR m_velocity;		// 速度
 
-	int m_modelHandle;		// モデルハンドル
-
 	enum Anim
 	{
-		Idle,
-		Run,
+		None = -1,  // 何もしない
+		Idle,  // 止まる
+		Run,   // 走る
+		Throw,  // 投げる
+		Pick,  // 拾う
 	};
 
 	int m_animType;  // 現在のアニメーションが何か
