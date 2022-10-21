@@ -8,7 +8,11 @@
 #include "Icon.h"
 #include "DebugDraw.h"
 #include "Object.h"
-#include "Collider.h"
+#include "BoxCollider.h"
+#include "SphereCollider.h"
+#include "WallCollider.h"
+#include "GroundCollider.h"
+#include "WorldCollider.h"
 #include "Projector.h"
 #include "Transform.h"
 #include "Tag.h"
@@ -18,6 +22,7 @@
 #include "Score.h"
 #include "TomatoUIContoroller.h"
 #include "ScoreUIController.h"
+#include "DebugColliderObject.h"
 
 
 // いたっんおいてる定数.いつの日かまとめる
@@ -42,9 +47,28 @@ PlayScene::PlayScene(const MODE& mode)
 	// トマトの山生成
 	for (int i = 0; i < m_tomatoWallNum; i++)
 	{
-		auto tomato = new TomatoWallManager(ObjectTag::TomatoWall);
+		Object* obj = new Object;
+		obj->AddComponent<Transform>();
+		obj->AddComponent<Tag>()->tag = ObjectTag::TomatoWall;
+		auto wall = obj->AddCollider<WallCollider>();
+		wall->SetCollider(new Wall(new Box(VGet( 0.0f, 0.0f, 0.0f), VGet(20, 20, 20))));
+		auto tomato = obj->AddComponent<TomatoWallManager>();
 		tomato->Init(VGet(-300 + 100.0f * i, 0.0f, 0.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.035f, 0.035f, 0.035f));
-		m_pGameObjects.push_back(tomato);
+		m_pColliderLists.push_back(obj);
+		m_pObjectLists.push_back(obj);
+		m_pTomatoWallObjectLists.push_back(obj);
+	}
+
+	{
+		/*Object* obj = new Object;
+		obj->AddComponent<Transform>();
+		obj->AddComponent<Tag>()->tag = ObjectTag::Debug;
+		auto sphere = obj->AddCollider<SphereCollider>();
+		sphere->SetCollider(new Sphere(VGet(0.0f, 0.0f, 0.0f), 5.0f));
+		auto debug = obj->AddComponent<DebugColliderObject>();
+		debug->Init(VGet(20, 0.0f, 20), VGet(0.0f, 0.0f, 0.0f), VGet(0.05f, 0.05f, 0.05f));
+		m_pColliderLists.push_back(obj);
+		m_pObjectLists.push_back(obj);*/
 	}
 
 	// iguchi
@@ -55,12 +79,13 @@ PlayScene::PlayScene(const MODE& mode)
 			obj->AddComponent<Transform>();
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Team1;
-			auto collider = obj->AddComponent<Collider>();
-			collider->width = 3.0f;
 			obj->AddComponent<Icon>();
+			auto box = obj->AddCollider<BoxCollider>();
+			box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
 			auto p1 = obj->AddComponent<Player1>();
 			p1->Init(VGet(50.0f, 0.0f, -50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
-			p1->SetTomatoWallPtr(m_pGameObjects);
+			p1->SetTomatoWallPtr(m_pTomatoWallObjectLists);
+			m_pColliderLists.push_back(obj);
 			m_pObjectLists.push_back(obj);
 		}
 		{
@@ -68,12 +93,13 @@ PlayScene::PlayScene(const MODE& mode)
 			obj->AddComponent<Transform>();
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Team2;
-			auto collider = obj->AddComponent<Collider>();
-			collider->width = 3.0f;
 			obj->AddComponent<Icon>();
+			auto box = obj->AddCollider<BoxCollider>();
+			box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
 			auto p2 = obj->AddComponent<Player2>();
 			p2->Init(VGet(-50.0f, 0.0f, -50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
-			p2->SetTomatoWallPtr(m_pGameObjects);
+			p2->SetTomatoWallPtr(m_pTomatoWallObjectLists);
+			m_pColliderLists.push_back(obj);
 			m_pObjectLists.push_back(obj);
 		}
 	}
@@ -82,48 +108,52 @@ PlayScene::PlayScene(const MODE& mode)
 	{
 		// PlayerCPU
 		Object* obj = new Object;
-		auto collider = obj->AddComponent<Collider>();
-		collider->width = 3.0f;
 		obj->AddComponent<Transform>();
 		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
 		obj->AddComponent<Icon>();
+		auto box = obj->AddCollider<BoxCollider>();
+		box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
 		auto playerCPU1 = obj->AddComponent<PlayerCPU>();
 		playerCPU1->Init(VGet(60.0f, 0.0f, -50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
-		playerCPU1->SetTomatoWallPtr(m_pGameObjects);
+		playerCPU1->SetTomatoWallPtr(m_pTomatoWallObjectLists);
+		m_pColliderLists.push_back(obj);
 		m_pObjectLists.push_back(obj);
 
 		obj = new Object;
-		collider = obj->AddComponent<Collider>();
-		collider->width = 3.0f;
 		obj->AddComponent<Transform>();
 		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
 		obj->AddComponent<Icon>();
+		box = obj->AddCollider<BoxCollider>();
+		box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
 		auto playerCPU2 = obj->AddComponent<PlayerCPU>();
 		playerCPU2->Init(VGet(-60.0f, 0.0f, -50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
-		playerCPU2->SetTomatoWallPtr(m_pGameObjects);
+		playerCPU2->SetTomatoWallPtr(m_pTomatoWallObjectLists);
+		m_pColliderLists.push_back(obj);
 		m_pObjectLists.push_back(obj);
 
 		// Enemy
 		obj = new Object;
-		collider = obj->AddComponent<Collider>();
-		collider->width = 3.0f;
 		obj->AddComponent<Transform>();
 		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
 		obj->AddComponent<Icon>();
+		box = obj->AddCollider<BoxCollider>();
+		box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
 		auto enemy1 = obj->AddComponent<Enemy>();
 		enemy1->Init(VGet(-10.0f, 0.0f, 50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
-		enemy1->SetTomatoWallPtr(m_pGameObjects);
+		enemy1->SetTomatoWallPtr(m_pTomatoWallObjectLists);
+		m_pColliderLists.push_back(obj);
 		m_pObjectLists.push_back(obj);
 
 		obj = new Object;
-		collider = obj->AddComponent<Collider>();
-		collider->width = 3.0f;
 		obj->AddComponent<Transform>();
 		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
 		obj->AddComponent<Icon>();
+		box = obj->AddCollider<BoxCollider>();
+		box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
 		auto enemy2 = obj->AddComponent<Enemy>();
 		enemy2->Init(VGet(10.0f, 0.0f, 50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
-		enemy2->SetTomatoWallPtr(m_pGameObjects);
+		enemy2->SetTomatoWallPtr(m_pTomatoWallObjectLists);
+		m_pColliderLists.push_back(obj);
 		m_pObjectLists.push_back(obj);
 
 		// 自身と同じチーム以外の人物を狙う対象に
@@ -139,14 +169,22 @@ PlayScene::PlayScene(const MODE& mode)
 	// skyDome
 	{
 		Object* obj = new Object;
+		obj->AddComponent<Tag>()->tag = ObjectTag::World;
+		auto world = obj->AddCollider<WorldCollider>();
+		world->SetCollider(new World(new Sphere(VGet(0.0f, 0.0f, 0.0f), 340.0f)));
 		obj->AddComponent<SkyDome>();
+		m_pColliderLists.push_back(obj);
 		m_pObjectLists.push_back(obj);
 	}
 
 	// saito 床を生成
 	{
 		Object* obj = new Object;
+		obj->AddComponent<Tag>()->tag = ObjectTag::Ground;
+		auto ground = obj->AddCollider<GroundCollider>();
+		ground->SetCollider(new Ground(VGet(0.0f, 0.0f, 0.0f), -3.0f, 5.0f, 500.0f));
 		obj->AddComponent<PlayGround>();
+		m_pColliderLists.push_back(obj);
 		m_pObjectLists.push_back(obj);
 	}
 
@@ -160,9 +198,17 @@ PlayScene::PlayScene(const MODE& mode)
 			auto tag = obj->AddComponent<Tag>();
 			if (num == 0) { tag->tag = ObjectTag::Camera1; }
 			if (num == 1) { tag->tag = ObjectTag::Camera2; }
-			proj->SetPlayerptr(ob->GetComponent<Transform>());
-			m_pObjectLists.push_back(obj);
-			num++;
+			for (auto com : ob->m_pComponentLists)
+			{
+				if (num == 0 && com->m_pParent->GetComponent<Player1>() != nullptr ||
+					num == 1 && com->m_pParent->GetComponent<Player2>() != nullptr)
+				{
+					proj->SetPlayerptr(ob->GetComponent<Transform>());
+					m_pObjectLists.push_back(obj);
+					num++;
+					break;
+				}
+			}
 			if (num > 1) { break; }
 		}
 	}
@@ -274,17 +320,14 @@ PlayScene::PlayScene(const MODE& mode)
 PlayScene::~PlayScene()
 {
 	DeleteGraph(m_graphHandleWhite);
-	for (auto obj : m_pGameObjects)
-	{
-		delete obj;
-	}
 
 	for (auto obj : m_pObjectLists)
 	{
 		delete obj;
 	}
 	m_pObjectLists.clear();
-	m_pGameObjects.clear();
+	m_pColliderLists.clear();
+	m_pTomatoWallObjectLists.clear();
 	SetCameraScreenCenter(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 }
 
@@ -351,10 +394,6 @@ void PlayScene::UpdateTransitionStart()
 			m_timeCount->RestCount();
 			
 		}
-	}
-	for (auto i = 0; i < m_pGameObjects.size(); i++)
-	{
-		m_pGameObjects[i]->Update();
 	}
 	for (auto obj : m_pObjectLists)
 	{
@@ -528,7 +567,7 @@ void PlayScene::UpdateTransitionPlay()
 	{
 		if (it->GetComponent<TimeUIController>() != nullptr)
 		{
-			if (it->GetComponent<TimeCount>()->CheckCount() > 90.0)
+			if (it->GetComponent<TimeCount>()->CheckCount() > 900.0)
 			{
 				m_transition = Transition::OVER;
 				{
@@ -548,10 +587,6 @@ void PlayScene::UpdateTransitionPlay()
 		}
 	}
 
-	for (auto i = 0; i < m_pGameObjects.size(); i++)
-	{
-		m_pGameObjects[i]->Update();
-	}
 	for (auto obj : m_pObjectLists)
 	{
 		if (m_playOnFlag)
@@ -571,6 +606,23 @@ void PlayScene::UpdateTransitionPlay()
 			}
 		}
 	}
+
+	for (auto obj : m_pColliderLists)
+	{
+		if (m_playOnFlag)
+		{
+			obj->OnCollision(m_pColliderLists);
+		}
+	}
+
+#ifdef _DEBUG
+	// debug上でののみ切り替え可能
+	bool buttonFlag = false;
+	if (CheckHitKey(KEY_INPUT_SPACE))
+	{
+		m_debugFlag = true;
+	}
+#endif
 
 	if (Input::IsDown1P(BUTTON_ID_START))
 	{
@@ -626,10 +678,6 @@ void PlayScene::DrawTransitionStart()
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
-	for (auto i = 0; i < m_pGameObjects.size(); i++)
-	{
-		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2 || m_pGameObjects[i]->GetTag() != ObjectTag::Camera1) { m_pGameObjects[i]->Draw(); }
-	}
 	for (auto obj : m_pObjectLists)
 	{
 		obj->Draw();
@@ -655,10 +703,6 @@ void PlayScene::DrawTransitionPlay()
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
-	for (auto i = 0; i < m_pGameObjects.size(); i++)
-	{
-		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2) { m_pGameObjects[i]->Draw(); }
-	}
 	for (auto obj : m_pObjectLists)
 	{
 		auto tag = obj->GetComponent<Tag>();
@@ -672,6 +716,14 @@ void PlayScene::DrawTransitionPlay()
 		}
 	}
 
+	// 大きさ確認用(見た目位置はずれますが実際の位置はずれてません)
+	if (m_debugFlag)
+	{
+		for (auto obj : m_pColliderLists)
+		{
+			obj->OnDrawCollider();
+		}
+	}
 	DrawEffekseer3D();
 
 	SetDrawArea(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -682,10 +734,6 @@ void PlayScene::DrawTransitionPlay()
 	//DrawGrid(1000.0f, 30);
 #endif // _DEBUG
 
-	for (auto i = 0; i < m_pGameObjects.size(); i++)
-	{
-		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera1) { m_pGameObjects[i]->Draw(); }
-	}
 	for (auto obj : m_pObjectLists)
 	{
 		auto tag = obj->GetComponent<Tag>();
@@ -699,7 +747,16 @@ void PlayScene::DrawTransitionPlay()
 		}
 	}
 
+	// 大きさ確認用(見た目位置はずれますが実際の位置はずれてません)
+	if (m_debugFlag)
+	{
+		for (auto obj : m_pColliderLists)
+		{
+			obj->OnDrawCollider();
+		}
+	}
 	DrawEffekseer3D();
+
 
 	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();
@@ -716,10 +773,6 @@ void PlayScene::DrawTransitionOver()
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
-	for (auto i = 0; i < m_pGameObjects.size(); i++)
-	{
-		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2) { m_pGameObjects[i]->Draw(); }
-	}
 	for (auto obj : m_pObjectLists)
 	{
 		auto tag = obj->GetComponent<Tag>();
@@ -738,10 +791,6 @@ void PlayScene::DrawTransitionOver()
 	printfDx("PlayScene\n");
 	
 #endif // _DEBUG
-	for (auto i = 0; i < m_pGameObjects.size(); i++)
-	{
-		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera1) { m_pGameObjects[i]->Draw(); }
-	}
 	for (auto obj : m_pObjectLists)
 	{
 		auto tag = obj->GetComponent<Tag>();
@@ -765,10 +814,6 @@ void PlayScene::DrawTransitionEnd()
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
-	for (auto i = 0; i < m_pGameObjects.size(); i++)
-	{
-		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera2) { m_pGameObjects[i]->Draw(); }
-	}
 	for (auto obj : m_pObjectLists)
 	{
 		auto tag = obj->GetComponent<Tag>();
@@ -786,10 +831,6 @@ void PlayScene::DrawTransitionEnd()
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
-	for (auto i = 0; i < m_pGameObjects.size(); i++)
-	{
-		if (m_pGameObjects[i]->GetTag() != ObjectTag::Camera1) { m_pGameObjects[i]->Draw(); }
-	}
 	for (auto obj : m_pObjectLists)
 	{
 		auto tag = obj->GetComponent<Tag>();

@@ -10,6 +10,7 @@ public:
 	void Start() override;	// コンポーネント初期化処理.
 	void Update() override;	// 更新処理.
 	void Draw() override;	// 描画処理.
+	void OnCollisionEnter(class ColliderComponent* ownColl, class ColliderComponent* otherColl) override;
 
 	void SetAimTargetPtr(class Object* target);  // PlayerCPUに狙わせたいTargetをセット
 

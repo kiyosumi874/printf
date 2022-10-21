@@ -31,7 +31,12 @@ void Projector::Update()
 
 void Projector::Draw()
 {
-	auto& playerPos = m_pPlayerTransform->position;
+#ifdef _DEBUG
+	printfDx("ProjectorX:%f\n", m_pPlayerTransform->position.x);
+	printfDx("ProjectorY:%f\n", m_pPlayerTransform->position.y);
+	printfDx("ProjectorZ:%f\n", m_pPlayerTransform->position.z);
+#endif // _DEBUG
+	auto playerPos = m_pPlayerTransform->position;
 	// プレイヤーの座標を目標視点に代入
 	m_targetViewPoint = playerPos;
 	auto angle = m_pPlayerTransform->rotate.y;

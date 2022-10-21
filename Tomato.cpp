@@ -3,6 +3,7 @@
 #include "Object.h"
 #include "Transform.h"
 #include "Tag.h"
+#include "SphereCollider.h"
 
 // @detail コンストラクタ
 // @param position トマトを投げる人の位置
@@ -27,29 +28,73 @@ Tomato::~Tomato()
 
 void Tomato::Start()
 {
-	if (m_tag == nullptr)
+	if (m_pTag == nullptr)
 	{
-		m_tag = m_pParent->GetComponent<Tag>();
+		m_pTag = m_pParent->GetComponent<Tag>();
 	}
 	if (m_pTransform == nullptr)
 	{
 		m_pTransform = m_pParent->GetComponent<Transform>();
+	}
+	if (m_pSphere == nullptr)
+	{
+		m_pSphere = m_pParent->GetCollider<SphereCollider>();
+		m_pSphere->Init(m_pTransform->position, this, m_pTag, CollisionInfo::CollisionType::Sphere);
 	}
 }
 
 // @detail 更新処理
 void Tomato::Update()
 {
-	Move();
-	m_pTransform->position = VAdd(m_pTransform->position, m_velocity);
-	m_var.pos = m_pTransform->position;
-	MV1SetPosition(m_var.handle, m_var.pos);
+	if (m_isActive)
+	{
+		Move();
+		m_pTransform->position = VAdd(m_pTransform->position, m_velocity);
+		m_var.pos = m_pTransform->position;
+		MV1SetPosition(m_var.handle, m_var.pos);
+		m_pSphere->UpdatePosition(m_var.pos);
+	}
 }
 
 // @detail 描画処理
 void Tomato::Draw()
 {
-	MV1DrawModel(m_var.handle);
+	if (m_isActive)
+	{
+		MV1DrawModel(m_var.handle);
+	}
+}
+
+void Tomato::OnCollisionEnter(ColliderComponent* ownColl, ColliderComponent* otherColl)
+{
+	// 背景や壁だったらだったら
+	if (otherColl->GetTag()->tag == ObjectTag::Ground ||
+		otherColl->GetTag()->tag == ObjectTag::TomatoWall ||
+		otherColl->GetTag()->tag == ObjectTag::World)
+	{
+		m_isActive = false;
+		ownColl->SetOnCollisionFlag(false);
+		m_velocity = VGet(0.0f, 0.0f, 0.0f);
+		m_time = 0.0f;
+		
+		return;
+	}
+
+	if (otherColl->GetTag()->tag == ObjectTag::Team1 ||
+		otherColl->GetTag()->tag == ObjectTag::Team2 ||
+		otherColl->GetTag()->tag == ObjectTag::Team3)
+	{
+		// 自分を生成したオブジェクトと同じタグ名なら処理を行わない
+		if (otherColl->GetTag()->tag == ownColl->GetParentTag()->tag)
+		{
+			return;
+		}
+
+		m_isActive = false;
+		ownColl->SetOnCollisionFlag(false);
+		m_velocity = VGet(0.0f, 0.0f, 0.0f);
+		m_time = 0.0f;
+	}
 }
 
 void Tomato::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
@@ -65,6 +110,20 @@ void Tomato::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
 	m_pTransform->position = m_var.pos;
 	m_pTransform->rotate = m_var.rotate;
 	m_pTransform->scale = m_var.scale;
+}
+
+void Tomato::ShotTomato(const VECTOR& pos, const VECTOR& dir, Tag* tag)
+{
+	VECTOR tmp = VGet(0.0f, pos.y + 15.0f, 0.0f);
+	m_pTransform->position = VAdd(pos, tmp);
+	m_dir = dir;
+	m_pSphere->SetParentTag(tag);
+	m_isActive = true;
+	m_pSphere->SetOnCollisionFlag(true);
+
+	m_var.pos = m_pTransform->position;
+	MV1SetPosition(m_var.handle, m_var.pos);
+	m_pSphere->UpdatePosition(m_var.pos);
 }
 
 // @detailトマトを投げてからの時間を返す

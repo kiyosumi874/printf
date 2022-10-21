@@ -25,7 +25,12 @@ public:
 	/// </summary>
 	void Draw()override;
 
+	void OnCollisionEnter(class ColliderComponent* ownColl, class ColliderComponent* otherColl) override;
+
 private:
+	class GroundCollider* m_pGround = nullptr;
+	class Tag* m_pTag = nullptr;
+
 	VECTOR m_Pos;   // ポジション
 	VECTOR m_Scale; // 拡大率
 };

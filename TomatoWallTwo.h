@@ -4,7 +4,7 @@
 class TomatoWallTwo : public TomatoWall
 {
 public:
-    TomatoWallTwo(ObjectTag tag);
+    TomatoWallTwo();
     ~TomatoWallTwo();
 
     // 必ず呼ぶこと

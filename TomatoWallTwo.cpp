@@ -1,8 +1,8 @@
 ﻿#include "pch.h"
 #include "TomatoWallTwo.h"
 
-TomatoWallTwo::TomatoWallTwo(ObjectTag tag)
-    : TomatoWall(tag)
+TomatoWallTwo::TomatoWallTwo()
+    : TomatoWall()
 {
     m_modelName = AssetManager::ModelName::TomatoWallTwo;
 }

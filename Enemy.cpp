@@ -3,9 +3,10 @@
 #include "Tomato.h"
 #include "TomatoWallManager.h"
 #include "Object.h"
+#include "Tag.h"
 #include "Transform.h"
-#include "Collider.h"
 #include "Icon.h"
+#include "BoxCollider.h"
 
 Enemy::Enemy()
 	: Human()
@@ -48,6 +49,12 @@ void Enemy::Start()
 	{
 		m_pTag = m_pParent->GetComponent<Tag>();
 	}
+	if (m_pBox == nullptr)
+	{
+		m_pBox = m_pParent->GetCollider<BoxCollider>();
+		m_pBox->Init(m_var.pos, m_pBox->SetOwner(this), m_pTag, CollisionInfo::CollisionType::Box);
+		m_pBox->SetOnCollisionFlag(true);
+	}
 }
 
 void Enemy::Update()
@@ -70,6 +77,8 @@ void Enemy::Update()
 	MV1SetPosition(m_var.handle, m_var.pos);
 
 	m_pIcon->SetOwnerPosition(m_var.pos);
+	// 座標が足元にあるため、高さをモデルの半分の位置に補正をかけてます
+	m_pBox->UpdatePosition(VGet(m_var.pos.x, m_var.pos.y + m_pBox->GetWorldBox()->m_scale.y / 2.0f, m_var.pos.z));
 }
 
 void Enemy::Draw()
@@ -79,6 +88,22 @@ void Enemy::Draw()
 	MV1DrawModel(m_var.handle);
 	m_pIcon->Draw();
 	SetUseLighting(true);
+}
+
+void Enemy::OnCollisionEnter(ColliderComponent* ownColl, ColliderComponent* otherColl)
+{
+	if (otherColl->GetTag() != nullptr)
+	{
+		if (otherColl->GetTag()->tag == ObjectTag::Team1Tomato || otherColl->GetTag()->tag == ObjectTag::Team2Tomato)
+		{
+			return;
+		}
+		if (otherColl->GetTag()->tag == ObjectTag::Team3Tomato)
+		{
+			return;
+		}
+	}
+	m_pTransform->position = VAdd(m_pTransform->position, ownColl->GetCollisionInfo().m_fixVec);
 }
 
 void Enemy::SetAimTargetPtr(class Object* target)
@@ -91,17 +116,28 @@ void Enemy::ProcessTomato()
 {
 	// トマトを投げる
 	m_shotTime++;
-	// 敵が近づいていたり、離れていたら投げるのをキャンセルする
-	if (m_shotTime > m_shotPhaseTime && m_moveType == Type::AimTarget && m_bulletNum > 0 && !m_absolutelyMoveFlag)
+	if (m_animType != Anim::Throw)
 	{
-		//m_tomatos.push_back(new Tomato(m_pTransform->position, m_tomatoDir));
-		m_animType = Anim::Throw;
-		m_moveFlag = false;
-		if (m_animTime == 0.0f)
+		// 敵が近づいていたり、離れていたら投げるのをキャンセルする
+		if (m_shotTime > m_shotPhaseTime && m_moveType == Type::AimTarget && m_bulletNum > 0 && !m_absolutelyMoveFlag)
 		{
-			/*m_pParent->GetComponent<Collider>()->Shot( m_pTransform->position,m_tomatoDir, m_pTag);*/
-			m_bulletNum--;
-			m_shotTime = 0.0f;
+			for (auto tomato : m_pTomato)
+			{
+				if (tomato->GetActive())
+				{
+					continue;
+				}
+				m_animType = Anim::Throw;
+				m_moveFlag = false;
+				if (m_animTime == 0.0f)
+				{
+					m_bulletNum--;
+					m_shotTime = 0.0f;
+				}
+				// 消えているトマトをアクティブにする
+				tomato->ShotTomato(m_pTransform->position, m_tomatoDir, m_pTag);
+				break;
+			}
 		}
 	}
 }

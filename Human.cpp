@@ -3,11 +3,12 @@
 #include "Object.h"
 #include "Transform.h"
 #include "Tag.h"
-#include "Collider.h"
 #include "Tomato.h"
 #include "TomatoWallManager.h"
 #include "Score.h"
 #include "Icon.h"
+#include "BoxCollider.h"
+#include "SphereCollider.h"
 
 Human::Human()
 {
@@ -44,23 +45,41 @@ void Human::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
 	m_pIcon->Init(m_var.pos, VGet(0.0f, 0.0f, 0.0f), VGet(0.7f, 0.7f, 0.7f));
 
 	// 最初に3つトマトを作成しておく(メモリ容量のため3つに限定)
-	auto collider = m_pParent->GetComponent<Collider>();
 	for (int i = 0; i < 3; i++)
 	{
 		Object* obj = new Object;
 		obj->AddComponent<Transform>();
 		auto tag = obj->AddComponent<Tag>();
-		tag->tag = ObjectTag::tomato;
-		auto coll = obj->AddComponent<Collider>();
+		switch (m_pTag->tag)
+		{
+		case ObjectTag::Team1:
+			tag->tag = ObjectTag::Team1Tomato;
+			break;
+		case ObjectTag::Team2:
+			tag->tag = ObjectTag::Team2Tomato;
+			break;
+		case ObjectTag::Team3:
+			tag->tag = ObjectTag::Team3Tomato;
+			break;
+		default:
+			break;
+		}
+		auto sphere = obj->AddCollider<SphereCollider>();
+		sphere->SetCollider(new Sphere(VGet(0.0f, 0.0f, 0.0f), 1.0f));
 		Tomato* t = obj->AddComponent<Tomato>();
 		t->Init(VGet(0.0f, 0.0f, 0.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.02f, 0.02f, 0.02f));
-		coll->SetBulletObject(obj);
+		m_pTomato.push_back(t);
+		m_pColliderLists.push_back(obj);
+		m_pObjectLists.push_back(obj);
 	}
 }
 
-void Human::SetTomatoWallPtr(std::vector<class TomatoWallManager*> tomatoWall)
+void Human::SetTomatoWallPtr(std::list<class Object*> tomatoWall)
 {
-	m_pTomatoWall = tomatoWall;
+	for (auto obj : tomatoWall)
+	{
+		m_pTomatoWall.push_back(obj->GetComponent<TomatoWallManager>());
+	}
 }
 
 double Human::GetDistance(VECTOR& pos1, VECTOR& pos2)

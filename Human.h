@@ -10,22 +10,25 @@ public:
 	virtual void Start() {};
 	virtual void Update() {};
 	virtual void Draw() {};
+	virtual void OnCollisionEnter(class ColliderComponent* ownColl, class ColliderComponent* otherColl) {};
 
 	// 必ず呼ぶこと
 	void Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale);
 
-	void SetTomatoWallPtr(std::vector<class TomatoWallManager*> tomatoWall);
+	void SetTomatoWallPtr(std::list<class Object*> tomatoWall);
 
-	void GetPosition() { m_var.pos; }
-	void GetRotate() { m_var.rotate; }
+	VECTOR GetPosition() { return m_var.pos; }
+	VECTOR GetRotate() { return m_var.rotate; }
 protected:
 	AssetManager::ModelName m_modelName;
 
 	class Transform* m_pTransform = nullptr;
 	class Tag* m_pTag = nullptr;
+	class BoxCollider* m_pBox = nullptr;
+
 	std::vector<class TomatoWallManager*> m_pTomatoWall;
 	class Icon* m_pIcon = nullptr;  // アイコンクラス
-	class std::list<Object*> m_pTomato;
+	class std::vector<class Tomato*> m_pTomato;
 
 	const int m_bulletCapacity = 10; // 球の限界所持数
 	int m_bulletNum = m_bulletCapacity;        // 球の所持数

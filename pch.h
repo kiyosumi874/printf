@@ -11,6 +11,8 @@
 #include <fstream>
 #include <sstream>
 #include <math.h>
+#include <algorithm>
+#include <array>
 
 #pragma comment(lib,"winmm.lib")
 

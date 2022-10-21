@@ -8,17 +8,18 @@ enum class ObjectTag : unsigned char
 	Begin,			// Tagの開始マーカー（Beginより手前に定義しないこと）
 
 	Team1 = Begin,
-	Player1Bullet,
 	Team2,
-	Player2Bullet,
 	Team3,
-	EnemyBullet,
-	tomato,
+	Team1Tomato,
+	Team2Tomato,
+	Team3Tomato,
 	TomatoWall,
 	Ground,
 	Camera1,
 	Camera2,
 	Effect,
+	World,
+	Debug,
 
 	End				// Tagの終了マーカー（Endより後に定義しないこと）
 };
@@ -27,14 +28,16 @@ enum class ObjectTag : unsigned char
 constexpr static ObjectTag ObjectTagAll[] =
 {
 	ObjectTag::Team1,
-	ObjectTag::Player1Bullet,
 	ObjectTag::Team2,
-	ObjectTag::Player2Bullet,
 	ObjectTag::Team3,
-	ObjectTag::EnemyBullet,
+	ObjectTag::Team1Tomato,
+	ObjectTag::Team2Tomato,
+	ObjectTag::Team3Tomato,
 	ObjectTag::TomatoWall,
 	ObjectTag::Ground,
 	ObjectTag::Camera1,
 	ObjectTag::Camera2,
-	ObjectTag::Effect
+	ObjectTag::Effect,
+	ObjectTag::World,
+	ObjectTag::Debug,
 };

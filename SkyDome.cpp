@@ -1,4 +1,6 @@
 ﻿#include "pch.h"
+#include "Tag.h"
+#include "WorldCollider.h"
 
 SkyDome::SkyDome()
 	: m_rotate(0.0f)
@@ -17,6 +19,28 @@ void SkyDome::Start()
 	MV1SetScale(m_var.handle, m_var.scale);
 	MV1SetRotationXYZ(m_var.handle, m_var.rotate);
 	MV1SetPosition(m_var.handle, m_var.pos);
+
+	if (m_pTag == nullptr)
+	{
+		m_pTag = m_pParent->GetComponent<Tag>();
+	}
+	if (m_pWorld == nullptr)
+	{
+		m_pWorld = m_pParent->GetCollider<WorldCollider>();
+
+		if (m_pTag != nullptr)
+		{
+			m_pWorld->Init(m_var.pos, this, m_pTag, CollisionInfo::CollisionType::World);
+			m_pWorld->SetOnCollisionFlag(true);
+		}
+		else
+		{
+			if (m_pWorld != nullptr)
+			{
+				m_pWorld->Init(m_var.pos, this, nullptr, CollisionInfo::CollisionType::World);
+			}
+		}
+	}
 }
 
 void SkyDome::Update()
