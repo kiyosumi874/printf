@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "ModelBase.h"
 #include "Component.h"
+#include "Tag.h"
+#include "GroundCollider.h"
 
 PlayGround::PlayGround()
 	: m_Pos(VGet(0.0f, -1.0f, 0.0f))
@@ -20,16 +22,29 @@ PlayGround::~PlayGround()
 
 void PlayGround::Start()
 {
-	// 処理無し
+	if (m_pTag == nullptr)
+	{
+		m_pTag = m_pParent->GetComponent<Tag>();
+	}
+	if (m_pGround == nullptr)
+	{
+		m_pGround = m_pParent->GetCollider<GroundCollider>();
+		m_pGround->Init(m_var.pos, this, m_pTag, CollisionInfo::CollisionType::Ground);
+		m_pGround->SetOnCollisionFlag(true);
+	}
 }
 
 void PlayGround::Update()
 {
-	// 処理無し
+	m_pGround->UpdatePosition(m_var.pos);
 }
 
 void PlayGround::Draw()
 {
 	// 床の描画
 	MV1DrawModel(m_var.handle);
+}
+
+void PlayGround::OnCollisionEnter(ColliderComponent* ownColl, ColliderComponent* otherColl)
+{
 }

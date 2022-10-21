@@ -10,6 +10,7 @@ public:
 	void Start() override;
 	void Update() override;
 	void Draw() override;
+	void OnCollisionEnter(class ColliderComponent* ownColl, class ColliderComponent* otherColl) override;
 private:
 	void Input();
 	void Rotate();

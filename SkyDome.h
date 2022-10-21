@@ -14,4 +14,6 @@ public:
 	void Draw()override;
 private:
 	float m_rotate;
+	class Tag* m_pTag = nullptr;
+	class WorldCollider* m_pWorld = nullptr;
 };

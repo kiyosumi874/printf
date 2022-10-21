@@ -1,381 +1,409 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="App.cpp" />
-    <ClCompile Include="DebugDraw.cpp" />
-    <ClCompile Include="Fps.cpp" />
-    <ClCompile Include="Human.cpp" />
-    <ClCompile Include="Image.cpp" />
-    <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="TitleScene.cpp">
-      <Filter>Scene</Filter>
+    <ClCompile Include="App.cpp">
+      <Filter>Sistem</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="GameClearScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="GameOverScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Fps.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugDraw.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="Image.cpp">
-      <Filter>Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Tomato.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="TomatoWall.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="HitEffect.cpp">
-      <Filter>Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Fps.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="StaticHuman.cpp" />
-    <ClCompile Include="Enemy.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GameClearScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GameOverScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Ground.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Human.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="Image.cpp">
-      <Filter>Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="AssetManager.cpp">
-      <Filter>Asset</Filter>
+      <Filter>Sistem</Filter>
     </ClCompile>
-    <ClCompile Include="Logo.cpp">
-      <Filter>UI\Title</Filter>
-    </ClCompile>
-    <ClCompile Include="TransitionButton.cpp">
-      <Filter>UI\Title</Filter>
-    </ClCompile>
-    <ClCompile Include="Gradation.cpp">
-      <Filter>UI\Title</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleTomatoWall.cpp">
-      <Filter>Model\Title</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleGround.cpp">
-      <Filter>Model\Title</Filter>
-    </ClCompile>
-    <ClCompile Include="GameClearScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="GameOverScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="SkyDome.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayGround.cpp">
-      <Filter>Model\Play</Filter>
-    <ClCompile Include="TomatoWallFull.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="TomatoWallOne.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="TomatoWallFour.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="TomatoWallThree.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="TomatoWallTwo.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="TomatoWallManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Human.cpp">
-      <Filter>Component</Filter>
+    <ClCompile Include="Camera.cpp">
+      <Filter>GameObject\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>Component</Filter>
+      <Filter>GameObject\Human</Filter>
+    </ClCompile>
+    <ClCompile Include="Human.cpp">
+      <Filter>GameObject\Human</Filter>
     </ClCompile>
     <ClCompile Include="Player1.cpp">
-      <Filter>Component</Filter>
+      <Filter>GameObject\Human</Filter>
     </ClCompile>
     <ClCompile Include="Player2.cpp">
-      <Filter>Component</Filter>
+      <Filter>GameObject\Human</Filter>
     </ClCompile>
     <ClCompile Include="PlayerCPU.cpp">
-      <Filter>Component</Filter>
+      <Filter>GameObject\Human</Filter>
     </ClCompile>
     <ClCompile Include="Icon.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Sistem</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClearScene.cpp">
+      <Filter>GameObject\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugDraw.cpp">
+      <Filter>Sistem</Filter>
+    </ClCompile>
+    <ClCompile Include="Fps.cpp">
+      <Filter>Sistem</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScene.cpp">
+      <Filter>GameObject\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Projector.cpp">
+      <Filter>GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultScene.cpp">
+      <Filter>GameObject\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>GameObject\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>GameObject\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>GameObject\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Gradation.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
     <ClCompile Include="Object.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Logo.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Rank.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Score.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreUIController.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Sistem</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticHuman.cpp">
+      <Filter>GameObject\Human</Filter>
+    </ClCompile>
+    <ClCompile Include="Tomato.cpp">
+      <Filter>GameObject\Tomato</Filter>
+    </ClCompile>
+    <ClCompile Include="TomatoWall.cpp">
+      <Filter>GameObject\Tomato</Filter>
+    </ClCompile>
+    <ClCompile Include="TomatoWallFour.cpp">
+      <Filter>GameObject\Tomato</Filter>
+    </ClCompile>
+    <ClCompile Include="TomatoWallFull.cpp">
+      <Filter>GameObject\Tomato</Filter>
+    </ClCompile>
+    <ClCompile Include="TomatoWallOne.cpp">
+      <Filter>GameObject\Tomato</Filter>
+    </ClCompile>
+    <ClCompile Include="TomatoWallThree.cpp">
+      <Filter>GameObject\Tomato</Filter>
+    </ClCompile>
+    <ClCompile Include="TomatoWallTwo.cpp">
+      <Filter>GameObject\Tomato</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeCount.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeUIController.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="TomatoUIContoroller.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="HitEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyDome.cpp">
+      <Filter>BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayGround.cpp">
+      <Filter>BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleGround.cpp">
+      <Filter>BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="StillProjector.cpp">
+      <Filter>GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleTomatoWall.cpp">
+      <Filter>GameObject\Tomato</Filter>
+    </ClCompile>
+    <ClCompile Include="TomatoWallManager.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="TransitionButton.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxCollider.cpp">
+      <Filter>Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderComponent.cpp">
+      <Filter>Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereCollider.cpp">
+      <Filter>Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="WallCollider.cpp">
+      <Filter>Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldCollider.cpp">
+      <Filter>Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="GroundCollider.cpp">
+      <Filter>Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugColliderObject.cpp">
+      <Filter>Component\Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="App.h" />
-    <ClInclude Include="TitleScene.h">
-      <Filter>Scene</Filter>
+    <ClInclude Include="App.h">
+      <Filter>Sistem</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="GameClearScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="GameOverScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Common.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="Fps.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugDraw.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="Image.h">
-      <Filter>Image</Filter>
+    <ClInclude Include="AssetManager.h">
+      <Filter>Sistem</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>GameObject</Filter>
+      <Filter>GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>GameObject\Human</Filter>
+    </ClInclude>
+    <ClInclude Include="Human.h">
+      <Filter>GameObject\Human</Filter>
+    </ClInclude>
+    <ClInclude Include="Player1.h">
+      <Filter>GameObject\Human</Filter>
+    </ClInclude>
+    <ClInclude Include="Player2.h">
+      <Filter>GameObject\Human</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerCPU.h">
+      <Filter>GameObject\Human</Filter>
+    </ClInclude>
+    <ClInclude Include="Icon.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Sistem</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClearScene.h">
+      <Filter>GameObject\Scene</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugDraw.h">
+      <Filter>Sistem</Filter>
+    </ClInclude>
+    <ClInclude Include="Fps.h">
+      <Filter>Sistem</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Sistem</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScene.h">
+      <Filter>GameObject\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Projector.h">
+      <Filter>GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultScene.h">
+      <Filter>GameObject\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScene.h">
+      <Filter>GameObject\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>GameObject\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>GameObject\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>GameObject\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Gradation.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="ObjectTag.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Logo.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelBase.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Rank.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Score.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreUIController.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Sistem</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticHuman.h">
+      <Filter>GameObject\Human</Filter>
+    </ClInclude>
     <ClInclude Include="Tomato.h">
-      <Filter>GameObject</Filter>
+      <Filter>GameObject\Tomato</Filter>
+    </ClInclude>
+    <ClInclude Include="TomatoWall.h">
+      <Filter>GameObject\Tomato</Filter>
+    </ClInclude>
+    <ClInclude Include="TomatoWallFour.h">
+      <Filter>GameObject\Tomato</Filter>
+    </ClInclude>
+    <ClInclude Include="TomatoWallFull.h">
+      <Filter>GameObject\Tomato</Filter>
+    </ClInclude>
+    <ClInclude Include="TomatoWallOne.h">
+      <Filter>GameObject\Tomato</Filter>
+    </ClInclude>
+    <ClInclude Include="TomatoWallThree.h">
+      <Filter>GameObject\Tomato</Filter>
+    </ClInclude>
+    <ClInclude Include="TomatoWallTwo.h">
+      <Filter>GameObject\Tomato</Filter>
+    </ClInclude>
+    <ClInclude Include="Tag.h">
+      <Filter>Sistem</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeCount.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeUIController.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="TomatoUIContoroller.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Sound</Filter>
     </ClInclude>
     <ClInclude Include="HitEffect.h">
       <Filter>Effect</Filter>
     </ClInclude>
-    <ClInclude Include="TomatoWall.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider.h">
-      <Filter>Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="StaticHuman.h" />
-    <ClInclude Include="Component.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Human.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider.h" />
-    <ClInclude Include="Sound.h" />
-    <ClInclude Include="AssetManager.h">
-      <Filter>Asset</Filter>
-    </ClInclude>
-    <ClInclude Include="UIBase.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Logo.h">
-      <Filter>UI\Title</Filter>
-    </ClInclude>
-    <ClInclude Include="TransitionButton.h">
-      <Filter>UI\Title</Filter>
-    </ClInclude>
-    <ClInclude Include="Gradation.h">
-      <Filter>UI\Title</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelBase.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleTomatoWall.h">
-      <Filter>Model\Title</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleGround.h">
-      <Filter>Model\Title</Filter>
-    </ClInclude>
-    <ClInclude Include="TomatoWallFull.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="TomatoWallOne.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="TomatoWallFour.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="TomatoWallThree.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="TomatoWallTwo.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="TomatoWallManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
     <ClInclude Include="SkyDome.h">
-      <Filter>Model</Filter>
+      <Filter>BackGround</Filter>
     </ClInclude>
     <ClInclude Include="PlayGround.h">
-      <Filter>Model\Play</Filter>
-    <ClInclude Include="Enemy.h">
+      <Filter>BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleGround.h">
+      <Filter>BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="StillProjector.h">
+      <Filter>GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleTomatoWall.h">
+      <Filter>GameObject\Tomato</Filter>
+    </ClInclude>
+    <ClInclude Include="TomatoWallManager.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="Player1.h">
+    <ClInclude Include="Transform.h">
+      <Filter>Sistem</Filter>
+    </ClInclude>
+    <ClInclude Include="TransitionButton.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIBase.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="Player2.h">
-      <Filter>Component</Filter>
+    <ClInclude Include="BoxCollider.h">
+      <Filter>Component\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerCPU.h">
-      <Filter>Component</Filter>
+    <ClInclude Include="ColliderComponent.h">
+      <Filter>Component\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Icon.h">
-      <Filter>Component</Filter>
+    <ClInclude Include="SphereCollider.h">
+      <Filter>Component\Collider</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="System">
-      <UniqueIdentifier>{c018f60c-6df8-4e19-b2dd-7b9d94cc198b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{1c4348a1-0f8c-4451-9c4b-4542482783ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Image">
-      <UniqueIdentifier>{452fd9d5-300e-48cf-ab42-1f7d9c75f4ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject">
-      <UniqueIdentifier>{7b9389a2-2441-43d5-b6a5-801cb874ef4f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Effect">
-      <UniqueIdentifier>{b1ea0e36-0045-4a4a-871f-aa30bf8b0a1f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Collider">
-      <UniqueIdentifier>{323895cb-8e37-480e-b1cb-9ec3b46c1869}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="Projector.cpp" />
-    <ClCompile Include="ResultScene.cpp" />
-    <ClCompile Include="Score.cpp" />
-    <ClCompile Include="ScoreUIController.cpp" />
-    <ClCompile Include="TimeCount.cpp" />
-    <ClCompile Include="TimeUIController.cpp" />
-    <ClCompile Include="TomatoUIContoroller.cpp" />
-    <ClCompile Include="StillProjector.cpp" />
-    <ClCompile Include="Rank.cpp" />
-    <Filter Include="Component">
-      <UniqueIdentifier>{69952f12-72b9-41e3-8f24-c99c7ff433bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Asset">
-      <UniqueIdentifier>{975caea0-fff1-40ab-aab4-fc7e9a934f8a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI">
-      <UniqueIdentifier>{86e7fe69-278c-4a40-ac61-5f25179b332f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Title">
-      <UniqueIdentifier>{a9b7284c-fe6c-4f80-a4ff-1ec9bbd04728}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Play">
-      <UniqueIdentifier>{a86b9757-bfdf-48c5-a5a2-3752efbcebc5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Result">
-      <UniqueIdentifier>{d4d8419e-ef50-4a02-8ea6-062b18ffef79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Model">
-      <UniqueIdentifier>{f72e68a2-2317-4b3a-8374-6762d141c38a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Model\Play">
-      <UniqueIdentifier>{56b9dfd8-015c-4a37-a165-584bcd1975ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Model\Result">
-      <UniqueIdentifier>{017235e4-c953-4dae-95cf-1c88075d368f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Model\Title">
-      <UniqueIdentifier>{0e549514-8871-4ba0-8ebe-4f0e0d5789b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Manager">
-      <UniqueIdentifier>{18dd5bcd-ed2a-4c38-a72c-7f25eddcb6c0}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="App.h" />
-    <ClInclude Include="Common.h" />
-    <ClInclude Include="Projector.h" />
-    <ClInclude Include="ResultScene.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="Score.h" />
-    <ClInclude Include="ScoreUIController.h" />
-    <ClInclude Include="Tag.h" />
-    <ClInclude Include="TimeCount.h" />
-    <ClInclude Include="TimeUIController.h" />
-    <ClInclude Include="TomatoUIContoroller.h" />
-    <ClInclude Include="Transform.h" />
-    <ClInclude Include="StillProjector.h" />
-    <ClInclude Include="Rank.h" />
+    <ClInclude Include="WallCollider.h">
+      <Filter>Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldCollider.h">
+      <Filter>Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="GroundCollider.h">
+      <Filter>Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugColliderObject.h">
+      <Filter>Component\Collider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Component">
+      <UniqueIdentifier>{ba9fe01c-0239-4001-9e82-9e9334632192}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{6efd23b7-c2d9-40bb-b22e-496f9fc20b35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sistem">
+      <UniqueIdentifier>{34f1f0c8-ad3d-42e1-b34e-0441ff0124ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Camera">
+      <UniqueIdentifier>{22030b95-aec8-41d5-929f-06fb3ccab9a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Human">
+      <UniqueIdentifier>{0858bf49-e632-4cdb-b2e7-5a8b3ddbc819}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Collider">
+      <UniqueIdentifier>{a1c861ca-5abe-44a2-96a8-f0aa34365c4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{a2e6c684-e4fc-40c0-99bf-e64289b549d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{4009d7d7-1420-4591-97da-ec59cdc2eced}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{800e13cc-d171-4c60-9e1e-5e48142f6905}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BackGround">
+      <UniqueIdentifier>{78b4ae60-a88f-403f-a9c4-bfc35096cc33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Tomato">
+      <UniqueIdentifier>{e15f7372-d3ac-4e55-bf9b-73cb04f8692b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Scene">
+      <UniqueIdentifier>{0dcb6c5f-8861-4150-8194-365ae91f1358}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

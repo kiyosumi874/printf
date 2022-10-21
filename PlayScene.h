@@ -49,11 +49,12 @@ private:
 	class TomatoUIController* m_tomatoUICon[2];
 	class ScoreUIController* m_scoreUICon[3];
   
-	std::vector<class TomatoWallManager*>m_pGameObjects;
+	std::list<class Object*> m_pTomatoWallObjectLists;
 	//std::list<class Object*>m_pObjectLists;
 
 	class Ground* m_pGround;
 
 	const int m_tomatoWallNum = 8;
 
+	bool m_debugFlag = false;  // デバッグ表示を行う(Debugのみ使用可能)
 };

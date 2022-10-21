@@ -1,7 +1,8 @@
 ﻿#include "pch.h"
+#include "Tag.h"
 #include "TomatoWall.h"
 
-TomatoWall::TomatoWall(ObjectTag tag)
+TomatoWall::TomatoWall()
 {
 }
 

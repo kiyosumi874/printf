@@ -1,11 +1,12 @@
 ﻿#include "pch.h"
+#include "Tag.h"
 #include "PlayerCPU.h"
 #include "Tomato.h"
 #include "TomatoWallManager.h"
 #include "Object.h"
 #include "Transform.h"
-#include "Collider.h"
 #include "Icon.h"
+#include "BoxCollider.h"
 
 PlayerCPU::PlayerCPU()
 	: Human()
@@ -46,6 +47,12 @@ void PlayerCPU::Start()
 	{
 		m_pTag = m_pParent->GetComponent<Tag>();
 	}
+	if (m_pBox == nullptr)
+	{
+		m_pBox = m_pParent->GetCollider<BoxCollider>();
+		m_pBox->Init(m_var.pos, m_pBox->SetOwner(this), m_pTag, CollisionInfo::CollisionType::Box);
+		m_pBox->SetOnCollisionFlag(true);
+	}
 
 	if (m_pTag->tag == ObjectTag::Team1)
 	{
@@ -77,6 +84,8 @@ void PlayerCPU::Update()
 	MV1SetPosition(m_var.handle, m_var.pos);
 
 	m_pIcon->SetOwnerPosition(m_var.pos);
+	// 座標が足元にあるため、高さをモデルの半分の位置に補正をかけてます
+	m_pBox->UpdatePosition(VGet(m_var.pos.x, m_var.pos.y + m_pBox->GetWorldBox()->m_scale.y / 2.0f, m_var.pos.z));
 }
 
 void PlayerCPU::Draw()
@@ -86,6 +95,27 @@ void PlayerCPU::Draw()
 	MV1DrawModel(m_var.handle);
 	m_pIcon->Draw();
 	SetUseLighting(true);
+}
+
+void PlayerCPU::OnCollisionEnter(ColliderComponent* ownColl, ColliderComponent* otherColl)
+{
+	if (otherColl->GetTag() != nullptr)
+	{
+		if (m_pTag->tag == ObjectTag::Team1 && otherColl->GetTag()->tag == ObjectTag::Team2Tomato ||
+			m_pTag->tag == ObjectTag::Team1 && otherColl->GetTag()->tag == ObjectTag::Team3Tomato ||
+			m_pTag->tag == ObjectTag::Team2 && otherColl->GetTag()->tag == ObjectTag::Team1Tomato ||
+			m_pTag->tag == ObjectTag::Team2 && otherColl->GetTag()->tag == ObjectTag::Team3Tomato)
+		{
+			return;
+		}
+		if (m_pTag->tag == ObjectTag::Team1 && otherColl->GetTag()->tag == ObjectTag::Team1Tomato ||
+			m_pTag->tag == ObjectTag::Team2 && otherColl->GetTag()->tag == ObjectTag::Team2Tomato)
+		{
+			return;
+		}
+	}
+	
+	m_pTransform->position = VAdd(m_pTransform->position, ownColl->GetCollisionInfo().m_fixVec);
 }
 
 void PlayerCPU::SetAimTargetPtr(class Object* target)
@@ -98,17 +128,28 @@ void PlayerCPU::ProcessTomato()
 {
 	// トマトを投げる
 	m_shotTime++;
-	// 敵が近づいていたり、離れていたら投げるのをキャンセルする
-	if (m_shotTime > m_shotPhaseTime && m_moveType == Type::AimTarget && m_bulletNum > 0 && !m_absolutelyMoveFlag)
+	if (m_animType != Anim::Throw)
 	{
-		//m_tomatos.push_back(new Tomato(m_pTransform->position, m_tomatoDir));
-		m_animType = Anim::Throw;
-		m_moveFlag = false;
-		if (m_animTime == 0.0f)
+		// 敵が近づいていたり、離れていたら投げるのをキャンセルする
+		if (m_shotTime > m_shotPhaseTime && m_moveType == Type::AimTarget && m_bulletNum > 0 && !m_absolutelyMoveFlag)
 		{
-			/*m_pParent->GetComponent<Collider>()->Shot(m_pTransform->position, m_tomatoDir, m_pTag);*/
-			m_bulletNum--;
-			m_shotTime = 0.0f;
+			for (auto tomato : m_pTomato)
+			{
+				if (tomato->GetActive())
+				{
+					continue;
+				}
+				m_animType = Anim::Throw;
+				m_moveFlag = false;
+				if (m_animTime == 0.0f)
+				{
+					m_bulletNum--;
+					m_shotTime = 0.0f;
+				}
+				// 消えているトマトをアクティブにする
+				tomato->ShotTomato(m_pTransform->position, m_tomatoDir, m_pTag);
+				break;
+			}
 		}
 	}
 }

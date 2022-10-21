@@ -161,10 +161,14 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="ColliderComponent.cpp" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="DebugColliderObject.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="Gradation.cpp" />
+    <ClCompile Include="GroundCollider.cpp" />
     <ClCompile Include="HitEffect.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fps.cpp" />
@@ -200,6 +204,7 @@
     <ClCompile Include="ScoreUIController.cpp" />
     <ClCompile Include="SkyDome.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="StaticHuman.cpp" />
     <ClCompile Include="StillProjector.cpp" />
     <ClCompile Include="TimeCount.cpp" />
@@ -217,16 +222,22 @@
     <ClCompile Include="TomatoWallThree.cpp" />
     <ClCompile Include="TomatoWallTwo.cpp" />
     <ClCompile Include="TransitionButton.cpp" />
+    <ClCompile Include="WallCollider.cpp" />
+    <ClCompile Include="WorldCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Collider.h" />
+    <ClInclude Include="ColliderComponent.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="DebugColliderObject.h" />
     <ClInclude Include="DebugDraw.h" />
     <ClInclude Include="Gradation.h" />
+    <ClInclude Include="GroundCollider.h" />
     <ClInclude Include="HitEffect.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fps.h" />
@@ -259,6 +270,7 @@
     <ClInclude Include="ScoreUIController.h" />
     <ClInclude Include="SkyDome.h" />
     <ClInclude Include="Sound.h" />
+    <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="StaticHuman.h" />
     <ClInclude Include="StillProjector.h" />
     <ClInclude Include="Tag.h" />
@@ -279,6 +291,8 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TransitionButton.h" />
     <ClInclude Include="UIBase.h" />
+    <ClInclude Include="WallCollider.h" />
+    <ClInclude Include="WorldCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
