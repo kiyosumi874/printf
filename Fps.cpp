@@ -28,30 +28,34 @@ void Fps::Update()
 	auto& fps = m_this->m_fps;
 
 	m_this->m_flag ^= true;
+
+
 	// 今の時間を取得
 	QueryPerformanceCounter(&timeEnd);
 	// (今の時間 - 前フレームの時間) / 周波数 = 経過時間(秒単位)
 	frameTime = static_cast<float>(timeEnd.QuadPart - timeStart.QuadPart) / static_cast<float>(timeFreq.QuadPart);
 
-	if (frameTime < MIN_FRAME_TIME) { // 時間に余裕がある
+	// 60FPS以上出ていた場合
+	if (frameTime < MIN_FRAME_TIME) 
+	{
 		// ミリ秒に変換
 		DWORD sleepTime = static_cast<DWORD>((MIN_FRAME_TIME - frameTime) * 1000);
 
 		timeBeginPeriod(1); // 分解能を上げる(こうしないとSleepの精度はガタガタ)
 		Sleep(sleepTime);   // 寝る
 		timeEndPeriod(1);   // 戻す
-
-		// 次週に持ち越し(こうしないとfpsが変になる?)
-		return;
+		fps = 1.0f / MIN_FRAME_TIME + 0.0001f;
+		timeStart.QuadPart = timeEnd.QuadPart + sleepTime;
+	}
+	else
+	{
+		timeStart = timeEnd;
+		if (frameTime != 0.0f)
+		{
+			fps = 1.0f / frameTime + 0.0001f;
+		}
 	}
 
-	// 経過時間が0より大きい(こうしないと下の計算でゼロ除算になると思われ)
-	if (frameTime > 0.0f) 
-	{ 
-		fps = (fps * 0.99f) + (0.01f / frameTime); // 平均fpsを計算
-	}
-
-	timeStart = timeEnd;
 }
 
 void Fps::Draw()
