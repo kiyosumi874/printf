@@ -30,7 +30,7 @@ public:
 	// @param 前回のループで当たったオブジェクトのタグ名をもらう(コピーとする)
 	// tag 当たったオブジェクトのタグ名
 	void SetOnCollisionTag(class Tag* tag);
-	enum class ObjectTag* GetOnCollisionTag(ObjectTag tag);
+	class Tag* GetOnCollisionTag(Tag* tag);
 	void CleanCollisionTag();
 	// @param コライダータイプを返す
 	CollisionInfo::CollisionType GetCollisionType() { return m_pInfo->m_collType; }
@@ -85,7 +85,7 @@ public:
 protected:
 	class Tag* m_pTag = nullptr;               // コライダーを持つオブジェクトのタグ名
 	class Tag* m_pParentTag = nullptr;         // 親の判別が必要なオブジェクトのみ使用(誰の弾かなど)
-	std::vector<class Tag> m_onCollisionTag;  // 当たったオブジェクトのタグ名
+	std::vector<class Tag*> m_onCollisionTag;  // 当たったオブジェクトのタグ名
 
 	class Component* m_pOwner = nullptr;       // コライダーを持つコンポーネント
 	class CollisionInfo* m_pInfo = nullptr;    // 当たり判定情報
