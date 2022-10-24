@@ -1,8 +1,29 @@
 #include "pch.h"
 #include "ColliderComponent.h"
-#include "Tag.h"
 #include "ObjectTag.h"
-#include "Object.h"
+
+void ColliderComponent::SetOnCollisionTag(Tag* tag)
+{
+	Tag t = *tag;
+	m_onCollisionTag.push_back(t);
+}
+
+ObjectTag* ColliderComponent::GetOnCollisionTag(ObjectTag tag)
+{
+	for (auto onTag : m_onCollisionTag)
+	{
+		if (onTag.tag == tag)
+		{
+			return &onTag.tag;
+		}
+	}
+	return nullptr;
+}
+
+void ColliderComponent::CleanCollisionTag()
+{
+	m_onCollisionTag.clear();
+}
 
 void ColliderComponent::ClearInfo()
 {
