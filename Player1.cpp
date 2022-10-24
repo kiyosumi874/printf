@@ -87,6 +87,8 @@ void Player1::Update()
 	m_pIcon->SetOwnerPosition(m_var.pos);
 	m_pBox->UpdatePosition(VGet(m_var.pos.x, m_var.pos.y + m_pBox->GetWorldBox()->m_scale.y / 2.0f, m_var.pos.z));
 	m_pSphere->UpdatePosition(m_var.pos);
+	m_pBox->CleanCollisionTag();
+	m_pSphere->CleanCollisionTag();
 }
 
 void Player1::Draw()
