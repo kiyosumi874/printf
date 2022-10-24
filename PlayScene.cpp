@@ -216,16 +216,17 @@ PlayScene::PlayScene(const MODE& mode)
 	// kiyosumi
 	{
 		Object* object = nullptr;
-		int x = 745;
+		float x = SCREEN_WIDTH / 2.0f + 10.0f;
 		float exX = 1.0f;
 		float exY = 1.0f;
 		{
 			object = new Object;
 			m_timerBack = object->AddComponent<Image>();
-			m_timerBack->Init(VGet(x - 290, 0, 1.0f), VGet(1.3 * exX, 0.6 * exY, 1.0f), 0.0, "data/ink_blot4.png");
+			m_timerBack->Init(VGet(x - 195, 0, 1.0f), VGet(1.3 * exX, 0.6 * exY, 1.0f), 0.0, "data/ink_blot4.png");
 			m_timerBack->IsDraw(false);
 			m_pObjectLists.push_back(object);
 		}
+		x += 95.0f;
 		for (int i = 0; i < 4; i++)
 		{
 			x -= 50;
@@ -289,6 +290,21 @@ PlayScene::PlayScene(const MODE& mode)
 		m_timeCount->StartCount();
 		m_pObjectLists.push_back(object);
 	}
+
+	// トマトの下に敷くやつ
+	{
+		Object* object = nullptr;
+		std::string str = "data/Basket.png";
+		for (int i = 0; i < 2; i++)
+		{
+			object = new Object;
+			auto image = object->AddComponent<Image>();
+			image->Init(VGet((SCREEN_WIDTH - 104.0f + 200.0f)* i -100.0f, 400.0f, 1.0f), VGet(1.0f, 1.0f, 1.0f), 0.0, str.c_str());
+			m_basket[i] = object->AddComponent<BasketController>();
+			m_pObjectLists.push_back(object);
+		}
+	}
+
 	// トマトUI(残段数)
 	{
 		Object* object = nullptr;
@@ -308,7 +324,7 @@ PlayScene::PlayScene(const MODE& mode)
 		for (int i = 0; i < 3; i++)
 		{
 			object = new Object;
-			object->AddComponent<Transform>()->position = VGet(110 * i + 570, 180.0f, 0.0f);
+			object->AddComponent<Transform>()->position = VGet(110 * i + 890, 180.0f, 0.0f);
 			m_scoreUICon[i] = object->AddComponent<ScoreUIController>();
 			m_pObjectLists.push_back(object);
 		}
@@ -517,6 +533,8 @@ void PlayScene::UpdateTransitionPlay()
 
 			m_timerKoron->IsDraw(true);
 			m_timerBack->IsDraw(true);
+			m_basket[0]->CheckIsStart(0);
+			m_basket[1]->CheckIsStart(1);
 		}
 	}
 

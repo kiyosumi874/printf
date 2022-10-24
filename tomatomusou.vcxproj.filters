@@ -170,6 +170,9 @@
     <ClCompile Include="DebugColliderObject.cpp">
       <Filter>Component\Collider</Filter>
     </ClCompile>
+    <ClCompile Include="BasketController.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -363,6 +366,9 @@
     </ClInclude>
     <ClInclude Include="DebugColliderObject.h">
       <Filter>Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="BasketController.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

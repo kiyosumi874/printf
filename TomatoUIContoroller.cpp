@@ -23,14 +23,14 @@ void TomatoUIController::Update()
 {
 	if (m_isStart)
 	{
-		if (m_tomatoUI[0]->GetPos().x < 10.0f)
+		if (m_tomatoUI[0]->GetPos().x < 30.0f)
 		{
 			for (int i = 0; i < cTomatoMax; i++)
 			{
 				m_tomatoUI[i]->MovePos(VGet(2.0f, 0.0f, 0.0f));
 			}
 		}
-		else if (m_tomatoUI[0]->GetPos().x > SCREEN_WIDTH - 60.0f)
+		else if (m_tomatoUI[0]->GetPos().x > SCREEN_WIDTH - 80.0f)
 		{
 			for (int i = 0; i < cTomatoMax; i++)
 			{

@@ -45,6 +45,7 @@ private:
 	class Image* m_transitionImage[2];
 	class Image* m_timerKoron;
 	class Image* m_timerBack;
+	class BasketController* m_basket[2];
 
 	class TomatoUIController* m_tomatoUICon[2];
 	class ScoreUIController* m_scoreUICon[3];
