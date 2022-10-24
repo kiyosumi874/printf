@@ -80,9 +80,9 @@ void Tomato::OnCollisionEnter(ColliderComponent* ownColl, ColliderComponent* oth
 		return;
 	}
 
-	if (otherColl->GetTag()->tag == ObjectTag::Team1 ||
-		otherColl->GetTag()->tag == ObjectTag::Team2 ||
-		otherColl->GetTag()->tag == ObjectTag::Team3)
+	if (otherColl->GetTag()->tag == ObjectTag::Team1 && otherColl->GetCollisionType() == CollisionInfo::CollisionType::Box ||
+		otherColl->GetTag()->tag == ObjectTag::Team2 && otherColl->GetCollisionType() == CollisionInfo::CollisionType::Box ||
+		otherColl->GetTag()->tag == ObjectTag::Team3 && otherColl->GetCollisionType() == CollisionInfo::CollisionType::Box)
 	{
 		// 自分を生成したオブジェクトと同じタグ名なら処理を行わない
 		if (otherColl->GetTag()->tag == ownColl->GetParentTag()->tag)
