@@ -45,6 +45,6 @@ private:
 	int m_time;
 	const int m_revivalTime;
 
-	const float m_width = 20.0f;  // 自分の幅
+	const float m_width = 18.0f;  // 自分の幅
 };
 

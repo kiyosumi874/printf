@@ -8,6 +8,7 @@
 #include "Score.h"
 #include "Icon.h"
 #include "BoxCollider.h"
+#include "SphereCollider.h"
 
 Player1::Player1()
 	: Human()
@@ -50,6 +51,12 @@ void Player1::Start()
 		m_pBox->Init(m_var.pos, m_pBox->SetOwner(this), m_pTag, CollisionInfo::CollisionType::Box);
 		m_pBox->SetOnCollisionFlag(true);
 	}
+	if (m_pSphere == nullptr)
+	{
+		m_pSphere = m_pParent->GetCollider<SphereCollider>();
+		m_pSphere->Init(m_var.pos, m_pSphere->SetOwner(this), m_pTag, CollisionInfo::CollisionType::Sphere);
+		m_pSphere->SetOnCollisionFlag(true);
+	}
 }
 
 void Player1::Update()
@@ -79,6 +86,7 @@ void Player1::Update()
 
 	m_pIcon->SetOwnerPosition(m_var.pos);
 	m_pBox->UpdatePosition(VGet(m_var.pos.x, m_var.pos.y + m_pBox->GetWorldBox()->m_scale.y / 2.0f, m_var.pos.z));
+	m_pSphere->UpdatePosition(m_var.pos);
 }
 
 void Player1::Draw()
@@ -88,24 +96,6 @@ void Player1::Draw()
 	MV1DrawModel(m_var.handle);
 	m_pIcon->Draw();
 	SetUseLighting(true);
-}
-
-void Player1::OnCollisionEnter(ColliderComponent* ownColl, ColliderComponent* otherColl)
-{
-	if (otherColl->GetTag() != nullptr)
-	{
-		if (otherColl->GetTag()->tag == ObjectTag::Team2Tomato || otherColl->GetTag()->tag == ObjectTag::Team3Tomato)
-		{
-			return;
-		}
-		if (otherColl->GetTag()->tag == ObjectTag::Team1Tomato)
-		{
-			return;
-		}
-	}
-	
-	// 座標が足元にあるため、高さをモデルの半分の位置に補正をかけてます
-	m_pTransform->position = VAdd(m_pTransform->position, ownColl->GetCollisionInfo().m_fixVec);
 }
 
 void Player1::Input()
@@ -371,6 +361,30 @@ void Player1::TomatoCollect()
 			tomatowall[i].DecreaseAllTomatoNum();
 			break;
 		}
+	}
+}
+
+void Player1::OnCollisionEnter(ColliderComponent* ownColl, ColliderComponent* otherColl)
+{
+	if (otherColl->GetTag() != nullptr)
+	{
+		if (otherColl->GetTag()->tag == ObjectTag::Tomato && ownColl->GetCollisionType() == CollisionInfo::CollisionType::Box)
+		{
+			if (otherColl->GetParentTag()->tag == m_pTag->tag)
+			{
+				return;
+			}
+			else
+			{
+
+			}
+		}
+	}
+
+	if (ownColl->GetCollisionType() == CollisionInfo::CollisionType::Box)
+	{
+		// 座標が足元にあるため、高さをモデルの半分の位置に補正をかけてます
+		m_pTransform->position = VAdd(m_pTransform->position, ownColl->GetCollisionInfo().m_fixVec);
 	}
 }
 

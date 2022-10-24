@@ -82,6 +82,8 @@ PlayScene::PlayScene(const MODE& mode)
 			obj->AddComponent<Icon>();
 			auto box = obj->AddCollider<BoxCollider>();
 			box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
+			auto sphere = obj->AddCollider<SphereCollider>();
+			sphere->SetCollider(new Sphere(VGet(0.0f, 0.0f, 0.0f), 30.0f));
 			auto p1 = obj->AddComponent<Player1>();
 			p1->Init(VGet(50.0f, 0.0f, -50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
 			p1->SetTomatoWallPtr(m_pTomatoWallObjectLists);
@@ -96,6 +98,8 @@ PlayScene::PlayScene(const MODE& mode)
 			obj->AddComponent<Icon>();
 			auto box = obj->AddCollider<BoxCollider>();
 			box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
+			auto sphere = obj->AddCollider<SphereCollider>();
+			sphere->SetCollider(new Sphere(VGet(0.0f, 0.0f, 0.0f), 30.0f));
 			auto p2 = obj->AddComponent<Player2>();
 			p2->Init(VGet(-50.0f, 0.0f, -50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
 			p2->SetTomatoWallPtr(m_pTomatoWallObjectLists);
@@ -113,6 +117,8 @@ PlayScene::PlayScene(const MODE& mode)
 		obj->AddComponent<Icon>();
 		auto box = obj->AddCollider<BoxCollider>();
 		box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
+		auto sphere = obj->AddCollider<SphereCollider>();
+		sphere->SetCollider(new Sphere(VGet(0.0f, 0.0f, 0.0f), 30.0f));
 		auto playerCPU1 = obj->AddComponent<PlayerCPU>();
 		playerCPU1->Init(VGet(60.0f, 0.0f, -50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
 		playerCPU1->SetTomatoWallPtr(m_pTomatoWallObjectLists);
@@ -125,6 +131,8 @@ PlayScene::PlayScene(const MODE& mode)
 		obj->AddComponent<Icon>();
 		box = obj->AddCollider<BoxCollider>();
 		box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
+		sphere = obj->AddCollider<SphereCollider>();
+		sphere->SetCollider(new Sphere(VGet(0.0f, 0.0f, 0.0f), 30.0f));
 		auto playerCPU2 = obj->AddComponent<PlayerCPU>();
 		playerCPU2->Init(VGet(-60.0f, 0.0f, -50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
 		playerCPU2->SetTomatoWallPtr(m_pTomatoWallObjectLists);
@@ -138,6 +146,8 @@ PlayScene::PlayScene(const MODE& mode)
 		obj->AddComponent<Icon>();
 		box = obj->AddCollider<BoxCollider>();
 		box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
+		sphere = obj->AddCollider<SphereCollider>();
+		sphere->SetCollider(new Sphere(VGet(0.0f, 0.0f, 0.0f), 30.0f));
 		auto enemy1 = obj->AddComponent<Enemy>();
 		enemy1->Init(VGet(-10.0f, 0.0f, 50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
 		enemy1->SetTomatoWallPtr(m_pTomatoWallObjectLists);
@@ -150,6 +160,8 @@ PlayScene::PlayScene(const MODE& mode)
 		obj->AddComponent<Icon>();
 		box = obj->AddCollider<BoxCollider>();
 		box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
+		sphere = obj->AddCollider<SphereCollider>();
+		sphere->SetCollider(new Sphere(VGet(0.0f, 0.0f, 0.0f), 30.0f));
 		auto enemy2 = obj->AddComponent<Enemy>();
 		enemy2->Init(VGet(10.0f, 0.0f, 50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
 		enemy2->SetTomatoWallPtr(m_pTomatoWallObjectLists);
@@ -160,6 +172,7 @@ PlayScene::PlayScene(const MODE& mode)
 		for (auto ob : m_pObjectLists)
 		{
 			auto tag = ob->GetComponent<Tag>();
+			if (tag->tag == ObjectTag::TomatoWall || tag->tag == ObjectTag::Tomato) { continue; }
 			if (tag->tag != ObjectTag::Team1) { playerCPU1->SetAimTargetPtr(ob); }
 			if (tag->tag != ObjectTag::Team2) { playerCPU2->SetAimTargetPtr(ob); }
 			if (tag->tag != ObjectTag::Team3) { enemy1->SetAimTargetPtr(ob); enemy2->SetAimTargetPtr(ob); }
@@ -567,7 +580,7 @@ void PlayScene::UpdateTransitionPlay()
 	{
 		if (it->GetComponent<TimeUIController>() != nullptr)
 		{
-			if (it->GetComponent<TimeCount>()->CheckCount() > 90.0)
+			if (it->GetComponent<TimeCount>()->CheckCount() > 900.0)
 			{
 				m_transition = Transition::OVER;
 				{
