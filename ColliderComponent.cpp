@@ -4,17 +4,16 @@
 
 void ColliderComponent::SetOnCollisionTag(Tag* tag)
 {
-	Tag t = *tag;
-	m_onCollisionTag.push_back(t);
+	m_onCollisionTag.push_back(tag);
 }
 
-ObjectTag* ColliderComponent::GetOnCollisionTag(ObjectTag tag)
+Tag* ColliderComponent::GetOnCollisionTag(Tag* tag)
 {
 	for (auto onTag : m_onCollisionTag)
 	{
-		if (onTag.tag == tag)
+		if (onTag->tag == tag->tag)
 		{
-			return &onTag.tag;
+			return onTag;
 		}
 	}
 	return nullptr;
