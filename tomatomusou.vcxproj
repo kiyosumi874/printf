@@ -172,9 +172,7 @@
     <ClCompile Include="HitEffect.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fps.cpp" />
-    <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="PlayGround.cpp" />
     <ClCompile Include="Human.cpp" />
     <ClCompile Include="Icon.cpp" />
@@ -198,7 +196,9 @@
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Projector.cpp" />
     <ClCompile Include="Rank.cpp" />
+    <ClCompile Include="ResultGround.cpp" />
     <ClCompile Include="ResultScene.cpp" />
+    <ClCompile Include="ResultTomato.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="ScoreUIController.cpp" />
@@ -241,9 +241,7 @@
     <ClInclude Include="HitEffect.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fps.h" />
-    <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="PlayGround.h" />
     <ClInclude Include="Human.h" />
     <ClInclude Include="Icon.h" />
@@ -263,7 +261,10 @@
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Projector.h" />
     <ClInclude Include="Rank.h" />
+    <ClInclude Include="ResultGround.h" />
     <ClInclude Include="ResultScene.h" />
+    <ClInclude Include="ResultTomato.h" />
+    <ClInclude Include="ResultTomatoPool.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Score.h" />

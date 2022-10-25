@@ -671,12 +671,12 @@ void PlayScene::UpdateTransitionOver()
 		m_transitionImage[1]->MovePos(VGet(-10.0f, 0.0f, 0.0f));
 		if (m_transitionImage[0]->GetPos().x < -400.0f)
 		{
-			m_tagScene = TAG_SCENE::TAG_OVER;
+			m_tagScene = TAG_SCENE::TAG_RESULT;
 		}
 	}
 	else
 	{
-		m_tagScene = TAG_SCENE::TAG_OVER;
+		m_tagScene = TAG_SCENE::TAG_RESULT;
 	}
 	
 }

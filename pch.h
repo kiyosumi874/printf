@@ -30,8 +30,7 @@
 #include "Scene.h"
 #include "TitleScene.h"
 #include "PlayScene.h"
-#include "GameClearScene.h"
-#include "GameOverScene.h"
+#include "ResultScene.h"
 #include "SceneManager.h"
 
 /* Effect */
@@ -57,3 +56,5 @@
 #include "SkyDome.h"
 /* play */
 #include "PlayGround.h"
+//result
+#include "ResultGround.h"

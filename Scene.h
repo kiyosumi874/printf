@@ -4,8 +4,7 @@ enum class TAG_SCENE
 {
 	TAG_TITLE,
 	TAG_PLAY,
-	TAG_CLEAR,
-	TAG_OVER,
+	TAG_RESULT,
 	TAG_END,
 
 	TAG_NONE
