@@ -11,6 +11,8 @@ public:
 	void Update()override;	// 更新処理.
 	void Draw();
 
+	void CalculatePosition(const VECTOR& angle);
+
 	// 初めに一回呼ぶセッター
 	void SetPlayerptr(class Transform* ptr);
 private:
@@ -19,4 +21,5 @@ private:
 	VECTOR m_position;				// 座標
 	VECTOR m_viewPoint;				// カメラの注視点
 	VECTOR m_targetViewPoint;		// カメラの注視点目標
+	VECTOR m_cameraOffset;
 };

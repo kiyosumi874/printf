@@ -151,22 +151,42 @@ void Player2::Input()
 			input = true;
 		}
 
+		//// 右に進む
+		//if (Input::IsPress2P(BUTTON_ID_LEFT))
+		//{
+		//	right.x = sinf(m_pTransform->rotate.y - addRad);
+		//	right.z = cosf(m_pTransform->rotate.y - addRad);
+		//	m_inputVector = VAdd(right, m_inputVector);
+		//	input = true;
+		//}
+
+		//// 左に進む
+		//if (Input::IsPress2P(BUTTON_ID_RIGHT))
+		//{
+		//	left.x = sinf(m_pTransform->rotate.y + addRad);
+		//	left.z = cosf(m_pTransform->rotate.y + addRad);
+		//	m_inputVector = VAdd(left, m_inputVector);
+		//	input = true;
+		//}
+
 		// 右に進む
 		if (Input::IsPress2P(BUTTON_ID_LEFT))
 		{
-			right.x = sinf(m_pTransform->rotate.y - addRad);
-			right.z = cosf(m_pTransform->rotate.y - addRad);
-			m_inputVector = VAdd(right, m_inputVector);
-			input = true;
+			//right.x = sinf(m_pTransform->rotate.y - addRad);
+			//right.z = cosf(m_pTransform->rotate.y - addRad);
+			//m_inputVector = VAdd(right, m_inputVector);
+			//input = true;
+			m_pTransform->rotate.y -= 0.02f;
 		}
 
 		// 左に進む
 		if (Input::IsPress2P(BUTTON_ID_RIGHT))
 		{
-			left.x = sinf(m_pTransform->rotate.y + addRad);
-			left.z = cosf(m_pTransform->rotate.y + addRad);
-			m_inputVector = VAdd(left, m_inputVector);
-			input = true;
+			//	left.x = sinf(m_pTransform->rotate.y + addRad);
+			//	left.z = cosf(m_pTransform->rotate.y + addRad);
+			//	m_inputVector = VAdd(left, m_inputVector);
+			m_pTransform->rotate.y += 0.02f;
+			//input = true;
 		}
 
 		// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
