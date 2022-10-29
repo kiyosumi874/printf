@@ -21,7 +21,7 @@ SceneManager::~SceneManager()
 
 void SceneManager::GameLoop()
 {
-	auto graph = LoadGraph("とまとさんpng.png");
+	//auto graph = LoadGraph("とまとさんpng.png");
 	while (1)
 	{
 		if (ProcessMessage() == -1)
@@ -51,10 +51,10 @@ void SceneManager::GameLoop()
 			//Effekseer_Sync3DSetting();
 
 			//DrawEffekseer3D();
-			if ( rand() % 20 == Fps::GetFlag())
-			{
-				DrawExtendGraph(0, 0, 1920, 1080, graph, FALSE);
-			}
+			//if ( rand() % 20 == Fps::GetFlag())
+			//{
+			//	DrawExtendGraph(0, 0, 1920, 1080, graph, FALSE);
+			//}
 
 #ifdef _DEBUG
 			Fps::Draw();

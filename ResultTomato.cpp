@@ -25,10 +25,10 @@ void ResultTomato::Start()
 // XVˆ—
 void ResultTomato::Update()
 {
-    m_var.pos.x += 0.1f;
-    if (m_var.pos.x > 30.0f)
+    m_var.pos.x += 0.05f;
+    if (m_var.pos.x > 10.0f)
     {
-        m_var.pos.x = 0.0f;
+        m_var.pos.x = -10.0f;
     }
     LEFTQUAD();
 
@@ -58,6 +58,6 @@ void ResultTomato::LEFTQUAD()
 {
     // “ñŸŠÖ” y = a(x - p)^2 + q
 
-    auto sub = m_var.pos.x - 3;
-    m_var.pos.y = (-2 * (sub * sub)) + 1;
+    auto sub = m_var.pos.x - 5;
+    m_var.pos.y = (-2 * (sub * sub)) + 5;
 }

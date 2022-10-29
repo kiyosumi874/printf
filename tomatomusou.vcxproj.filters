@@ -367,6 +367,9 @@
     <ClInclude Include="ResultTomatoPool.h">
       <Filter>GameObject\Tomato</Filter>
     </ClInclude>
+    <ClInclude Include="ResultScoreUI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

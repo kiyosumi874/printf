@@ -263,6 +263,7 @@
     <ClInclude Include="Rank.h" />
     <ClInclude Include="ResultGround.h" />
     <ClInclude Include="ResultScene.h" />
+    <ClInclude Include="ResultScoreUI.h" />
     <ClInclude Include="ResultTomato.h" />
     <ClInclude Include="ResultTomatoPool.h" />
     <ClInclude Include="Scene.h" />
