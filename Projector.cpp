@@ -4,13 +4,13 @@
 #include "Transform.h"
 #include "Tag.h"
 
-const float r = -30.0f;
+const float r = -45.0f;
 Projector::Projector()
 {
 	m_pPlayerTransform = nullptr;
 
 	VECTOR vec = VGet(0.0f, 0.0f, 0.0f);
-	m_position = VGet(0.0f, 20.0f, 0.0f);
+	m_position = VGet(0.0f, 24.0f, 0.0f);
 	m_targetViewPoint = vec;
 	m_viewPoint = vec;
 	m_cameraOffset = VGet(50.0f, 30.0f, 50.0f);
@@ -48,7 +48,7 @@ void Projector::Draw()
 	printbDX("ProrotateY:%f", angle.y);
 
 	// カメラの注視点をセット
-	m_targetViewPoint.y = m_targetViewPoint.y + 8.0f;
+	m_targetViewPoint.y = m_targetViewPoint.y + 10.0f;
 	// カメラ位置から目標点に向かうベクトルを計算
 	VECTOR L_lookMoveDir = VSub(m_targetViewPoint, m_position);
 

@@ -170,6 +170,9 @@
     <ClCompile Include="ResultTomato.cpp">
       <Filter>GameObject\Tomato</Filter>
     </ClCompile>
+    <ClCompile Include="ResultScoreUI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">

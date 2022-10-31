@@ -198,6 +198,7 @@
     <ClCompile Include="Rank.cpp" />
     <ClCompile Include="ResultGround.cpp" />
     <ClCompile Include="ResultScene.cpp" />
+    <ClCompile Include="ResultScoreUI.cpp" />
     <ClCompile Include="ResultTomato.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Score.cpp" />

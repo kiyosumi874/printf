@@ -29,6 +29,7 @@ private:
 	bool m_isStartBlendAdd;
 	float m_startBlendAdd;
 	int m_graphHandleWhite;
+	int m_reticleImg;
 
 	void UpdateTransitionStart();
 	void UpdateTransitionPlay();
@@ -40,6 +41,8 @@ private:
 	void DrawTransitionOver();
 	void DrawTransitionEnd();
 
+	class Transform* m_posPlayer1;
+	class Transform* m_posPlayer2;
 	class TimeCount* m_timeCount;
 	class Image* m_startNumber[4];
 	class Image* m_transitionImage[2];
