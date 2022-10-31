@@ -49,21 +49,7 @@ void Human::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
 	{
 		Object* obj = new Object;
 		obj->AddComponent<Transform>();
-		auto tag = obj->AddComponent<Tag>();
-		switch (m_pTag->tag)
-		{
-		case ObjectTag::Team1:
-			tag->tag = ObjectTag::Team1Tomato;
-			break;
-		case ObjectTag::Team2:
-			tag->tag = ObjectTag::Team2Tomato;
-			break;
-		case ObjectTag::Team3:
-			tag->tag = ObjectTag::Team3Tomato;
-			break;
-		default:
-			break;
-		}
+		obj->AddComponent<Tag>()->tag = ObjectTag::Tomato;
 		auto sphere = obj->AddCollider<SphereCollider>();
 		sphere->SetCollider(new Sphere(VGet(0.0f, 0.0f, 0.0f), 1.0f));
 		Tomato* t = obj->AddComponent<Tomato>();
@@ -80,6 +66,46 @@ void Human::SetTomatoWallPtr(std::list<class Object*> tomatoWall)
 	{
 		m_pTomatoWall.push_back(obj->GetComponent<TomatoWallManager>());
 	}
+}
+
+VECTOR Human::CheckVectorDirection(const VECTOR& checkPos)
+{
+	VECTOR resultPos = VGet(0.0f, 0.0f, 0.0f);
+	if (checkPos.x != 0.0f)
+	{
+		bool result = checkPos.x > 0.0f;
+		switch (result)
+		{
+		case true:
+			resultPos.x = 1.0f;
+		case false:
+			resultPos.x = -1.0f;
+		}
+	}
+	if (checkPos.y != 0.0f)
+	{
+		bool result = checkPos.y > 0.0f;
+		switch (result)
+		{
+		case true:
+			resultPos.y = 1.0f;
+		case false:
+			resultPos.y = -1.0f;
+		}
+	}
+	if (checkPos.z != 0.0f)
+	{
+		bool result = checkPos.z > 0.0f;
+		switch (result)
+		{
+		case true:
+			resultPos.z = 1.0f;
+		case false:
+			resultPos.z = -1.0f;
+		}
+	}
+
+	return resultPos;
 }
 
 double Human::GetDistance(VECTOR& pos1, VECTOR& pos2)

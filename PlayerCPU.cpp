@@ -1,36 +1,41 @@
 ﻿#include "pch.h"
-#include "Tag.h"
 #include "PlayerCPU.h"
 #include "Tomato.h"
 #include "TomatoWallManager.h"
 #include "Object.h"
+#include "Tag.h"
 #include "Transform.h"
 #include "Icon.h"
 #include "BoxCollider.h"
+#include "SphereCollider.h"
 
 PlayerCPU::PlayerCPU()
 	: Human()
 	, m_movePhaseTime(50)
 	, m_shotPhaseTime(200.0f)
 {
-	m_velocity = VGet(1.0f, 1.0f, 1.0f);
+	m_speed = VGet(1.0f, 1.0f, 1.0f);
+	m_velocity = VGet(0.0f, 0.0f, 0.0f);
 	m_dir = VGet(0.0f, 0.0f, 0.0f);
+	m_avoidDir = VGet(1.0f, 1.0f, 1.0f);
 	m_tomatoDir = VGet(0.0f, 0.0f, 0.0f);
 	m_moveValue = VGet(0.0f, 0.0f, 0.0f);
 	m_avoidVelocity = VGet(0.0f, 0.0f, 0.0f);
 
-	m_moveType = Type::SearchTarget;
+	m_moveType = Type::RandomMove;
 	m_aimTargetFlag = false;
 	m_moveTime = 0;
 
 	// アニメーション準備
-	m_beforeAnimType = Anim::Idle;
+	m_animType = Anim::Idle;
+	m_beforeAnimType = m_animType;
 	m_animTime = 0.0f;
 	m_animSpeed = 0.3f;
 	m_throwSpeed = 1.2f;
 	m_pickSpeed = 1.2f;
 	m_moveFlag = true;
-	m_pickFlag = true;
+	m_pickFlag = false;
+	m_throwFlag = false;
 }
 
 PlayerCPU::~PlayerCPU()
@@ -52,6 +57,12 @@ void PlayerCPU::Start()
 		m_pBox = m_pParent->GetCollider<BoxCollider>();
 		m_pBox->Init(m_var.pos, m_pBox->SetOwner(this), m_pTag, CollisionInfo::CollisionType::Box);
 		m_pBox->SetOnCollisionFlag(true);
+	}
+	if (m_pSphere == nullptr)
+	{
+		m_pSphere = m_pParent->GetCollider<SphereCollider>();
+		m_pSphere->Init(m_var.pos, m_pSphere->SetOwner(this), m_pTag, CollisionInfo::CollisionType::Sphere);
+		m_pSphere->SetOnCollisionFlag(true);
 	}
 
 	if (m_pTag->tag == ObjectTag::Team1)
@@ -75,17 +86,26 @@ void PlayerCPU::Update()
 	// トマトの処理
 	ProcessTomato();
 
-	m_var.rotate = m_dir;
-	// 3Dモデルの回転設定
-	MV1SetRotationXYZ(m_var.handle, m_var.rotate);
+	if (m_moveFlag)
+	{
+		m_var.rotate = m_dir;
+		// 3Dモデルの回転設定
+		MV1SetRotationXYZ(m_var.handle, m_var.rotate);
 
-	// 3Dモデルのポジション設定
+		// 3Dモデルのポジション設定
+		m_pTransform->position = VAdd(m_pTransform->position, m_velocity);
+	}
+
 	m_var.pos = m_pTransform->position;
 	MV1SetPosition(m_var.handle, m_var.pos);
 
 	m_pIcon->SetOwnerPosition(m_var.pos);
 	// 座標が足元にあるため、高さをモデルの半分の位置に補正をかけてます
 	m_pBox->UpdatePosition(VGet(m_var.pos.x, m_var.pos.y + m_pBox->GetWorldBox()->m_scale.y / 2.0f, m_var.pos.z));
+	m_pSphere->UpdatePosition(m_var.pos);
+
+	m_pBox->CleanCollisionTag();
+	m_pSphere->CleanCollisionTag();
 }
 
 void PlayerCPU::Draw()
@@ -97,41 +117,27 @@ void PlayerCPU::Draw()
 	SetUseLighting(true);
 }
 
-void PlayerCPU::OnCollisionEnter(ColliderComponent* ownColl, ColliderComponent* otherColl)
-{
-	if (otherColl->GetTag() != nullptr)
-	{
-		if (m_pTag->tag == ObjectTag::Team1 && otherColl->GetTag()->tag == ObjectTag::Team2Tomato ||
-			m_pTag->tag == ObjectTag::Team1 && otherColl->GetTag()->tag == ObjectTag::Team3Tomato ||
-			m_pTag->tag == ObjectTag::Team2 && otherColl->GetTag()->tag == ObjectTag::Team1Tomato ||
-			m_pTag->tag == ObjectTag::Team2 && otherColl->GetTag()->tag == ObjectTag::Team3Tomato)
-		{
-			return;
-		}
-		if (m_pTag->tag == ObjectTag::Team1 && otherColl->GetTag()->tag == ObjectTag::Team1Tomato ||
-			m_pTag->tag == ObjectTag::Team2 && otherColl->GetTag()->tag == ObjectTag::Team2Tomato)
-		{
-			return;
-		}
-	}
-	
-	m_pTransform->position = VAdd(m_pTransform->position, ownColl->GetCollisionInfo().m_fixVec);
-}
-
 void PlayerCPU::SetAimTargetPtr(class Object* target)
 {
-	m_target.push_back(target);
+	m_pTarget.push_back(target);
+	// 処理が重いので最初からTransform変数をゲットしておく
+	m_pTargetTf.push_back(target->GetComponent<Transform>());
 }
 
 // @detail トマトの処理関連をまとめたもの
 void PlayerCPU::ProcessTomato()
 {
 	// トマトを投げる
-	m_shotTime++;
 	if (m_animType != Anim::Throw)
 	{
-		// 敵が近づいていたり、離れていたら投げるのをキャンセルする
-		if (m_shotTime > m_shotPhaseTime && m_moveType == Type::AimTarget && m_bulletNum > 0 && !m_absolutelyMoveFlag)
+		m_shotTime++;
+	}
+	// 敵が近づいていたり、離れていたら投げるのをキャンセルする
+	if (m_shotTime > m_shotPhaseTime && m_moveType == Type::AimTarget && m_bulletNum > 0)
+	{
+		m_shotFlag = true;
+		m_moveFlag = false;
+		if (m_animTime == 0.0f && m_animType == Anim::Throw)
 		{
 			for (auto tomato : m_pTomato)
 			{
@@ -139,8 +145,6 @@ void PlayerCPU::ProcessTomato()
 				{
 					continue;
 				}
-				m_animType = Anim::Throw;
-				m_moveFlag = false;
 				if (m_animTime == 0.0f)
 				{
 					m_bulletNum--;
@@ -183,42 +187,16 @@ void PlayerCPU::Animation()
 
 	if (m_animTime > m_animTotalTime)
 	{
+		m_beforeAnimType = m_animType;
 		m_animTime = 0.0f;
 		if (!m_moveFlag)
 		{
-			if (m_animType == Anim::Pick)
-			{
-				m_pickFlag = false;
-			}
-			m_animType = Anim::None;
 			m_moveFlag = true;
+			m_shotFlag = false;
+			m_pickFlag = false;
 		}
 	}
 	ChangeAnimation();
-
-	MV1SetAttachAnimTime(m_var.handle, m_animIndex, m_animTime);
-}
-
-// @detail アニメーションを変更する関数
-void PlayerCPU::ChangeAnimation()
-{
-	// 移動できるアニメーションなら
-	// 今動いているのか、止まっているのかを判断
-	if (m_moveFlag)
-	{
-		VECTOR nowPosition = MV1GetPosition(m_var.handle);
-		if (nowPosition.x == m_pTransform->position.x &&
-			nowPosition.y == m_pTransform->position.y &&
-			nowPosition.z == m_pTransform->position.z)
-		{
-			m_animType = Anim::Idle;
-		}
-		else
-		{
-			m_animType = Anim::Run;
-		}
-	}
-
 	// アニメーション処理
 	if (m_animType != m_beforeAnimType)
 	{
@@ -228,39 +206,106 @@ void PlayerCPU::ChangeAnimation()
 		m_animTime = 0.0f;
 		m_beforeAnimType = m_animType;
 	}
+
+	MV1SetAttachAnimTime(m_var.handle, m_animIndex, m_animTime);
+}
+
+// @detail アニメーションを変更する関数
+void PlayerCPU::ChangeAnimation()
+{
+	// 移動できるなら
+	// 今動いているのか、止まっているのかを判断
+	if (m_shotFlag)
+	{
+		m_animType = Anim::Throw;
+		return;
+	}
+	if (m_pickFlag)
+	{
+		m_animType = Anim::Pick;
+		return;
+	}
+
+	bool result = true;
+	if (m_velocity.x != 0.0f)
+	{
+		result = false;
+	}
+	if (m_velocity.z != 0.0f)
+	{
+		result = false;
+	}
+	switch (result)
+	{
+	case true:
+		m_animType = Anim::Idle;
+		return;
+	case false:
+		m_animType = Anim::Run;
+		return;
+	}
 }
 
 // @detail 行動パターンをチェックして実行する
 void PlayerCPU::CheckMovePattern()
 {
-	m_absolutelyMoveFlag = false;
+	m_velocity = VGet(0.0f, 0.0f, 0.0f);
 	// 球がなかったら、集めに行く
-	if (m_bulletNum <= 0 && m_moveType != Type::EscapeTarget)
+	if (m_bulletNum <= 0)
 	{
-		m_moveType = Type::TomatoCollect;
+		m_moveType = Type::CollectTomato;
 	}
 
-	// 敵を探しているか、狙っているとき
-	if (m_moveType == Type::SearchTarget || m_moveType == Type::AimTarget ||
-		m_moveType == Type::EscapeTarget)
+	switch (m_moveType)
 	{
+	case Type::CollectTomato:   // トマトを集める行動パターン
+		CheckTomatoWallMovePattern();
+		break;
+	case Type::AimTarget:      // ターゲットに対する行動パターン(ターゲット発見状態)
 		CheckTargetMovePattern();
+		break;
+	default:                    // ランダムな行動パターン(ターゲット未発見状態)
+		CheckRandomMovePattern();
+		break;
 	}
-	// トマトの壁処理
-	CheckTomatoWall();
 }
 
 // @detail ターゲットに対する行動パターンの処理
 void PlayerCPU::CheckTargetMovePattern()
 {
-	int objectNum = 0;
+	int objNum = FindTargetNearby();
+	VECTOR tPos = m_pTargetTf[objNum]->position;
+
+	if (m_moveType != Type::EscapeTarget)
+	{
+		double dis = GetDistance(tPos, m_pTransform->position);
+
+		if (dis < m_targetRangeMax)
+		{
+			// ターゲットを追いかける
+			MoveFoundTarget(tPos);
+		}
+		else
+		{
+			m_moveType = Type::RandomMove;
+		}
+	}
+	else  // ターゲットから逃げる処理
+	{
+		MoveEscapeTarget(tPos);
+	}
+}
+
+int PlayerCPU::FindTargetNearby()
+{
+	int objectNum = -1;
 	float distance = 0;
 	float tmp = 0;
 	int i = 0;
-	for (auto target : m_target)
+	for (auto target : m_pTarget)
 	{
 		// どのキャラクターが一番近いかを調べる
-		VECTOR gPos = target->GetComponent<Transform>()->position;
+		VECTOR gPos = m_pTargetTf[i]->position;
 		tmp = GetDistance(gPos, m_pTransform->position);
 
 		// tmpが負の値なら正の値に変える
@@ -288,253 +333,155 @@ void PlayerCPU::CheckTargetMovePattern()
 		}
 		i++;
 	}
-	if (m_moveType != Type::EscapeTarget)
-	{
-		// ターゲットに合わせて行動する
-		Move1Target(m_target[objectNum]);
-		if (m_moveType == Type::SearchTarget)
-		{
-			Move2Target(m_target[objectNum]);
-		}
-	}
-	else  // ターゲットから逃げる処理
-	{
-		Move3Target(m_target[objectNum]);
-	}
+
+	return objectNum;
 }
 
 // @detail ターゲットに合わせて動く処理
 // @param object ターゲットのゲームオブジェクト
-void PlayerCPU::Move1Target(class Object* player)
+void PlayerCPU::MoveFoundTarget(const VECTOR& targetPos)
 {
-	VECTOR gPos = player->GetComponent<Transform>()->position;
-	double distance = GetDistance(gPos, m_pTransform->position);
-
-	if (distance >= m_targetRangeMin && distance < m_targetRangeMax)  // この範囲に標的がいたら行動
+	VECTOR& tPos = const_cast<VECTOR&>(targetPos);
+	double distance = GetDistance(tPos, m_pTransform->position);
+	if (distance > m_targetMoveRangeMax)  // 標的が離れていたら近づく
 	{
-		if (distance > m_targetMoveRangeMax)  // 標的が離れていたら近づく
+		if (targetPos.x - m_pTransform->position.x >= 0.0f)
 		{
-			if (gPos.x - m_pTransform->position.x >= 0.0f)
-			{
-				m_pTransform->position = VAdd(m_pTransform->position, VGet(0.5f, 0.0f, 0.0f));
-			}
-			else
-			{
-				m_pTransform->position = VAdd(m_pTransform->position, VGet(-0.5f, 0.0f, 0.0f));
-			}
-
-			if (gPos.z - m_pTransform->position.z >= 0.0f)
-			{
-				m_pTransform->position = VAdd(m_pTransform->position, VGet(0.0f, 0.0f, 0.5f));
-			}
-			else
-			{
-				m_pTransform->position = VAdd(m_pTransform->position, VGet(0.0f, 0.0f, -0.5f));
-			}
-
-			m_absolutelyMoveFlag = true;
+			m_velocity = VAdd(m_velocity, VGet(m_speed.x / 2.0f, 0.0f, 0.0f));
 		}
-		else if (distance < m_targetMoveRangeMin)  // 標的が近づいてきたら離れる
+		else
 		{
-			if (gPos.x - m_pTransform->position.x >= 0.0f)
-			{
-				m_pTransform->position = VAdd(m_pTransform->position, VGet(-0.5f, 0.0f, 0.0f));
-			}
-			else
-			{
-				m_pTransform->position = VAdd(m_pTransform->position, VGet(0.5f, 0.0f, 0.0f));
-			}
-
-			if (gPos.z - m_pTransform->position.z >= 0.0f)
-			{
-				m_pTransform->position = VAdd(m_pTransform->position, VGet(0.0f, 0.0f, -0.5f));
-			}
-			else
-			{
-				m_pTransform->position = VAdd(m_pTransform->position, VGet(0.0f, 0.0f, 0.5f));
-			}
-			m_absolutelyMoveFlag = true;
+			m_velocity = VAdd(m_velocity, VGet(-m_speed.x / 2.0f, 0.0f, 0.0f));
 		}
 
-		// 標的の方向に回転
-		RotateTowardTarget(gPos);
-		// 標的を発見
-		m_moveType = Type::AimTarget;
-		m_aimTargetFlag = false;
-		m_moveTime = 0;
-	}
-	else
-	{
-		m_moveType = Type::SearchTarget;
-	}
-}
-
-// @detail ターゲットが見つからないときの処理
-// @param object ターゲットのゲームオブジェクト
-void PlayerCPU::Move2Target(class Object* player)
-{
-	// 標的の方向に移動するか乱数決定
-	if (!m_aimTargetFlag && m_moveTime == 0)
-	{
-		srand(rand() % 100);
-		int tmp = rand() % 2;
-
-		switch (tmp)
+		if (targetPos.z - m_pTransform->position.z >= 0.0f)
 		{
-		case 0:  // 標的の方向に移動
-			m_aimTargetFlag = true;
-			break;
-		default:  // ランダムに移動
-			m_moveValue.x = rand() % 3 - 1;
-			m_moveValue.z = rand() % 3 - 1;
-			break;
+			m_velocity = VAdd(m_velocity, VGet(0.0f, 0.0f, m_speed.z / 2.0f));
+		}
+		else
+		{
+			m_velocity = VAdd(m_velocity, VGet(0.0f, 0.0f, -m_speed.z / 2.0f));
+		}
+	}
+	else if (distance < m_targetMoveRangeMin)  // 標的が近づいてきたら離れる
+	{
+		if (targetPos.x - m_pTransform->position.x >= 0.0f)
+		{
+			m_velocity = VAdd(m_velocity, VGet(-m_speed.x / 2.0f, 0.0f, 0.0f));
+		}
+		else
+		{
+			m_velocity = VAdd(m_velocity, VGet(m_speed.x, 0.0f, 0.0f));
+		}
+
+		if (targetPos.z - m_pTransform->position.z >= 0.0f)
+		{
+			m_velocity = VAdd(m_velocity, VGet(0.0f, 0.0f, -m_speed.z / 2.0f));
+		}
+		else
+		{
+			m_velocity = VAdd(m_velocity, VGet(0.0f, 0.0f, m_speed.z / 2.0f));
 		}
 	}
 
-	// 標的に近づく
-	if (m_aimTargetFlag)
-	{
-		VECTOR gPos = player->GetComponent<Transform>()->position;
-		VECTOR moveVector = VGet(m_pTransform->position.x + m_moveValue.x, m_pTransform->position.y, m_pTransform->position.z + m_moveValue.z);
-
-		if (gPos.x > m_pTransform->position.x)
-		{
-			moveVector.x += m_velocity.x;
-		}
-		else if (gPos.x < m_pTransform->position.x)
-		{
-			moveVector.x -= m_velocity.x;
-		}
-
-		if (gPos.z > m_pTransform->position.z)
-		{
-			moveVector.z += m_velocity.z;
-		}
-		else if (gPos.z < m_pTransform->position.z)
-		{
-			moveVector.z -= m_velocity.z;
-		}
-
-		// 進んでいる方向を向く
-		RotateTowardTarget(moveVector);
-		m_pTransform->position = moveVector;
-
-		// 時間経過で次の行動フェーズへ
-		m_moveTime++;
-		if (m_moveTime > m_movePhaseTime)
-		{
-			m_aimTargetFlag = false;
-			m_moveTime = 0;
-		}
-	}
-	else  // ランダムに移動
-	{
-		VECTOR moveVector = VGet(m_pTransform->position.x + m_moveValue.x, m_pTransform->position.y, m_pTransform->position.z + m_moveValue.z);
-
-		// 進んでいる方向を向く
-		if (moveVector.x != 0.0f && moveVector.z != 0.0f)
-		{
-			RotateTowardTarget(moveVector);
-		}
-
-		m_pTransform->position = moveVector;
-
-		// 時間経過で次の行動フェーズへ
-		m_moveTime++;
-		if (m_moveTime > m_movePhaseTime)
-		{
-			m_moveTime = 0;
-		}
-	}
+	// 標的の方向に回転
+	RotateTowardTarget(tPos);
 }
 
 // @detail ターゲットから逃げる処理
-void PlayerCPU::Move3Target(class Object* player)
+void PlayerCPU::MoveEscapeTarget(const VECTOR& targetPos)
 {
-	VECTOR gPos = player->GetComponent<Transform>()->position;
+	VECTOR& tPos = const_cast<VECTOR&>(targetPos);
 
-	int objectNum = 0;
-	float distance = 0;
-	float tmp = 0;
 	// トマトの壁がないのか探す
-	for (int i = 0; i < m_pTomatoWall.size(); i++)
+	int objectNum = FindTomatoWallNearby();
+	float distance = 0;
+
+	switch (objectNum)
 	{
-		// そのトマトの壁にトマトはあるのか
-		if (m_pTomatoWall[i]->GetAllTomatoNum() != 0)
-		{
-			// どのトマトの壁が一番近いかを調べる
-			VECTOR gPos = m_pTomatoWall[i]->GetPosition();
-			tmp = GetDistance(gPos, m_pTransform->position);
-
-			// tmpが負の値なら正の値に変える
-			if (tmp < 0.0f)
-			{
-				tmp = tmp * -1.0f;
-			}
-
-
-			// 距離が一番近いオブジェクト番号を保存する
-			if (distance > tmp || distance == 0.0f)
-			{
-				distance = tmp;
-				objectNum = i;
-
-				// トマトの壁があったら行動パターンを変える
-				m_moveType = Type::TomatoCollect;
-
-				// tmpが0だったら一番近いのでfor文を抜ける
-				if (tmp == 0.0f)
-				{
-					break;
-				}
-			}
-		}
-	}
-	if (m_moveType == Type::TomatoCollect)  // トマトを回収しに行く
-	{
-		CollectTomato(m_pTomatoWall[objectNum]);
-	}
-	else  // トマトの壁がない間は逃げる
-	{
-		VECTOR moveVector = VGet(m_pTransform->position.x, m_pTransform->position.y, m_pTransform->position.z);
-		double distance = GetDistance(gPos, m_pTransform->position);
+	default:    // トマトを回収しに行く
+		MoveCollectTomato(m_pTomatoWall[objectNum]);
+		break;
+	case -1:
+		// トマトの壁がない間は逃げる
+		double distance = GetDistance(tPos, m_pTransform->position);
 
 		// 指定の範囲まで逃げ切る
 		if (distance < m_targetEscapeRange)
 		{
-			if (gPos.x - m_pTransform->position.x >= 0.0f)
+			if (tPos.x - m_pTransform->position.x >= 0.0f)
 			{
-				moveVector.x -= m_velocity.x;
+				m_velocity.x -= m_speed.x;
 			}
 			else
 			{
-				moveVector.x += m_velocity.x;
+				m_velocity.x += m_speed.x;
 			}
 
-			if (gPos.z - m_pTransform->position.z >= 0.0f)
+			if (tPos.z - m_pTransform->position.z >= 0.0f)
 			{
-				moveVector.z -= m_velocity.z;
+				m_velocity.z -= m_speed.z;
 			}
 			else
 			{
-				moveVector.z += m_velocity.z;
+				m_velocity.z += m_speed.z;
 			}
+
+			m_velocity = VGet(m_velocity.x * m_avoidDir.x, m_velocity.y * m_avoidDir.y, m_velocity.z * m_avoidDir.z);
 
 			// 進んでいる方向を向く
-			RotateTowardTarget(moveVector);
-			m_pTransform->position = moveVector;
+			VECTOR aimVec = VAdd(m_pTransform->position, m_velocity);
+			RotateTowardTarget(aimVec);
 		}
 		else  // ターゲットから逃げる範囲を出たらターゲットのほうを向く
 		{
-			RotateTowardTarget(gPos);
+			RotateTowardTarget(tPos);
 		}
+		break;
 	}
 }
 
 // @detail トマトを回収する行動パターンを実行する
-void PlayerCPU::CheckTomatoWall()
+void PlayerCPU::CheckTomatoWallMovePattern()
 {
-	int objectNum = 0;
+	int tmp = FindTomatoWallNearby();
+	switch (tmp)
+	{
+	case -1:  // トマトの壁がなかった
+		// 弾を持っているなら逃げず行動パターンを再抽選
+		if (m_bulletNum == 0)
+		{
+			m_moveType = Type::EscapeTarget;
+		}
+		else
+		{
+			m_moveType = Type::RandomMove;
+		}
+		break;
+	default:  // トマトの壁があった(-1以外)
+		if (m_bulletNum > 5)
+		{
+			int objNum = FindTargetNearby();
+			VECTOR tPos = m_pTarget[objNum]->GetComponent<Transform>()->position;
+			double tmp = GetDistance(tPos, m_pTransform->position);
+
+			// 敵が近くにいたらランダム行動を終了
+			if (tmp < m_targetRangeMax)
+			{
+				m_moveType = Type::AimTarget;
+				return;  // その後の処理は行わない
+			}
+		}
+		MoveCollectTomato(m_pTomatoWall[tmp]);
+		break;
+	}
+
+	/*AvoidTomatoWall(m_pTomatoWall[objectNum]);*/
+}
+
+int PlayerCPU::FindTomatoWallNearby()
+{
+	int objectNum = -1;
 	float distance = 0;
 	float tmp = 0;
 	for (int i = 0; i < m_pTomatoWall.size(); i++)
@@ -566,138 +513,251 @@ void PlayerCPU::CheckTomatoWall()
 			}
 		}
 	}
-	// すべてのトマトの壁がなかったら敵から逃げる処理に変える
-	if (m_pTomatoWall[objectNum]->GetAllTomatoNum() == 0)
-	{
-		m_moveType = Type::EscapeTarget;
-	}
-	else if (m_moveType == Type::TomatoCollect)
-	{
-		CollectTomato(m_pTomatoWall[objectNum]);
-	}
 
-	AvoidTomatoWall(m_pTomatoWall[objectNum]);
+	return objectNum;
 }
 
 // @detail トマトを回収しに行く処理
 // @param object 一番近いトマトの壁オブジェクト
-void PlayerCPU::CollectTomato(TomatoWallManager* object)
+void PlayerCPU::MoveCollectTomato(TomatoWallManager* object)
 {
+	// どのトマトの壁が一番近いかを調べる
 	VECTOR gPos = object->GetPosition();
-	double distance = GetDistance(gPos, m_pTransform->position);
+	float distance = GetDistance(gPos, m_pTransform->position);
 
-	if ((float)distance > object->GetWidthDistance() + 1)  // 標的が離れていたら近づく
+	if (distance > object->GetWidthDistance() + 1)  // トマトの壁に当たっていなかったら
 	{
 		if (gPos.x - m_pTransform->position.x >= 0.0f)
 		{
-			m_pTransform->position = VAdd(m_pTransform->position, VGet(0.5f, 0.0f, 0.0f));
+			m_velocity = VAdd(m_velocity, VGet(m_speed.x / 2.0f, 0.0f, 0.0f));
 		}
 		else
 		{
-			m_pTransform->position = VAdd(m_pTransform->position, VGet(-0.5f, 0.0f, 0.0f));
+			m_velocity = VAdd(m_velocity, VGet(-m_speed.x / 2.0f, 0.0f, 0.0f));
 		}
 
 		if (gPos.z - m_pTransform->position.z >= 0.0f)
 		{
-			m_pTransform->position = VAdd(m_pTransform->position, VGet(0.0f, 0.0f, 0.5f));
+			m_velocity = VAdd(m_velocity, VGet(0.0f, 0.0f, m_speed.z / 2.0f));
 		}
 		else
 		{
-			m_pTransform->position = VAdd(m_pTransform->position, VGet(0.0f, 0.0f, -0.5f));
+			m_velocity = VAdd(m_velocity, VGet(0.0f, 0.0f, -m_speed.z / 2.0f));
 		}
 
 		// 標的の方向に回転
-		RotateTowardTarget(gPos);
+		VECTOR aimVec = VAdd(m_pTransform->position, m_velocity);
+		RotateTowardTarget(aimVec);
 	}
 	else
 	{
 		if (m_bulletNum == m_bulletCapacity)
 		{
-			m_moveType = Type::SearchTarget;
+			m_hitTomatoWallFlag = false;
+			m_moveType = Type::RandomMove;
 		}
 		else if (m_bulletNum < m_bulletCapacity)
 		{
-			if (!m_pickFlag)
+			m_pickFlag = true;
+			m_moveFlag = false;
+			if (m_animTime == 0.0f && m_animType == Anim::Pick)
 			{
-				m_pickFlag = true;
 				m_bulletNum++;
 				object->DecreaseAllTomatoNum();
 			}
-			m_animType = Anim::Pick;
-			m_moveFlag = false;
 		}
 	}
 }
 
-// @detail トマトの壁を避ける処理
-void PlayerCPU::AvoidTomatoWall(TomatoWallManager* object)
+void PlayerCPU::CheckRandomMovePattern()
 {
-	VECTOR mPos = m_pTransform->position;
-	VECTOR gPos = object->GetPosition();
+	int objNum = FindTargetNearby();
+	VECTOR tPos = m_pTarget[objNum]->GetComponent<Transform>()->position;
+	double tmp = GetDistance(tPos, m_pTransform->position);
 
-	double distance = GetDistance(gPos, m_pTransform->position);
-
-	if ((float)distance < object->GetWidthDistance() && m_moveType == Type::TomatoCollect)  // 壁に近づきすぎ内容に処理
+	// 敵が近くにいたらランダム行動を終了
+	if (tmp < m_targetRangeMax)
 	{
-		if (gPos.x - m_pTransform->position.x >= 0.0f)
-		{
-			m_pTransform->position = VAdd(m_pTransform->position, VGet(-0.5f, 0.0f, 0.0f));
-		}
-		else
-		{
-			m_pTransform->position = VAdd(m_pTransform->position, VGet(0.5f, 0.0f, 0.0f));
-		}
+		m_moveType = Type::AimTarget;
+		return;  // その後の処理は行わない
+	}
 
-		if (gPos.z - m_pTransform->position.z >= 0.0f)
+	// 標的の方向に移動するか乱数決定
+	if (m_moveType == Type::RandomMove)
+	{
+		m_moveTime = 0;
+		m_towardDir = VGet(0.0f, 0.0f, 0.0f);
+		srand(rand() % 100);
+		m_randomNum = rand() % 4;
+		m_moveValue.x = rand() % 3 - 1;
+		m_moveValue.z = rand() % 3 - 1;
+	}
+
+	// 徘徊行動パターンを多めにする
+	if (m_randomNum % 2 == 0)
+	{
+		m_moveType = Type::Wandering;
+		MoveWandering();
+	}
+	else
+	{
+		switch (m_randomNum)
 		{
-			m_pTransform->position = VAdd(m_pTransform->position, VGet(0.0f, 0.0f, -0.5f));
-		}
-		else
-		{
-			m_pTransform->position = VAdd(m_pTransform->position, VGet(0.0f, 0.0f, 0.5f));
+		case 1:
+			m_moveType = Type::TrackingTarget;
+			MoveTrackingTarget(tPos);  // ターゲットを追跡
+			break;
+		case 3:
+			MoveTomato();  // トマトを集めに行く
+			break;
 		}
 	}
-	else if ((float)distance <= object->GetWidthDistance() &&
-		m_moveType != Type::TomatoCollect && !m_avoidWallFlag)  // 壁との距離が近づきすぎたら
-	{
-		m_avoidWallFlag = true;
 
-		// 壁を避ける距離が小さい方に避ける
-		if (GetSize(gPos.x, m_pTransform->position.x) < GetSize(gPos.z, m_pTransform->position.z))
+	m_moveTime++;
+	// 行動時間が終わったら次の行動パターンを抽選
+	if (m_moveTime > m_movePhaseTime)
+	{
+		m_moveType = Type::RandomMove;
+	}
+}
+
+void PlayerCPU::MoveTrackingTarget(const VECTOR& targetPos)
+{
+	if (targetPos.x > m_pTransform->position.x)
+	{
+		m_velocity.x += m_speed.x;
+	}
+	else if (targetPos.x < m_pTransform->position.x)
+	{
+		m_velocity.x -= m_speed.x;
+	}
+
+	if (targetPos.z > m_pTransform->position.z)
+	{
+		m_velocity.z += m_speed.z;
+	}
+	else if (targetPos.z < m_pTransform->position.z)
+	{
+		m_velocity.z -= m_speed.z;
+	}
+
+	// 進んでいる方向を向く
+	VECTOR aimVec = VAdd(m_pTransform->position, m_velocity);
+	RotateTowardTarget(aimVec);
+}
+
+void PlayerCPU::MoveWandering()
+{
+	m_velocity = m_moveValue;
+	// 進んでいる方向を向く
+	if (m_velocity.x != 0.0f || m_velocity.z != 0.0f)
+	{
+		// 進んでいる方向を向く
+		VECTOR aimVec = VAdd(m_pTransform->position, m_velocity);
+		RotateTowardTarget(aimVec);
+	}
+}
+
+void PlayerCPU::MoveTomato()
+{
+	// 弾の数が限界まで持っていたら行動パターンを再抽選
+	if (m_bulletNum == m_bulletCapacity)
+	{
+		m_moveTime = m_movePhaseTime + 1;
+	}
+	else
+	{
+		m_moveType = Type::CollectTomato;
+	}
+}
+
+void PlayerCPU::OnCollisionEnter(ColliderComponent* ownColl, ColliderComponent* otherColl)
+{
+	if (otherColl->GetTag() != nullptr)
+	{
+		if (otherColl->GetTag()->tag == ObjectTag::World && ownColl->GetCollisionType() == CollisionInfo::CollisionType::Box ||
+			otherColl->GetTag()->tag == ObjectTag::TomatoWall && ownColl->GetCollisionType() == CollisionInfo::CollisionType::Box)
 		{
-			if (gPos.x - m_pTransform->position.x >= 0.0f)
+			VECTOR vecDir = CheckVectorDirection(ownColl->GetCollisionInfo().m_fixVec);
+			if (vecDir.x != 0.0f)
 			{
-				m_avoidVelocity = VAdd(m_avoidVelocity, VGet(-1.0f, 0.0f, 0.0f));
+				switch (m_moveType)
+				{
+				case Type::Wandering:
+					m_moveValue.x = m_moveValue.x * vecDir.x;
+					break;
+				default:
+					m_avoidDir.x = m_moveValue.x * vecDir.x;
+					break;
+				}
+			}
+			if (vecDir.y != 0.0f)
+			{
+				switch (m_moveType)
+				{
+				case Type::Wandering:
+					m_moveValue.y = m_moveValue.y * vecDir.y;
+				default:
+					m_avoidDir.y = m_moveValue.y * vecDir.y;
+				}
+			}
+			if (vecDir.z != 0.0f)
+			{
+				switch (m_moveType)
+				{
+				case Type::Wandering:
+					m_moveValue.z = m_moveValue.z * vecDir.z;
+				default:
+					m_avoidDir.z = m_moveValue.z * vecDir.z;
+				}
+			}
+
+			if (otherColl->GetTag()->tag == ObjectTag::TomatoWall)
+			{
+				m_hitTomatoWallFlag = true;
+			}
+			m_pBox->SetOnCollisionTag(otherColl->GetTag());
+		}
+		if (otherColl->GetTag()->tag == ObjectTag::Tomato && ownColl->GetCollisionType() == CollisionInfo::CollisionType::Box)
+		{
+			if (otherColl->GetParentTag()->tag == m_pTag->tag)
+			{
+				return;
 			}
 			else
 			{
-				m_avoidVelocity = VAdd(m_avoidVelocity, VGet(1.0f, 0.0f, 0.0f));
+				m_pBox->SetOnCollisionTag(otherColl->GetTag());
+				return;
 			}
 		}
-		else
+		if (otherColl->GetTag()->tag == ObjectTag::Team1 && ownColl->GetCollisionType() == CollisionInfo::CollisionType::Sphere)
 		{
-			if (gPos.z - m_pTransform->position.z >= 0.0f)
-			{
-				m_avoidVelocity = VAdd(m_avoidVelocity, VGet(0.0f, 0.0f, -1.0f));
-			}
-			else
-			{
-				m_avoidVelocity = VAdd(m_avoidVelocity, VGet(0.0f, 0.0f, 1.0f));
-			}
+			m_pSphere->SetOnCollisionTag(otherColl->GetTag());
+			Transform* tf = otherColl->GetOwner()->m_pParent->GetComponent<Transform>();
+			m_targetPos = tf->position;
 		}
 	}
-
-	// 避けるフラグがたったら、避ける
-	if (m_avoidWallFlag)
+	if (ownColl->GetCollisionType() == CollisionInfo::CollisionType::Box)
 	{
-		m_pTransform->position = VAdd(m_pTransform->position, m_avoidVelocity);
-		distance = GetDistance(gPos, m_pTransform->position);
-
-		// 一定の距離が空いたら避けるのをやめる
-		if ((float)distance > object->GetWidthDistance() + 15)
-		{
-			m_avoidWallFlag = false;
-			m_avoidVelocity = VGet(0.0f, 0.0f, 0.0f);
-		}
+		// 座標が足元にあるため、高さをモデルの半分の位置に補正をかけてます
+		m_pTransform->position = VAdd(m_pTransform->position, ownColl->GetCollisionInfo().m_fixVec);
 	}
+}
+
+// @detail 自身と他のオブジェクトの距離を出す
+double PlayerCPU::GetDistance(VECTOR& pos1, VECTOR& pos2)
+{
+	double tmp1 = pos1.x - pos2.x;
+	double tmp2 = pos1.z - pos2.z;
+	return sqrt(tmp1 * tmp1 + tmp2 * tmp2);
+}
+
+float PlayerCPU::GetSize(float v1, float v2)
+{
+	float value = v1 - v2;
+	if (value < 0)
+	{
+		value = value * -1.0f;
+	}
+	return value;
 }

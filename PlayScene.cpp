@@ -37,13 +37,14 @@ PlayScene::PlayScene(const MODE& mode)
 	, m_isStartBlendAdd(false)
 	, m_startBlendAdd(0.0f)
 	, m_graphHandleWhite(-1)
+	, m_reticleImg(MV1LoadModel("data/Icon/Reticle(risize).mv1"))
 {
 	// トランジション用の画像初期化
 	for (int i = 0; i < 2; i++)
 	{
 		m_transitionImage[i] = nullptr;
 	}
-	
+
 	// トマトの山生成
 	for (int i = 0; i < m_tomatoWallNum; i++)
 	{
@@ -51,7 +52,7 @@ PlayScene::PlayScene(const MODE& mode)
 		obj->AddComponent<Transform>();
 		obj->AddComponent<Tag>()->tag = ObjectTag::TomatoWall;
 		auto wall = obj->AddCollider<WallCollider>();
-		wall->SetCollider(new Wall(new Box(VGet( 0.0f, 0.0f, 0.0f), VGet(20, 20, 20))));
+		wall->SetCollider(new Wall(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(20, 20, 20))));
 		auto tomato = obj->AddComponent<TomatoWallManager>();
 		tomato->Init(VGet(-300 + 100.0f * i, 0.0f, 0.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.035f, 0.035f, 0.035f));
 		m_pColliderLists.push_back(obj);
@@ -76,12 +77,14 @@ PlayScene::PlayScene(const MODE& mode)
 	{
 		{
 			Object* obj = new Object;
-			obj->AddComponent<Transform>();
+			m_posPlayer1 = obj->AddComponent<Transform>();
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Team1;
 			obj->AddComponent<Icon>();
 			auto box = obj->AddCollider<BoxCollider>();
 			box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
+			auto sphere = obj->AddCollider<SphereCollider>();
+			sphere->SetCollider(new Sphere(VGet(0.0f, 0.0f, 0.0f), 30.0f));
 			auto p1 = obj->AddComponent<Player1>();
 			p1->Init(VGet(50.0f, 0.0f, -50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
 			p1->SetTomatoWallPtr(m_pTomatoWallObjectLists);
@@ -90,12 +93,14 @@ PlayScene::PlayScene(const MODE& mode)
 		}
 		{
 			Object* obj = new Object;
-			obj->AddComponent<Transform>();
+			m_posPlayer2 = obj->AddComponent<Transform>();
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Team2;
 			obj->AddComponent<Icon>();
 			auto box = obj->AddCollider<BoxCollider>();
 			box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
+			auto sphere = obj->AddCollider<SphereCollider>();
+			sphere->SetCollider(new Sphere(VGet(0.0f, 0.0f, 0.0f), 30.0f));
 			auto p2 = obj->AddComponent<Player2>();
 			p2->Init(VGet(-50.0f, 0.0f, -50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
 			p2->SetTomatoWallPtr(m_pTomatoWallObjectLists);
@@ -113,6 +118,8 @@ PlayScene::PlayScene(const MODE& mode)
 		obj->AddComponent<Icon>();
 		auto box = obj->AddCollider<BoxCollider>();
 		box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
+		auto sphere = obj->AddCollider<SphereCollider>();
+		sphere->SetCollider(new Sphere(VGet(0.0f, 0.0f, 0.0f), 30.0f));
 		auto playerCPU1 = obj->AddComponent<PlayerCPU>();
 		playerCPU1->Init(VGet(60.0f, 0.0f, -50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
 		playerCPU1->SetTomatoWallPtr(m_pTomatoWallObjectLists);
@@ -125,6 +132,8 @@ PlayScene::PlayScene(const MODE& mode)
 		obj->AddComponent<Icon>();
 		box = obj->AddCollider<BoxCollider>();
 		box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
+		sphere = obj->AddCollider<SphereCollider>();
+		sphere->SetCollider(new Sphere(VGet(0.0f, 0.0f, 0.0f), 30.0f));
 		auto playerCPU2 = obj->AddComponent<PlayerCPU>();
 		playerCPU2->Init(VGet(-60.0f, 0.0f, -50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
 		playerCPU2->SetTomatoWallPtr(m_pTomatoWallObjectLists);
@@ -138,6 +147,8 @@ PlayScene::PlayScene(const MODE& mode)
 		obj->AddComponent<Icon>();
 		box = obj->AddCollider<BoxCollider>();
 		box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
+		sphere = obj->AddCollider<SphereCollider>();
+		sphere->SetCollider(new Sphere(VGet(0.0f, 0.0f, 0.0f), 30.0f));
 		auto enemy1 = obj->AddComponent<Enemy>();
 		enemy1->Init(VGet(-10.0f, 0.0f, 50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
 		enemy1->SetTomatoWallPtr(m_pTomatoWallObjectLists);
@@ -150,6 +161,8 @@ PlayScene::PlayScene(const MODE& mode)
 		obj->AddComponent<Icon>();
 		box = obj->AddCollider<BoxCollider>();
 		box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
+		sphere = obj->AddCollider<SphereCollider>();
+		sphere->SetCollider(new Sphere(VGet(0.0f, 0.0f, 0.0f), 30.0f));
 		auto enemy2 = obj->AddComponent<Enemy>();
 		enemy2->Init(VGet(10.0f, 0.0f, 50.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.1f, 0.1f, 0.1f));
 		enemy2->SetTomatoWallPtr(m_pTomatoWallObjectLists);
@@ -160,6 +173,7 @@ PlayScene::PlayScene(const MODE& mode)
 		for (auto ob : m_pObjectLists)
 		{
 			auto tag = ob->GetComponent<Tag>();
+			if (tag->tag == ObjectTag::TomatoWall || tag->tag == ObjectTag::Tomato) { continue; }
 			if (tag->tag != ObjectTag::Team1) { playerCPU1->SetAimTargetPtr(ob); }
 			if (tag->tag != ObjectTag::Team2) { playerCPU2->SetAimTargetPtr(ob); }
 			if (tag->tag != ObjectTag::Team3) { enemy1->SetAimTargetPtr(ob); enemy2->SetAimTargetPtr(ob); }
@@ -235,7 +249,7 @@ PlayScene::PlayScene(const MODE& mode)
 				x += 25;
 				object = new Object;
 				m_timerKoron = object->AddComponent<Image>();
-				m_timerKoron->Init(VGet( x, 60, 1.0f), VGet(0.4f * exX, 0.4f * exY, 1.0f), 0.0, "data/DigitalNumber/koron.png");
+				m_timerKoron->Init(VGet(x, 60, 1.0f), VGet(0.4f * exX, 0.4f * exY, 1.0f), 0.0, "data/DigitalNumber/koron.png");
 				m_timerKoron->IsDraw(false);
 				m_pObjectLists.push_back(object);
 
@@ -250,7 +264,7 @@ PlayScene::PlayScene(const MODE& mode)
 				object = new Object;
 				object->AddComponent<TimeCount>();
 				auto img = object->AddComponent<Image>();
-				img->Init(VGet( x, 60, 1.0f), VGet(0.4f *exX, 0.4f *exY, 1.0f), 0.0, str.c_str());
+				img->Init(VGet(x, 60, 1.0f), VGet(0.4f * exX, 0.4f * exY, 1.0f), 0.0, str.c_str());
 				img->IsDraw(false);
 
 
@@ -315,7 +329,7 @@ PlayScene::PlayScene(const MODE& mode)
 			m_tomatoUICon[i] = object->AddComponent<TomatoUIController>();
 			m_pObjectLists.push_back(object);
 		}
-		
+
 	}
 
 	// ScoreUI
@@ -399,7 +413,7 @@ void PlayScene::Draw()
 	default:
 		break;
 	}
-	
+
 }
 
 void PlayScene::UpdateTransitionStart()
@@ -415,7 +429,7 @@ void PlayScene::UpdateTransitionStart()
 		{
 			m_transition = Transition::PLAY;
 			m_timeCount->RestCount();
-			
+
 		}
 	}
 	for (auto obj : m_pObjectLists)
@@ -469,7 +483,7 @@ void PlayScene::UpdateTransitionPlay()
 		if (m_startBlendAdd < 0.0f)
 		{
 			m_timeCount->StartCount();
-			
+
 			m_isStartBlendAdd = false;
 		}
 	}
@@ -683,14 +697,14 @@ void PlayScene::UpdateTransitionOver()
 		m_transitionImage[1]->MovePos(VGet(-10.0f, 0.0f, 0.0f));
 		if (m_transitionImage[0]->GetPos().x < -400.0f)
 		{
-			m_tagScene = TAG_SCENE::TAG_OVER;
+			m_tagScene = TAG_SCENE::TAG_RESULT;
 		}
 	}
 	else
 	{
-		m_tagScene = TAG_SCENE::TAG_OVER;
+		m_tagScene = TAG_SCENE::TAG_RESULT;
 	}
-	
+
 }
 
 void PlayScene::UpdateTransitionEnd()
@@ -709,9 +723,9 @@ void PlayScene::DrawTransitionStart()
 	}
 	static float x = 50.0f;
 	x += 0.1;
-	VECTOR pos = VGet(0.0f,20.0f,x);
+	VECTOR pos = VGet(0.0f, 20.0f, x);
 	VECTOR target = VGet(0.0f, 0.0f, 0.0f);
-	
+
 	SetCameraPositionAndTarget_UpVecY(pos, target);
 
 	SetDrawBlendMode(DX_BLENDMODE_ADD, static_cast<int>(m_startBlendAdd));
@@ -762,8 +776,8 @@ void PlayScene::DrawTransitionPlay()
 	for (auto obj : m_pObjectLists)
 	{
 		auto tag = obj->GetComponent<Tag>();
-		if (tag == nullptr) 
-		{ 
+		if (tag == nullptr)
+		{
 			obj->Draw();
 		}
 		else
@@ -782,7 +796,6 @@ void PlayScene::DrawTransitionPlay()
 	}
 	DrawEffekseer3D();
 
-
 	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();
 
@@ -794,7 +807,7 @@ void PlayScene::DrawTransitionPlay()
 void PlayScene::DrawTransitionOver()
 {
 	SetDrawArea(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
-	SetCameraScreenCenter(480.0f, 540.0f);	
+	SetCameraScreenCenter(480.0f, 540.0f);
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
@@ -814,7 +827,7 @@ void PlayScene::DrawTransitionOver()
 	SetCameraScreenCenter(1440.0f, 540.0f);
 #ifdef _DEBUG
 	printfDx("PlayScene\n");
-	
+
 #endif // _DEBUG
 	for (auto obj : m_pObjectLists)
 	{
@@ -828,6 +841,7 @@ void PlayScene::DrawTransitionOver()
 			if (tag->tag != ObjectTag::Camera1) { obj->Draw(); }
 		}
 	}
+
 	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();
 }

@@ -30,8 +30,7 @@
 #include "Scene.h"
 #include "TitleScene.h"
 #include "PlayScene.h"
-#include "GameClearScene.h"
-#include "GameOverScene.h"
+#include "ResultScene.h"
 #include "SceneManager.h"
 
 /* Effect */
@@ -58,3 +57,5 @@
 /* play */
 #include "PlayGround.h"
 #include "BasketController.h"
+//result
+#include "ResultGround.h"

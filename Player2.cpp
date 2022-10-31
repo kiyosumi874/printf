@@ -8,6 +8,7 @@
 #include "Score.h"
 #include "Icon.h"
 #include "BoxCollider.h"
+#include "SphereCollider.h"
 
 Player2::Player2()
 	: Human()
@@ -52,6 +53,12 @@ void Player2::Start()
 		m_pBox->Init(m_var.pos, m_pBox->SetOwner(this), m_pTag, CollisionInfo::CollisionType::Box);
 		m_pBox->SetOnCollisionFlag(true);
 	}
+	if (m_pSphere == nullptr)
+	{
+		m_pSphere = m_pParent->GetCollider<SphereCollider>();
+		m_pSphere->Init(m_var.pos, m_pSphere->SetOwner(this), m_pTag, CollisionInfo::CollisionType::Sphere);
+		m_pSphere->SetOnCollisionFlag(true);
+	}
 }
 
 void Player2::Update()
@@ -82,6 +89,10 @@ void Player2::Update()
 	m_pIcon->SetOwnerPosition(m_var.pos);
 	// 座標が足元にあるため、高さをモデルの半分の位置に補正をかけてます
 	m_pBox->UpdatePosition(VGet(m_var.pos.x, m_var.pos.y + m_pBox->GetWorldBox()->m_scale.y / 2.0f, m_var.pos.z));
+	m_pSphere->UpdatePosition(m_var.pos);
+
+	m_pBox->CleanCollisionTag();
+	m_pSphere->CleanCollisionTag();
 }
 
 void Player2::Draw()
@@ -91,23 +102,6 @@ void Player2::Draw()
 	MV1DrawModel(m_var.handle);
 	m_pIcon->Draw();
 	SetUseLighting(true);
-}
-
-void Player2::OnCollisionEnter(ColliderComponent* ownColl, ColliderComponent* otherColl)
-{
-	if (otherColl->GetTag() != nullptr)
-	{
-		if (otherColl->GetTag()->tag == ObjectTag::Team1Tomato || otherColl->GetTag()->tag == ObjectTag::Team3Tomato)
-		{
-			return;
-		}
-		if (otherColl->GetTag()->tag == ObjectTag::Team2Tomato)
-		{
-			return;
-		}
-	}
-	
-	m_pTransform->position = VAdd(m_pTransform->position, ownColl->GetCollisionInfo().m_fixVec);
 }
 
 void Player2::Input()
@@ -157,22 +151,42 @@ void Player2::Input()
 			input = true;
 		}
 
+		//// 右に進む
+		//if (Input::IsPress2P(BUTTON_ID_LEFT))
+		//{
+		//	right.x = sinf(m_pTransform->rotate.y - addRad);
+		//	right.z = cosf(m_pTransform->rotate.y - addRad);
+		//	m_inputVector = VAdd(right, m_inputVector);
+		//	input = true;
+		//}
+
+		//// 左に進む
+		//if (Input::IsPress2P(BUTTON_ID_RIGHT))
+		//{
+		//	left.x = sinf(m_pTransform->rotate.y + addRad);
+		//	left.z = cosf(m_pTransform->rotate.y + addRad);
+		//	m_inputVector = VAdd(left, m_inputVector);
+		//	input = true;
+		//}
+
 		// 右に進む
 		if (Input::IsPress2P(BUTTON_ID_LEFT))
 		{
-			right.x = sinf(m_pTransform->rotate.y - addRad);
-			right.z = cosf(m_pTransform->rotate.y - addRad);
-			m_inputVector = VAdd(right, m_inputVector);
-			input = true;
+			//right.x = sinf(m_pTransform->rotate.y - addRad);
+			//right.z = cosf(m_pTransform->rotate.y - addRad);
+			//m_inputVector = VAdd(right, m_inputVector);
+			//input = true;
+			m_pTransform->rotate.y -= 0.02f;
 		}
 
 		// 左に進む
 		if (Input::IsPress2P(BUTTON_ID_RIGHT))
 		{
-			left.x = sinf(m_pTransform->rotate.y + addRad);
-			left.z = cosf(m_pTransform->rotate.y + addRad);
-			m_inputVector = VAdd(left, m_inputVector);
-			input = true;
+			//	left.x = sinf(m_pTransform->rotate.y + addRad);
+			//	left.z = cosf(m_pTransform->rotate.y + addRad);
+			//	m_inputVector = VAdd(left, m_inputVector);
+			m_pTransform->rotate.y += 0.02f;
+			//input = true;
 		}
 
 		// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
@@ -373,6 +387,30 @@ void Player2::TomatoCollect()
 			tomatowall[i].DecreaseAllTomatoNum();
 			break;
 		}
+	}
+}
+
+void Player2::OnCollisionEnter(ColliderComponent* ownColl, ColliderComponent* otherColl)
+{
+	if (otherColl->GetTag() != nullptr)
+	{
+		if (otherColl->GetTag()->tag == ObjectTag::Tomato && ownColl->GetCollisionType() == CollisionInfo::CollisionType::Box)
+		{
+			if (otherColl->GetParentTag()->tag == m_pTag->tag)
+			{
+				return;
+			}
+			else
+			{
+				return;
+			}
+		}
+	}
+
+	if (ownColl->GetCollisionType() == CollisionInfo::CollisionType::Box)
+	{
+		// 座標が足元にあるため、高さをモデルの半分の位置に補正をかけてます
+		m_pTransform->position = VAdd(m_pTransform->position, ownColl->GetCollisionInfo().m_fixVec);
 	}
 }
 

@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "Tag.h"
 #include "SphereCollider.h"
+#include "Score.h"
 
 // @detail コンストラクタ
 // @param position トマトを投げる人の位置
@@ -80,16 +81,19 @@ void Tomato::OnCollisionEnter(ColliderComponent* ownColl, ColliderComponent* oth
 		return;
 	}
 
-	if (otherColl->GetTag()->tag == ObjectTag::Team1 ||
-		otherColl->GetTag()->tag == ObjectTag::Team2 ||
-		otherColl->GetTag()->tag == ObjectTag::Team3)
+	if (otherColl->GetTag()->tag == ObjectTag::Team1 && otherColl->GetCollisionType() == CollisionInfo::CollisionType::Box ||
+		otherColl->GetTag()->tag == ObjectTag::Team2 && otherColl->GetCollisionType() == CollisionInfo::CollisionType::Box ||
+		otherColl->GetTag()->tag == ObjectTag::Team3 && otherColl->GetCollisionType() == CollisionInfo::CollisionType::Box)
 	{
+		bool flag = false;
 		// 自分を生成したオブジェクトと同じタグ名なら処理を行わない
 		if (otherColl->GetTag()->tag == ownColl->GetParentTag()->tag)
 		{
 			return;
 		}
-
+		if (ownColl->GetParentTag()->tag == ObjectTag::Team1) { Score::AddTeam1Score(); }
+		if (ownColl->GetParentTag()->tag == ObjectTag::Team2) { Score::AddTeam2Score(); }
+		if (ownColl->GetParentTag()->tag == ObjectTag::Team3) { Score::AddTeam3Score(); }
 		m_isActive = false;
 		ownColl->SetOnCollisionFlag(false);
 		m_velocity = VGet(0.0f, 0.0f, 0.0f);

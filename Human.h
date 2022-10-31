@@ -17,6 +17,7 @@ public:
 
 	void SetTomatoWallPtr(std::list<class Object*> tomatoWall);
 
+	VECTOR CheckVectorDirection(const VECTOR& checkPos);  // どの向きにベクトルが向いているか調べる
 	VECTOR GetPosition() { return m_var.pos; }
 	VECTOR GetRotate() { return m_var.rotate; }
 protected:
@@ -25,6 +26,7 @@ protected:
 	class Transform* m_pTransform = nullptr;
 	class Tag* m_pTag = nullptr;
 	class BoxCollider* m_pBox = nullptr;
+	class SphereCollider* m_pSphere = nullptr;
 
 	std::vector<class TomatoWallManager*> m_pTomatoWall;
 	class Icon* m_pIcon = nullptr;  // アイコンクラス
@@ -42,8 +44,8 @@ protected:
 		Pick,  // 拾う
 	};
 
-	int m_animType;  // 現在のアニメーションが何か
-	int m_beforeAnimType;  // 前のアニメーション
+	Anim m_animType;  // 現在のアニメーションが何か
+	Anim m_beforeAnimType;  // 前のアニメーション
 	int m_animIndex;  // 現在のアニメーションを記録
 	float m_animTime;  // アニメーションの経過時間
 	float m_animTotalTime;  // アニメーションの総時間

@@ -21,6 +21,7 @@ SceneManager::~SceneManager()
 
 void SceneManager::GameLoop()
 {
+	//auto graph = LoadGraph("とまとさんpng.png");
 	while (1)
 	{
 		if (ProcessMessage() == -1)
@@ -50,7 +51,10 @@ void SceneManager::GameLoop()
 			//Effekseer_Sync3DSetting();
 
 			//DrawEffekseer3D();
-
+			//if ( rand() % 20 == Fps::GetFlag())
+			//{
+			//	DrawExtendGraph(0, 0, 1920, 1080, graph, FALSE);
+			//}
 
 #ifdef _DEBUG
 			Fps::Draw();
@@ -83,11 +87,8 @@ void SceneManager::SetNowScene(const TAG_SCENE& tag)
 	case TAG_SCENE::TAG_PLAY:
 		m_nowScene = new PlayScene(MODE::MODE_1P);
 		break;
-	case TAG_SCENE::TAG_CLEAR:
-		m_nowScene = new GameClearScene(MODE::MODE_1P);
-		break;
-	case TAG_SCENE::TAG_OVER:
-		m_nowScene = new GameOverScene(MODE::MODE_1P);
+	case TAG_SCENE::TAG_RESULT:
+		m_nowScene = new ResultScene(MODE::MODE_1P);
 		break;
 	case TAG_SCENE::TAG_NONE:
 		break;

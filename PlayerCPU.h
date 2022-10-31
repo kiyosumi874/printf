@@ -19,30 +19,40 @@ private:
 
 	enum Type
 	{
-		SearchTarget,   // ターゲットを探す
-		AimTarget,      // ターゲットを狙う
-		EscapeTarget,   // ターゲットから逃げる
-		TomatoCollect,  // トマトを回収しに行く
+		AimTarget,       // ターゲットを狙う
+		EscapeTarget,    // ターゲットから逃げる
+		RandomMove,      // 時間が経つと動きを変える(ターゲットがいないとき)
+		TrackingTarget,  // ターゲットを追跡する(未発見)
+		Wandering,       // 徘徊する(未発見)
+		CollectTomato,   // トマトを回収しに行く
 	};
+	Type m_moveType;  // 今の行動
+
+	Anim m_beforeAnim;
 
 	// エネミーのパラメーター
-	VECTOR m_velocity;  // 移動スピード
+	VECTOR m_speed;      // 移動スピード
+	VECTOR m_avoidDir;  // 敵から逃げる方向
+	VECTOR m_velocity;  // 移動量
 	VECTOR m_dir;       // 向き
 	VECTOR m_tomatoDir;  // トマトを投げる向き
 	VECTOR m_moveValue;  // 乱数移動量
 	VECTOR m_avoidVelocity;
+	VECTOR m_towardDir;  // 向く方向
 
 	// 動作時間
+	int m_randomNum;  // ランダム行動の番号
 	int m_moveTime;  // 乱数行動時間
 	const int m_movePhaseTime;  // 次の行動に移る時間
 	float m_shotTime;   // 投げる時間
 	const float m_shotPhaseTime;  // 投げた後のクール時間
 
 	// フラグ変数
-	int m_moveType;  // 今の行動
+	bool m_isAnimFlag;  // アニメーションできるか
+	bool m_shotFlag;  // トマトを投げる
+	bool m_pickFlag;  // トマトを拾う
 	bool m_aimTargetFlag;  // 標的に向けて移動するか
-	bool m_avoidWallFlag;  // 壁を避ける
-	bool m_absolutelyMoveFlag;  // 絶対に移動させるフラグ
+	bool m_hitTomatoWallFlag = false;
 
 	// 範囲指定変数
 	const float m_targetRangeMin = 0.0f;        // ターゲットを感知する始まり値
@@ -52,23 +62,33 @@ private:
 	const float m_targetEscapeRange = 200.0f;   // ターゲットから逃げる範囲
 
 	// ポインタ
-	std::vector<class Object*> m_target;  // PlayerCPUに情報を渡したターゲット
+	std::vector<class Object*> m_pTarget;  // エネミークラスにに情報を渡したいプレイヤー
+	std::vector<class Transform*> m_pTargetTf;  // ターゲットのTransformをキャッシュ
+	VECTOR m_targetPos;
 
 	// 関数
 	void CheckMovePattern();  // 行動パターンをチェックして実行する
 
 	void CheckTargetMovePattern();  // ターゲットに対しての行動パターンを実行する
-	void Move1Target(class Object* player);  // 標的に合わせて動く処理
-	void Move2Target(class Object* player);  // 標的がいないときの処理
-	void Move3Target(class Object* player);  // 標的から逃げる処理
+	int FindTargetNearby();  // 最も近くにいるターゲットを調べる
+	void MoveFoundTarget(const VECTOR& player);  // 標的に合わせて動く処理
+	void MoveEscapeTarget(const VECTOR& player);  // 標的から逃げる処理
 
-	void CheckTomatoWall();  // トマトを回収する行動パターンを実行する
-	void CollectTomato(TomatoWallManager* object);  // トマトを回収しに行く処理
-	void AvoidTomatoWall(TomatoWallManager* object);    // トマトの壁を避ける処理
+	void CheckTomatoWallMovePattern();  // トマトを回収する行動パターンを実行する
+	int FindTomatoWallNearby();  // 最も近くにいるトマトの壁を調べる
+	void MoveCollectTomato(TomatoWallManager* object);  // トマトを回収しに行く処理
+
+	void CheckRandomMovePattern();
+	void MoveTrackingTarget(const VECTOR& targetPos);
+	void MoveWandering();
+	void MoveTomato();
 
 	void RotateTowardTarget(VECTOR& aimTargetPos);  // 標的がいる方向に正面を向ける
 
-	void Animation() override;  // アニメーション処理関数
-	void ChangeAnimation() override;  // アニメーションを変更する関数
+	void Animation();  // アニメーション処理関数
+	void ChangeAnimation();  // アニメーションを変更する関数
+
+	double GetDistance(VECTOR& pos1, VECTOR& pos2);  // 自身と他のオブジェクトの距離を出す
+	float GetSize(float v1, float v2);
 };
 
