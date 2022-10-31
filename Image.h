@@ -75,6 +75,11 @@ public:
 		m_extendRate = extendRate;
 	}
 
+	const VECTOR& GetExtendRate() const
+	{
+		return m_extendRate;
+	}
+
 	// 描画するか否か
 	void IsDraw(bool isDraw)
 	{

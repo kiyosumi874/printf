@@ -11,14 +11,25 @@ void BasketController::Update()
 {
 	if (m_isStart)
 	{
-		if (m_image->GetPos().x < 10.0f)
+		auto pos = m_image->GetPos();
+		if (pos.x < 10.0f)
 		{
 			m_image->MovePos(VGet(2.0f, 0.0f, 0.0f));
+			if (pos.x > 8.0f)
+			{
+				pos.x = 10.0f;
+				m_image->SetPos(pos);
+			}
 
 		}
-		else if (m_image->GetPos().x > SCREEN_WIDTH - 114.0f)
+		else if (pos.x > 1826.0f)
 		{
 			m_image->MovePos(VGet(-2.0f, 0.0f, 0.0f));
+			if (pos.x < 1828.0f)
+			{
+				pos.x = 1826.0f;
+				m_image->SetPos(pos);
+			}
 		}
 		else
 		{

@@ -298,8 +298,8 @@ PlayScene::PlayScene(const MODE& mode)
 		for (int i = 0; i < 2; i++)
 		{
 			object = new Object;
-			auto image = object->AddComponent<Image>();
-			image->Init(VGet((SCREEN_WIDTH - 104.0f + 200.0f)* i -100.0f, 400.0f, 1.0f), VGet(1.0f, 1.0f, 1.0f), 0.0, str.c_str());
+			m_tomatoBack[i] = object->AddComponent<Image>();
+			m_tomatoBack[i]->Init(VGet((SCREEN_WIDTH + 93.20f)* i - 93.20f, 546.80f, 1.0f), VGet(0.8f, 0.8f, 0.8f), 0.0, str.c_str());
 			m_basket[i] = object->AddComponent<BasketController>();
 			m_pObjectLists.push_back(object);
 		}
@@ -311,7 +311,7 @@ PlayScene::PlayScene(const MODE& mode)
 		for (int i = 0; i < 2; i++)
 		{
 			object = new Object;
-			object->AddComponent<Transform>()->position = VGet((SCREEN_WIDTH + 50.0f) * i - 50.0f, 900.0f, 0.0f);
+			object->AddComponent<Transform>()->position = VGet((SCREEN_WIDTH + 72.0f) * i - 72.0f, 1010.0f, 0.0f);
 			m_tomatoUICon[i] = object->AddComponent<TomatoUIController>();
 			m_pObjectLists.push_back(object);
 		}
@@ -355,6 +355,9 @@ TAG_SCENE PlayScene::Update()
 		UpdateTransitionStart();
 		break;
 	case PlayScene::Transition::PLAY:
+#ifdef _DEBUG
+		//DebugMoveImage();
+#endif // _DEBUG
 		UpdateTransitionPlay();
 		break;
 	case PlayScene::Transition::OVER:
@@ -374,6 +377,10 @@ void PlayScene::Draw()
 #ifdef _DEBUG
 	printfDx("PlayScene\n");
 	printfDx("T1:%d T2:%d T3:%d\n", Score::GetTeam1Score(), Score::GetTeam2Score(), Score::GetTeam3Score());
+	/*printfDx("LeftUI_x:%f LeftUI_y:%f\n", m_tomatoBack[0]->GetPos().x, m_tomatoBack[0]->GetPos().y);
+	printfDx("LeftUI_scaleY:%f\n", m_tomatoBack[0]->GetExtendRate().y);
+	printfDx("RightUI_x:%f RightUI_y:%f\n", m_tomatoBack[1]->GetPos().x, m_tomatoBack[1]->GetPos().y);
+	printfDx("RightUI_scaleY:%f\n", m_tomatoBack[1]->GetExtendRate().y);*/
 #endif // _DEBUG
 	switch (m_transition)
 	{
@@ -863,4 +870,64 @@ void PlayScene::DrawTransitionEnd()
 	}
 	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();
+}
+
+void PlayScene::DebugMoveImage()
+{
+	auto pos = m_tomatoBack[0]->GetPos();
+	auto scale = m_tomatoBack[0]->GetExtendRate();
+	if (CheckHitKey(KEY_INPUT_A))
+	{
+		pos.x -= 0.5f;
+	}
+	if (CheckHitKey(KEY_INPUT_D))
+	{
+		pos.x += 0.5f;
+	}
+	if (CheckHitKey(KEY_INPUT_S))
+	{
+		pos.y += 0.5f;
+	}
+	if (CheckHitKey(KEY_INPUT_W))
+	{
+		pos.y -= 0.5f;
+	}
+	if (CheckHitKey(KEY_INPUT_Z))
+	{
+		scale.y -= 0.01f;
+	}
+	if (CheckHitKey(KEY_INPUT_X))
+	{
+		scale.y += 0.01f;
+	}
+	m_tomatoBack[0]->SetPos(pos);
+	m_tomatoBack[0]->SetExtendRate(scale);
+	pos = m_tomatoBack[1]->GetPos();
+	scale = m_tomatoBack[1]->GetExtendRate();
+	if (CheckHitKey(KEY_INPUT_LEFT))
+	{
+		pos.x -= 0.5f;
+	}
+	if (CheckHitKey(KEY_INPUT_RIGHT))
+	{
+		pos.x += 0.5f;
+	}
+	if (CheckHitKey(KEY_INPUT_DOWN))
+	{
+		pos.y += 0.5f;
+	}
+	if (CheckHitKey(KEY_INPUT_UP))
+	{
+		pos.y -= 0.5f;
+	}
+	if (CheckHitKey(KEY_INPUT_C))
+	{
+		scale.y -= 0.01f;
+	}
+	if (CheckHitKey(KEY_INPUT_V))
+	{
+		scale.y += 0.01f;
+	}
+	m_tomatoBack[1]->SetPos(pos);
+	m_tomatoBack[1]->SetExtendRate(scale);
 }
