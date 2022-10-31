@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="BasketController.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ColliderComponent.cpp" />
@@ -229,6 +230,7 @@
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="BasketController.h" />
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColliderComponent.h" />

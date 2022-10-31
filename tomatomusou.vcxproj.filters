@@ -164,6 +164,7 @@
     <ClCompile Include="DebugColliderObject.cpp">
       <Filter>Component\Collider</Filter>
     </ClCompile>
+    <ClCompile Include="BasketController.cpp">
     <ClCompile Include="ResultGround.cpp">
       <Filter>BackGround</Filter>
     </ClCompile>
@@ -361,6 +362,7 @@
     <ClInclude Include="DebugColliderObject.h">
       <Filter>Component\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="BasketController.h">
     <ClInclude Include="ResultGround.h">
       <Filter>BackGround</Filter>
     </ClInclude>

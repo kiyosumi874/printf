@@ -4,7 +4,7 @@ App::App()
 {
 	SetMainWindowText("BarrageStudy");
 	SetGraphMode(SCREEN_WIDTH, SCREEN_HEIGHT, COLOR_BIT_DEPTH);
-	ChangeWindowMode(TRUE);
+	ChangeWindowMode(FALSE);
 	SetWaitVSyncFlag(FALSE);
 	SetOutApplicationLogValidFlag(FALSE); // Log.txtを書き出さないようにする
 	// DirectX11を使用するようにする。(DirectX9も可、一部機能不可)
@@ -13,7 +13,6 @@ App::App()
 	DxLib_Init();
 	SetDrawScreen(DX_SCREEN_BACK);
 	SetMouseDispFlag(FALSE);
-
 	Sound::Load(Sound::Kind::Throw, "SE/Throw/Throw_0.mp3");
 	Sound::Load(Sound::Kind::CountDown, "SE/count.mp3");
 	AssetManager::LoadImage(AssetManager::ImageName::Logo, "data/logo.png");
