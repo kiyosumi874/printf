@@ -1,12 +1,11 @@
-﻿#pragma once
+#pragma once
 #include "Component.h"
 
-/* Hitしたときのフェクトの描画を行うクラス */
-class HitEffect : public Component
+class HitTomatoEffect : public Component
 {
 public:
-	HitEffect();
-	~HitEffect();
+	HitTomatoEffect();
+	~HitTomatoEffect();
 
 	void Init(const char* filePath, const VECTOR& pos, const VECTOR& scale, const VECTOR& rotate);
 	void Start() override;
@@ -30,4 +29,6 @@ private:
 	VECTOR m_rotate;
 
 	bool m_drawFlag = false;
-	bool m_nowPlayFlag = false;};
+	bool m_nowPlayFlag = false;
+};
+

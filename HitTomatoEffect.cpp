@@ -1,85 +1,86 @@
-ï»¿#include "pch.h"
-#include "HitEffect.h"
+#include "pch.h"
+#include "HitTomatoEffect.h"
+#include "EffekseerForDXLib.h"
 
-HitEffect::HitEffect()
+HitTomatoEffect::HitTomatoEffect()
 {
 }
 
-HitEffect::~HitEffect()
+HitTomatoEffect::~HitTomatoEffect()
 {
-	// å‰Šé™¤
+	// íœ
 	DeleteEffekseerEffect(m_effectHandle);
 }
 
-void HitEffect::Init(const char* filePath, const VECTOR& pos, const VECTOR& scale, const VECTOR& rotate)
+void HitTomatoEffect::Init(const char* filePath, const VECTOR& pos, const VECTOR& scale, const VECTOR& rotate)
 {
-	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿
+	// ƒGƒtƒFƒNƒgƒf[ƒ^
 	m_effectHandle = LoadEffekseerEffect(filePath, 1.0f);
 	m_pos = pos;
 	m_scale = scale;
 	m_rotate = rotate;
 }
 
-void HitEffect::Start()
+void HitTomatoEffect::Start()
 {
 }
 
-void HitEffect::Update()
+void HitTomatoEffect::Update()
+{	
+}
+
+void HitTomatoEffect::Draw()
 {
 }
 
-void HitEffect::Draw()
+void HitTomatoEffect::PlayEffect()
 {
-}
-
-void HitEffect::PlayEffect()
-{
-	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’å†ç”Ÿã•ã›ã€ãã®ãƒ‡ãƒ¼ã‚¿ã‚’m_playingEffectã«ä»£å…¥
+	// ƒGƒtƒFƒNƒg‚ğÄ¶‚³‚¹A‚»‚Ìƒf[ƒ^‚ğm_playingEffect‚É‘ã“ü
 	m_playingEffect = PlayEffekseer3DEffect(m_effectHandle);
 	m_nowPlayFlag = true;
 	m_drawFlag = true;
 }
 
-void HitEffect::StopEffect()
+void HitTomatoEffect::StopEffect()
 {
 	StopEffekseer3DEffect(m_playingEffect);
 }
 
-void HitEffect::UpdatePosition(const VECTOR& pos)
+void HitTomatoEffect::UpdatePosition(const VECTOR& pos)
 {
 	m_pos = pos;
-	// å†ç”Ÿä¸­ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ä½ç½®ã‚’è¨­å®š
+	// Ä¶’†‚ÌƒGƒtƒFƒNƒg‚ÌˆÊ’u‚ğİ’è
 	SetPosPlayingEffekseer3DEffect(m_playingEffect, m_pos.x, m_pos.y, m_pos.z);
 }
 
-void HitEffect::UpdateScale(const VECTOR& scale)
+void HitTomatoEffect::UpdateScale(const VECTOR& scale)
 {
 	m_scale = scale;
-	// å†ç”Ÿä¸­ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®æ‹¡å¤§ç‡ã‚’è¨­å®š
+	// Ä¶’†‚ÌƒGƒtƒFƒNƒg‚ÌŠg‘å—¦‚ğİ’è
 	SetScalePlayingEffekseer3DEffect(m_playingEffect, m_scale.x, m_scale.y, m_scale.z);
 }
 
-void HitEffect::UpdateRotate(const VECTOR& rotate)
+void HitTomatoEffect::UpdateRotate(const VECTOR& rotate)
 {
 	m_rotate = rotate;
-	// å†ç”Ÿä¸­ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®è§’åº¦ã‚’è¨­å®š
+	// Ä¶’†‚ÌƒGƒtƒFƒNƒg‚ÌŠp“x‚ğİ’è
 	SetRotationPlayingEffekseer3DEffect(m_playingEffect, m_rotate.x, m_rotate.y, m_rotate.z);
 }
 
-void HitEffect::UpdateState(const VECTOR& pos, const VECTOR& scale, const VECTOR& rotate)
+void HitTomatoEffect::UpdateState(const VECTOR& pos, const VECTOR& scale, const VECTOR& rotate)
 {
 	m_pos = pos;
-	// å†ç”Ÿä¸­ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ä½ç½®ã‚’è¨­å®š
+	// Ä¶’†‚ÌƒGƒtƒFƒNƒg‚ÌˆÊ’u‚ğİ’è
 	SetPosPlayingEffekseer3DEffect(m_playingEffect, m_pos.x, m_pos.y, m_pos.z);
 	m_scale = scale;
-	// å†ç”Ÿä¸­ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®æ‹¡å¤§ç‡ã‚’è¨­å®š
+	// Ä¶’†‚ÌƒGƒtƒFƒNƒg‚ÌŠg‘å—¦‚ğİ’è
 	SetScalePlayingEffekseer3DEffect(m_playingEffect, m_scale.x, m_scale.y, m_scale.z);
 	m_rotate = rotate;
-	// å†ç”Ÿä¸­ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®è§’åº¦ã‚’è¨­å®š
+	// Ä¶’†‚ÌƒGƒtƒFƒNƒg‚ÌŠp“x‚ğİ’è
 	SetRotationPlayingEffekseer3DEffect(m_playingEffect, m_rotate.x, m_rotate.y, m_rotate.z);
 }
 
-int HitEffect::GetPlayFlag()
+int HitTomatoEffect::GetPlayFlag()
 {
 	int result = IsEffekseer3DEffectPlaying(m_playingEffect);
 	return result;

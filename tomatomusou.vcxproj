@@ -168,6 +168,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="DebugColliderObject.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
+    <ClCompile Include="HitTomatoEffect.cpp" />
     <ClCompile Include="Gradation.cpp" />
     <ClCompile Include="GroundCollider.cpp" />
     <ClCompile Include="HitEffect.cpp" />
@@ -211,6 +212,7 @@
     <ClCompile Include="StillProjector.cpp" />
     <ClCompile Include="TimeCount.cpp" />
     <ClCompile Include="TimeUIController.cpp" />
+    <ClCompile Include="TitleConfetti.cpp" />
     <ClCompile Include="TitleGround.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="TitleTomatoWall.cpp" />
@@ -239,6 +241,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="DebugColliderObject.h" />
     <ClInclude Include="DebugDraw.h" />
+    <ClInclude Include="HitTomatoEffect.h" />
     <ClInclude Include="Gradation.h" />
     <ClInclude Include="GroundCollider.h" />
     <ClInclude Include="HitEffect.h" />
@@ -281,6 +284,7 @@
     <ClInclude Include="Tag.h" />
     <ClInclude Include="TimeCount.h" />
     <ClInclude Include="TimeUIController.h" />
+    <ClInclude Include="TitleConfetti.h" />
     <ClInclude Include="TitleGround.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="TitleTomatoWall.h" />
