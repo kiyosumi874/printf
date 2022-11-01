@@ -164,6 +164,7 @@
     <ClCompile Include="DebugColliderObject.cpp">
       <Filter>Component\Collider</Filter>
     </ClCompile>
+    <ClCompile Include="BasketController.cpp">
     <ClCompile Include="ResultGround.cpp">
       <Filter>BackGround</Filter>
     </ClCompile>
@@ -172,6 +173,9 @@
     </ClCompile>
     <ClCompile Include="HitTomatoEffect.cpp" />
     <ClCompile Include="TitleConfetti.cpp" />
+    <ClCompile Include="ResultScoreUI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -360,6 +364,7 @@
     <ClInclude Include="DebugColliderObject.h">
       <Filter>Component\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="BasketController.h">
     <ClInclude Include="ResultGround.h">
       <Filter>BackGround</Filter>
     </ClInclude>

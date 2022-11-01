@@ -37,13 +37,14 @@ PlayScene::PlayScene(const MODE& mode)
 	, m_isStartBlendAdd(false)
 	, m_startBlendAdd(0.0f)
 	, m_graphHandleWhite(-1)
+	, m_reticleImg(MV1LoadModel("data/Icon/Reticle(risize).mv1"))
 {
 	// トランジション用の画像初期化
 	for (int i = 0; i < 2; i++)
 	{
 		m_transitionImage[i] = nullptr;
 	}
-	
+
 	// トマトの山生成
 	for (int i = 0; i < m_tomatoWallNum; i++)
 	{
@@ -51,7 +52,7 @@ PlayScene::PlayScene(const MODE& mode)
 		obj->AddComponent<Transform>();
 		obj->AddComponent<Tag>()->tag = ObjectTag::TomatoWall;
 		auto wall = obj->AddCollider<WallCollider>();
-		wall->SetCollider(new Wall(new Box(VGet( 0.0f, 0.0f, 0.0f), VGet(20, 20, 20))));
+		wall->SetCollider(new Wall(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(20, 20, 20))));
 		auto tomato = obj->AddComponent<TomatoWallManager>();
 		tomato->Init(VGet(-300 + 100.0f * i, 0.0f, 0.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.035f, 0.035f, 0.035f));
 		m_pColliderLists.push_back(obj);
@@ -76,7 +77,7 @@ PlayScene::PlayScene(const MODE& mode)
 	{
 		{
 			Object* obj = new Object;
-			obj->AddComponent<Transform>();
+			m_posPlayer1 = obj->AddComponent<Transform>();
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Team1;
 			obj->AddComponent<Icon>();
@@ -92,7 +93,7 @@ PlayScene::PlayScene(const MODE& mode)
 		}
 		{
 			Object* obj = new Object;
-			obj->AddComponent<Transform>();
+			m_posPlayer2 = obj->AddComponent<Transform>();
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Team2;
 			obj->AddComponent<Icon>();
@@ -229,16 +230,17 @@ PlayScene::PlayScene(const MODE& mode)
 	// kiyosumi
 	{
 		Object* object = nullptr;
-		int x = 745;
+		float x = SCREEN_WIDTH / 2.0f + 10.0f;
 		float exX = 1.0f;
 		float exY = 1.0f;
 		{
 			object = new Object;
 			m_timerBack = object->AddComponent<Image>();
-			m_timerBack->Init(VGet(x - 290, 0, 1.0f), VGet(1.3 * exX, 0.6 * exY, 1.0f), 0.0, "data/ink_blot4.png");
+			m_timerBack->Init(VGet(x - 195, 0, 1.0f), VGet(1.3 * exX, 0.6 * exY, 1.0f), 0.0, "data/ink_blot4.png");
 			m_timerBack->IsDraw(false);
 			m_pObjectLists.push_back(object);
 		}
+		x += 95.0f;
 		for (int i = 0; i < 4; i++)
 		{
 			x -= 50;
@@ -247,7 +249,7 @@ PlayScene::PlayScene(const MODE& mode)
 				x += 25;
 				object = new Object;
 				m_timerKoron = object->AddComponent<Image>();
-				m_timerKoron->Init(VGet( x, 60, 1.0f), VGet(0.4f * exX, 0.4f * exY, 1.0f), 0.0, "data/DigitalNumber/koron.png");
+				m_timerKoron->Init(VGet(x, 60, 1.0f), VGet(0.4f * exX, 0.4f * exY, 1.0f), 0.0, "data/DigitalNumber/koron.png");
 				m_timerKoron->IsDraw(false);
 				m_pObjectLists.push_back(object);
 
@@ -262,7 +264,7 @@ PlayScene::PlayScene(const MODE& mode)
 				object = new Object;
 				object->AddComponent<TimeCount>();
 				auto img = object->AddComponent<Image>();
-				img->Init(VGet( x, 60, 1.0f), VGet(0.4f *exX, 0.4f *exY, 1.0f), 0.0, str.c_str());
+				img->Init(VGet(x, 60, 1.0f), VGet(0.4f * exX, 0.4f * exY, 1.0f), 0.0, str.c_str());
 				img->IsDraw(false);
 
 
@@ -302,17 +304,32 @@ PlayScene::PlayScene(const MODE& mode)
 		m_timeCount->StartCount();
 		m_pObjectLists.push_back(object);
 	}
+
+	// トマトの下に敷くやつ
+	{
+		Object* object = nullptr;
+		std::string str = "data/Basket.png";
+		for (int i = 0; i < 2; i++)
+		{
+			object = new Object;
+			m_tomatoBack[i] = object->AddComponent<Image>();
+			m_tomatoBack[i]->Init(VGet((SCREEN_WIDTH + 93.20f)* i - 93.20f, 546.80f, 1.0f), VGet(0.8f, 0.8f, 0.8f), 0.0, str.c_str());
+			m_basket[i] = object->AddComponent<BasketController>();
+			m_pObjectLists.push_back(object);
+		}
+	}
+
 	// トマトUI(残段数)
 	{
 		Object* object = nullptr;
 		for (int i = 0; i < 2; i++)
 		{
 			object = new Object;
-			object->AddComponent<Transform>()->position = VGet((SCREEN_WIDTH + 50.0f) * i - 50.0f, 900.0f, 0.0f);
+			object->AddComponent<Transform>()->position = VGet((SCREEN_WIDTH + 72.0f) * i - 72.0f, 1010.0f, 0.0f);
 			m_tomatoUICon[i] = object->AddComponent<TomatoUIController>();
 			m_pObjectLists.push_back(object);
 		}
-		
+
 	}
 
 	// ScoreUI
@@ -321,7 +338,7 @@ PlayScene::PlayScene(const MODE& mode)
 		for (int i = 0; i < 3; i++)
 		{
 			object = new Object;
-			object->AddComponent<Transform>()->position = VGet(110 * i + 570, 180.0f, 0.0f);
+			object->AddComponent<Transform>()->position = VGet(110 * i + 890, 180.0f, 0.0f);
 			m_scoreUICon[i] = object->AddComponent<ScoreUIController>();
 			m_pObjectLists.push_back(object);
 		}
@@ -352,6 +369,9 @@ TAG_SCENE PlayScene::Update()
 		UpdateTransitionStart();
 		break;
 	case PlayScene::Transition::PLAY:
+#ifdef _DEBUG
+		//DebugMoveImage();
+#endif // _DEBUG
 		UpdateTransitionPlay();
 		break;
 	case PlayScene::Transition::OVER:
@@ -371,6 +391,10 @@ void PlayScene::Draw()
 #ifdef _DEBUG
 	printfDx("PlayScene\n");
 	printfDx("T1:%d T2:%d T3:%d\n", Score::GetTeam1Score(), Score::GetTeam2Score(), Score::GetTeam3Score());
+	/*printfDx("LeftUI_x:%f LeftUI_y:%f\n", m_tomatoBack[0]->GetPos().x, m_tomatoBack[0]->GetPos().y);
+	printfDx("LeftUI_scaleY:%f\n", m_tomatoBack[0]->GetExtendRate().y);
+	printfDx("RightUI_x:%f RightUI_y:%f\n", m_tomatoBack[1]->GetPos().x, m_tomatoBack[1]->GetPos().y);
+	printfDx("RightUI_scaleY:%f\n", m_tomatoBack[1]->GetExtendRate().y);*/
 #endif // _DEBUG
 	switch (m_transition)
 	{
@@ -389,7 +413,7 @@ void PlayScene::Draw()
 	default:
 		break;
 	}
-	
+
 }
 
 void PlayScene::UpdateTransitionStart()
@@ -405,7 +429,7 @@ void PlayScene::UpdateTransitionStart()
 		{
 			m_transition = Transition::PLAY;
 			m_timeCount->RestCount();
-			
+
 		}
 	}
 	for (auto obj : m_pObjectLists)
@@ -459,7 +483,7 @@ void PlayScene::UpdateTransitionPlay()
 		if (m_startBlendAdd < 0.0f)
 		{
 			m_timeCount->StartCount();
-			
+
 			m_isStartBlendAdd = false;
 		}
 	}
@@ -530,6 +554,8 @@ void PlayScene::UpdateTransitionPlay()
 
 			m_timerKoron->IsDraw(true);
 			m_timerBack->IsDraw(true);
+			m_basket[0]->CheckIsStart(0);
+			m_basket[1]->CheckIsStart(1);
 		}
 	}
 
@@ -678,7 +704,7 @@ void PlayScene::UpdateTransitionOver()
 	{
 		m_tagScene = TAG_SCENE::TAG_RESULT;
 	}
-	
+
 }
 
 void PlayScene::UpdateTransitionEnd()
@@ -697,9 +723,9 @@ void PlayScene::DrawTransitionStart()
 	}
 	static float x = 50.0f;
 	x += 0.1;
-	VECTOR pos = VGet(0.0f,20.0f,x);
+	VECTOR pos = VGet(0.0f, 20.0f, x);
 	VECTOR target = VGet(0.0f, 0.0f, 0.0f);
-	
+
 	SetCameraPositionAndTarget_UpVecY(pos, target);
 
 	SetDrawBlendMode(DX_BLENDMODE_ADD, static_cast<int>(m_startBlendAdd));
@@ -750,8 +776,8 @@ void PlayScene::DrawTransitionPlay()
 	for (auto obj : m_pObjectLists)
 	{
 		auto tag = obj->GetComponent<Tag>();
-		if (tag == nullptr) 
-		{ 
+		if (tag == nullptr)
+		{
 			obj->Draw();
 		}
 		else
@@ -770,7 +796,6 @@ void PlayScene::DrawTransitionPlay()
 	}
 	DrawEffekseer3D();
 
-
 	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();
 
@@ -782,7 +807,7 @@ void PlayScene::DrawTransitionPlay()
 void PlayScene::DrawTransitionOver()
 {
 	SetDrawArea(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
-	SetCameraScreenCenter(480.0f, 540.0f);	
+	SetCameraScreenCenter(480.0f, 540.0f);
 #ifdef _DEBUG
 	DrawGrid(1000.0f, 30);
 #endif // _DEBUG
@@ -802,7 +827,7 @@ void PlayScene::DrawTransitionOver()
 	SetCameraScreenCenter(1440.0f, 540.0f);
 #ifdef _DEBUG
 	printfDx("PlayScene\n");
-	
+
 #endif // _DEBUG
 	for (auto obj : m_pObjectLists)
 	{
@@ -816,6 +841,7 @@ void PlayScene::DrawTransitionOver()
 			if (tag->tag != ObjectTag::Camera1) { obj->Draw(); }
 		}
 	}
+
 	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();
 }
@@ -858,4 +884,64 @@ void PlayScene::DrawTransitionEnd()
 	}
 	// 描画可能領域を描画対象画面全体にする
 	SetDrawAreaFull();
+}
+
+void PlayScene::DebugMoveImage()
+{
+	auto pos = m_tomatoBack[0]->GetPos();
+	auto scale = m_tomatoBack[0]->GetExtendRate();
+	if (CheckHitKey(KEY_INPUT_A))
+	{
+		pos.x -= 0.5f;
+	}
+	if (CheckHitKey(KEY_INPUT_D))
+	{
+		pos.x += 0.5f;
+	}
+	if (CheckHitKey(KEY_INPUT_S))
+	{
+		pos.y += 0.5f;
+	}
+	if (CheckHitKey(KEY_INPUT_W))
+	{
+		pos.y -= 0.5f;
+	}
+	if (CheckHitKey(KEY_INPUT_Z))
+	{
+		scale.y -= 0.01f;
+	}
+	if (CheckHitKey(KEY_INPUT_X))
+	{
+		scale.y += 0.01f;
+	}
+	m_tomatoBack[0]->SetPos(pos);
+	m_tomatoBack[0]->SetExtendRate(scale);
+	pos = m_tomatoBack[1]->GetPos();
+	scale = m_tomatoBack[1]->GetExtendRate();
+	if (CheckHitKey(KEY_INPUT_LEFT))
+	{
+		pos.x -= 0.5f;
+	}
+	if (CheckHitKey(KEY_INPUT_RIGHT))
+	{
+		pos.x += 0.5f;
+	}
+	if (CheckHitKey(KEY_INPUT_DOWN))
+	{
+		pos.y += 0.5f;
+	}
+	if (CheckHitKey(KEY_INPUT_UP))
+	{
+		pos.y -= 0.5f;
+	}
+	if (CheckHitKey(KEY_INPUT_C))
+	{
+		scale.y -= 0.01f;
+	}
+	if (CheckHitKey(KEY_INPUT_V))
+	{
+		scale.y += 0.01f;
+	}
+	m_tomatoBack[1]->SetPos(pos);
+	m_tomatoBack[1]->SetExtendRate(scale);
 }

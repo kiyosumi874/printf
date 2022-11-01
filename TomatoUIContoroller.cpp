@@ -23,18 +23,29 @@ void TomatoUIController::Update()
 {
 	if (m_isStart)
 	{
-		if (m_tomatoUI[0]->GetPos().x < 10.0f)
+		auto pos = m_tomatoUI[0]->GetPos();
+		if (pos.x < 30.0f)
 		{
 			for (int i = 0; i < cTomatoMax; i++)
 			{
 				m_tomatoUI[i]->MovePos(VGet(2.0f, 0.0f, 0.0f));
+				if (pos.x > 28.0f)
+				{
+					pos.x = 30.0f;
+					m_tomatoUI[i]->SetPos(pos);
+				}
 			}
 		}
-		else if (m_tomatoUI[0]->GetPos().x > SCREEN_WIDTH - 60.0f)
+		else if (pos.x > 1848.0f)
 		{
 			for (int i = 0; i < cTomatoMax; i++)
 			{
 				m_tomatoUI[i]->MovePos(VGet(-2.0f, 0.0f, 0.0f));
+				if (pos.x < 1850.0f)
+				{
+					pos.x = 1848.0f;
+					m_tomatoUI[i]->SetPos(pos);
+				}
 			}
 		}
 		else
@@ -42,6 +53,7 @@ void TomatoUIController::Update()
 			m_isStart = false;
 		}
 	}
+
 	AdjustTomato(m_index);
 }
 

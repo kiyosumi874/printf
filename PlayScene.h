@@ -29,6 +29,7 @@ private:
 	bool m_isStartBlendAdd;
 	float m_startBlendAdd;
 	int m_graphHandleWhite;
+	int m_reticleImg;
 
 	void UpdateTransitionStart();
 	void UpdateTransitionPlay();
@@ -40,11 +41,17 @@ private:
 	void DrawTransitionOver();
 	void DrawTransitionEnd();
 
+	void DebugMoveImage();
+
+	class Transform* m_posPlayer1;
+	class Transform* m_posPlayer2;
 	class TimeCount* m_timeCount;
 	class Image* m_startNumber[4];
 	class Image* m_transitionImage[2];
 	class Image* m_timerKoron;
 	class Image* m_timerBack;
+	class Image* m_tomatoBack[2];
+	class BasketController* m_basket[2];
 
 	class TomatoUIController* m_tomatoUICon[2];
 	class ScoreUIController* m_scoreUICon[3];

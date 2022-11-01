@@ -1,8 +1,8 @@
 //----------------------------------------
 // @file ScoreUIController.h
 // @brief スコアのUI
-// @author iguchiShougo
-// @date 2022_10_31
+// @author shiihara_kiyosumi
+// @date 2022_10_24
 //----------------------------------------
 
 // 多重インクルード防止
@@ -12,7 +12,7 @@
 #include "Component.h"
 
 
-class ResultScoreUI : public Component
+class BasketController : public Component
 {
 public:
 
@@ -26,17 +26,14 @@ public:
 	void Draw()override;
 
 	// UIを画面に移動させだす
-	void CheckIsStart(const int index);
+	void CheckIsStart(const int index)
+	{
+		m_isStart = true;
+		m_index = index;
+	}
 
 private:
-
-	void AdjustScore();
-
-	class Image* m_scoreUI[4][10]; // 4桁 0から9
-	class Image* m_scoreBack;
-	class Transform* m_transform;
-
 	bool m_isStart;
-	int m_index; // 0 or 1 or 2 (0だったら1P,1だったら2PのUIということ)
-	float m_alpha;
+	class Image* m_image;
+	int m_index; // 1 or 0 (1だったら1P,0だったら2PのUIということ)
 };

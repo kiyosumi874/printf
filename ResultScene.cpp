@@ -7,7 +7,7 @@
 #include "StillProjector.h"
 #include "Rank.h"
 #include "Score.h"
-#include "ScoreUIController.h"
+#include "ResultScoreUI.h"
 #include "SkyDome.h"
 #include "ResultTomato.h"
 
@@ -45,8 +45,8 @@ ResultScene::ResultScene(const MODE& mode)
 		for (int i = 0; i < 3; i++)
 		{
 			object = new Object;
-			object->AddComponent<Transform>()->position = VGet(200 * i + 700, 840.0f, 0.0f);
-			m_scoreUICon[i] = object->AddComponent<ScoreUIController>();
+			object->AddComponent<Transform>()->position = VGet(300 * i + 700, 840.0f, 0.0f);
+			m_scoreUICon[i] = object->AddComponent<ResultScoreUI>();
 			m_pObjectLists.push_back(object);
 		}
 	}
