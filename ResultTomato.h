@@ -29,6 +29,8 @@ private:
 
     VECTOR m_velocity;  // 速度
 
+    int m_index;        // 番号
+
     float m_gravity;    // 重力
     float m_deg;        // 角度
     float m_rad;        // ラジアン
