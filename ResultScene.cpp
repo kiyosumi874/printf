@@ -131,7 +131,7 @@ ResultScene::ResultScene(const MODE& mode)
 	{
 		Object* obj = new Object;
 		auto tomato = obj->AddComponent<ResultTomato>();
-		tomato->Init(VGet(0.0f, 5.0f, -20.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.02f, 0.02f, 0.02f));
+		tomato->Init(VGet(0.0f, 0.0f, -20.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.02f, 0.02f, 0.02f), i);
 		m_pObjectLists.push_back(obj);
 	}
 

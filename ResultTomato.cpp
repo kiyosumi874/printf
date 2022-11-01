@@ -27,14 +27,14 @@ void ResultTomato::Start()
 void ResultTomato::Update()
 {
     m_var.pos.x += m_deg;
-    if (m_var.pos.x > 100.0f)
+    if (m_var.pos.x > 50.0f)
     {
-        m_var.pos.x = -99.9f;
+        m_var.pos.x = -49.9f;
         m_var.pos.z = -20.0f;
     }
-    if (m_var.pos.x < -100.0f)
+    if (m_var.pos.x < -50.0f)
     {
-        m_var.pos.x = 99.9f;
+        m_var.pos.x = 49.9f;
         m_var.pos.z = -20.0f;
     }
     m_var.pos.z -= 0.07f;
@@ -50,12 +50,13 @@ void ResultTomato::Draw()
 #ifndef _DEBUG
 
 #endif // !_DEBUG
-    printfDx("tomatoX:%f", m_var.pos.x);
-    printfDx("tomatoY:%f\n", m_var.pos.y);
+    printfDx("tomato index:%d", m_index);
+    printfDx("posX:%f", m_var.pos.x);
+    printfDx("posY:%f\n", m_var.pos.y);
 }
 
 // ‰Šú‰»ˆ—
-void ResultTomato::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
+void ResultTomato::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale, int index)
 {
     m_var.Init(MV1DuplicateModel(AssetManager::UseModel(AssetManager::ModelName::Tomato)), pos, rotate, scale);
 
@@ -64,32 +65,32 @@ void ResultTomato::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& s
     MV1SetRotationXYZ(m_var.handle, m_var.rotate);
     MV1SetScale(m_var.handle, m_var.scale);
 
-    m_index = rand() % 6;
+    m_index = index;
     switch (m_index)
     {
     case 0:
         m_deg = 0.1f;
-        m_var.pos.x = -100.0f;
+        m_var.pos.x = -50.0f;
         break;
     case 1:
         m_deg = 0.2f;
-        m_var.pos.x = -100.0f;
+        m_var.pos.x = -30.0f;
         break;
     case 2:
         m_deg = 0.3f;
-        m_var.pos.x = -100.0f;
+        m_var.pos.x = -10.0f;
         break;
     case 3:
         m_deg = -0.1f;
-        m_var.pos.x = 100.0f;
+        m_var.pos.x = 30.0f;
         break;
     case 4:
         m_deg = -0.2f;
-        m_var.pos.x = 100.0f;
+        m_var.pos.x = 10.0f;
         break;
     case 5:
         m_deg = -0.3f;
-        m_var.pos.x = 100.0f;
+        m_var.pos.x = 50.0f;
         break;
     default:
         break;

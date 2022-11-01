@@ -10,7 +10,7 @@ public:
     void Update() override;     // XVˆ—
     void Draw()   override;     // •`‰æˆ—
 
-    void Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale);        // ‰Šú‰»ˆ—
+    void Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale, int index);        // ‰Šú‰»ˆ—
 
 private:
 
