@@ -31,6 +31,8 @@ private:
 
 	class Transform* m_pTransform = nullptr;
 	class Tag* m_pTag = nullptr;
+	class HitEffect* m_phitEffect = nullptr;
+	class HitTomatoEffect* m_phitTomatoEffect = nullptr;
 	VECTOR m_velocity;  // 速度
 	VECTOR m_startVelocity;  // 初速
 	VECTOR m_dir;  // 投げる方向

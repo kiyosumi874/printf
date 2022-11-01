@@ -5,6 +5,8 @@
 #include "Tag.h"
 #include "SphereCollider.h"
 #include "Score.h"
+#include "HitEffect.h"
+#include "HitTomatoEffect.h"
 
 // @detail コンストラクタ
 // @param position トマトを投げる人の位置
@@ -41,6 +43,16 @@ void Tomato::Start()
 	{
 		m_pSphere = m_pParent->GetCollider<SphereCollider>();
 		m_pSphere->Init(m_pTransform->position, this, m_pTag, CollisionInfo::CollisionType::Sphere);
+	}
+	if (m_phitEffect == nullptr)
+	{
+		m_phitEffect = m_pParent->GetComponent<HitEffect>();
+		m_phitEffect->Init("data/effect/hit/ToonHit.efkefc", m_pTransform->position, VGet(0.5f, 0.5f, 0.5f), VGet(0.0f, 0.0f, 0.0f));
+	}
+	if (m_phitTomatoEffect == nullptr)
+	{
+		m_phitTomatoEffect = m_pParent->GetComponent<HitTomatoEffect>();
+		m_phitTomatoEffect->Init("data/effect/hit/tomato.efkefc", m_pTransform->position, VGet(0.5f, 0.5f, 0.5f), VGet(0.0f, 0.0f, 0.0f));
 	}
 }
 
@@ -94,6 +106,11 @@ void Tomato::OnCollisionEnter(ColliderComponent* ownColl, ColliderComponent* oth
 		if (ownColl->GetParentTag()->tag == ObjectTag::Team1) { Score::AddTeam1Score(); }
 		if (ownColl->GetParentTag()->tag == ObjectTag::Team2) { Score::AddTeam2Score(); }
 		if (ownColl->GetParentTag()->tag == ObjectTag::Team3) { Score::AddTeam3Score(); }
+
+		m_phitTomatoEffect->PlayEffect();
+		m_phitTomatoEffect->UpdateState(m_pTransform->position, VGet(7.0f, 7.0f, 7.0f), VGet(0.0f, 0.0f, 0.0f));
+		m_phitEffect->PlayEffect();
+		m_phitEffect->UpdateState(m_pTransform->position, VGet(1.5f, 1.5f, 1.5f), m_dir);
 		m_isActive = false;
 		ownColl->SetOnCollisionFlag(false);
 		m_velocity = VGet(0.0f, 0.0f, 0.0f);

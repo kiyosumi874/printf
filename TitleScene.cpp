@@ -3,6 +3,7 @@
 #include "Logo.h"
 #include "TransitionButton.h"
 #include "Gradation.h"
+#include "TitleConfetti.h"
 
 //-------------------------------------------
 //- Public ----------------------------------
@@ -61,6 +62,10 @@ void TitleScene::InitObject()
 	InitGradationUI();
 	InitLogoUI();
 	InitTransitionButtonUI();
+
+	Object* obj = new Object;
+	obj->AddComponent<TitleConfetti>();
+	m_pObjectLists.push_back(obj);
 }
 
 void TitleScene::InitSkyDomeModel()

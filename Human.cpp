@@ -9,6 +9,8 @@
 #include "Icon.h"
 #include "BoxCollider.h"
 #include "SphereCollider.h"
+#include "HitEffect.h"
+#include "HitTomatoEffect.h"
 
 Human::Human()
 {
@@ -52,6 +54,8 @@ void Human::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
 		obj->AddComponent<Tag>()->tag = ObjectTag::Tomato;
 		auto sphere = obj->AddCollider<SphereCollider>();
 		sphere->SetCollider(new Sphere(VGet(0.0f, 0.0f, 0.0f), 1.0f));
+		auto effect1 = obj->AddComponent<HitTomatoEffect>();
+		auto effect2 = obj->AddComponent<HitEffect>();
 		Tomato* t = obj->AddComponent<Tomato>();
 		t->Init(VGet(0.0f, 0.0f, 0.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.02f, 0.02f, 0.02f));
 		m_pTomato.push_back(t);

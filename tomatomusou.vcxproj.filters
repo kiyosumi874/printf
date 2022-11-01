@@ -170,6 +170,8 @@
     <ClCompile Include="ResultTomato.cpp">
       <Filter>GameObject\Tomato</Filter>
     </ClCompile>
+    <ClCompile Include="HitTomatoEffect.cpp" />
+    <ClCompile Include="TitleConfetti.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -370,6 +372,8 @@
     <ClInclude Include="ResultScoreUI.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="HitTomatoEffect.h" />
+    <ClInclude Include="TitleConfetti.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -410,6 +414,9 @@
     </Filter>
     <Filter Include="GameObject\Scene">
       <UniqueIdentifier>{0dcb6c5f-8861-4150-8194-365ae91f1358}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Movie">
+      <UniqueIdentifier>{834d7b18-4f4b-48f1-ad35-401ee668967b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
