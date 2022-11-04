@@ -24,6 +24,22 @@ TitleScene::~TitleScene()
 TAG_SCENE TitleScene::Update()
 {
 	UpdateObject(); // オブジェクトの更新
+
+#ifdef _DEBUG
+	if (CheckHitKey(KEY_INPUT_Z))
+	{
+		stopWatch->StartCount();
+	}
+	if (CheckHitKey(KEY_INPUT_X))
+	{
+		stopWatch->StopCount();
+	}
+	if (CheckHitKey(KEY_INPUT_C))
+	{
+		stopWatch->ResetCount();
+	}
+#endif // _DEBUG
+
 	// 次のシーンへ
 	if (Input::IsDown1P(BUTTON_ID_START))
 	{
@@ -44,6 +60,11 @@ void TitleScene::Draw()
 {
 #ifdef _DEBUG
 	printfDx("TitleScene\n");
+	printfDx("StopWatch\n");
+	printfDx("Start : Z\n");
+	printfDx("Stop  : X\n");
+	printfDx("Reset : C\n");
+	printfDx("time  : %f\n", stopWatch->GetSeconds());
 #endif // _DEBUG
 	DrawObject(); // オブジェクトの描画
 }
@@ -66,6 +87,15 @@ void TitleScene::InitObject()
 	Object* obj = new Object;
 	obj->AddComponent<TitleConfetti>();
 	m_pObjectLists.push_back(obj);
+
+#ifdef _DEBUG
+	{
+		Object* obj2 = new Object;
+		stopWatch = obj->AddComponent<StopWatch>();
+		m_pObjectLists.push_back(obj2);
+	}
+#endif // _DEBUG
+
 }
 
 void TitleScene::InitSkyDomeModel()

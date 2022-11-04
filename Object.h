@@ -16,6 +16,7 @@ public:
 			if (com != nullptr)
 			{
 				delete com;
+				com = nullptr;
 			}
 		}
 		for (auto com : m_pColliderComponentLists)
@@ -23,6 +24,7 @@ public:
 			if (com != nullptr)
 			{
 				delete com;
+				com = nullptr;
 			}
 		}
 	}

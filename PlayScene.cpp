@@ -16,7 +16,6 @@
 #include "Projector.h"
 #include "Transform.h"
 #include "Tag.h"
-#include "TimeCount.h"
 #include "Image.h"
 #include "TimeUIController.h"
 #include "Score.h"
@@ -24,6 +23,8 @@
 #include "ScoreUIController.h"
 #include "DebugColliderObject.h"
 
+// FIXME : 652行目のバグを改善しなければならない
+// 2週目のゲームがフリーズする原因と思われる
 
 // いたっんおいてる定数.いつの日かまとめる
 const int timerUIY = SCREEN_HEIGHT / 2 + 200;
@@ -32,13 +33,21 @@ PlayScene::PlayScene(const MODE& mode)
 	: Scene(mode)
 	, m_transition(Transition::START)
 	, m_tagScene(TAG_SCENE::TAG_NONE)
-	, m_timeCount(nullptr)
 	, m_playOnFlag(false)
 	, m_isStartBlendAdd(false)
 	, m_startBlendAdd(0.0f)
 	, m_graphHandleWhite(-1)
 	, m_reticleImg(MV1LoadModel("data/Icon/Reticle(risize).mv1"))
 {
+	m_cameraZ = 50.0f;
+
+	for (int i = 0; i < 4; i++)
+	{
+		m_isCount[i] = false;
+	}
+	m_startCount = false;
+	m_moveTimerFlag = false;
+	m_alpha = 0.0f;
 	// トランジション用の画像初期化
 	for (int i = 0; i < 2; i++)
 	{
@@ -262,7 +271,7 @@ PlayScene::PlayScene(const MODE& mode)
 				str += std::to_string(j);
 				str += ".png";
 				object = new Object;
-				object->AddComponent<TimeCount>();
+				object->AddComponent<StopWatch>();
 				auto img = object->AddComponent<Image>();
 				img->Init(VGet(x, 60, 1.0f), VGet(0.4f * exX, 0.4f * exY, 1.0f), 0.0, str.c_str());
 				img->IsDraw(false);
@@ -300,8 +309,8 @@ PlayScene::PlayScene(const MODE& mode)
 	}
 	{
 		Object* object = new Object;
-		m_timeCount = object->AddComponent<TimeCount>();
-		m_timeCount->StartCount();
+		m_stopWatch = object->AddComponent<StopWatch>();
+		m_stopWatch->StartCount();
 		m_pObjectLists.push_back(object);
 	}
 
@@ -355,6 +364,7 @@ PlayScene::~PlayScene()
 	{
 		delete obj;
 	}
+
 	m_pObjectLists.clear();
 	m_pColliderLists.clear();
 	m_pTomatoWallObjectLists.clear();
@@ -418,7 +428,7 @@ void PlayScene::Draw()
 
 void PlayScene::UpdateTransitionStart()
 {
-	if (m_timeCount->CheckCount() > 3.0)
+	if (m_stopWatch->GetSeconds() > 3.0)
 	{
 		m_isStartBlendAdd = true;
 	}
@@ -428,8 +438,8 @@ void PlayScene::UpdateTransitionStart()
 		if (m_startBlendAdd > 255.0f)
 		{
 			m_transition = Transition::PLAY;
-			m_timeCount->RestCount();
-
+			m_stopWatch->StopCount();
+			m_stopWatch->ResetCount();
 		}
 	}
 	for (auto obj : m_pObjectLists)
@@ -482,45 +492,46 @@ void PlayScene::UpdateTransitionPlay()
 		m_startBlendAdd -= 3.0;
 		if (m_startBlendAdd < 0.0f)
 		{
-			m_timeCount->StartCount();
+			m_stopWatch->StartCount();
 
 			m_isStartBlendAdd = false;
+
+			
 		}
 	}
 
-	static bool isCount[3] = { false };
-	static bool startCount = false;
-	if (!startCount && !m_isStartBlendAdd)
+	if (!m_startCount && !m_isStartBlendAdd)
 	{
-		if (m_timeCount->CheckCount() > 0.5 && !isCount[0])
+		if (m_stopWatch->GetSeconds() > 0.5 && !m_isCount[0])
 		{
-			isCount[0] = true;
+			m_isCount[0] = true;
 			// 音を出す(3)
 			Sound::Play(Sound::Kind::CountDown);
 			m_startNumber[3]->IsDraw(true);
 			MyOutputDebugString("3\n");
 		}
 
-		if (m_timeCount->CheckCount() > 1.5 && !isCount[1])
+		if (m_stopWatch->GetSeconds() > 1.5 && !m_isCount[1])
 		{
-			isCount[1] = true;
+			m_isCount[1] = true;
 			// 音を出す(2)
 			m_startNumber[3]->IsDraw(false);
 			m_startNumber[2]->IsDraw(true);
 			MyOutputDebugString("2\n");
 		}
 
-		if (m_timeCount->CheckCount() > 2.5 && !isCount[2])
+		if (m_stopWatch->GetSeconds() > 2.5 && !m_isCount[2])
 		{
-			isCount[2] = true;
+			m_isCount[2] = true;
 			// 音を出す(1)
 			m_startNumber[2]->IsDraw(false);
 			m_startNumber[1]->IsDraw(true);
 			MyOutputDebugString("1\n");
 		}
 
-		if (m_timeCount->CheckCount() > 3.5)
+		if (m_stopWatch->GetSeconds() > 3.5 && !m_isCount[3])
 		{
+			m_isCount[3] = true;
 			// 音を出す(start)
 			m_playOnFlag = true;
 			m_startNumber[1]->IsDraw(false);
@@ -533,16 +544,17 @@ void PlayScene::UpdateTransitionPlay()
 				auto controller = it->GetComponent<TimeUIController>();
 				if (controller != nullptr)
 				{
-					it->GetComponent<TimeCount>()->StartCount();
+					it->GetComponent<StopWatch>()->StartCount();
 					it->GetComponent<Image>()->SetAlpha(0.0f);
 				}
 			}
 		}
 
-		if (m_timeCount->CheckCount() > 4.5)
+		if (m_stopWatch->GetSeconds() > 4.5)
 		{
-			m_timeCount->RestCount();
-			startCount = true;
+			m_stopWatch->StopCount();
+			m_stopWatch->ResetCount();
+			m_startCount = true;
 			m_startNumber[0]->IsDraw(false);
 			// トマトUI開始
 			m_tomatoUICon[0]->CheckIsStart(0);
@@ -559,14 +571,12 @@ void PlayScene::UpdateTransitionPlay()
 		}
 	}
 
-	static bool moveTimerFlag = false;
 
 	// 時計のUIを画面内に動かす
-	if (!moveTimerFlag && startCount)
+	if (!m_moveTimerFlag && m_startCount)
 	{
-		static float alpha = 0.0f;
-		m_timerKoron->SetAlpha(alpha);
-		m_timerBack->SetAlpha(alpha);
+		m_timerKoron->SetAlpha(m_alpha);
+		m_timerBack->SetAlpha(m_alpha);
 		// オブジェクトリストをなめる
 		for (const auto it : m_pObjectLists)
 		{
@@ -576,28 +586,16 @@ void PlayScene::UpdateTransitionPlay()
 			{
 				auto image = it->GetComponent<Image>();
 				// UIを移動
-				image->SetAlpha(alpha);
+				image->SetAlpha(m_alpha);
 				//　目標座標に到達
-				if (alpha > 270)
+				if (m_alpha > 270)
 				{
-					//// UIの座標を調整
-					//for (const auto itr : m_pObjectLists)
-					//{
-					//	auto controller = itr->GetComponent<TimeUIController>();
-					//	if (controller != nullptr)
-					//	{
-					//		auto image2 = itr->GetComponent<Image>();
-					//		float x = image2->GetPos().x;
-					//		float z = image2->GetPos().z;
-					//		image2->SetPos(VGet(x, timerUIY, z));
-					//	}
-					//}
-					moveTimerFlag = true;
+					m_moveTimerFlag = true;
 					break;
 				}
 			}
 		}
-		alpha += 8.0f;
+		m_alpha += 8.0f;
 	}
 
 	// タイムアップ終了処理
@@ -606,7 +604,7 @@ void PlayScene::UpdateTransitionPlay()
 	{
 		if (it->GetComponent<TimeUIController>() != nullptr)
 		{
-			if (it->GetComponent<TimeCount>()->CheckCount() > 90.0)
+			if (it->GetComponent<StopWatch>()->GetSeconds() > 90.0)
 			{
 				m_transition = Transition::OVER;
 				{
@@ -650,6 +648,7 @@ void PlayScene::UpdateTransitionPlay()
 	{
 		if (m_playOnFlag)
 		{
+			// ここをコメントアウトしないと2週目のゲームがプレイできない
 			obj->OnCollision(m_pColliderLists);
 		}
 	}
@@ -721,9 +720,8 @@ void PlayScene::DrawTransitionStart()
 	{
 		obj->Draw();
 	}
-	static float x = 50.0f;
-	x += 0.1;
-	VECTOR pos = VGet(0.0f, 20.0f, x);
+	m_cameraZ += 0.1;
+	VECTOR pos = VGet(0.0f, 20.0f, m_cameraZ);
 	VECTOR target = VGet(0.0f, 0.0f, 0.0f);
 
 	SetCameraPositionAndTarget_UpVecY(pos, target);

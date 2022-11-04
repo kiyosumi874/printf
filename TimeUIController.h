@@ -25,7 +25,7 @@ private:
 	void UpdateDidit2(double nowTime);
 	void UpdateDidit3(double nowTime);
 
-	class TimeCount* m_pTimeCount;
+	class StopWatch* m_pStopWatch;
 	class Image* m_pImage;
 	int m_digit;
 	int m_number;

@@ -25,6 +25,7 @@
 /* System */
 #include "Input.h"
 #include "Fps.h"
+#include "StopWatch.h"
 
 /* Scene */
 #include "Scene.h"
