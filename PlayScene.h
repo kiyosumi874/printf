@@ -45,7 +45,7 @@ private:
 
 	class Transform* m_posPlayer1;
 	class Transform* m_posPlayer2;
-	class TimeCount* m_timeCount;
+	class StopWatch* m_stopWatch;
 	class Image* m_startNumber[4];
 	class Image* m_transitionImage[2];
 	class Image* m_timerKoron;
@@ -62,6 +62,12 @@ private:
 	class Ground* m_pGround;
 
 	const int m_tomatoWallNum = 8;
+
+	float m_cameraZ;
+	bool m_isCount[4];
+	bool m_startCount;
+	bool m_moveTimerFlag;
+	float m_alpha;
 
 	bool m_debugFlag = false;  // デバッグ表示を行う(Debugのみ使用可能)
 };

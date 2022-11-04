@@ -26,4 +26,9 @@ private:
 	void TermObject(); // オブジェクトの解放
 	void UpdateObject(); // オブジェクトの更新
 	void DrawObject(); // オブジェクトの描画
+
+#ifdef _DEBUG
+	class StopWatch* stopWatch;
+#endif // _DEBUG
+
 };

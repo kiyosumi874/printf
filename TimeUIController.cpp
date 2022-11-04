@@ -18,20 +18,20 @@ void TimeUIController::Init(int digit, int number)
 {
 	m_digit = digit;
 	m_number = number;
-	m_pTimeCount = m_pParent->GetComponent<TimeCount>();
+	m_pStopWatch = m_pParent->GetComponent<StopWatch>();
 
 	m_pImage = m_pParent->GetComponent<Image>();
 }
 
 void TimeUIController::Update()
 {
-	auto nowTime = m_pTimeCount->CheckCount();
-	if (nowTime != -1.0)
+	auto nowTime = m_pStopWatch->GetSeconds();
+	if (nowTime != 0.0)
 	{
-		UpdateDidit0(91 - nowTime);
-		UpdateDidit1(91 - nowTime);
-		UpdateDidit2(91 - nowTime);
-		UpdateDidit3(91 - nowTime);
+		UpdateDidit0(92 - nowTime);
+		UpdateDidit1(92 - nowTime);
+		UpdateDidit2(92 - nowTime);
+		UpdateDidit3(92 - nowTime);
 	}
 	
 
