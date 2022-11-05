@@ -35,6 +35,7 @@ public:
 private:
 	clock_t m_begin; // カウントを開始した時間
 	clock_t m_elapsed; // 経過時間
+	clock_t m_stopTime; // 止まった時間
 	clock_t m_end; // 今の計測した時間
 
 	bool m_isRunning; // カウントをするか否か
