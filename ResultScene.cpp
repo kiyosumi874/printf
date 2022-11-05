@@ -169,6 +169,7 @@ ResultScene::~ResultScene()
 		delete obj;
 	}
 	m_pObjectLists.clear();
+	m_pColliderLists.clear();
 }
 
 TAG_SCENE ResultScene::Update()
