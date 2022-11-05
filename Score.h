@@ -36,6 +36,13 @@ public:
 		}
 	}
 
+	static void ScoreInit()		// スコアの初期化
+	{
+		m_score->m_team1 = 0;
+		m_score->m_team2 = 0;
+		m_score->m_team3 = 0;
+	}
+
 	static void AddTeam1Score()	// チーム1のスコア加算
 	{
 		m_score->m_team1 += 5;
