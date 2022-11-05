@@ -109,32 +109,20 @@ ResultScene::ResultScene(const MODE& mode)
 
 	{
 		Object* obj = new Object;
-		auto img = obj->AddComponent<Image>();
-		img->Init(VGet(850.0f, 150.0f, 0.0f), VGet(0.7f, 0.7f, 0.7f), 0.0f, "data/rank/hukidasi.png");
-		img->SetAlpha(230);
-		auto image = obj->AddComponent<Image>();
-		image->Init(VGet(880.0f, 180.0f, 0.0f), VGet(0.5f, 0.5f, 0.5f), 0.0f, "data/rank/ranking_1.png");
-		obj->AddComponent<Rank>();
+		auto rnk = obj->AddComponent<Rank>();
+		rnk->Init(1);
 		m_pObjectLists.push_back(obj);
 	}
 	{
 		Object* obj = new Object;
-		auto img = obj->AddComponent<Image>();
-		img->Init(VGet(380.0f, 160.0f, 0.0f), VGet(0.6f, 0.6f, 0.6f), 0.0f, "data/rank/hukidasi.png");
-		img->SetAlpha(230);
-		auto image = obj->AddComponent<Image>();
-		image->Init(VGet(410.0f, 200.0f, 0.0f), VGet(0.4f, 0.4f, 0.4f), 0.0f, "data/rank/ranking_2.png");
-		obj->AddComponent<Rank>();
+		auto rnk = obj->AddComponent<Rank>();
+		rnk->Init(2);
 		m_pObjectLists.push_back(obj);
 	}
 	{
 		Object* obj = new Object;
-		auto img = obj->AddComponent<Image>();
-		img->Init(VGet(1360.0f, 140.0f, 0.0f), VGet(0.55f, 0.55f, 0.55f), 0.0f, "data/rank/hukidasi.png");
-		img->SetAlpha(230);
-		auto image = obj->AddComponent<Image>();
-		image->Init(VGet(1400.0f, 190.0f, 0.0f), VGet(0.3f, 0.3f, 0.3f), 0.0f, "data/rank/ranking_3.png");
-		obj->AddComponent<Rank>();
+		auto rnk = obj->AddComponent<Rank>();
+		rnk->Init(3);
 		m_pObjectLists.push_back(obj);
 	}
 
@@ -143,7 +131,7 @@ ResultScene::ResultScene(const MODE& mode)
 	{
 		Object* obj = new Object;
 		auto tomato = obj->AddComponent<ResultTomato>();
-		tomato->Init(VGet(i * -2, 5.0f, -20.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.02f, 0.02f, 0.02f));
+		tomato->Init(VGet(0.0f, 0.0f, -20.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.02f, 0.02f, 0.02f), i);
 		m_pObjectLists.push_back(obj);
 	}
 

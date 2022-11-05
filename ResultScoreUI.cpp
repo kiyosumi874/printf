@@ -97,7 +97,7 @@ void ResultScoreUI::CheckIsStart(const int index)
 			str += std::to_string(j);
 			str += ".png";
 			m_scoreUI[i][j] = m_pParent->AddComponent<Image>();
-			m_scoreUI[i][j]->Init(VAdd(VGet(x, 8.0f, 0.0f), m_transform->position), VGet(0.25f, 0.25f, 1.0f), 0.0, str.c_str());
+			m_scoreUI[i][j]->Init(VAdd(VGet(x, 9.0f, 0.0f), m_transform->position), VGet(0.25f, 0.25f, 1.0f), 0.0, str.c_str());
 			m_scoreUI[i][j]->IsDraw(false);
 		}
 	}

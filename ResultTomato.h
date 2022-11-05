@@ -10,7 +10,7 @@ public:
     void Update() override;     // 更新処理
     void Draw()   override;     // 描画処理
 
-    void Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale);        // 初期化処理
+    void Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale, int index);        // 初期化処理
 
 private:
 
@@ -28,6 +28,8 @@ private:
     };
 
     VECTOR m_velocity;  // 速度
+
+    int m_index;        // 番号
 
     float m_gravity;    // 重力
     float m_deg;        // 角度
