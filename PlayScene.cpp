@@ -39,6 +39,9 @@ PlayScene::PlayScene(const MODE& mode)
 	, m_graphHandleWhite(-1)
 	, m_reticleImg(MV1LoadModel("data/Icon/Reticle(risize).mv1"))
 {
+	// スコアの初期化
+	Score::ScoreInit();
+
 	m_cameraZ = 50.0f;
 
 	for (int i = 0; i < 4; i++)
