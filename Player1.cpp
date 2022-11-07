@@ -105,7 +105,7 @@ void Player1::Draw()
 	m_pIcon->Draw();
 	/*MV1DrawModel(model);*/
 	SetUseLighting(true);
-	printbDX("rotateY:%f", m_pTransform->rotate.y);
+	//printbDX("rotateY:%f", m_pTransform->rotate.y);
 }
 
 void Player1::Input()
