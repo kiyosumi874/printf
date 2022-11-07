@@ -50,9 +50,6 @@ void ResultTomato::Draw()
 #ifndef _DEBUG
 
 #endif // !_DEBUG
-    printfDx("tomato index:%d", m_index);
-    printfDx("posX:%f", m_var.pos.x);
-    printfDx("posY:%f\n", m_var.pos.y);
 }
 
 // ‰Šú‰»ˆ—

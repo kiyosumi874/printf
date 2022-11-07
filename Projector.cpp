@@ -44,8 +44,6 @@ void Projector::Draw()
 
 	m_position.x = m_targetViewPoint.x + sinf(angle.y) * r;
 	m_position.z = m_targetViewPoint.z + cosf(angle.y) * r;
-	/*CalculatePosition(angle);*/
-	printbDX("ProrotateY:%f", angle.y);
 
 	// カメラの注視点をセット
 	m_targetViewPoint.y = m_targetViewPoint.y + 10.0f;
