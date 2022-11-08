@@ -65,7 +65,7 @@ void TomatoUIController::Draw()
 void TomatoUIController::AdjustTomato(const int index)
 {
 	// 1Pの残段数
-	if (index == 1)
+	if (index == 0)
 	{
 
 		if (cTomatoMax >= Score::Get1PBulletNum())
@@ -90,7 +90,7 @@ void TomatoUIController::AdjustTomato(const int index)
 	}
 
 	// 2Pの残段数
-	if (index == 0)
+	if (index == 1)
 	{
 		if (cTomatoMax >= Score::Get2pBulletNum())
 		{
