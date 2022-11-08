@@ -607,7 +607,7 @@ void PlayScene::UpdateTransitionPlay()
 	{
 		if (it->GetComponent<TimeUIController>() != nullptr)
 		{
-			if (it->GetComponent<StopWatch>()->GetSeconds() > 90.0)
+			if (it->GetComponent<StopWatch>()->GetSeconds() > 91.0)
 			{
 				m_transition = Transition::OVER;
 				{
