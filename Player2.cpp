@@ -119,109 +119,87 @@ void Player2::Input()
 	XINPUT_STATE inputState;
 
 	// 2Pの操作
-	if (m_pTag->tag == ObjectTag::Team2)
-	{
 		// 入力状態を取得
-		GetJoypadXInputState(DX_INPUT_PAD2, &inputState);
+	GetJoypadXInputState(DX_INPUT_PAD2, &inputState);
 
-		if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
-		{
-			m_pTransform->rotate.y += 0.02f;
-		}
-		if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
-		{
-			m_pTransform->rotate.y -= 0.02f;
-		}
-
-		// 前に進む
-		if (Input::IsPress2P(BUTTON_ID_UP))
-		{
-			front.x = sinf(m_pTransform->rotate.y);
-			front.z = cosf(m_pTransform->rotate.y);
-			m_inputVector = VAdd(front, m_inputVector);
-			input = true;
-		}
-
-		// 後ろに進む
-		if (Input::IsPress2P(BUTTON_ID_DOWN))
-		{
-			rear.x = sinf(m_pTransform->rotate.y) * -1.0f;
-			rear.z = cosf(m_pTransform->rotate.y) * -1.0f;
-			m_inputVector = VAdd(rear, m_inputVector);
-			input = true;
-		}
-
-		//// 右に進む
-		//if (Input::IsPress2P(BUTTON_ID_LEFT))
-		//{
-		//	right.x = sinf(m_pTransform->rotate.y - addRad);
-		//	right.z = cosf(m_pTransform->rotate.y - addRad);
-		//	m_inputVector = VAdd(right, m_inputVector);
-		//	input = true;
-		//}
-
-		//// 左に進む
-		//if (Input::IsPress2P(BUTTON_ID_RIGHT))
-		//{
-		//	left.x = sinf(m_pTransform->rotate.y + addRad);
-		//	left.z = cosf(m_pTransform->rotate.y + addRad);
-		//	m_inputVector = VAdd(left, m_inputVector);
-		//	input = true;
-		//}
-
-		// 右に進む
-		if (Input::IsPress2P(BUTTON_ID_LEFT))
-		{
-			//right.x = sinf(m_pTransform->rotate.y - addRad);
-			//right.z = cosf(m_pTransform->rotate.y - addRad);
-			//m_inputVector = VAdd(right, m_inputVector);
-			//input = true;
-			m_pTransform->rotate.y -= 0.02f;
-		}
-
-		// 左に進む
-		if (Input::IsPress2P(BUTTON_ID_RIGHT))
-		{
-			//	left.x = sinf(m_pTransform->rotate.y + addRad);
-			//	left.z = cosf(m_pTransform->rotate.y + addRad);
-			//	m_inputVector = VAdd(left, m_inputVector);
-			m_pTransform->rotate.y += 0.02f;
-			//input = true;
-		}
-
-		// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
-		if (Input::IsDown2P(BUTTON_ID_R) && m_bulletNum > 0 && !m_throwFlag)
-		{
-			for (auto tomato : m_pTomato)
-			{
-				if (tomato->GetActive())
-				{
-					continue;
-				}
-				m_throwFlag = true;
-				m_animType = Anim::Throw;
-				m_moveFlag = false;
-				m_bulletNum--;
-				VECTOR dir = VGet(0.0f, 0.0f, 0.0f);
-				dir.x = m_pTransform->position.x + sinf(m_pTransform->rotate.y) * -30.0f;
-				dir.z = m_pTransform->position.z + cosf(m_pTransform->rotate.y) * -30.0f;
-				dir = VSub(m_pTransform->position, dir);
-				// 方向を正規化
-				dir = VNorm(dir);
-				// 消えているトマトをアクティブにする
-				tomato->ShotTomato(m_pTransform->position, dir, m_pTag);
-				break;
-			}
-		}
-
-		// トマトを限界まで持っていないとき、トマトの壁からトマトを回収
-		if (Input::IsDown2P(BUTTON_ID_B) && m_bulletNum < m_bulletCapacity)
-		{
-			TomatoCollect();
-		}
-
-		Score::Set1PBulletNum(m_bulletNum);
+	if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
+	{
+		m_pTransform->rotate.y += 0.02f;
 	}
+	if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
+	{
+		m_pTransform->rotate.y -= 0.02f;
+	}
+
+	// 前に進む
+	if (Input::IsPress2P(BUTTON_ID_UP))
+	{
+		front.x = sinf(m_pTransform->rotate.y);
+		front.z = cosf(m_pTransform->rotate.y);
+		m_inputVector = VAdd(front, m_inputVector);
+		input = true;
+	}
+
+	// 後ろに進む
+	if (Input::IsPress2P(BUTTON_ID_DOWN))
+	{
+		rear.x = sinf(m_pTransform->rotate.y) * -1.0f;
+		rear.z = cosf(m_pTransform->rotate.y) * -1.0f;
+		m_inputVector = VAdd(rear, m_inputVector);
+		//input = true;
+	}
+
+	// 右に進む
+	if (Input::IsPress2P(BUTTON_ID_LEFT))
+	{
+		right.x = sinf(m_pTransform->rotate.y - addRad);
+		right.z = cosf(m_pTransform->rotate.y - addRad);
+		m_inputVector = VAdd(right, m_inputVector);
+		//input = true;
+	}
+
+	// 左に進む
+	if (Input::IsPress2P(BUTTON_ID_RIGHT))
+	{
+		left.x = sinf(m_pTransform->rotate.y + addRad);
+		left.z = cosf(m_pTransform->rotate.y + addRad);
+		m_inputVector = VAdd(left, m_inputVector);
+		//input = true;
+	}
+
+	// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
+	if (Input::IsDown2P(BUTTON_ID_R) && m_bulletNum > 0 && !m_throwFlag)
+	{
+		for (auto tomato : m_pTomato)
+		{
+			if (tomato->GetActive())
+			{
+				continue;
+			}
+			m_throwFlag = true;
+			m_animType = Anim::Throw;
+			m_moveFlag = false;
+			m_bulletNum--;
+			VECTOR dir = VGet(0.0f, 0.0f, 0.0f);
+			dir.x = m_pTransform->position.x + sinf(m_pTransform->rotate.y) * -30.0f;
+			dir.z = m_pTransform->position.z + cosf(m_pTransform->rotate.y) * -30.0f;
+			dir = VSub(m_pTransform->position, dir);
+			// 方向を正規化
+			dir = VNorm(dir);
+			// 消えているトマトをアクティブにする
+			tomato->ShotTomato(m_pTransform->position, dir, m_pTag);
+			break;
+		}
+	}
+
+	// トマトを限界まで持っていないとき、トマトの壁からトマトを回収
+	if (Input::IsDown2P(BUTTON_ID_B) && m_bulletNum < m_bulletCapacity)
+	{
+		TomatoCollect();
+	}
+
+	Score::Set1PBulletNum(m_bulletNum);
+	
 
 	// 入力有（加速）・入力無（減速）
 	if (input)
@@ -245,14 +223,14 @@ void Player2::Input()
 			m_rotateNow = true;
 			m_aimDir = m_inputVector;
 		}
-
-		m_velocity = m_inputVector;
 	}
 	else
 	{
 		m_velocity.x = m_velocity.x * 0.9f;
 		m_velocity.z = m_velocity.z * 0.9f;
 	}
+
+	m_velocity = m_inputVector;
 }
 
 void Player2::Rotate()
