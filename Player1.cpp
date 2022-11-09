@@ -119,7 +119,20 @@ void Player1::Input()
 
 	float addRad = 1.58f;	// 加算する角度
 	bool input = false;		// 入力したか判定用
-	/*m_pTransform->rotate.y++;*/
+
+	XINPUT_STATE inputState;
+
+	// 入力状態を取得
+	GetJoypadXInputState(DX_INPUT_PAD1, &inputState);
+
+	if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
+	{
+		m_pTransform->rotate.y += 0.02f;
+	}
+	if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
+	{
+		m_pTransform->rotate.y -= 0.02f;
+	}
 
 	// 1Pの操作
 		// 前に進む
@@ -130,24 +143,28 @@ void Player1::Input()
 		m_inputVector = VAdd(front, m_inputVector);
 		input = true;
 	}
-
-	// 右に進む
-	if (Input::IsPress1P(BUTTON_ID_LEFT))
+	// 後ろに進む
+	else if (Input::IsPress1P(BUTTON_ID_DOWN))
 	{
-		//right.x = sinf(m_pTransform->rotate.y - addRad);
-		//right.z = cosf(m_pTransform->rotate.y - addRad);
-		//m_inputVector = VAdd(right, m_inputVector);
+		rear.x = sinf(m_pTransform->rotate.y) * -1.0f;
+		rear.z = cosf(m_pTransform->rotate.y) * -1.0f;
+		m_inputVector = VAdd(rear, m_inputVector);
 		//input = true;
-		m_pTransform->rotate.y -= 0.02f;
 	}
-
-	// 左に進む
-	if (Input::IsPress1P(BUTTON_ID_RIGHT))
+	// 右に進む
+	else if (Input::IsPress1P(BUTTON_ID_LEFT))
 	{
-		//	left.x = sinf(m_pTransform->rotate.y + addRad);
-		//	left.z = cosf(m_pTransform->rotate.y + addRad);
-		//	m_inputVector = VAdd(left, m_inputVector);
-		m_pTransform->rotate.y += 0.02f;
+		right.x = sinf(m_pTransform->rotate.y - addRad);
+		right.z = cosf(m_pTransform->rotate.y - addRad);
+		m_inputVector = VAdd(right, m_inputVector);
+		//input = true;
+	}
+	// 左に進む
+	else if (Input::IsPress1P(BUTTON_ID_RIGHT))
+	{
+			left.x = sinf(m_pTransform->rotate.y + addRad);
+			left.z = cosf(m_pTransform->rotate.y + addRad);
+			m_inputVector = VAdd(left, m_inputVector);
 		//input = true;
 	}
 
@@ -207,8 +224,6 @@ void Player1::Input()
 			m_rotateNow = true;
 			m_aimDir = m_inputVector;
 		}
-
-		m_velocity = m_inputVector;
 	}
 	else
 	{
@@ -225,6 +240,8 @@ void Player1::Input()
 		m_velocity.x = m_velocity.x * 0.9f;
 		m_velocity.z = m_velocity.z * 0.9f;
 	}
+
+	m_velocity = m_inputVector;
 }
 
 void Player1::Rotate()
