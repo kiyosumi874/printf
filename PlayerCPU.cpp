@@ -8,6 +8,7 @@
 #include "Icon.h"
 #include "BoxCollider.h"
 #include "SphereCollider.h"
+#include "PickEffect.h"
 
 PlayerCPU::PlayerCPU()
 	: Human()
@@ -562,6 +563,8 @@ void PlayerCPU::MoveCollectTomato(TomatoWallManager* object)
 			m_moveFlag = false;
 			if (m_animTime == 0.0f && m_animType == Anim::Pick)
 			{
+				m_pPickEffect->PlayEffect();
+				m_pPickEffect->UpdatePosition(VAdd(m_pTransform->position, VGet(0.0f, 20.0f, 0.0f)));
 				m_bulletNum++;
 				object->DecreaseAllTomatoNum();
 			}

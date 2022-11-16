@@ -14,6 +14,7 @@ TitleScene::TitleScene(const MODE& mode)
 {
 	InitObject(); // オブジェクトの初期化
 	SetCameraPositionAndTarget_UpVecY(VGet(0.0f, 0.0f, 0.0f), VGet(0.0f, 0.0f, 1.0f)); // カメラの位置と向きをセット
+	m_handle = LoadGraph("data/Icon/ReadyPlayerMe.png");
 }
 
 TitleScene::~TitleScene()
@@ -160,6 +161,7 @@ void TitleScene::TermObject()
 		delete obj;
 	}
 	m_pObjectLists.clear();
+	DeleteGraph(m_handle);
 }
 
 void TitleScene::UpdateObject()
@@ -176,4 +178,6 @@ void TitleScene::DrawObject()
 	{
 		obj->Draw();
 	}
+
+	DrawGraph(50, SCREEN_HEIGHT - 100, m_handle, TRUE);
 }

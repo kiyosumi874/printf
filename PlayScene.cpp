@@ -22,7 +22,7 @@
 #include "TomatoUIContoroller.h"
 #include "ScoreUIController.h"
 #include "DebugColliderObject.h"
-
+#include "PickEffect.h"
 // FIXME : 652行目のバグを改善しなければならない
 // 2週目のゲームがフリーズする原因と思われる
 
@@ -57,6 +57,7 @@ PlayScene::PlayScene(const MODE& mode)
 		m_transitionImage[i] = nullptr;
 	}
 
+	VECTOR tomatoWallPos[] = { VGet(0.0f, 0.0f, 0.0f), VGet(-250.0f, 0.0f, 0.0f),VGet(250.0f, 0.0f, 0.0f), VGet(0.0f, 0.0f, -250.0f),VGet(0.0f, 0.0f, 250.0f) };
 	// トマトの山生成
 	for (int i = 0; i < m_tomatoWallNum; i++)
 	{
@@ -66,7 +67,7 @@ PlayScene::PlayScene(const MODE& mode)
 		auto wall = obj->AddCollider<WallCollider>();
 		wall->SetCollider(new Wall(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(20, 20, 20))));
 		auto tomato = obj->AddComponent<TomatoWallManager>();
-		tomato->Init(VGet(-300 + 100.0f * i, 0.0f, 0.0f), VGet(0.0f, 0.0f, 0.0f), VGet(0.035f, 0.035f, 0.035f));
+		tomato->Init(tomatoWallPos[i], VGet(0.0f, 0.0f, 0.0f), VGet(0.035f, 0.035f, 0.035f));
 		m_pColliderLists.push_back(obj);
 		m_pObjectLists.push_back(obj);
 		m_pTomatoWallObjectLists.push_back(obj);
@@ -93,6 +94,7 @@ PlayScene::PlayScene(const MODE& mode)
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Team1;
 			obj->AddComponent<Icon>();
+			obj->AddComponent<PickEffect>();
 			auto box = obj->AddCollider<BoxCollider>();
 			box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
 			auto sphere = obj->AddCollider<SphereCollider>();
@@ -109,6 +111,7 @@ PlayScene::PlayScene(const MODE& mode)
 			auto tag = obj->AddComponent<Tag>();
 			tag->tag = ObjectTag::Team2;
 			obj->AddComponent<Icon>();
+			obj->AddComponent<PickEffect>();
 			auto box = obj->AddCollider<BoxCollider>();
 			box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
 			auto sphere = obj->AddCollider<SphereCollider>();
@@ -128,6 +131,7 @@ PlayScene::PlayScene(const MODE& mode)
 		obj->AddComponent<Transform>();
 		obj->AddComponent<Tag>()->tag = ObjectTag::Team1;
 		obj->AddComponent<Icon>();
+		obj->AddComponent<PickEffect>();
 		auto box = obj->AddCollider<BoxCollider>();
 		box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
 		auto sphere = obj->AddCollider<SphereCollider>();
@@ -142,6 +146,7 @@ PlayScene::PlayScene(const MODE& mode)
 		obj->AddComponent<Transform>();
 		obj->AddComponent<Tag>()->tag = ObjectTag::Team2;
 		obj->AddComponent<Icon>();
+		obj->AddComponent<PickEffect>();
 		box = obj->AddCollider<BoxCollider>();
 		box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
 		sphere = obj->AddCollider<SphereCollider>();
@@ -157,6 +162,7 @@ PlayScene::PlayScene(const MODE& mode)
 		obj->AddComponent<Transform>();
 		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
 		obj->AddComponent<Icon>();
+		obj->AddComponent<PickEffect>();
 		box = obj->AddCollider<BoxCollider>();
 		box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
 		sphere = obj->AddCollider<SphereCollider>();
@@ -171,6 +177,7 @@ PlayScene::PlayScene(const MODE& mode)
 		obj->AddComponent<Transform>();
 		obj->AddComponent<Tag>()->tag = ObjectTag::Team3;
 		obj->AddComponent<Icon>();
+		obj->AddComponent<PickEffect>();
 		box = obj->AddCollider<BoxCollider>();
 		box->SetCollider(new Box(VGet(0.0f, 0.0f, 0.0f), VGet(6, 17, 6)));
 		sphere = obj->AddCollider<SphereCollider>();
@@ -284,6 +291,17 @@ PlayScene::PlayScene(const MODE& mode)
 				m_pObjectLists.push_back(object);
 			}
 		}
+	}
+
+	{
+		Object* object = new Object;
+		float x = SCREEN_WIDTH / 2.0f;
+		float exX = 2.0f;
+		float exY = 1.5f;
+		m_manual = object->AddComponent<Image>();
+		m_manual->Init(VGet(x - 230, 960, 1.0f), VGet(exX, exY, 1.0f), 0.0f, "data/Icon/manual.png");
+		m_manual->IsDraw(false);
+		m_pObjectLists.push_back(object);
 	}
 
 	// 最初のカウントダウン
@@ -505,6 +523,7 @@ void PlayScene::UpdateTransitionPlay()
 
 	if (!m_startCount && !m_isStartBlendAdd)
 	{
+		m_manual->IsDraw(true);
 		if (m_stopWatch->GetSeconds() > 0.5 && !m_isCount[0])
 		{
 			m_isCount[0] = true;

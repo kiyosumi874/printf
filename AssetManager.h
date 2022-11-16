@@ -13,7 +13,8 @@ public:
 		Logo,
 		TransitionButton,
 		Gradation,
-		Reticle
+		Reticle,
+		Manual,
 	};
 
 	enum ModelName

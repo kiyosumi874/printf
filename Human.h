@@ -27,6 +27,7 @@ protected:
 	class Tag* m_pTag = nullptr;
 	class BoxCollider* m_pBox = nullptr;
 	class SphereCollider* m_pSphere = nullptr;
+	class PickEffect* m_pPickEffect = nullptr;
 
 	std::vector<class TomatoWallManager*> m_pTomatoWall;
 	class Icon* m_pIcon = nullptr;  // アイコンクラス

@@ -104,8 +104,12 @@ void Tomato::OnCollisionEnter(ColliderComponent* ownColl, ColliderComponent* oth
 			return;
 		}
 		if (ownColl->GetParentTag()->tag == ObjectTag::Team1) { Score::AddTeam1Score(); }
-		if (ownColl->GetParentTag()->tag == ObjectTag::Team2) { Score::AddTeam2Score(); }
-		if (ownColl->GetParentTag()->tag == ObjectTag::Team3) { Score::AddTeam3Score(); }
+		else if (ownColl->GetParentTag()->tag == ObjectTag::Team2) { Score::AddTeam2Score(); }
+		else if (ownColl->GetParentTag()->tag == ObjectTag::Team3) { Score::AddTeam3Score(); }
+
+		if (otherColl->GetTag()->tag == ObjectTag::Team1) { Score::SubTeam1Score(); }
+		else if (otherColl->GetTag()->tag == ObjectTag::Team2) { Score::SubTeam2Score(); }
+		else if (otherColl->GetTag()->tag == ObjectTag::Team3) { Score::SubTeam3Score(); }
 
 		m_phitTomatoEffect->PlayEffect();
 		m_phitTomatoEffect->UpdateState(m_pTransform->position, VGet(7.0f, 7.0f, 7.0f), VGet(0.0f, 0.0f, 0.0f));

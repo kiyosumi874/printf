@@ -31,4 +31,5 @@ private:
 	class StopWatch* stopWatch;
 #endif // _DEBUG
 
+	int m_handle;
 };

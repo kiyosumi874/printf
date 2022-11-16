@@ -51,6 +51,7 @@ private:
 	class Image* m_timerKoron;
 	class Image* m_timerBack;
 	class Image* m_tomatoBack[2];
+	class Image* m_manual;
 	class BasketController* m_basket[2];
 
 	class TomatoUIController* m_tomatoUICon[2];
@@ -61,7 +62,7 @@ private:
 
 	class Ground* m_pGround;
 
-	const int m_tomatoWallNum = 8;
+	const int m_tomatoWallNum = 5;
 
 	float m_cameraZ;
 	bool m_isCount[4];

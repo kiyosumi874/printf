@@ -9,6 +9,7 @@
 #include "Icon.h"
 #include "BoxCollider.h"
 #include "SphereCollider.h"
+#include "PickEffect.h"
 
 Player2::Player2()
 	: Human()
@@ -115,6 +116,7 @@ void Player2::Input()
 
 	float addRad = 1.58f;	// 加算する角度
 	bool input = false;		// 入力したか判定用
+	bool button = false;
 
 	XINPUT_STATE inputState;
 
@@ -122,53 +124,63 @@ void Player2::Input()
 		// 入力状態を取得
 	GetJoypadXInputState(DX_INPUT_PAD2, &inputState);
 
-	if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 2000.0f)
+	if (CheckHitKey(KEY_INPUT_D) || inputState.ThumbRX > 20000.0f)
 	{
 		m_pTransform->rotate.y += 0.02f;
 	}
-	if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -2000.0f)
+	if (CheckHitKey(KEY_INPUT_A) || inputState.ThumbRX < -20000.0f)
 	{
 		m_pTransform->rotate.y -= 0.02f;
 	}
 
 	// 前に進む
-	if (Input::IsPress2P(BUTTON_ID_UP))
+	if (Input::IsPress2P(BUTTON_ID_UP) && inputState.ThumbLY > 20000.0f ||
+		CheckHitKey(KEY_INPUT_W))
 	{
 		front.x = sinf(m_pTransform->rotate.y);
 		front.z = cosf(m_pTransform->rotate.y);
 		m_inputVector = VAdd(front, m_inputVector);
 		input = true;
+		button = true;
+		m_buttonCount++;
 	}
-
 	// 後ろに進む
-	if (Input::IsPress2P(BUTTON_ID_DOWN))
+	else if (Input::IsPress2P(BUTTON_ID_DOWN) && inputState.ThumbLY < -20000.0f ||
+		CheckHitKey(KEY_INPUT_S))
 	{
 		rear.x = sinf(m_pTransform->rotate.y) * -1.0f;
 		rear.z = cosf(m_pTransform->rotate.y) * -1.0f;
 		m_inputVector = VAdd(rear, m_inputVector);
 		//input = true;
+		button = true;
+		m_buttonCount++;
 	}
-
 	// 右に進む
-	if (Input::IsPress2P(BUTTON_ID_LEFT))
+	else if (Input::IsPress2P(BUTTON_ID_RIGHT) && inputState.ThumbLX > 20000.0f ||
+		CheckHitKey(KEY_INPUT_D))
 	{
-		right.x = sinf(m_pTransform->rotate.y - addRad);
-		right.z = cosf(m_pTransform->rotate.y - addRad);
+		right.x = sinf(m_pTransform->rotate.y + addRad);
+		right.z = cosf(m_pTransform->rotate.y + addRad);
 		m_inputVector = VAdd(right, m_inputVector);
 		//input = true;
+		button = true;
+		m_buttonCount++;
 	}
-
 	// 左に進む
-	if (Input::IsPress2P(BUTTON_ID_RIGHT))
+	else if (Input::IsPress2P(BUTTON_ID_LEFT) && inputState.ThumbLX < -20000.0f ||
+		CheckHitKey(KEY_INPUT_A))
 	{
-		left.x = sinf(m_pTransform->rotate.y + addRad);
-		left.z = cosf(m_pTransform->rotate.y + addRad);
+		left.x = sinf(m_pTransform->rotate.y - addRad);
+		left.z = cosf(m_pTransform->rotate.y - addRad);
 		m_inputVector = VAdd(left, m_inputVector);
 		//input = true;
+		button = true;
+		m_buttonCount++;
 	}
 
 	// トマト生成(Playerの回転処理が終わった後生成(上だとプレイヤーの向きにならず少しずれる))
-	if (Input::IsDown2P(BUTTON_ID_R) && m_bulletNum > 0 && !m_throwFlag)
+	if (Input::IsDown2P(BUTTON_ID_A) && m_bulletNum > 0 && !m_throwFlag ||
+		CheckHitKey(KEY_INPUT_M) && m_buttonCount == 0 && m_bulletNum > 0 && !m_throwFlag)
 	{
 		for (auto tomato : m_pTomato)
 		{
@@ -190,12 +202,22 @@ void Player2::Input()
 			tomato->ShotTomato(m_pTransform->position, dir, m_pTag);
 			break;
 		}
+		button = true;
+		m_buttonCount++;
 	}
 
 	// トマトを限界まで持っていないとき、トマトの壁からトマトを回収
-	if (Input::IsDown2P(BUTTON_ID_B) && m_bulletNum < m_bulletCapacity)
+	if (Input::IsDown2P(BUTTON_ID_B) && m_bulletNum < m_bulletCapacity ||
+		CheckHitKey(KEY_INPUT_B) && m_buttonCount == 0 && m_bulletNum < m_bulletCapacity)
 	{
 		TomatoCollect();
+		button = true;
+		m_buttonCount++;
+	}
+
+	if (!button)
+	{
+		m_buttonCount = 0;
 	}
 
 	Score::Set1PBulletNum(m_bulletNum);
@@ -358,6 +380,8 @@ void Player2::TomatoCollect()
 		// 範囲に入っているトマトの壁からトマトを回収
 		if (distance < tomatowall[i].GetWidthDistance() && !m_pickFlag)
 		{
+			m_pPickEffect->PlayEffect();
+			m_pPickEffect->UpdatePosition(VAdd(m_pTransform->position, VGet(0.0f, 20.0f, 0.0f)));
 			m_pickFlag = true;
 			m_moveFlag = false;
 			m_animType = Anim::Pick;

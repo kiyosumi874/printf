@@ -63,6 +63,7 @@
     <ClCompile Include="WallCollider.cpp" />
     <ClCompile Include="WorldCollider.cpp" />
     <ClCompile Include="StopWatch.cpp" />
+    <ClCompile Include="PickEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -135,6 +136,7 @@
     <ClInclude Include="WallCollider.h" />
     <ClInclude Include="WorldCollider.h" />
     <ClInclude Include="StopWatch.h" />
+    <ClInclude Include="PickEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
