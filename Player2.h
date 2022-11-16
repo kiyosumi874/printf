@@ -31,4 +31,6 @@ private:
 	VECTOR m_inputVector;  // 押した合計座標取得用変数
 
 	bool m_rotateNow;		// 回転中か判定用
+
+	int m_buttonCount = 0;
 };

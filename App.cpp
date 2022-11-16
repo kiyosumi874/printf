@@ -33,6 +33,7 @@ App::App()
 	AssetManager::LoadModel(AssetManager::ModelName::Icon2, "data/Icon/Blue.mv1");    // アイコンモデル(青色)
 	AssetManager::LoadModel(AssetManager::ModelName::Icon3, "data/Icon/Green.mv1");   // アイコンモデル(緑色)
 	AssetManager::LoadImage(AssetManager::ImageName::Reticle, "data/Icon/Reticle.png");  // レティクル画像
+	//AssetManager::LoadImage(AssetManager::ImageName::Manual, "data/Icon/manual.png");  // マニュアル画像
 
 	m_sceneManager = new SceneManager();
 	m_sceneManager->SetNowScene(TAG_SCENE::TAG_TITLE);

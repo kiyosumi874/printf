@@ -45,18 +45,46 @@ public:
 
 	static void AddTeam1Score()	// チーム1のスコア加算
 	{
-		m_score->m_team1 += 5;
+		m_score->m_team1 += 10;
 	}
 
 	static void AddTeam2Score()	// チーム2のスコア加算
 	{
-		m_score->m_team2 += 5;
+		m_score->m_team2 += 10;
 	}
 
 	static void AddTeam3Score()	// チーム3のスコア加算
 	{
-		m_score->m_team3 += 5;
+		m_score->m_team3 += 10;
 	}
+
+	static void SubTeam1Score()	// チーム1のスコア減算
+	{
+		m_score->m_team1 -= 5;
+		if (m_score->m_team1 < 0)
+		{
+			m_score->m_team1 = 0;
+		}
+	}
+
+	static void SubTeam2Score()	// チーム2のスコア減算
+	{
+		m_score->m_team2 -= 5;
+		if (m_score->m_team2 < 0)
+		{
+			m_score->m_team2 = 0;
+		}
+	}
+
+	static void SubTeam3Score()	// チーム3のスコア減算
+	{
+		m_score->m_team3 -= 5;
+		if (m_score->m_team3 < 0)
+		{
+			m_score->m_team3 = 0;
+		}
+	}
+
 
 	static const int GetTeam1Score()	// チーム1のスコア
 	{

@@ -11,6 +11,7 @@
 #include "SphereCollider.h"
 #include "HitEffect.h"
 #include "HitTomatoEffect.h"
+#include "PickEffect.h"
 
 Human::Human()
 {
@@ -45,6 +46,9 @@ void Human::Init(const VECTOR& pos, const VECTOR& rotate, const VECTOR& scale)
 	m_pIcon->SetOwnerTag(m_pTag);
 	m_pIcon->SetOwnerPosition(m_pTransform->position);
 	m_pIcon->Init(m_var.pos, VGet(0.0f, 0.0f, 0.0f), VGet(0.7f, 0.7f, 0.7f));
+
+	m_pPickEffect = m_pParent->GetComponent<PickEffect>();
+	m_pPickEffect->Init("data/effect/pickTomato.efkefc", VGet(0.0f, 0.0f, 0.0f), VGet(10.0f, 10.0f, 10.0f), VGet(0.0f, 0.0f, 0.0f));
 
 	// 最初に3つトマトを作成しておく(メモリ容量のため3つに限定)
 	for (int i = 0; i < 3; i++)

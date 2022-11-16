@@ -42,13 +42,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -176,6 +176,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fps.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="PickEffect.cpp" />
     <ClCompile Include="PlayGround.cpp" />
     <ClCompile Include="Human.cpp" />
     <ClCompile Include="Icon.cpp" />
@@ -253,6 +254,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fps.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="PickEffect.h" />
     <ClInclude Include="PlayGround.h" />
     <ClInclude Include="Human.h" />
     <ClInclude Include="Icon.h" />

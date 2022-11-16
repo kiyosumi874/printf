@@ -1,12 +1,11 @@
-﻿#pragma once
+#pragma once
 #include "Component.h"
 
-/* Hitしたときのフェクトの描画を行うクラス */
-class HitEffect : public Component
+class PickEffect : public Component
 {
 public:
-	HitEffect();
-	~HitEffect();
+	PickEffect();
+	~PickEffect();
 
 	void Init(const char* filePath, const VECTOR& pos, const VECTOR& scale, const VECTOR& rotate);
 	void Start() override;
@@ -32,3 +31,4 @@ private:
 	bool m_drawFlag = false;
 	bool m_nowPlayFlag = false;
 };
+

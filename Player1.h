@@ -33,4 +33,5 @@ private:
 	bool m_rotateNow;		// 回転中か判定用
 	/*int model = -1;
 	VECTOR aim = VGet(0.0f, 0.0f, 0.0f);*/
+	int m_buttonCount = 0;
 };
